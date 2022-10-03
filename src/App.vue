@@ -1,7 +1,6 @@
 <template lang="pug">
-  div.text
-    div.wrapper
-      header-component
+  div
+    header-component
 </template>
 
 <script>
@@ -14,21 +13,17 @@ export default {
 
 <style lang="sass">
 @import "./assets/sass/variables.sass"
-.text
-  color: #42b983
 
 #app
-  font-family: Avenir, Helvetica, Arial, sans-serif
+  font-family: Raleway
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
-  color: #2c3e50
+  width: 100%
+  background-color: $bg-lavender-color
 
 body
-  margin: 0  
+  margin: 0
+  padding: 0
 
-.wrapper
-  background-color: $bg-lavender-color
-  width: 1920px
-  height: 1000px
 </style>
