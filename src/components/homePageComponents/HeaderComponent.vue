@@ -6,7 +6,7 @@
       div.inputs-wrapper
         img.search-icon(src="../../assets/icons/search.svg" alt="Search")
         select.inputs.select(v-model="selectedFilter")
-          option(v-for="filter in filters" :value="filter") {{ filter }}
+          option(v-for="filter in filters" :key="filter" :value="filter") {{ filter }}
         span.separator  
         input.inputs.search-input(placeholder="Искать ...")
       button.flex.center.btn-notification
@@ -31,8 +31,20 @@ export default {
 }
 </script>
 
-<style lang="sass">
-@import "../../assets/sass/variables.sass"
+<style lang='sass'>
+@import '../../assets/sass/variables.sass'
+
+input
+  padding: 0 
+
+button
+  outline: none
+  border: none
+  background-color: transparent
+  cursor: pointer
+  padding: 0
+  color: $font-dark-blue-color 
+
 .header-wrapper
   width: 100%
   padding: 8px 24px
@@ -70,22 +82,11 @@ export default {
   margin-right: 46px
 
 .search-icon
-    position: absolute
-    height: 24px
-    width: 24px
-    color: $btn-blue-color
-    opacity: .7 
-
-input
-  padding: 0 
-
-button
-  outline: none
-  border: none
-  background-color: transparent
-  cursor: pointer
-  padding: 0
-  color: $font-dark-blue-color
+  position: absolute
+  height: 24px
+  width: 24px
+  color: $btn-blue-color
+  opacity: 0.7 
 
 .btn-notification
   margin-right: 32px
@@ -112,18 +113,18 @@ button
   font-size: 16px
   line-height: 19px
   font-feature-settings: 'pnum' on, 'lnum' on
+  display: inline-block
+  vertical-align: middle
   &::placeholder
     color: $btn-blue-color
-    opacity: .5
+    opacity: 0.5
 
 .select
   -webkit-appearance: none
   -moz-appearance: none
   -ms-appearance: none
   appearance: none
-  display: inline-block
-  vertical-align: middle
-  background: url( "../../assets/icons/down-arrow-1.svg") no-repeat right top 4px
+  background: url(../../assets/icons/down-arrow-1.svg) no-repeat right top 4px
   overflow: hidden
   margin-right: 16px
   padding: 2px 20px 2px 30px
@@ -137,15 +138,13 @@ button
   vertical-align: middle
   height: 254px
   border-left: 1px solid $btn-blue-color
-  opacity: .5
+  opacity: 0.5
   border-radius: 4px
   height: 100%
-
-.avatar-wrapper
-  
 
 .avatar-img
   width: 32px
   height: 32px
   margin-right: 8px
+
 </style>
