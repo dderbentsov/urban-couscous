@@ -12,7 +12,6 @@ export default {
 </script>
 
 <style lang="sass">
-@import "./assets/sass/variables.sass"
 
 #app
   font-family: Raleway
@@ -20,7 +19,7 @@ export default {
   -moz-osx-font-smoothing: grayscale
   text-align: center
   width: 100%
-  background-color: $bg-lavender-color
+  background-color: var(--bg-lavender-color)
 
 body
   margin: 0
