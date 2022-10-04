@@ -1,14 +1,14 @@
 <template lang="pug">
   div(class='sidebar-container')
     div(class='top-button-container')
-      button-sidebar-component(path="#/")
+      button-sidebar-component(id="home" path="#/")
         home-icon
-      button-sidebar-component(path="#/calendar")
+      button-sidebar-component(id="calendar" path="#/calendar")
         calendar-icon
-      button-sidebar-component(path="#/user")
+      button-sidebar-component(id="user" path="#/user")
         user-icon
     div(class="bottom-button-container")
-      button-sidebar-component(path="#/settings")
+      button-sidebar-component(id="settings" path="#/settings")
         settings-icon
 </template>
 
@@ -22,11 +22,6 @@
   export default {
     name: "SidebarComponent",
     components: {ButtonSidebarComponent, HomeIcon, CalendarIcon, UserIcon, SettingsIcon},
-    data() {
-      return {
-        selectedPages: '',
-      }
-    }
   }
 </script>
 
@@ -36,7 +31,7 @@
     flex-direction: column
     justify-content: space-between
     flex: auto
-    padding: 24px 0px 24px 0px
+    padding: 24px 0 24px 0
     box-sizing: border-box
     max-width: 80px
     background-color: #F8F8FF
