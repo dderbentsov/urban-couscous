@@ -1,5 +1,5 @@
 <template lang="pug">
-  div
+  div(class="app-container")
     header-component
     div(class="pages-container")
       sidebar-component
@@ -17,9 +17,6 @@
 
 <style lang="sass">
 #app
-  display: flex
-  flex-direction: column
-  row-gap: 8px
   height: 100%
   width: 100%
   font-family: Raleway, sans-serif
@@ -31,6 +28,12 @@
 .pages-container
   display: flex
   flex: auto
+.app-container
+  height: 100%
+  width: 100%
+  row-gap: 8px
+  display: flex
+  flex-direction: column
 body
   margin: 0
   padding: 0
