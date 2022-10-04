@@ -32,7 +32,6 @@ export default {
 </script>
 
 <style lang='sass'>
-@import '../../assets/sass/variables.sass'
 
 input
   padding: 0 
@@ -43,12 +42,12 @@ button
   background-color: transparent
   cursor: pointer
   padding: 0
-  color: $font-dark-blue-color 
+  color: var(--font-dark-blue-color)
 
 .header-wrapper
   width: 100%
   padding: 8px 24px
-  background-color: $bg-white-color
+  background-color: var(--bg-white-color)
   box-sizing: border-box
 
 .flex
@@ -85,7 +84,7 @@ button
   position: absolute
   height: 24px
   width: 24px
-  color: $btn-blue-color
+  color: var(--btn-blue-color)
   opacity: 0.7 
 
 .btn-notification
@@ -104,7 +103,7 @@ button
   border: none
   outline: none
   background-color: transparent
-  color: $btn-blue-color
+  color: var(--btn-blue-color)
   height: 100%
   box-sizing: border-box
   font-family: Raleway
@@ -116,7 +115,7 @@ button
   display: inline-block
   vertical-align: middle
   &::placeholder
-    color: $btn-blue-color
+    color: var(--btn-blue-color)
     opacity: 0.5
 
 .select
@@ -137,7 +136,7 @@ button
   display: inline-block
   vertical-align: middle
   height: 254px
-  border-left: 1px solid $btn-blue-color
+  border-left: 1px solid var(--btn-blue-color)
   opacity: 0.5
   border-radius: 4px
   height: 100%
