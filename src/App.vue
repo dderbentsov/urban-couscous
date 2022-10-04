@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import HeaderComponent from './components/homePageComponents/HeaderComponent.vue';
+  import HeaderComponent from "./components/homePageComponents/HeaderComponent";
   import SidebarComponent from "./components/homePageComponents/SidebarComponent";
   export default {
     name: 'App',
@@ -24,7 +24,6 @@
   font-feature-settings: 'pnum' on, 'lnum' on
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  background-color: var(--bg-lavender-color)
 .pages-container
   display: flex
   flex: auto
@@ -35,6 +34,7 @@
   display: flex
   flex-direction: column
 body
+  background-color: var(--bg-lavender-color)
   margin: 0
   padding: 0
 </style>
