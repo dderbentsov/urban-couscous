@@ -1,22 +1,29 @@
 <template lang="pug">
-  div(class='text') HelloWorld
+  div
+    header-component
 </template>
 
 <script>
-
+import HeaderComponent from './components/homePageComponents/HeaderComponent.vue'
 export default {
   name: 'App',
+  components: {HeaderComponent}
 }
 </script>
 
 <style lang="sass">
-.text
-  color: #42b983
+@import "./assets/sass/variables.sass"
+
 #app
-  font-family: Avenir, Helvetica, Arial, sans-serif
+  font-family: Raleway
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
   text-align: center
-  color: #2c3e50
-  margin-top: 60px
+  width: 100%
+  background-color: $bg-lavender-color
+
+body
+  margin: 0
+  padding: 0
+
 </style>
