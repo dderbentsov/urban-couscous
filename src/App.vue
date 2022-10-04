@@ -1,22 +1,30 @@
 <template lang="pug">
-  div(class='text') HelloWorld
+  div(class="pages-container")
+    sidebar-component
+    router-view
 </template>
 
 <script>
-
-export default {
-  name: 'App',
-}
+  import SidebarComponent from "./components/homePageComponents/SidebarComponent";
+  export default {
+    name: 'App',
+    components: {SidebarComponent}
+  }
 </script>
 
 <style lang="sass">
-.text
-  color: #42b983
 #app
-  font-family: Avenir, Helvetica, Arial, sans-serif
+  display: flex
+  flex-direction: column
+  row-gap: 8px
+  height: 100%
+  font-family: Raleway, sans-serif
+  font-style: normal
+  font-feature-settings: 'pnum' on, 'lnum' on
   -webkit-font-smoothing: antialiased
   -moz-osx-font-smoothing: grayscale
-  text-align: center
-  color: #2c3e50
-  margin-top: 60px
+  background-color: #E9E9F6
+.pages-container
+  display: flex
+  flex: auto
 </style>
