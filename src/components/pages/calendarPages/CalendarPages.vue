@@ -1,11 +1,10 @@
 <template lang="pug">
-  form-change-event
 </template>
 
 <script>
-  import FormChangeEvent from "./FormChangeEvent";
+  import FormAddEvent from "@/components/pages/calendarPages/FormAddEvent";
   export default {
     name: "CalendarPages",
-    components: {FormChangeEvent}
+    components: {FormAddEvent}
   }
 </script>
