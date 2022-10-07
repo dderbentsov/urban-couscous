@@ -10,6 +10,9 @@
 
 <style lang="sass">
   .add-button-event
+    outline: none
+    border: none
+    cursor: pointer
     font-family: Raleway
     font-style: normal
     font-size: 16px
