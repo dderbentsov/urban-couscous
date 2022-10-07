@@ -15,6 +15,9 @@
 
 <style lang="sass">
   .button-plus
+    outline: none
+    border: none
+    cursor: pointer
     width: fit-content
     background-color: rgba(65, 105, 225, 0.25)
     padding: 7px 7px 3px 7px

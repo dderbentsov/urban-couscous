@@ -135,6 +135,7 @@ export default {
     position: relative
     display: flex
     flex-direction: column
+    height: fit-content
     row-gap: 24px
     min-width: 448px
     padding: 21px 32px 24px 32px
