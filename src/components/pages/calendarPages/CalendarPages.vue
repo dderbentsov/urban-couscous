@@ -1,9 +1,10 @@
 <template lang="pug">
-  div CalendarPages
 </template>
 
 <script>
+  import FormAddEvent from "@/components/pages/calendarPages/FormAddEvent";
   export default {
-    name: "CalendarPages"
+    name: "CalendarPages",
+    components: {FormAddEvent}
   }
 </script>
