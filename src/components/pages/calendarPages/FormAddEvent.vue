@@ -1,73 +1,73 @@
 <template lang="pug">
-  div.event-form-change(v-if="formOpen")
-    div.form-item-container
-      div.close-icon-position
+  .event-form-change(v-if="formOpen")
+    .form-item-container
+      .close-icon-position
         span.title-form Ответственный
         basic-icon.close-icon(width="16" height="16" icon-color="#252850" @click="closeEventForm")
           close-icon
-      div.input-container(@click="openSelectResponsible")
-        div.form-select
-          div.form-item-input.select-container-res {{eventData.responsible}}
-            div.option-container(v-if="selectResponsibleOpen" id="responsible" @click="(event)=>chooseOption(event)")
-              div.option-item(v-for="(responsible, index) in listResponsible" :key="index" :id="index") {{responsible}}
-        div.select-form-separator
+      .input-container(@click="openSelectResponsible")
+        .form-select
+          .form-item-input.select-container-res {{eventData.responsible}}
+            .option-container(v-if="selectResponsibleOpen" id="responsible" @click="(event)=>chooseOption(event)")
+              .option-item(v-for="(responsible, index) in listResponsible" :key="index" :id="index") {{responsible}}
+        .select-form-separator
         basic-icon(width="24" height="24" icon-color="#090A15")
           arrow-down-icon
-    div.form-item-container
+    .form-item-container
       span.title-form Оновная информация
-      div.form-inform-container
+      .form-inform-container
         basic-icon(width="24" height="24" icon-color="#090A15" )
           clock-icon
-        div.time-input-container
-          div.input-container
+        .time-input-container
+          .input-container
             input.form-item-input(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
           span —
-          div.input-container
+          .input-container
             input.form-item-input(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
-      div.form-inform-container
+      .form-inform-container
         basic-icon(width="24" height="24" icon-color="#090A15")
           user-icon
-        div.input-container
+        .input-container
           input.form-item-input(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
-    div.form-item-container(class='additional-information')
-      div.form-inform-container
+    .form-item-container(class='additional-information')
+      .form-inform-container
         span.title-form Дополнительная информация
         button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
-      div.form-inform-container(v-for="(info, index) in listFriendInfo" :key="index")
+      .form-inform-container(v-for="(info, index) in listFriendInfo" :key="index")
         span.number-additional {{info}}
-        div.input-container
+        .input-container
           input.form-item-input(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
-    div.form-item-container
+    .form-item-container
       span.title-form Вид события
-      div.input-container(@click="openSelectKindEvent")
-        div.form-select
-          div.form-item-input.select-container-kind {{eventData.kindEvent}}
-            div.option-container(v-if="selectKindEventOpen" id="kind" @click="(event)=>chooseOption(event)")
-              div.option-item(v-for="(kind, index) in kindEvents" :key="index" :id="index") {{kind}}
-        div.select-form-separator
+      .input-container(@click="openSelectKindEvent")
+        .form-select
+          .form-item-input.select-container-kind {{eventData.kindEvent}}
+            .option-container(v-if="selectKindEventOpen" id="kind" @click="(event)=>chooseOption(event)")
+              .option-item(v-for="(kind, index) in kindEvents" :key="index" :id="index") {{kind}}
+        .select-form-separator
         basic-icon(width="24" height="24" icon-color="#090A15")
           arrow-down-icon
-    div.form-item-container
-      div.form-inform-container
+    .form-item-container
+      .form-inform-container
         span.title-form Контакты
         button-plus(id="addContact" @click="(e)=>addFriendInfo(e)")
-      div.form-inform-container(v-for="(contact, index) in listContacts" :key="index")
+      .form-inform-container(v-for="(contact, index) in listContacts" :key="index")
         basic-icon(width="24" height="20" icon-color="#090A15")
           mail-icon
-        div.input-container
+        .input-container
           input.form-item-input(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
     add-event-button(@click="createEvent")
 </template>
 
 <script>
-import BasicIcon from "../../iconsComponents/basicIcon/BasicIcon";
-import ArrowDownIcon from "../../iconsComponents/ArrowDownIcon";
-import ClockIcon from  "../../iconsComponents/ClockIcon";
-import UserIcon from "../../iconsComponents/UserSmallIcon";
-import MailIcon from "../../iconsComponents/MailIcon";
-import CloseIcon from "../../iconsComponents/CloseIcon"
-import AddEventButton from "../../buttons/AddEventButton";
-import ButtonPlus from "../../buttons/ButtonPlus";
+import BasicIcon from "@/components/iconsComponents/basicIcon/BasicIcon";
+import ArrowDownIcon from "@/components/iconsComponents/ArrowDownIcon";
+import ClockIcon from  "@/components/iconsComponents/ClockIcon";
+import UserIcon from "@/components/iconsComponents/UserSmallIcon";
+import MailIcon from "@/components/iconsComponents/MailIcon";
+import CloseIcon from "@/components/iconsComponents/CloseIcon"
+import AddEventButton from "@/components/baseComponents/buttons/AddEventButton";
+import ButtonPlus from "@/components/baseComponents/buttons/ButtonPlus";
 export default {
   name: "FormChangeEvent",
   components: {ClockIcon, ArrowDownIcon, UserIcon, MailIcon, CloseIcon, BasicIcon, AddEventButton, ButtonPlus},
