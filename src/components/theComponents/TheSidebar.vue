@@ -2,30 +2,28 @@
   .sidebar-container
     .top-button-container
       the-button-sidebar(id="home" path="#/")
-        home-icon
+        .icon-home
       the-button-sidebar(id="calendar" path="#/calendar")
-        calendar-icon
+        .icon-calendar-2
       the-button-sidebar(id="user" path="#/user")
-        user-icon
+        .icon-person-2
     .bottom-button-container
       the-button-sidebar(id="settings" path="#/settings")
-        settings-icon
+        .icon-settings
 </template>
 
 <script>
-  import HomeIcon from '@/components/iconsComponents/HomeIcon';
-  import CalendarIcon from '@/components/iconsComponents/CalendarIcon';
-  import UserIcon from '@/components/iconsComponents/UserIcon';
-  import SettingsIcon from '@/components/iconsComponents/SettingsIcon';
   import TheButtonSidebar from "@/components/theComponents/TheButtonSidebar";
 
   export default {
     name: "SidebarComponent",
-    components: {TheButtonSidebar, HomeIcon, CalendarIcon, UserIcon, SettingsIcon},
+    components: {TheButtonSidebar},
   }
 </script>
 
 <style lang="sass">
+  #person
+    font-style: normal
   .sidebar-container
     display: flex
     flex-direction: column
@@ -38,6 +36,8 @@
 
   .top-button-container
     display: flex
+    font-size: 40px
     flex-direction: column
     row-gap: 24px
+    color: #9C27B0
 </style>

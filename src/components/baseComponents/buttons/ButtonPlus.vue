@@ -1,15 +1,10 @@
 <template lang="pug">
-  button(class="button-plus")
-    basic-icon(width="12" height="12" icon-color="#4169E1" )
-      plus-icon
+  button.icon-plus(class="button-plus")
 </template>
 
 <script>
-  import PlusIcon from "@/components/iconsComponents/PlusIcon"
-  import BasicIcon from "@/components/iconsComponents/basicIcon/BasicIcon";
   export default {
     name: "ButtonPlus",
-    components: {BasicIcon, PlusIcon}
   }
 </script>
 
@@ -17,9 +12,10 @@
   .button-plus
     outline: none
     border: none
+    font-size: 12px
     cursor: pointer
-    width: fit-content
+    color: #4772F2
+    padding: 7px 7px 5px 7px
     background-color: rgba(65, 105, 225, 0.25)
-    padding: 7px 7px 3px 7px
     border-radius: 50%
 </style>
