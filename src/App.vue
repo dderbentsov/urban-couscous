@@ -1,17 +1,17 @@
 <template lang="pug">
-  div(class="app-container")
-    header-component
-    div(class="pages-container")
-      sidebar-component
+  .app-container
+    the-header
+    .pages-container
+      the-sidebar
       router-view
 </template>
 
 <script>
-  import HeaderComponent from "./components/homePageComponents/HeaderComponent";
-  import SidebarComponent from "./components/homePageComponents/SidebarComponent";
+  import TheHeader from "@/components/theComponents/TheHeader";
+  import TheSidebar from "@/components/theComponents/TheSidebar";
   export default {
     name: 'App',
-    components: {HeaderComponent, SidebarComponent}
+    components: {TheHeader, TheSidebar}
   }
 </script>
 

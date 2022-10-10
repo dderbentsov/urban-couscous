@@ -5,8 +5,8 @@
 </template>
 
 <script>
-  import PlusIcon from "../iconsComponents/PlusIcon";
-  import BasicIcon from "../iconsComponents/basicIcon/BasicIcon";
+  import PlusIcon from "@/components/iconsComponents/PlusIcon"
+  import BasicIcon from "@/components/iconsComponents/basicIcon/BasicIcon";
   export default {
     name: "ButtonPlus",
     components: {BasicIcon, PlusIcon}

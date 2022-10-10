@@ -1,4 +1,5 @@
 <template lang="pug">
+  form-add-event
 </template>
 
 <script>

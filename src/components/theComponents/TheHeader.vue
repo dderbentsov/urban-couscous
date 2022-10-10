@@ -1,24 +1,24 @@
 <template lang="pug">
-  div.header-wrapper
-    div.header-left-side
-      img.logo-img(src="../../assets/images/logo.svg" alt="Logo")
-    div.header-right-side
-      div.header-inputs-wrapper
-        img.search-icon(src="../../assets/icons/search.svg" alt="Search")
+  .header-wrapper
+    .header-left-side
+      img.logo-img(src="@/assets/images/logo.svg" alt="Logo")
+    .header-right-side
+      .header-inputs-wrapper
+        img.search-icon(src="@/assets/icons/search.svg" alt="Search")
         select.header-inputs.select(v-model="selectedFilter")
           option(v-for="filter in filters" :key="filter" :value="filter") {{ filter }}
-        span.header-inputs-separator  
+        span.header-inputs-separator
         input.header-inputs.search-input(placeholder="Искать ...")
       button.header-buttons.btn-notification
-        img.bell-icon(src="../../assets/icons/bell.svg" alt="Notifications")
-      div.avatar-wrapper
+        img.bell-icon(src="@/assets/icons/bell.svg" alt="Notifications")
+      .avatar-wrapper
         img.avatar-img(:src="avatarSrc")
         button.header-buttons.btn-down-arrow
-          img.arrow-icon(src="../../assets/icons/down-arrow-2.svg" alt="Down Arrow")
+          img.arrow-icon(src="@/assets/icons/down-arrow-2.svg" alt="Down Arrow")
 </template>
 
 <script>
-  import img from '../../assets/images/avatar.svg'
+  import img from '@/assets/images/avatar.svg'
   export default {
     name: 'HeaderComponent',
     data() {
@@ -33,7 +33,7 @@
 
 <style lang='sass'>
   input
-    padding: 0 
+    padding: 0
 
   .header-buttons
     outline: none
@@ -59,12 +59,12 @@
   .header-left-side
     box-sizing: border-box
     margin: 4px 0
-    height: 32px 
+    height: 32px
     cursor: pointer
 
   .logo-img
     height: 32px
-    width: 70px 
+    width: 70px
 
   .header-inputs-wrapper
     display: inline-block
@@ -78,12 +78,12 @@
     height: 24px
     width: 24px
     color: var(--btn-blue-color)
-    opacity: 0.7 
+    opacity: 0.7
 
   .btn-notification
     display: flex
     justify-content: center
-    align-items: center  
+    align-items: center
     margin-right: 32px
 
   .arrow-icon
