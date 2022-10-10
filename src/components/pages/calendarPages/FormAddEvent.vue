@@ -180,18 +180,18 @@ export default {
     margin-bottom: -12px
     text-align: center
     font-size: 14px
-    color: var(--font-black-color)
+    color: var(--font-dark-blue-color)
     &:hover
       color: var(--btn-blue-color)
   .container-icon
     width: 24px
     height: 24px
     font-size: 21px
-    color: var(--font-black-color)
+    color: var(--font-dark-blue-color)
   .close-icon
     cursor: pointer
     font-size: 14px
-    color: var(--font-black-color)
+    color: var(--font-dark-blue-color)
     &:hover
       color: var(--btn-blue-color)
   .close-icon-position
