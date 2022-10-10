@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import router from "./router";
 import './assets/sass/styles.sass'
+import './assets/css/iconfonts.css'
 import './assets/css/variables.css'
 import { Quasar } from 'quasar'
 import quasarUserOptions from '../quasar-user-options'
