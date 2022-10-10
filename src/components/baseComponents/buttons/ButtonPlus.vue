@@ -20,6 +20,6 @@
     cursor: pointer
     width: fit-content
     background-color: rgba(65, 105, 225, 0.25)
-    padding: 5px 7px 1px 7px
+    padding: 7px 7px 3px 7px
     border-radius: 50%
 </style>
