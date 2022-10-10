@@ -3,5 +3,7 @@ import App from './App.vue'
 import router from "./router";
 import './assets/sass/styles.sass'
 import './assets/css/variables.css'
+import { Quasar } from 'quasar'
+import quasarUserOptions from './quasar-user-options'
 
-createApp(App).use(router).mount('#app')
+createApp(App).use(Quasar, quasarUserOptions).use(router).mount('#app')
