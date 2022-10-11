@@ -31,7 +31,7 @@
   }
 </script>
 
-<style lang='sass'>
+<style lang='sass' scoped>
   input
     padding: 0
 
@@ -119,7 +119,7 @@
     -moz-appearance: none
     -ms-appearance: none
     appearance: none
-    background: url(../../assets/icons/down-arrow-1.svg) no-repeat right top 4px
+    background: url(@/assets/icons/down-arrow-1.svg) no-repeat right top 4px
     overflow: hidden
     margin-right: 16px
     padding: 2px 20px 2px 30px

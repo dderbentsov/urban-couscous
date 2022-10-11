@@ -1,15 +1,15 @@
 import {createRouter, createWebHashHistory} from "vue-router";
-import HomePages from "./components/pages/homePages/HomePages.vue";
-import CalendarPages from "./components/pages/calendarPages/CalendarPages.vue";
-import UserPages from "./components/pages/userPages/UserPages.vue";
-import SettingsPages from "./components/pages/settingsPages/SettingsPages.vue";
+import TheHome from "@/pages/home/TheHome.vue";
+import TheCalendar from "@/pages/calendar/TheCalendar";
+import TheUser from "@/pages/user/TheUser";
+import TheSettings from "@/pages/settings/TheSettings";
 
 export default createRouter({
   history: createWebHashHistory(),
   routes: [
-    { path: "/", component: HomePages },
-    { path: "/calendar", component: CalendarPages },
-    { path: "/user", component: UserPages },
-    { path: "/settings", component: SettingsPages }
+    { path: "/", component: TheHome },
+    { path: "/calendar", component: TheCalendar },
+    { path: "/user", component: TheUser },
+    { path: "/settings", component: TheSettings }
   ]
 })

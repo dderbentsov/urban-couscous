@@ -20,7 +20,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .button-icon-item
     width: fit-content
     padding: 12px 16px 12px 12px

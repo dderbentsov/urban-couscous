@@ -8,7 +8,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .button-plus
     outline: none
     border: none

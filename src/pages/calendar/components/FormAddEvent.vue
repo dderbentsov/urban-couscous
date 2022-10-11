@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import AddEventButton from "@/components/baseComponents/buttons/AddEventButton";
-import ButtonPlus from "@/components/baseComponents/buttons/ButtonPlus";
+import AddEventButton from "@/components/base/buttons/AddEventButton";
+import ButtonPlus from "@/components/base/buttons/ButtonPlus";
 export default {
   name: "FormChangeEvent",
   components: {AddEventButton, ButtonPlus},
@@ -118,7 +118,7 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .event-form-change
     position: relative
     display: flex
