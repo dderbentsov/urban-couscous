@@ -1,22 +1,22 @@
 <template lang="pug">
-  div.header-wrapper
-    div.header-left-side
+  .header-wrapper.flex.flex-row.space-between.justify-between.box-border.py-2.px-6
+    .left-side.flex.items-center.box-border
       img.logo-img(src="@/assets/images/logo.svg" alt="Logo")
-    div.header-right-side
-      header-inputs
-      button.header-buttons.btn-notification
-        img.bell-icon(src="@/assets/icons/bell.svg" alt="Notifications")
-      div.avatar-wrapper
-        img.avatar-img(:src="avatarSrc")
-        button.header-buttons.btn-down-arrow
-          img.arrow-icon(src="@/assets/icons/down-arrow-2.svg" alt="Down Arrow")
+    .flex.flex-row
+      header-inputs.mr-10
+      button.header-buttons.flex.justify-center.items-center.mr-8.p-0
+        .icon-bell
+      .flex.flex-row.justify-centflexer.items-center
+        img.avatar-img.mr-2(:src="avatarSrc")
+        button.header-buttons
+          .icon-down-arrow.flex.justify-center.items-center.p-0
 </template>
 
 <script>
-  import img from '@/assets/images/avatar.svg'
-  import HeaderInputs from './HeaderInputs.vue'
+  import img from "@/assets/images/avatar.svg"
+  import HeaderInputs from "./HeaderInputs.vue"
   export default {
-    name: 'TheHeader',
+    name: "TheHeader",
     components: {HeaderInputs},
     data() {
       return {
@@ -26,70 +26,38 @@
   }
 </script>
 
-<style lang='sass' scoped>
-  input
-    padding: 0 
-
+<style lang="sass" scoped>
   .header-buttons
     outline: none
     border: none
     background-color: transparent
     cursor: pointer
-    padding: 0
     color: var(--font-dark-blue-color)
 
   .header-wrapper
-    display: flex
-    flex-direction: row
-    justify-content: space-between
     width: 100%
-    padding: 8px 24px
     background-color: var(--bg-white-color)
-    box-sizing: border-box
     position: relative
     z-index: 2
 
-  .header-right-side
-    display: flex
-    flex-direction: row
-
-  .header-left-side
-    box-sizing: border-box
-    margin: 4px 0
-    height: 32px 
+  .left-side
     cursor: pointer
 
   .logo-img
     height: 32px
     width: 70px 
 
-  .btn-notification
-    display: flex
-    justify-content: center
-    align-items: center  
-    margin-right: 32px
-
-  .arrow-icon
+  .icon-down-arrow
     width: 24px
     height: 24px
 
-  .bell-icon
+  .icon-bell
     width: 24px
     height: 24px
-
-  .avatar-wrapper
-    display: flex
-    flex-direction: row
-    justify-content: center
-    align-items: center
-
-  .btn-down-arrow
-    display: flex
-    justify-content: center
-    align-items: center
+    font-size: 24px
+    color: var(--font-dark-blue-color)
 
   .avatar-img
     width: 32px
     height: 32px
-    margin-right: 8px
 </style>
