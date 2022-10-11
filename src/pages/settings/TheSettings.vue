@@ -1,9 +1,9 @@
 <template lang="pug">
-  div SettingsPages
+  div SettingsPage
 </template>
 
 <script>
   export default {
-    name: "SettingsPages"
+    name: "TheSettings"
   }
 </script>

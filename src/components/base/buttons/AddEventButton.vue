@@ -8,7 +8,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   .add-button-event
     outline: none
     border: none

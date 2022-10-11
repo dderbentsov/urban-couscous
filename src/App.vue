@@ -7,15 +7,15 @@
 </template>
 
 <script>
-  import TheHeader from "@/components/theComponents/TheHeader";
-  import TheSidebar from "@/components/theComponents/TheSidebar";
+  import TheHeader from "@/components/TheHeader";
+  import TheSidebar from "@/components/TheSidebar";
   export default {
     name: 'App',
     components: {TheHeader, TheSidebar}
   }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 #app
   height: 100%
   width: 100%

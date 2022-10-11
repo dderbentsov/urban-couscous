@@ -3,9 +3,9 @@
 </template>
 
 <script>
-  import FormAddEvent from "@/components/pages/calendarPages/FormAddEvent";
+  import FormAddEvent from './components/FormAddEvent.vue';
   export default {
-    name: "CalendarPages",
+    name: "TheCalendar",
     components: {FormAddEvent}
   }
 </script>

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import TheButtonSidebar from "@/components/theComponents/TheButtonSidebar";
+  import TheButtonSidebar from "@/components/TheButtonSidebar";
 
   export default {
     name: "SidebarComponent",
@@ -21,7 +21,7 @@
   }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
   #person
     font-style: normal
   .sidebar-container
