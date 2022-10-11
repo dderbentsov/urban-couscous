@@ -9,7 +9,7 @@
         .options(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
           .icon-wrapper
             .icon-ok.ok(v-if="filter === selectedFilter")
-          .options-text {{ filter }}
+          .options-text.text-lg {{ filter }}
     input.inputs.search-input(placeholder="Искать ...")
 </template>
 
@@ -77,7 +77,6 @@
     color: var(--btn-blue-color)
     height: 100%
     box-sizing: border-box
-    font-family: Raleway
     font-style: normal
     font-weight: 500
     font-size: 16px

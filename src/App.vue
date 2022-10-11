@@ -17,7 +17,6 @@
 
 <style lang="sass">
   #app
-    font-family: Raleway, sans-serif
     font-feature-settings: 'pnum' on, 'lnum' on
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
