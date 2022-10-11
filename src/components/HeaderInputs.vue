@@ -1,16 +1,16 @@
 <template lang="pug">
-  .wrapper(:class="{ open: isOpen }")
-    .select-wrapper(@click="changeState")
-      .select
-        img.icon-wrapper.loupe(src="@/assets/icons/search.svg" alt="Search") 
-        span.inputs.select-input {{ selectedFilter }}
-        .icon-wrapper.arrow.icon-down-arrow
-      .filter-options(v-if="isOpen")
-        .options(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
-          .icon-wrapper
-            .icon-ok.ok(v-if="filter === selectedFilter")
-          .options-text.text-lg {{ filter }}
-    input.inputs.search-input(placeholder="Искать ...")
+  .header-inputs-wrapper.flex.items-center.font-medium.text-base(:class="{ open: isOpen }")
+    .select-container(@click="changeState")
+      .select-wrapper.flex.items-center.mx-4.my-2
+        img.icon-wrapper.flex.justify-center.items-center.loupe(src="@/assets/icons/search.svg" alt="Search") 
+        span.custom-input.select-input.inline-block.box-border.align-middle.pl-2.pr-1 {{ selectedFilter }}
+        .arrow.icon-down-arrow.flex.justify-center.items-center
+      .options-wrapper.flex.flex-col.box-border.p-4.mt-1(v-if="isOpen")
+        .option-list.flex.flex-row.mb-4(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
+          .icon-wrapper.mr-2.flex.justify-center
+            .icon-ok.flex.justify-center.items-center(v-if="filter === selectedFilter")
+          .options-text {{ filter }}
+    input.custom-input.search-input.inline-block.box-border.align-middle.px-4(class="py-2.5" placeholder="Искать ...")
 </template>
 
 <script>
@@ -19,8 +19,8 @@
     props: {},
     data() {
       return {
-        selectedFilter: 'Календарь',
-        filters: ['Календарь', 'Клиенты'],
+        selectedFilter: "Календарь",
+        filters: ["Календарь", "Клиенты"],
         isOpen: false
       }
     },
@@ -43,89 +43,51 @@
     .arrow
       transform: rotate(180deg)
 
-  .wrapper
+  .header-inputs-wrapper
     background-color: var(--bg-white-color)
-    display: flex
-    align-items: center
 
-  .inputs-wrapper
-    display: flex
-    align-items: center
-    border-radius: 4px
+  .select-container
+    border-radius: 4px 0 0 4px
     border: 1px solid var(--border-light-grey-color)
-
-  .select-wrapper
-    color: var(--btn-blue-color)
+    border-right: none
 
   .icon-wrapper
     width: 24px
     height: 24px
-    display: flex
-    justify-content: center
-    align-items: center
 
   .loupe
-    margin: 8px 0 8px 16px
     font-size: 21px
-    color: var(--btn-blue-color)
 
-  .inputs
-    cursor: pointer
+  .custom-input
     border: none
     outline: none
     background-color: transparent
     color: var(--btn-blue-color)
     height: 100%
-    box-sizing: border-box
-    font-style: normal
-    font-weight: 500
-    font-size: 16px
-    line-height: 19px
-    font-feature-settings: 'pnum' on, 'lnum' on
-    display: inline-block
-    vertical-align: middle
-    padding: 10px 16px
-    &::placeholder
-      color: var(--font-grey-color)
 
-  .select
-    display: flex
-    align-items: center
-    border-radius: 4px 0 0 4px
-    border: 1px solid var(--border-light-grey-color)
-    border-right: none
+  .select-wrapper
     position: relative
     z-index: 2
+    cursor: pointer
 
   .select-input
     width: 100px
-    padding: 10px 4px 10px 8px
 
-  .filter-options
-    display: flex
-    flex-direction: column
-    width: 173px
-    box-sizing: border-box
-    padding: 16px
+  .options-wrapper
+    width: 172px
     background-color: var(--bg-white-color)
     color: var(--font-dark-blue-color)
-    margin-top: 4px
     border-radius: 4px
     position: absolute
-    box-shadow: 4px 4px 8px rgba(9, 10, 21, 0.1), -4px -4px 8px rgba(9, 10, 21, 0.1)
+    box-shadow: var(--default-shadow)
 
   .search-input
     border-radius: 0 4px 4px 0
     border: 1px solid var(--border-light-grey-color)
+    &::placeholder
+      color: var(--font-grey-color)
 
-  .options
-    display: flex
-    flex-direction: row
-    margin-bottom: 16px
-    font-weight: 500
-    font-size: 16px
-    line-height: 19px
-    color: var(--font-dark-blue-color)
+  .option-list
     cursor: pointer
     &:last-child
       margin: 0
@@ -137,9 +99,13 @@
     align-items: center
 
   .arrow
-    margin: 12px 16px 12px 0
     font-size: 8px
+    color: var(--btn-blue-color)
 
-  .ok 
-    margin-right: 8px
+  .icon-ok
+    font-size: 13px  
+
+  .icon-down-arrow
+    width: 16px
+    height: 16px
 </style>

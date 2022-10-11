@@ -25,7 +25,7 @@
         .icon-person.container-icon
         .input-container
           input.form-item-input(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
-    .form-item-container(class='additional-information')
+    .form-item-container(class="additional-information")
       .form-inform-container
         span.title-form Дополнительная информация
         button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")

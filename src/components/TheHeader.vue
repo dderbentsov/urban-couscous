@@ -50,6 +50,7 @@
   .icon-down-arrow
     width: 24px
     height: 24px
+    font-size: 12px
 
   .icon-bell
     width: 24px

@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button(:id="id" class='button-icon-item')
+    button(:id="id" class="button-icon-item")
       slot
 </template>
 
