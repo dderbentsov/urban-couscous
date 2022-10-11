@@ -1,9 +1,6 @@
 const { defineConfig } = require('@vue/cli-service');
 
 module.exports = defineConfig({
-  transpileDependencies: [
-    'quasar'
-  ],
 
   chainWebpack: (config) => {
     const pugRule = config.module.rule('pug');
@@ -33,14 +30,24 @@ module.exports = defineConfig({
             },
           ],
         },
+        {
+          test: /\.scss$/,
+          use: [
+            {
+              loader: 'postcss-loader'
+            },
+            {
+              loader: 'style-loader'
+            },
+            {
+              loader: 'css-loader'
+            },
+            {
+              loader: 'sass-loader'
+            },
+          ]
+        },
       ],
     },
   },
-
-  pluginOptions: {
-    quasar: {
-      importStrategy: 'kebab',
-      rtlSupport: false
-    }
-  }
 });

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-  import FormAddEvent from './components/FormAddEvent.vue';
+  import FormAddEvent from './components/CalendarFormAddEvent.vue';
   export default {
     name: "TheCalendar",
     components: {FormAddEvent}

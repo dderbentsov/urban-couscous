@@ -17,13 +17,13 @@
 
 <style lang="sass">
   #app
-    height: 100%
-    width: 100%
     font-family: Raleway, sans-serif
-    font-style: normal
     font-feature-settings: 'pnum' on, 'lnum' on
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
+    height: 100%
+    width: 100%
+    line-height: normal
   .pages-container
     display: flex
     flex: auto
