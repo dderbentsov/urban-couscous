@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import TheButtonSidebar from "@/components/TheButtonSidebar";
+  import TheButtonSidebar from "@/components/base/buttons/BaseSidebarButton";
 
   export default {
     name: "SidebarComponent",
@@ -39,5 +39,4 @@
     font-size: 40px
     flex-direction: column
     row-gap: 24px
-    color: #9C27B0
 </style>

@@ -54,8 +54,8 @@
 </template>
 
 <script>
-import AddEventButton from "@/components/base/buttons/AddEventButton";
-import ButtonPlus from "@/components/base/buttons/ButtonPlus";
+import AddEventButton from "@/components/base/buttons/BaseAddEvent";
+import ButtonPlus from "@/components/base/buttons/BaseButtonPlus";
 export default {
   name: "FormChangeEvent",
   components: {AddEventButton, ButtonPlus},

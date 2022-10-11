@@ -13,8 +13,8 @@
     outline: none
     border: none
     cursor: pointer
-    font-family: Raleway
     font-style: normal
+    line-height: 19px
     font-size: 16px
     width: fit-content
     color: var(--bg-white-color)
