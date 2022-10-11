@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.event-button Создать событие
+  button.event-button.not-italic.leading-5.text-base.py-3.px-4 Создать событие
 </template>
 
 <script>
@@ -13,12 +13,8 @@
     outline: none
     border: none
     cursor: pointer
-    font-style: normal
-    line-height: 19px
-    font-size: 16px
     width: fit-content
     color: var(--bg-white-color)
     background-color: var(--btn-blue-color)
-    padding: 11px 16px 11px 16px
     border-radius: 4px
 </style>

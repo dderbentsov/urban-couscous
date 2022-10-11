@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button(:id="id" class='button-icon-item')
+    button.button.text-4xl.py-3.pr-4.pl-3(:id="id")
       slot
 </template>
 
@@ -21,11 +21,9 @@
 </script>
 
 <style lang="sass" scoped>
-  .button-icon-item
+  .button
     width: fit-content
-    padding: 12px 16px 12px 12px
     cursor: pointer
-    font-size: 40px
     background-color: rgb(65, 105, 225, 0)
     border-radius: 0 4px 4px 0
     border-left-color: rgb(65, 105, 225, 0)
@@ -34,11 +32,11 @@
     border-top: none
     border-bottom: none
     border-left-style: solid
-  .button-icon-item:focus
+  .button:focus
     background-color: rgb(65, 105, 225, 0.3)
     border-left-color: rgb(65, 105, 225, 1)
     color: #4169E1
-  .button-icon-item:hover
+  .button:hover
     background-color: rgb(65, 105, 225, 0.3)
     border-left-color: rgb(65, 105, 225, 1)
     color: #4169E1
