@@ -1,5 +1,5 @@
 <template lang="pug">
-  button(class="add-button-event") Создать событие
+  button.event-button Создать событие
 </template>
 
 <script>
@@ -9,7 +9,7 @@
 </script>
 
 <style lang="sass" scoped>
-  .add-button-event
+  .event-button
     outline: none
     border: none
     cursor: pointer
