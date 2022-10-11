@@ -13,16 +13,16 @@
 </template>
 
 <script>
-  import TheButtonSidebar from "@/components/base/buttons/BaseSidebarButton";
+import TheButtonSidebar from "@/components/base/buttons/BaseSidebarButton";
 
-  export default {
-    name: "TheSidebar",
-    components: {TheButtonSidebar},
-  }
+export default {
+  name: "TheSidebar",
+  components: { TheButtonSidebar },
+};
 </script>
 
 <style lang="sass" scoped>
-  .sidebar
-    max-width: 80px
-    background-color: #F8F8FF
+.sidebar
+  max-width: 80px
+  background-color: #F8F8FF
 </style>

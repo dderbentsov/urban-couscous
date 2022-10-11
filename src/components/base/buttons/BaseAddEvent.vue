@@ -3,18 +3,18 @@
 </template>
 
 <script>
-  export default {
-    name: "AddEventButton"
-  }
+export default {
+  name: "AddEventButton",
+};
 </script>
 
 <style lang="sass" scoped>
-  .event-button
-    outline: none
-    border: none
-    cursor: pointer
-    width: fit-content
-    color: var(--bg-white-color)
-    background-color: var(--btn-blue-color)
-    border-radius: 4px
+.event-button
+  outline: none
+  border: none
+  cursor: pointer
+  width: fit-content
+  color: var(--bg-white-color)
+  background-color: var(--btn-blue-color)
+  border-radius: 4px
 </style>

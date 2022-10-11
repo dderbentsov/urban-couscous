@@ -1,9 +1,8 @@
-const { defineConfig } = require('@vue/cli-service');
+const { defineConfig } = require("@vue/cli-service");
 
 module.exports = defineConfig({
-
   chainWebpack: (config) => {
-    const pugRule = config.module.rule('pug');
+    const pugRule = config.module.rule("pug");
 
     pugRule.uses.clear();
     pugRule.oneOfs.clear();
@@ -17,29 +16,18 @@ module.exports = defineConfig({
           oneOf: [
             {
               resourceQuery: /^\?vue/u,
-              loader: '@webdiscus/pug-loader',
+              loader: "@webdiscus/pug-loader",
               options: {
-                method: 'html',
+                method: "html",
               },
             },
             {
-              loader: '@webdiscus/pug-loader',
+              loader: "@webdiscus/pug-loader",
               options: {
-                method: 'compile',
+                method: "compile",
               },
             },
           ],
-        },
-        {
-          test: /\.scss$/,
-          use: [
-            {
-              loader: 'postcss-loader'
-            },
-            {
-              loader: 'sass-loader'
-            },
-          ]
         },
       ],
     },

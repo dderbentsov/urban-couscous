@@ -13,52 +13,52 @@
 </template>
 
 <script>
-  import img from "@/assets/images/avatar.svg"
-  import HeaderInputs from "./HeaderInputs.vue"
-  export default {
-    name: "TheHeader",
-    components: {HeaderInputs},
-    data() {
-      return {
-        avatarSrc: img
-      }
-    }
-  }
+import img from "@/assets/images/avatar.svg";
+import HeaderInputs from "./HeaderInputs.vue";
+export default {
+  name: "TheHeader",
+  components: { HeaderInputs },
+  data() {
+    return {
+      avatarSrc: img,
+    };
+  },
+};
 </script>
 
 <style lang="sass" scoped>
-  .header-buttons
-    outline: none
-    border: none
-    background-color: transparent
-    cursor: pointer
-    color: var(--font-dark-blue-color)
+.header-buttons
+  outline: none
+  border: none
+  background-color: transparent
+  cursor: pointer
+  color: var(--font-dark-blue-color)
 
-  .header-wrapper
-    width: 100%
-    background-color: var(--bg-white-color)
-    position: relative
-    z-index: 2
+.header-wrapper
+  width: 100%
+  background-color: var(--bg-white-color)
+  position: relative
+  z-index: 2
 
-  .left-side
-    cursor: pointer
+.left-side
+  cursor: pointer
 
-  .logo-img
-    height: 32px
-    width: 70px 
+.logo-img
+  height: 32px
+  width: 70px
 
-  .icon-down-arrow
-    width: 24px
-    height: 24px
-    font-size: 12px
+.icon-down-arrow
+  width: 24px
+  height: 24px
+  font-size: 12px
 
-  .icon-bell
-    width: 24px
-    height: 24px
-    font-size: 24px
-    color: var(--font-dark-blue-color)
+.icon-bell
+  width: 24px
+  height: 24px
+  font-size: 24px
+  color: var(--font-dark-blue-color)
 
-  .avatar-img
-    width: 32px
-    height: 32px
+.avatar-img
+  width: 32px
+  height: 32px
 </style>
