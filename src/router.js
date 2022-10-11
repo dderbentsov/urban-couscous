@@ -1,4 +1,4 @@
-import {createRouter, createWebHashHistory} from "vue-router";
+import { createRouter, createWebHashHistory } from "vue-router";
 import TheHome from "@/pages/home/TheHome.vue";
 import TheCalendar from "@/pages/calendar/TheCalendar";
 import TheUser from "@/pages/user/TheUser";
@@ -10,6 +10,6 @@ export default createRouter({
     { path: "/", component: TheHome },
     { path: "/calendar", component: TheCalendar },
     { path: "/user", component: TheUser },
-    { path: "/settings", component: TheSettings }
-  ]
-})
+    { path: "/settings", component: TheSettings },
+  ],
+});

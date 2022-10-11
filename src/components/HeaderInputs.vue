@@ -2,7 +2,7 @@
   .header-inputs-wrapper.flex.items-center.font-medium.text-base(:class="{ open: isOpen }")
     .select-container(@click="changeState")
       .select-wrapper.flex.items-center.mx-4.my-2
-        img.icon-wrapper.flex.justify-center.items-center.loupe(src="@/assets/icons/search.svg" alt="Search") 
+        img.icon-wrapper.flex.justify-center.items-center.loupe(src="@/assets/icons/search.svg" alt="Search")
         span.custom-input.select-input.inline-block.box-border.align-middle.pl-2.pr-1 {{ selectedFilter }}
         .arrow.icon-down-arrow.flex.justify-center.items-center
       .options-wrapper.flex.flex-col.box-border.p-4.mt-1(v-if="isOpen")
@@ -14,98 +14,98 @@
 </template>
 
 <script>
-  export default {
-    name: "HeaderInputs",
-    props: {},
-    data() {
-      return {
-        selectedFilter: "Календарь",
-        filters: ["Календарь", "Клиенты"],
-        isOpen: false
-      }
+export default {
+  name: "HeaderInputs",
+  props: {},
+  data() {
+    return {
+      selectedFilter: "Календарь",
+      filters: ["Календарь", "Клиенты"],
+      isOpen: false,
+    };
+  },
+  computed: {},
+  methods: {
+    changeState() {
+      this.isOpen = !this.isOpen;
     },
-    computed: {
-      
+    selectFilter(filter) {
+      this.selectedFilter = filter;
     },
-    methods: {
-      changeState() {
-        this.isOpen = !this.isOpen
-      },
-      selectFilter(filter) {
-        this.selectedFilter = filter
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="sass" scoped>
-  .open
-    .arrow
-      transform: rotate(180deg)
-
-  .header-inputs-wrapper
-    background-color: var(--bg-white-color)
-
-  .select-container
-    border-radius: 4px 0 0 4px
-    border: 1px solid var(--border-light-grey-color)
-    border-right: none
-
-  .icon-wrapper
-    width: 24px
-    height: 24px
-
-  .loupe
-    font-size: 21px
-
-  .custom-input
-    border: none
-    outline: none
-    background-color: transparent
-    color: var(--btn-blue-color)
-    height: 100%
-
-  .select-wrapper
-    position: relative
-    z-index: 2
-    cursor: pointer
-
-  .select-input
-    width: 100px
-
-  .options-wrapper
-    width: 172px
-    background-color: var(--bg-white-color)
-    color: var(--font-dark-blue-color)
-    border-radius: 4px
-    position: absolute
-    box-shadow: var(--default-shadow)
-
-  .search-input
-    border-radius: 0 4px 4px 0
-    border: 1px solid var(--border-light-grey-color)
-    &::placeholder
-      color: var(--font-grey-color)
-
-  .option-list
-    cursor: pointer
-    &:last-child
-      margin: 0
-    &:hover
-      color: var(--btn-blue-color)  
-
-  .options-text
-    display: flex
-    align-items: center
-
+.open
   .arrow
-    font-size: 8px
+    transform: rotate(180deg)
+
+.wrapper
+  background-color: var(--bg-white-color)
+  display: flex
+  align-items: center
+
+.select-container
+  border-radius: 4px 0 0 4px
+  border: 1px solid var(--border-light-grey-color)
+  border-right: none
+
+.icon-wrapper
+  width: 24px
+  height: 24px
+
+.loupe
+  font-size: 21px
+
+.custom-input
+  border: none
+  outline: none
+  background-color: transparent
+  color: var(--btn-blue-color)
+  height: 100%
+
+.select-wrapper
+  position: relative
+  z-index: 2
+  cursor: pointer
+
+.select-input
+  width: 100px
+
+.options-wrapper
+  width: 172px
+  background-color: var(--bg-white-color)
+  color: var(--font-dark-blue-color)
+  border-radius: 4px
+  position: absolute
+  box-shadow: var(--default-shadow)
+
+.search-input
+  border-radius: 0 4px 4px 0
+  border: 1px solid var(--border-light-grey-color)
+  &::placeholder
+    color: var(--font-grey-color)
+
+.option-list
+  cursor: pointer
+  &:last-child
+    margin: 0
+  &:hover
     color: var(--btn-blue-color)
 
-  .icon-ok
-    font-size: 13px  
+.options-text
+  display: flex
+  align-items: center
 
-  .icon-down-arrow
-    width: 16px
-    height: 16px
+.arrow
+  font-size: 8px
+  color: var(--btn-blue-color)
+
+.icon-ok
+  font-size: 13px
+
+.icon-down-arrow
+  width: 16px
+  height: 16px
 </style>

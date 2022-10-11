@@ -1,11 +1,12 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-5.pb-6.px-8.event-form(v-if="formOpen")
+  .flex.flex-col.gap-y-6.pt-5.pb-6.px-8.event-form(v-if="formOpen" )
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.not-italic.text-xs.opacity-40.leading-3 Ответственный
         .icon-cancel.close-icon.text-xs(@click="closeEventForm")
       base-select(
         id="responsible"
+        width="205px"
         :option-data="eventData.responsible"
         :list-data="listResponsible"
         :choose-option="chooseOption"
@@ -38,6 +39,7 @@
       span.not-italic.text-xs.opacity-40.leading-3 Вид события
       base-select(
         id="kind"
+        width="118px"
         :option-data="eventData.kindEvent"
         :list-data="kindEvents"
         :choose-option="chooseOption"
@@ -56,100 +58,104 @@
 </template>
 
 <script>
-  import BaseSelect from "@/components/BaseSelect";
-  import AddEventButton from "@/components/base/buttons/BaseAddEvent";
-  import ButtonPlus from "@/components/base/buttons/BaseButtonPlus";
-  export default {
-    name: "FormChangeEvent",
-    components: {AddEventButton, ButtonPlus, BaseSelect},
-    props: {
-      listResponsible: {
-        default: ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."]
+import BaseSelect from "@/components/base/BaseSelect";
+import AddEventButton from "@/components/base/buttons/BaseAddEvent";
+import ButtonPlus from "@/components/base/buttons/BaseButtonPlus";
+export default {
+  name: "FormChangeEvent",
+  components: { AddEventButton, ButtonPlus, BaseSelect },
+  props: {
+    listResponsible: {
+      default: ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."],
+    },
+  },
+  data() {
+    return {
+      formOpen: true,
+      selectResponsibleOpen: false,
+      selectKindEventOpen: false,
+      listFriendInfo: [1],
+      listContacts: [1],
+      kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
+      eventData: {
+        responsible: "Выберите ответственного",
+        eventClient: "",
+        timeEvent: {
+          firstTime: "11:00",
+          secondTime: "12:30",
+        },
+        friendInfo: {},
+        kindEvent: "Вид события",
+        contacts: {},
+      },
+    };
+  },
+  methods: {
+    createEvent() {
+      this.formOpen = !this.formOpen;
+    },
+    addFriendInfo(e) {
+      if (e.currentTarget.id === "addInfo") {
+        this.listFriendInfo.push(
+          this.listFriendInfo[this.listFriendInfo.length - 1] + 1
+        );
+      }
+      if (e.currentTarget.id === "addContact") {
+        this.listContacts.push(
+          this.listContacts[this.listContacts.length - 1] + 1
+        );
       }
     },
-    data() {
-      return {
-        formOpen: true,
-        selectResponsibleOpen: false,
-        selectKindEventOpen: false,
-        listFriendInfo: [1],
-        listContacts: [1],
-        kindEvents: ["Встреча", "Планерка", "Интервью","Важная работа"],
-        eventData: {
-          responsible: "Выберите ответственного",
-          eventClient: "",
-          timeEvent: {
-            firstTime: "11:00",
-            secondTime: "12:30",
-          },
-          friendInfo: {},
-          kindEvent: "Вид события",
-          contacts: {}
-        }
+    closeEventForm() {
+      this.formOpen = !this.formOpen;
+    },
+    openSelectResponsible() {
+      this.selectResponsibleOpen = !this.selectResponsibleOpen;
+    },
+    openSelectKindEvent() {
+      this.selectKindEventOpen = !this.selectKindEventOpen;
+    },
+    chooseOption(event) {
+      if (event.currentTarget.id === "responsible") {
+        this.eventData.responsible = this.listResponsible[event.target.id];
+      }
+      if (event.currentTarget.id === "kind") {
+        this.eventData.kindEvent = this.kindEvents[event.target.id];
       }
     },
-    methods: {
-      createEvent() {
-        this.formOpen = !this.formOpen
-      },
-      addFriendInfo(e) {
-        if(e.currentTarget.id === "addInfo") {
-          this.listFriendInfo.push(this.listFriendInfo[this.listFriendInfo.length-1]+1)
-        }
-        if(e.currentTarget.id === "addContact") {
-          this.listContacts.push(this.listContacts[this.listContacts.length-1]+1)
-        }
-      },
-      closeEventForm() {
-        this.formOpen=!this.formOpen
-      },
-      openSelectResponsible() {
-        this.selectResponsibleOpen = !this.selectResponsibleOpen
-      },
-      openSelectKindEvent() {
-        this.selectKindEventOpen = !this.selectKindEventOpen
-      },
-      chooseOption(event) {
-        if(event.currentTarget.id === "responsible") {
-          this.eventData.responsible=this.listResponsible[event.target.id]
-        }
-        if(event.currentTarget.id === "kind") {
-          this.eventData.kindEvent=this.kindEvents[event.target.id]
-        }
-      }
-    }
-  }
+  },
+};
 </script>
 
 <style lang="sass" scoped>
-  .event-form
-    height: fit-content
-    min-width: 448px
-    background-color: var(--bg-white-color)
-    box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
-    border-radius: 4px
-  .form-item
-    cursor: pointer
-    border-radius: 4px
-    width: fit-content
-    background-color: var(--bg-ligth-blue-color)
-  .item-input
-    appearance: none
-    border: none
-    outline: none
-    cursor: pointer
-    color: rgba(9, 10, 21, 0.5)
-    background-color: rgba(9, 10, 21, 0)
-    &::-webkit-calendar-picker-indicator
-      display: none
-      -webkit-appearance: none
-  .icon
-    width: 24px
-    height: 24px
-    color: var(--font-dark-blue-color)
-  .close-icon
-    cursor: pointer
-    color: var(--font-dark-blue-color)
-    &:hover
-      color: var(--btn-blue-color)
+.event-form
+  height: fit-content
+  min-width: 448px
+  background-color: var(--bg-white-color)
+  box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
+  border-radius: 4px
+.form-item
+  cursor: pointer
+  border-radius: 4px
+  width: fit-content
+  background-color: var(--bg-ligth-blue-color)
+.item-input
+  appearance: none
+  border: none
+  outline: none
+  cursor: pointer
+  color: rgba(9, 10, 21, 0.5)
+  background-color: rgba(9, 10, 21, 0)
+  &::-webkit-calendar-picker-indicator
+    display: none
+    -webkit-appearance: none
+.icon
+  width: 24px
+  height: 24px
+  color: var(--font-dark-blue-color)
+.close-icon
+  cursor: pointer
+  color: var(--font-dark-blue-color)
+  &:hover
+    color: var(--btn-blue-color)
 </style>
