@@ -10,14 +10,14 @@
   import TheHeader from "@/components/TheHeader";
   import TheSidebar from "@/components/TheSidebar";
   export default {
-    name: 'App',
+    name: "App",
     components: {TheHeader, TheSidebar}
   }
 </script>
 
 <style lang="sass">
   #app
-    font-feature-settings: 'pnum' on, 'lnum' on
+    font-feature-settings: "pnum" on, "lnum" on
     -webkit-font-smoothing: antialiased
     -moz-osx-font-smoothing: grayscale
     height: 100%
