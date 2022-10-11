@@ -37,12 +37,6 @@ module.exports = defineConfig({
               loader: 'postcss-loader'
             },
             {
-              loader: 'style-loader'
-            },
-            {
-              loader: 'css-loader'
-            },
-            {
               loader: 'sass-loader'
             },
           ]
