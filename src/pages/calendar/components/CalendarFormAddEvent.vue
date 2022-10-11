@@ -152,8 +152,4 @@
     color: var(--font-dark-blue-color)
     &:hover
       color: var(--btn-blue-color)
-  //.select-container-res
-  //  min-width: 205px
-  //.select-container-kind
-  //  min-width: 119px
 </style>
