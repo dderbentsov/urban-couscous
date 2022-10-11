@@ -16,7 +16,7 @@
   import TheButtonSidebar from "@/components/base/buttons/BaseSidebarButton";
 
   export default {
-    name: "SidebarComponent",
+    name: "TheSidebar",
     components: {TheButtonSidebar},
   }
 </script>
