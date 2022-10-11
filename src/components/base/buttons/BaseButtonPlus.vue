@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.icon-plus(class="button-plus")
+  button.icon-plus.button-plus.text-xs.pt-1
 </template>
 
 <script>
@@ -12,10 +12,11 @@
   .button-plus
     outline: none
     border: none
-    font-size: 12px
     cursor: pointer
+    width: 24px
+    height: 24px
+    max-height: 24px
     color: #4772F2
-    padding: 7px 7px 5px 7px
     background-color: rgba(65, 105, 225, 0.25)
     border-radius: 50%
 </style>
