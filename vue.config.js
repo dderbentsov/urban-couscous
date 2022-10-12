@@ -1,6 +1,15 @@
 const { defineConfig } = require("@vue/cli-service");
+const tailwind = require("tailwindcss");
+const tailwindConfig = require("./tailwind.config");
 
 module.exports = defineConfig({
+  css: {
+    loaderOptions: {
+      postcss: {
+        postcssOptions: tailwind(tailwindConfig)
+      }
+    }
+  },
   chainWebpack: (config) => {
     const pugRule = config.module.rule("pug");
 
