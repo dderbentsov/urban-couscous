@@ -11,7 +11,7 @@ export default {
 };
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .arrow-button
   width: 32px
   height: 32px
