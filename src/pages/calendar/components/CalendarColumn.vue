@@ -10,6 +10,7 @@
       .line.flex.items-center(v-for="hour in 10" :key="hour")
         .middle-line
 </template>
+
 <script>
 import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
 export default {
