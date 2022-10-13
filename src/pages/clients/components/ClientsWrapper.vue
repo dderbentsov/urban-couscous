@@ -10,5 +10,3 @@ export default {
   components: { ClientsTable },
 };
 </script>
-
-<style lang="sass" scoped></style>

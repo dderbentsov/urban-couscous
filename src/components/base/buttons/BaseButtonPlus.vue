@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.icon-plus.button-plus.text-xs.pt-1
+  button..cursor-pointer.icon-plus.button-plus.text-xs.pt-1
 </template>
 
 <script>

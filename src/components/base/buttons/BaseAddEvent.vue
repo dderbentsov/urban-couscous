@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.event-button.not-italic.leading-5.text-base.py-3.px-4 Создать событие
+  button.event-button.cursor-pointer.not-italic.leading-5.text-base.py-3.px-4 Создать событие
 </template>
 
 <script>

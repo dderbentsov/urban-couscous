@@ -1,10 +1,15 @@
 <template lang="pug">
-  input.checkbox(type="checkbox")
+  input.checkbox.cursor-pointer(type="checkbox" :id="id" :checked="isCheck" @change="(e) => check(e)")
 </template>
 
 <script>
 export default {
   name: "ClientsTableCheckBox",
+  props: {
+    id: String,
+    check: Function,
+    isCheck: Boolean,
+  },
 };
 </script>
 

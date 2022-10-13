@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button.button.text-4xl.py-3.pr-4.pl-3(:id="id")
+    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3(:id="id")
       slot
 </template>
 

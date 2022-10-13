@@ -1,7 +1,7 @@
 <template lang="pug">
   .flex.gap-2.py-2.px-4.w-full.container.items-center.cursor-pointer(@click="selectOpen")
     .relative.flex.flex-col
-      .not-italic.text-base.select(:style="{ minWidth : width}") {{optionData}}
+      .not-italic.text-base.select.cursor-pointer(:style="{ minWidth : width}") {{optionData}}
         .absolute.options(v-if="isOpen" :id="id" @click="(event)=>chooseOption(event)")
           .not-italic.text-base.option(v-for="(responsible, index) in listData" :key="index" :id="index") {{responsible}}
     .select-form-separator.cursor-pointer
