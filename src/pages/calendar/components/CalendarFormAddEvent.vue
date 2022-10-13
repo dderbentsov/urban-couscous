@@ -134,10 +134,12 @@ export default {
   background-color: var(--default-white)
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
+
 .form-item
   border-radius: 4px
   width: fit-content
   background-color: var(--bg-ligth-blue-color)
+
 .item-input
   appearance: none
   border: none
@@ -149,10 +151,12 @@ export default {
     -webkit-appearance: none
   &::placeholder
     color: var(--font-black-color-1)
+
 .icon
   width: 24px
   height: 24px
   color: var(--font-dark-blue-color)
+
 .close-icon
   color: var(--font-dark-blue-color)
   &:hover
