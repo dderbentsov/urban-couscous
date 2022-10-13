@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.icon-plus.button-plus.text-xs.pt-1
+  button..cursor-pointer.icon-plus.button-plus.text-xs.pt-1
 </template>
 
 <script>
@@ -12,11 +12,10 @@ export default {
 .button-plus
   outline: none
   border: none
-  cursor: pointer
   width: 24px
   height: 24px
   max-height: 24px
-  color: #4772F2
+  color: var(--btn-blue-color)
   background-color: rgba(65, 105, 225, 0.25)
   border-radius: 50%
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button.button.text-4xl.py-3.pr-4.pl-3(:id="id")
+    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3(:id="id")
       slot
 </template>
 
@@ -23,7 +23,6 @@ export default {
 <style lang="sass" scoped>
 .button
   width: fit-content
-  cursor: pointer
   background-color: rgba(65, 105, 225, 0)
   border-radius: 0 4px 4px 0
   border-left-color: rgba(65, 105, 225, 0)
@@ -35,9 +34,9 @@ export default {
 .button:focus
   background-color: rgba(65, 105, 225, 0.3)
   border-left-color: rgba(65, 105, 225, 1)
-  color: #4169E1
+  color: var(--btn-blue-color)
 .button:hover
   background-color: rgba(65, 105, 225, 0.3)
   border-left-color: rgba(65, 105, 225, 1)
-  color: #4169E1
+  color: var(--btn-blue-color)
 </style>

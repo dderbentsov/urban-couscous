@@ -3,7 +3,7 @@
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.not-italic.text-xs.opacity-40.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs(@click="closeEventForm")
+        .icon-cancel.close-icon.cursor-pointer.text-xs(@click="closeEventForm")
       base-select(
         id="responsible"
         width="205px"
@@ -14,27 +14,27 @@
         :select-open="openSelectResponsible"
       )
     .flex.flex-col.gap-y-2
-      span.not-italic.text-xs.opacity-40.leading-3 Оновная информация
+      span.not-italic.text-xs.opacity-40.leading-3 Основная информация
       .flex.gap-x-4.items-center
         .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
-          .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
+          .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+            input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
           span —
-          .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
+          .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+            input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
-        .form-item.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
+        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
     .flex.flex-col.gap-y-2(class='additional-information')
       .flex.gap-x-4.items-center
         span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
         button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
       .flex.gap-x-4.items-center(v-for="(info, index) in listFriendInfo" :key="index")
         span.ml-1 {{info}}
-        .form-item.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
+        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
     .flex.flex-col.gap-y-2
       span.not-italic.text-xs.opacity-40.leading-3 Вид события
       base-select(
@@ -52,8 +52,8 @@
         button-plus(id="addContact" @click="(e)=>addFriendInfo(e)")
       .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
         .icon-mail.text-xl.icon
-        .form-item.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
+        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
     add-event-button(@click="createEvent")
 </template>
 
@@ -135,7 +135,6 @@ export default {
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
 .form-item
-  cursor: pointer
   border-radius: 4px
   width: fit-content
   background-color: var(--bg-ligth-blue-color)
@@ -143,7 +142,6 @@ export default {
   appearance: none
   border: none
   outline: none
-  cursor: pointer
   color: rgba(9, 10, 21, 0.5)
   background-color: rgba(9, 10, 21, 0)
   &::-webkit-calendar-picker-indicator
@@ -154,7 +152,6 @@ export default {
   height: 24px
   color: var(--font-dark-blue-color)
 .close-icon
-  cursor: pointer
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)
