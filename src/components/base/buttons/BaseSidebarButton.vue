@@ -23,21 +23,20 @@ export default {
 <style lang="sass" scoped>
 .button
   width: fit-content
-  cursor: pointer
-  background-color: rgba(65, 105, 225, 0)
+  background-color: var(--btn-blue-color-0)
   border-radius: 0 4px 4px 0
-  border-left-color: rgba(65, 105, 225, 0)
+  border-left-color: var(--btn-blue-color-0)
   border-left-width: 4px
   border-right: none
   border-top: none
   border-bottom: none
   border-left-style: solid
 .button:focus
-  background-color: rgba(65, 105, 225, 0.3)
-  border-left-color: rgba(65, 105, 225, 1)
-  color: #4169E1
+  background-color: var(--btn-blue-color-1)
+  border-left-color: var(--btn-blue-color)
+  color: var(--btn-blue-color)
 .button:hover
-  background-color: rgba(65, 105, 225, 0.3)
-  border-left-color: rgba(65, 105, 225, 1)
-  color: #4169E1
+  background-color: var(--btn-blue-color-1)
+  border-left-color: var(--btn-blue-color)
+  color: var(--btn-blue-color)
 </style>

@@ -12,11 +12,10 @@ export default {
 .button-plus
   outline: none
   border: none
-  cursor: pointer
   width: 24px
   height: 24px
   max-height: 24px
-  color: #4772F2
-  background-color: rgba(65, 105, 225, 0.25)
+  color: var(--btn-blue-color)
+  background-color: var(--bg-ligth-blue-color)
   border-radius: 50%
 </style>

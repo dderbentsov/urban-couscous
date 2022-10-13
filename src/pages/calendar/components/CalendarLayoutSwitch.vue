@@ -36,7 +36,7 @@ export default {
 
 <style lang="sass" scoped>
 .active
-  background-color: #6787e7
+  background-color: var(--btn-blue-color-4)
   color: var(--default-white)
   border-radius: 4px
 

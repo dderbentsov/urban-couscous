@@ -12,7 +12,6 @@ export default {
 .event-button
   outline: none
   border: none
-  cursor: pointer
   width: fit-content
   color: var(--default-white)
   background-color: var(--btn-blue-color)

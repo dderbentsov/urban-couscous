@@ -15,9 +15,9 @@ export default {
 .arrow-button
   width: 32px
   height: 32px
-  background: var(--btn-light-blue-color)
+  background-color: var(--btn-blue-color-1)
   color: var(--btn-blue-color)
   border-radius: 50%
   &:hover
-    background: #a0b4f0
+    background-color: var(--btn-blue-color-2)
 </style>

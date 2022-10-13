@@ -24,6 +24,6 @@ export default {
 <style lang="sass" scoped>
 .sidebar
   max-width: 80px
-  background-color: #FFFFFF
+  background-color: var(--default-white)
   border-top-right-radius: 4px
 </style>
