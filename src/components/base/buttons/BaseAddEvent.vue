@@ -14,7 +14,7 @@ export default {
   border: none
   cursor: pointer
   width: fit-content
-  color: var(--bg-white-color)
+  color: var(--default-white)
   background-color: var(--btn-blue-color)
   border-radius: 4px
 </style>

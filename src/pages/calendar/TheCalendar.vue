@@ -2,7 +2,8 @@
   calendar-header(
     :currentDay="currentDate"
     @previous-date="switchPreviousDate"
-    @next-date="switchNextDate")
+    @next-date="switchNextDate"
+    @selectedLayout="changeCalendarLayout")
 </template>
 
 <script>
@@ -14,6 +15,7 @@ export default {
   data() {
     return {
       currentDate: moment(),
+      calendarLayout: "",
     };
   },
   methods: {
@@ -23,7 +25,9 @@ export default {
     switchNextDate() {
       this.currentDate = this.currentDate.clone().add(1, "day");
     },
+    changeCalendarLayout(option) {
+      this.calendarLayout = option;
+    },
   },
 };
 </script>
-,

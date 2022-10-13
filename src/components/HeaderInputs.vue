@@ -9,7 +9,7 @@
         .option-list.cursor-pointer.flex.flex-row.mb-4(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
           .icon-wrapper.mr-2.flex.justify-center
             .icon-ok.text-xs.flex.justify-center.items-center(v-if="filter === selectedFilter")
-          .options-text {{ filter }}
+          .flex.items-center {{ filter }}
     input.custom-input.search-input.inline-block.box-border.align-middle.px-4(class="py-2.5" placeholder="Искать ...")
 </template>
 
@@ -41,10 +41,8 @@ export default {
   .arrow
     transform: rotate(180deg)
 
-.wrapper
-  background-color: var(--bg-white-color)
-  display: flex
-  align-items: center
+.header-inputs-wrapper
+  background-color: var(--default-white)
 
 .select-container
   border-radius: 4px 0 0 4px
@@ -71,7 +69,7 @@ export default {
 
 .options-wrapper
   width: 172px
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   color: var(--font-dark-blue-color)
   border-radius: 4px
   position: absolute
@@ -88,10 +86,6 @@ export default {
     margin: 0
   &:hover
     color: var(--btn-blue-color)
-
-.options-text
-  display: flex
-  align-items: center
 
 .arrow
   color: var(--btn-blue-color)

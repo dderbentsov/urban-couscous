@@ -37,7 +37,7 @@ export default {
 <style lang="sass" scoped>
 .active
   background-color: #6787e7
-  color: var(--bg-white-color)
+  color: var(--default-white)
   border-radius: 4px
 
 .layout-switch-wrapper

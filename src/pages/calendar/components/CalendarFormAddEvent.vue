@@ -131,7 +131,7 @@ export default {
 .event-form
   height: fit-content
   min-width: 448px
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
 .form-item
