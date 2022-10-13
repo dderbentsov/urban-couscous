@@ -16,6 +16,6 @@ export default {
   height: 24px
   max-height: 24px
   color: var(--btn-blue-color)
-  background-color: rgba(65, 105, 225, 0.25)
+  background-color: var(--bg-ligth-blue-color)
   border-radius: 50%
 </style>

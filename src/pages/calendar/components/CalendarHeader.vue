@@ -1,5 +1,5 @@
 <template lang="pug">
-  .calendar-header-wrapper.flex.items-center.justify-between.ml-2.py-3.pl-5.pr-6
+  .calendar-header-wrapper.flex.items-center.justify-between.py-3.pl-5.pr-6
     .flex
       base-arrow-button.left-arrow.mr-4(@click="previousHandler")
       base-arrow-button.right-arrow.mr-6(@click="nextHandler")
@@ -22,7 +22,6 @@ export default {
   data() {
     return {
       isToday: true,
-      selectedLayout: "",
     };
   },
   computed: {
@@ -39,7 +38,7 @@ export default {
   },
   methods: {
     changeSelectedLayout(option) {
-      this.selectedLayout = option;
+      this.$emit("selectedLayout", option);
     },
     previousHandler() {
       this.$emit("previous-date");
@@ -60,7 +59,7 @@ export default {
 <style lang="sass" scoped>
 .calendar-header-wrapper
   width: 100%
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   height: 56px
   border-radius: 4px
 

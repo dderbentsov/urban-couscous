@@ -1,15 +1,15 @@
 <template lang="pug">
   .header-wrapper.flex.flex-row.space-between.justify-between.box-border.py-2.px-6
-    .left-side.flex.items-center.box-border
+    .flex.items-center.box-border.cursor-pointer
       img.logo-img(src="@/assets/images/logo.svg" alt="Logo")
     .flex.flex-row
       header-inputs.mr-10
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
-        .icon-bell
+        .icon-bell.text-xxl
       .flex.flex-row.justify-centflexer.items-center
         img.avatar-img.mr-2(:src="avatarSrc")
         button.header-buttons
-          .icon-down-arrow.flex.justify-center.items-center.p-0
+          .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
 </template>
 
 <script>
@@ -31,17 +31,13 @@ export default {
   outline: none
   border: none
   background-color: transparent
-  cursor: pointer
   color: var(--font-dark-blue-color)
 
 .header-wrapper
   width: 100%
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   position: relative
   z-index: 2
-
-.left-side
-  cursor: pointer
 
 .logo-img
   height: 32px
@@ -50,12 +46,10 @@ export default {
 .icon-down-arrow
   width: 24px
   height: 24px
-  font-size: 12px
 
 .icon-bell
   width: 24px
   height: 24px
-  font-size: 24px
   color: var(--font-dark-blue-color)
 
 .avatar-img
