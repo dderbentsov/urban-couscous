@@ -7,4 +7,6 @@ import "./assets/sass/tailwind.sass";
 import "./assets/sass/variables.sass";
 import "./assets/css/iconfonts.css";
 
+moment.locale("ru");
+
 createApp(App).use(router, moment).mount("#app");

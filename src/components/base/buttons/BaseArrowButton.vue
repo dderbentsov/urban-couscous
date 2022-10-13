@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.arrow-button.flex.items-center.icon-down-arrow.px-2.pt-px
+  button.arrow-button.flex.items-center.icon-down-arrow.text-base.px-2.pt-1
 </template>
 
 <script>
@@ -18,7 +18,6 @@ export default {
   background: var(--btn-light-blue-color)
   color: var(--btn-blue-color)
   border-radius: 50%
-  font-size: 16px
   &:hover
     background: #a0b4f0
 </style>

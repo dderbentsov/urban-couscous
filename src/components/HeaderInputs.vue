@@ -1,14 +1,14 @@
 <template lang="pug">
   .header-inputs-wrapper.flex.items-center.font-medium.text-base(:class="{ open: isOpen }")
     .select-container(@click="changeState")
-      .select-wrapper.flex.items-center.mx-4.my-2
-        img.icon-wrapper.flex.justify-center.items-center.loupe(src="@/assets/icons/search.svg" alt="Search")
+      .select-wrapper.flex.items-center.cursor-pointer.mx-4.my-2
+        img.icon-wrapper.flex.justify-center.items-center(src="@/assets/icons/search.svg" alt="Search")
         span.custom-input.select-input.inline-block.box-border.align-middle.pl-2.pr-1 {{ selectedFilter }}
-        .arrow.icon-down-arrow.flex.justify-center.items-center
+        .arrow.icon-down-arrow.text-xsm.mt-px.flex.justify-center.items-center
       .options-wrapper.flex.flex-col.box-border.p-4.mt-1(v-if="isOpen")
-        .option-list.flex.flex-row.mb-4(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
+        .option-list.cursor-pointer.flex.flex-row.mb-4(v-for="filter in filters" :key="filter" @click="selectFilter(filter)")
           .icon-wrapper.mr-2.flex.justify-center
-            .icon-ok.flex.justify-center.items-center(v-if="filter === selectedFilter")
+            .icon-ok.text-xs.flex.justify-center.items-center(v-if="filter === selectedFilter")
           .options-text {{ filter }}
     input.custom-input.search-input.inline-block.box-border.align-middle.px-4(class="py-2.5" placeholder="Искать ...")
 </template>
@@ -55,9 +55,6 @@ export default {
   width: 24px
   height: 24px
 
-.loupe
-  font-size: 21px
-
 .custom-input
   border: none
   outline: none
@@ -68,7 +65,6 @@ export default {
 .select-wrapper
   position: relative
   z-index: 2
-  cursor: pointer
 
 .select-input
   width: 100px
@@ -88,7 +84,6 @@ export default {
     color: var(--font-grey-color)
 
 .option-list
-  cursor: pointer
   &:last-child
     margin: 0
   &:hover
@@ -99,11 +94,7 @@ export default {
   align-items: center
 
 .arrow
-  font-size: 8px
   color: var(--btn-blue-color)
-
-.icon-ok
-  font-size: 13px
 
 .icon-down-arrow
   width: 16px

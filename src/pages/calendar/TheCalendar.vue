@@ -8,7 +8,6 @@
 <script>
 import * as moment from "moment/moment";
 import CalendarHeader from "./components/CalendarHeader.vue";
-moment.locale("ru");
 export default {
   name: "TheCalendar",
   components: { CalendarHeader },
