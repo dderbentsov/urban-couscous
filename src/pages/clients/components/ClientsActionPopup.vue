@@ -24,7 +24,7 @@ export default {
   width: 180px
   height: 128px
   border-radius: 4px 0 4px 4px
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   box-shadow: var(--default-shadow)
   z-index: 1
 .keep-redaction
@@ -40,7 +40,7 @@ export default {
   width: 8px
   height: 8px
   border-top-left-radius: 100%
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   z-index: 2
   overflow: hidden
 </style>
