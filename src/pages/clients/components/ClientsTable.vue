@@ -157,7 +157,7 @@ export default {
 .head-row
   border-bottom: 1px solid #D3D4DC
 .wrapper
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
 .color
   background-color: red
 </style>

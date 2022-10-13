@@ -80,5 +80,5 @@ export default {
   color: var(--font-grey-color)
   &:hover
     background-color: var(--btn-blue-color)
-    color: var(--bg-white-color)
+    color: var(--default-white)
 </style>
