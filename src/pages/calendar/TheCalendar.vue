@@ -1,27 +1,29 @@
 <template lang="pug">
-    div {{persons["person"]}}
+  calendar-header(
+    :currentDay="currentDate"
+    @previous-date="switchPreviousDate"
+    @next-date="switchNextDate")
 </template>
 
 <script>
-/* eslint-disable */
-
+import * as moment from "moment/moment";
+import CalendarHeader from "./components/CalendarHeader.vue";
+moment.locale("ru");
 export default {
   name: "TheCalendar",
+  components: { CalendarHeader },
   data() {
     return {
-      persons: { person: "dasda"},
+      currentDate: moment(),
     };
   },
   methods: {
-    savePersons(data) {
-      console.log(data)
-      this.persons = data
+    switchPreviousDate() {
+      this.currentDate = this.currentDate.clone().subtract(1, "day");
     },
-  },
-  mounted() {
-    fetch("https://afae35de-056c-4544-96a5-07f01c158778.mock.pstmn.io/urban")
-        .then((res) => res.json())
-        .then((data) => this.savePersons(data))
+    switchNextDate() {
+      this.currentDate = this.currentDate.clone().add(1, "day");
+    },
   },
 };
 </script>
