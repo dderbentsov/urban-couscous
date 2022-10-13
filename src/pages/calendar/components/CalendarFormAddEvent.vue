@@ -3,7 +3,7 @@
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.not-italic.text-xs.opacity-40.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs(@click="closeEventForm")
+        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeEventForm")
       base-select(
         id="responsible"
         width="205px"
@@ -14,15 +14,15 @@
         :select-open="openSelectResponsible"
       )
     .flex.flex-col.gap-y-2
-      span.not-italic.text-xs.opacity-40.leading-3 Оновная информация
+      span.not-italic.text-xs.opacity-40.leading-3 Основная информация
       .flex.gap-x-4.items-center
         .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
           .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
+            input.item-input.no-italic.text-base.cursor-pointer(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
           span —
           .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
+            input.item-input.no-italic.text-base.cursor-pointer(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         .form-item.flex.gap-x-2.px-4.py-2.items-center
@@ -131,11 +131,10 @@ export default {
 .event-form
   height: fit-content
   min-width: 448px
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
 .form-item
-  cursor: pointer
   border-radius: 4px
   width: fit-content
   background-color: var(--bg-ligth-blue-color)
@@ -143,18 +142,18 @@ export default {
   appearance: none
   border: none
   outline: none
-  cursor: pointer
-  color: rgba(9, 10, 21, 0.5)
-  background-color: rgba(9, 10, 21, 0)
+  color: var(--font-black-color)
+  background-color: var(--font-black-color-0)
   &::-webkit-calendar-picker-indicator
     display: none
     -webkit-appearance: none
+  &::placeholder
+    color: var(--font-black-color-1)
 .icon
   width: 24px
   height: 24px
   color: var(--font-dark-blue-color)
 .close-icon
-  cursor: pointer
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)

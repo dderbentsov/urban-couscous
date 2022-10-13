@@ -22,7 +22,6 @@ export default {
   data() {
     return {
       isToday: true,
-      selectedLayout: "",
     };
   },
   computed: {
@@ -39,7 +38,7 @@ export default {
   },
   methods: {
     changeSelectedLayout(option) {
-      this.selectedLayout = option;
+      this.$emit("selectedLayout", option);
     },
     previousHandler() {
       this.$emit("previous-date");
@@ -60,7 +59,7 @@ export default {
 <style lang="sass" scoped>
 .calendar-header-wrapper
   width: 100%
-  background-color: var(--bg-white-color)
+  background-color: var(--default-white)
   height: 56px
   border-radius: 4px
 
