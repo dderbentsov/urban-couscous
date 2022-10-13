@@ -5,7 +5,7 @@
         .icon-home
       the-button-sidebar(id="calendar" path="#/calendar")
         .icon-calendar-2
-      the-button-sidebar(id="user" path="#/user")
+      the-button-sidebar(id="user" path="#/clients")
         .icon-person-2
     .flex.text-4xl.flex-col.gap-y-6
       the-button-sidebar(id="settings" path="#/settings")
@@ -24,5 +24,6 @@ export default {
 <style lang="sass" scoped>
 .sidebar
   max-width: 80px
-  background-color: #F8F8FF
+  background-color: #FFFFFF
+  border-top-right-radius: 4px
 </style>
