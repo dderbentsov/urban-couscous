@@ -7,6 +7,7 @@ module.exports = {
       },
       fontSize: {
         xsm: ["10px", { lineHeight: "12px" }],
+        ins: ["11px", { lineHeight: "12px" }],
         xxs: ["12px", { lineHeight: "14px" }],
         xs: ["13px", { lineHeight: "15px" }],
         sm: ["14px", { lineHeight: "16px" }],

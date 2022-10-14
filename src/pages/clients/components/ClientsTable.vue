@@ -1,5 +1,6 @@
 <template lang="pug">
-  .wrapper.px-6.pt-6.h-full.w-full.min-w-fit
+  .wrapper.flex.flex-col.gap-y-8.px-6.pt-6.h-full.w-full.min-w-fit
+    clients-table-header(:is-open-actions="marked.length")
     table.w-full
       thead.head-table
         tr.head-row
@@ -55,11 +56,12 @@
 </template>
 
 <script>
+import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 export default {
   name: "ClientsTable",
-  components: { ClientsTableCheckbox, ClientsTableRow },
+  components: { ClientsTableCheckbox, ClientsTableRow, ClientsTableHeader },
   data() {
     return {
       selectAll: false,
