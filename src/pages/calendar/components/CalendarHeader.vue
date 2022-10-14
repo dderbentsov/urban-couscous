@@ -17,7 +17,7 @@ export default {
   name: "CalendarHeader",
   components: { BaseArrowButton, CalendarLayoutSwitch },
   props: {
-    currentDay: Object,
+    currentDate: Object,
   },
   data() {
     return {
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     dateString() {
-      let newStr = this.currentDay.format("D MMMM YYYY");
+      let newStr = this.currentDate.format("D MMMM YYYY");
       return newStr
         .split(" ")
         .map((elem, index) => {
@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     changeSelectedLayout(option) {
-      this.$emit("selectedLayout", option);
+      this.$emit("selected-layout", option);
     },
     previousHandler() {
       this.$emit("previous-date");
@@ -48,9 +48,9 @@ export default {
     },
   },
   watch: {
-    currentDay: function () {
+    currentDate: function () {
       this.isToday =
-        this.currentDay.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
+        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
     },
   },
 };
