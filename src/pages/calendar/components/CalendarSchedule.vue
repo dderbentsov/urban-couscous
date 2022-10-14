@@ -54,7 +54,7 @@ export default {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
           this.changeHoursArray();
-        }, 5000);
+        }, 30000);
       }
     },
     changeCurrentTime() {
