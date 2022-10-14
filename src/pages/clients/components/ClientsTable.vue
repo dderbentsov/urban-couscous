@@ -6,31 +6,31 @@
           th.w-3
             .px-4.py-3
               clients-table-checkbox(:is-check="selectAll" :check="selectedCheck" id="all")
-          th.name
+          th
             .flex.px-4.justify-between
               span.text-sm ФИО
               img.cursor-pointer(src="@/assets/icons/sort-number.svg" alt="SortNumber")
-          th.age
-            .flex.px-4.justify-between
+          th
+            .flex.px-4.justify-between.gap-x-6
               span.text-sm Возраст
               .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
-          th.job-title
+          th
             .px-4.text-left
               span.text-sm Должность
-          th.priority
-            .flex.relative.px-4.justify-between
+          th
+            .flex.relative.px-4.justify-between.gap-x-3
               span.text-sm Приоритет
               .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
-          th.phone
+          th
             .px-4.text-left
               span.text-sm Телефон
-          th.email
+          th
             .px-4.text-left
               span.text-sm Email
-          th.networks
+          th
             .px-4.text-left
               span.text-sm.leading-8 Сети
-          th.meeting
+          th
             .flex.px-4.justify-between.gap-x-11
               span.text-sm.leading-4.whitespace-nowrap Ближайшая встреча
               .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
@@ -121,28 +121,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.check-box
-  min-width: 36px
-  max-width: 36px
-.name
-  min-width: 400px
-.age
-  min-width: 140px
-.job-title
-  min-width: 200px
-.priority
-  min-width: 124px
-.phone
-  min-width: 190px
-.email
-  min-width: 250px
-.network
-  min-width: 152px
-.meeting
-  max-width: 220px
-.dots
-  min-width: 53px
-  max-width: 53px
 .icon
   color: var(--font-dark-blue-color)
   &.priority-open

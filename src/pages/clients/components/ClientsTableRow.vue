@@ -4,24 +4,24 @@
       .px-4.items-center.w-fit
         clients-table-checkbox(:is-check="isCheck" :check="check" :id="id")
     td.py-5
-      .px-4.font-semibold {{fullName}}
+      .px-4.font-semibold.whitespace-nowrap {{fullName}}
     td.py-5
-      .px-4 {{age}}
+      .px-4.whitespace-nowrap {{age}}
     td.py-5
-      .px-4 {{jobTitle}}
+      .px-4.whitespace-nowrap {{jobTitle}}
     td.py-5
-      .px-4.flex.items-center.gap-x-2
+      .px-4.whitespace-nowrap.flex.items-center.gap-x-2
         .circle.w-2.h-2
         span {{priority}}
     td.py-5
-      .px-4 {{phone}}
+      .px-4.whitespace-nowrap {{phone}}
     td.py-5
-      .px-4 {{email}}
+      .px-4.whitespace-nowrap {{email}}
     td.py-5
-      .px-4.flex
+      .px-4.whitespace-nowrap.flex
         .w-fit.h-fit(v-for="network in networks" :key="network")
     td.py-5
-      .px-4.gap-x-2.flex
+      .px-4.whitespace-nowrap.gap-x-2.flex
         span {{meetingTime.date}}
         span.meeting-time.text-xs.leading-5 {{meetingTime.time}}
     td.py-5
