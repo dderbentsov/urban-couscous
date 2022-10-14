@@ -16,7 +16,6 @@
 <script>
 export default {
   name: "HeaderInputs",
-  props: {},
   data() {
     return {
       selectedFilter: "Календарь",
@@ -24,7 +23,6 @@ export default {
       isOpen: false,
     };
   },
-  computed: {},
   methods: {
     changeState() {
       this.isOpen = !this.isOpen;
