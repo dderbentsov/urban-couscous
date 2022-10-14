@@ -33,7 +33,7 @@ export default {
         name: "Захарова А.О.",
         avatar: teamMemberAvatar,
       },
-      currentTime: moment().format("HH:mm:ss"),
+      currentTime: "",
       hoursArray: [],
       timer: null,
     };
@@ -54,7 +54,7 @@ export default {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
           this.changeHoursArray();
-        }, 5000);
+        }, 30000);
       }
     },
     changeCurrentTime() {
