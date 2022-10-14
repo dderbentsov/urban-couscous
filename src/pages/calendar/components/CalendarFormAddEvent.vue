@@ -59,7 +59,7 @@
 
 <script>
 import BaseSelect from "@/components/base/BaseSelect";
-import AddEventButton from "@/components/base/buttons/BaseAddEvent";
+import AddEventButton from "@/components/base/buttons/BaseCreateButton";
 import ButtonPlus from "@/components/base/buttons/BaseButtonPlus";
 export default {
   name: "FormChangeEvent",
