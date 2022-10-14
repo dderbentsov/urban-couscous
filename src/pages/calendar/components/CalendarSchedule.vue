@@ -7,7 +7,7 @@
       @selected-layout="selectedLayout")
     .schedule-body.flex
       calendar-clock-column(:hoursArray="hoursArray")
-      calendar-column(:info="columnInfo" :hoursArray="hoursArray")
+      calendar-column(:info="columnInfo" :hoursArray="hoursArray" :currentTime="currtentTime")
 </template>
 
 <script>
@@ -34,19 +34,7 @@ export default {
         avatar: teamMemberAvatar,
       },
       currtentTime: "",
-      hoursArray: [
-        "8:00",
-        "9:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00",
-      ],
+      hoursArray: [],
     };
   },
   methods: {
@@ -60,12 +48,21 @@ export default {
       this.$emit("selected-layout", option);
     },
     updateTime() {
-      setInterval(this.changeCurrentTime, 30000);
+      setInterval(this.changeCurrentTime, 5000);
     },
     changeCurrentTime() {
-      this.currtentTime = moment().format("h:mm:ss");
+      this.currtentTime = moment().format("HH:mm:ss");
       console.log(this.currtentTime);
     },
+    calculateHoursCount() {
+      for (let i = 8; i <= 18; i++) {
+        this.hoursArray.push(`${i}:00`);
+      }
+    },
+  },
+  mounted() {
+    this.calculateHoursCount();
+    this.updateTime();
   },
 };
 </script>
