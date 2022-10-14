@@ -5,9 +5,6 @@
 <script>
 export default {
   name: "ArrowButton",
-  data() {
-    return {};
-  },
 };
 </script>
 

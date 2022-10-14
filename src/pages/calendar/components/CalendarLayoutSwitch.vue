@@ -7,7 +7,6 @@
 <script>
 export default {
   name: "CalendarLayoutSwitch",
-  props: {},
   data() {
     return {
       selectedLayout: "day",
