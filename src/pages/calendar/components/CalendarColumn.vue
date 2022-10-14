@@ -1,5 +1,5 @@
 <template lang="pug">
-  .calendar-column-wrapper.flex.flex-col(@click="updateTime")
+  .calendar-column-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
       .flex.items-center
         img.avatar-wrapper.mr-2(:src="info.avatar" alt="Team member")
@@ -7,13 +7,11 @@
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
     .body.flex.flex-col
-      .line.flex.items-center(v-for="hour in hourArray" :key="hour")
-        span.self-start {{ hour}}
+      .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
 </template>
 
 <script>
-import * as moment from "moment/moment";
 import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
 export default {
   name: "CalendarColumn",
@@ -25,33 +23,7 @@ export default {
         return {};
       },
     },
-  },
-  data() {
-    return {
-      currtentTime: "",
-      hourArray: [
-        "8:00",
-        "9:00",
-        "10:00",
-        "11:00",
-        "12:00",
-        "13:00",
-        "14:00",
-        "15:00",
-        "16:00",
-        "17:00",
-        "18:00",
-      ],
-    };
-  },
-  methods: {
-    updateTime() {
-      setInterval(this.changeCurrentTime, 30000);
-    },
-    changeCurrentTime() {
-      this.currtentTime = moment().format("h:mm:ss");
-      console.log(this.currtentTime);
-    },
+    hoursArray: Array,
   },
 };
 </script>
@@ -59,7 +31,6 @@ export default {
 <style lang="sass" scoped>
 .calendar-column-wrapper
   width: 100%
-  background-color: var(--default-white)
 
 .header
   height: 48px

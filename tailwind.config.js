@@ -19,6 +19,9 @@ module.exports = {
         "3xl": ["60px", { lineHeight: "70px" }],
         "4xl": ["44px", { lineHeight: "48px" }],
       },
+      gap: {
+        43: "43px",
+      },
     },
   },
   plugins: [],
