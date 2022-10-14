@@ -6,8 +6,9 @@
         span.member-name.font-medium.text-base.mr-6 {{ info.name }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
-    .body.flex.flex-col
-      .line.flex.items-center(v-for="hour in 10" :key="hour")
+    .flex.flex-col
+      span.block.time-indicator(v-if="isShownIndicator" :style="indicatorLocation")
+      .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
 </template>
 
@@ -23,6 +24,33 @@ export default {
         return {};
       },
     },
+    hoursArray: Array,
+    currentTime: String,
+  },
+  data() {
+    return {
+      isShownIndicator: true,
+    };
+  },
+  computed: {
+    indicatorLocation() {
+      return {
+        top: `${this.calculateIndicatorLocation()}px`,
+      };
+    },
+  },
+  methods: {
+    calculateIndicatorLocation() {
+      let newTime = this.currentTime
+        .split(":")
+        .map((elem) => parseInt(elem, 10));
+      let result = (newTime[0] - 7) * 60.5 + newTime[1];
+      if (result > 666) {
+        this.isShownIndicator = false;
+        return 0;
+      }
+      return result;
+    },
   },
 };
 </script>
@@ -30,7 +58,7 @@ export default {
 <style lang="sass" scoped>
 .calendar-column-wrapper
   width: 100%
-  background-color: var(--default-white)
+  position: relative
 
 .header
   height: 48px
@@ -50,8 +78,15 @@ export default {
 .line
   border-bottom: 1px solid var(--border-light-grey-color)
   height: 62px
+  &:last-child
+    display: none
 
 .middle-line
   border-top: 1px dashed var(--border-light-grey-color)
   width: 100%
+
+.time-indicator
+  width: 100%
+  border-top: 1px solid var(--time-indicator-color)
+  position: absolute
 </style>
