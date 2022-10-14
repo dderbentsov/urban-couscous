@@ -7,7 +7,7 @@
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
     .flex.flex-col
-      span.block.time-indicator(:style="indicatorLocation")
+      span.block.time-indicator(v-if="isShownIndicator" :style="indicatorLocation")
       .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
 </template>
@@ -27,6 +27,11 @@ export default {
     hoursArray: Array,
     currentTime: String,
   },
+  data() {
+    return {
+      isShownIndicator: true,
+    };
+  },
   computed: {
     indicatorLocation() {
       return {
@@ -39,7 +44,12 @@ export default {
       let newTime = this.currentTime
         .split(":")
         .map((elem) => parseInt(elem, 10));
-      return (newTime[0] - 7) * 60 + newTime[1];
+      let result = (newTime[0] - 7) * 60.5 + newTime[1];
+      if (result > 666) {
+        this.isShownIndicator = false;
+        return 0;
+      }
+      return result;
     },
   },
 };

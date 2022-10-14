@@ -7,7 +7,7 @@
       @selected-layout="selectedLayout")
     .schedule-body.flex
       calendar-clock-column(:hoursArray="hoursArray")
-      calendar-column(:info="columnInfo" :hoursArray="hoursArray" :currentTime="currtentTime")
+      calendar-column(:info="columnInfo" :hoursArray="hoursArray" :currentTime="currentTime")
 </template>
 
 <script>
@@ -33,8 +33,9 @@ export default {
         name: "Захарова А.О.",
         avatar: teamMemberAvatar,
       },
-      currtentTime: "",
+      currentTime: moment().format("HH:mm:ss"),
       hoursArray: [],
+      timer: null,
     };
   },
   methods: {
@@ -48,20 +49,41 @@ export default {
       this.$emit("selected-layout", option);
     },
     updateTime() {
-      setInterval(this.changeCurrentTime, 5000);
+      let currentHour = parseInt(this.currentTime.slice(0, -6), 10);
+      if (currentHour < 20 && currentHour > 8) {
+        this.timer = setInterval(() => {
+          this.changeCurrentTime();
+          this.changeHoursArray();
+        }, 5000);
+      }
     },
     changeCurrentTime() {
-      this.currtentTime = moment().format("HH:mm:ss");
-      console.log(this.currtentTime);
+      this.currentTime = moment().format("HH:mm:ss");
     },
-    calculateHoursCount() {
+    hoursArrayInitialization() {
       for (let i = 8; i <= 18; i++) {
-        this.hoursArray.push(`${i}:00`);
+        let startTime = this.currentTime.slice(0, -3);
+        let currentHour = parseInt(startTime.slice(0, -3), 10);
+        if (i === currentHour) {
+          this.hoursArray.push(startTime);
+        } else this.hoursArray.push(`${i}:00`);
       }
+    },
+    changeHoursArray() {
+      let newCurrentTime = this.currentTime.slice(0, -3);
+      let currentHour = parseInt(newCurrentTime.slice(0, -3), 10);
+      let newHoursArray = this.hoursArray.map((elem) => {
+        if (parseInt(elem.slice(0, -3), 10) === currentHour) {
+          return this.currentTime.slice(0, -3);
+        }
+        return elem;
+      });
+      this.hoursArray = newHoursArray;
     },
   },
   mounted() {
-    this.calculateHoursCount();
+    this.changeCurrentTime();
+    this.hoursArrayInitialization();
     this.updateTime();
   },
 };
