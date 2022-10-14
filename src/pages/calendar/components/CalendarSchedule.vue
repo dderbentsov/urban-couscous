@@ -33,7 +33,7 @@ export default {
         name: "Захарова А.О.",
         avatar: teamMemberAvatar,
       },
-      currentTime: moment().format("HH:mm:ss"),
+      currentTime: "",
       hoursArray: [],
       timer: null,
     };
