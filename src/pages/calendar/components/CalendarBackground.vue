@@ -2,7 +2,7 @@
   .calendar-background-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
     .body.flex.flex-col
-      .time-circle-indicator.-left-6(v-if="isShownIndicator" :style="circleIndicatorLocation")
+      .time-circle-indicator.-left-6px(v-if="isShownIndicator" :style="circleIndicatorLocation")
       span.time-line-indicator.block(v-if="isShownIndicator" :style="lineIndicatorLocation")
       .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
