@@ -2,18 +2,21 @@
   .calendar-background-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
     .body.flex.flex-col
+      .line-wrapper
+        .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
+          .middle-line
       .time-circle-indicator.-left-6px(v-if="isShownIndicator" :style="circleIndicatorLocation")
       span.time-line-indicator.block(v-if="isShownIndicator" :style="lineIndicatorLocation")
-      .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
-        .middle-line
 </template>
 
 <script>
+import * as moment from "moment/moment";
 export default {
   name: "CalendarBackground",
   props: {
     hoursArray: Array,
     currentTime: String,
+    currentDate: Object,
   },
   data() {
     return {
@@ -45,6 +48,12 @@ export default {
       return result;
     },
   },
+  watch: {
+    currentDate: function () {
+      this.isShownIndicator =
+        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
+    },
+  },
 };
 </script>
 
@@ -61,7 +70,7 @@ export default {
 .line
   border-bottom: 1px solid var(--border-light-grey-color)
   height: 62px
-  &:nth-child(3)
+  &:first-child
     height: 63px
     border-top: 1px solid var(--border-light-grey-color)
   &:last-child
