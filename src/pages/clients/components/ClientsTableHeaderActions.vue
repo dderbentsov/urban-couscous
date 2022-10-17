@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper.flex.px-5.items-center.gap-x-2
-    clients-action-button(v-for="data in dataBtn" :key="data.prompt" :img="data.img" :prompt="data.prompt")
+    clients-action-button(v-for="data in (isSelectedOne?dataBtn:dataBtn.filter((el) => el.prompt !== 'ведение'))" :key="data.prompt" :img="data.img" :prompt="data.prompt")
 </template>
 
 <script>
@@ -13,7 +13,7 @@ export default {
   name: "ClientsTableHeaderActions",
   components: { ClientsActionButton },
   props: {
-    isSelectedOne: Number,
+    isSelectedOne: Boolean,
   },
   data() {
     return {
@@ -36,11 +36,6 @@ export default {
         },
       ],
     };
-  },
-  created() {
-    if (this.isSelectedOne > 1) {
-      this.dataBtn = this.dataBtn.filter((el) => el.prompt !== "ведение");
-    }
   },
 };
 </script>
