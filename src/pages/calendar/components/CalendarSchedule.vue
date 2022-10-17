@@ -39,6 +39,12 @@ export default {
     };
   },
   methods: {
+    hours() {
+      return parseInt(this.currentTime.slice(0, -6), 10);
+    },
+    hoursMinutes() {
+      return this.currentTime.slice(0, -3);
+    },
     previousDate() {
       this.$emit("previous-date");
     },
@@ -48,43 +54,51 @@ export default {
     selectedLayout(option) {
       this.$emit("selected-layout", option);
     },
-    updateTime() {
-      let currentHour = parseInt(this.currentTime.slice(0, -6), 10);
-      if (currentHour < 20 && currentHour > 8) {
+    startTimer() {
+      if (this.hours() <= 18 && this.hours() >= 8) {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
           this.changeHoursArray();
         }, 30000);
       }
     },
+    stopTimer() {
+      clearInterval(this.timer);
+      this.timer = null;
+    },
     changeCurrentTime() {
       this.currentTime = moment().format("HH:mm:ss");
     },
     hoursArrayInitialization() {
       for (let i = 8; i <= 18; i++) {
-        let startTime = this.currentTime.slice(0, -3);
-        let currentHour = parseInt(startTime.slice(0, -3), 10);
-        if (i === currentHour) {
-          this.hoursArray.push(startTime);
+        if (i === this.hours()) {
+          this.hoursArray.push(this.hoursMinutes());
         } else this.hoursArray.push(`${i}:00`);
       }
     },
     changeHoursArray() {
-      let newCurrentTime = this.currentTime.slice(0, -3);
-      let currentHour = parseInt(newCurrentTime.slice(0, -3), 10);
-      let newHoursArray = this.hoursArray.map((elem) => {
-        if (parseInt(elem.slice(0, -3), 10) === currentHour) {
-          return this.currentTime.slice(0, -3);
+      this.hoursArray = this.hoursArray.map((elem) => {
+        if (parseInt(elem.slice(0, -3), 10) === this.hours()) {
+          return this.hoursMinutes();
         }
         return elem;
       });
-      this.hoursArray = newHoursArray;
+    },
+  },
+  watch: {
+    currentTime() {
+      if (this.hours() >= 18) {
+        this.stopTimer();
+      }
     },
   },
   mounted() {
     this.changeCurrentTime();
     this.hoursArrayInitialization();
-    this.updateTime();
+    this.startTimer();
+  },
+  beforeUnmount() {
+    this.stopTimer();
   },
 };
 </script>

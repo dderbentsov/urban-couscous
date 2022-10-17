@@ -6,7 +6,7 @@
         span.member-name.font-medium.text-base.mr-6 {{ info.name }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
-    .flex.flex-col
+    .body.flex.flex-col
       span.block.time-indicator(v-if="isShownIndicator" :style="indicatorLocation")
       .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
@@ -44,8 +44,8 @@ export default {
       let newTime = this.currentTime
         .split(":")
         .map((elem) => parseInt(elem, 10));
-      let result = (newTime[0] - 7) * 60.5 + newTime[1];
-      if (result > 666) {
+      let result = (newTime[0] - 8) * 62 + newTime[1] * 1.03;
+      if (result > 620) {
         this.isShownIndicator = false;
         return 0;
       }
@@ -58,11 +58,12 @@ export default {
 <style lang="sass" scoped>
 .calendar-column-wrapper
   width: 100%
-  position: relative
 
 .header
   height: 48px
-  border-bottom: 1px solid var(--border-light-grey-color)
+
+.body
+  position: relative
 
 .avatar-wrapper
   width: 32px
@@ -78,6 +79,9 @@ export default {
 .line
   border-bottom: 1px solid var(--border-light-grey-color)
   height: 62px
+  &:nth-child(2)
+    height: 63px
+    border-top: 1px solid var(--border-light-grey-color)
   &:last-child
     display: none
 
