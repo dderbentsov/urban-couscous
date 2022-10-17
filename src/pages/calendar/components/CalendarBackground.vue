@@ -1,29 +1,17 @@
 <template lang="pug">
-  .calendar-column-wrapper.flex.flex-col
+  .calendar-background-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
-      .flex.items-center
-        img.avatar-wrapper.mr-2(:src="info.avatar" alt="Team member")
-        span.member-name.font-medium.text-base.mr-6 {{ info.name }}
-        img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
-      base-doc-ok-button
-    .flex.flex-col
-      span.block.time-indicator(v-if="isShownIndicator" :style="indicatorLocation")
+    .body.flex.flex-col
+      .time-circle-indicator.-left-6px(v-if="isShownIndicator" :style="circleIndicatorLocation")
+      span.time-line-indicator.block(v-if="isShownIndicator" :style="lineIndicatorLocation")
       .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
 </template>
 
 <script>
-import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
 export default {
-  name: "CalendarColumn",
-  components: { BaseDocOkButton },
+  name: "CalendarBackground",
   props: {
-    info: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
     hoursArray: Array,
     currentTime: String,
   },
@@ -33,9 +21,14 @@ export default {
     };
   },
   computed: {
-    indicatorLocation() {
+    lineIndicatorLocation() {
       return {
         top: `${this.calculateIndicatorLocation()}px`,
+      };
+    },
+    circleIndicatorLocation() {
+      return {
+        top: `${this.calculateIndicatorLocation() - 6}px`,
       };
     },
   },
@@ -44,8 +37,8 @@ export default {
       let newTime = this.currentTime
         .split(":")
         .map((elem) => parseInt(elem, 10));
-      let result = (newTime[0] - 7) * 60.5 + newTime[1];
-      if (result > 666) {
+      let result = (newTime[0] - 8) * 62 + newTime[1] * 1.03;
+      if (result > 620) {
         this.isShownIndicator = false;
         return 0;
       }
@@ -56,28 +49,21 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.calendar-column-wrapper
+.calendar-background-wrapper
   width: 100%
-  position: relative
 
 .header
   height: 48px
-  border-bottom: 1px solid var(--border-light-grey-color)
 
-.avatar-wrapper
-  width: 32px
-  height: 32px
-
-.icon-wrapper
-  width: 24px
-  height: 24px
-
-.member-name
-  color: var(--font-dark-blue-color)
+.body
+  position: relative
 
 .line
   border-bottom: 1px solid var(--border-light-grey-color)
   height: 62px
+  &:nth-child(3)
+    height: 63px
+    border-top: 1px solid var(--border-light-grey-color)
   &:last-child
     display: none
 
@@ -85,8 +71,15 @@ export default {
   border-top: 1px dashed var(--border-light-grey-color)
   width: 100%
 
-.time-indicator
+.time-line-indicator
   width: 100%
   border-top: 1px solid var(--time-indicator-color)
+  position: absolute
+
+.time-circle-indicator
+  width: 12px
+  height: 12px
+  background-color: var(--time-indicator-color)
+  border-radius: 50%
   position: absolute
 </style>
