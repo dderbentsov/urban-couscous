@@ -1,29 +1,17 @@
 <template lang="pug">
-  .calendar-column-wrapper.flex.flex-col
+  .calendar-background-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
-      .flex.items-center
-        img.avatar-wrapper.mr-2(:src="info.avatar" alt="Team member")
-        span.member-name.font-medium.text-base.mr-6 {{ info.name }}
-        img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
-      base-doc-ok-button
     .body.flex.flex-col
-      span.block.time-indicator(v-if="isShownIndicator" :style="indicatorLocation")
+      .time-circle-indicator.-left-6(v-if="isShownIndicator" :style="circleIndicatorLocation")
+      span.time-line-indicator.block(v-if="isShownIndicator" :style="lineIndicatorLocation")
       .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
         .middle-line
 </template>
 
 <script>
-import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
 export default {
-  name: "CalendarColumn",
-  components: { BaseDocOkButton },
+  name: "CalendarBackground",
   props: {
-    info: {
-      type: Object,
-      default() {
-        return {};
-      },
-    },
     hoursArray: Array,
     currentTime: String,
   },
@@ -33,9 +21,14 @@ export default {
     };
   },
   computed: {
-    indicatorLocation() {
+    lineIndicatorLocation() {
       return {
         top: `${this.calculateIndicatorLocation()}px`,
+      };
+    },
+    circleIndicatorLocation() {
+      return {
+        top: `${this.calculateIndicatorLocation() - 6}px`,
       };
     },
   },
@@ -56,7 +49,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.calendar-column-wrapper
+.calendar-background-wrapper
   width: 100%
 
 .header
@@ -65,21 +58,10 @@ export default {
 .body
   position: relative
 
-.avatar-wrapper
-  width: 32px
-  height: 32px
-
-.icon-wrapper
-  width: 24px
-  height: 24px
-
-.member-name
-  color: var(--font-dark-blue-color)
-
 .line
   border-bottom: 1px solid var(--border-light-grey-color)
   height: 62px
-  &:nth-child(2)
+  &:nth-child(3)
     height: 63px
     border-top: 1px solid var(--border-light-grey-color)
   &:last-child
@@ -89,8 +71,15 @@ export default {
   border-top: 1px dashed var(--border-light-grey-color)
   width: 100%
 
-.time-indicator
+.time-line-indicator
   width: 100%
   border-top: 1px solid var(--time-indicator-color)
+  position: absolute
+
+.time-circle-indicator
+  width: 12px
+  height: 12px
+  background-color: var(--time-indicator-color)
+  border-radius: 50%
   position: absolute
 </style>
