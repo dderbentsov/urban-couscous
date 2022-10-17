@@ -1,29 +1,23 @@
 <template lang="pug">
-  .calendar-container.ml-2
-    calendar-header(
-      :currentDay="currentDate"
+  .calendar-container
+    calendar-schedule(
+      :currentDate="currentDate"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
-      @selectedLayout="changeCalendarLayout")
-    calendar-column(:info="columnInfo") 
+      @selected-layout="changeCalendarLayout"
+      )
 </template>
 
 <script>
 import * as moment from "moment/moment";
-import CalendarHeader from "./components/CalendarHeader.vue";
-import CalendarColumn from "./components/CalendarColumn.vue";
-import teamMemberAvatar from "@/assets/images/team-member.svg";
+import CalendarSchedule from "./components/CalendarSchedule.vue";
 export default {
   name: "TheCalendar",
-  components: { CalendarHeader, CalendarColumn },
+  components: { CalendarSchedule },
   data() {
     return {
-      currentDate: moment(),
       calendarLayout: "",
-      columnInfo: {
-        name: "Захарова А.О.",
-        avatar: teamMemberAvatar,
-      },
+      currentDate: moment(),
     };
   },
   methods: {

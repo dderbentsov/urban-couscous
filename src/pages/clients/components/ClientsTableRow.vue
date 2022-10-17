@@ -26,7 +26,7 @@
         span.meeting-time.text-xs.leading-5 {{meetingTime.time}}
     td.py-5
       .px-4
-        .relative.dots-button.icon-dots.text-center.cursor-pointer.leading-6(@click="openPopup")
+        .relative.dots-button.icon-dots.text-center.cursor-pointer.leading-6(:tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup")
 </template>
 
@@ -55,8 +55,12 @@ export default {
     meetingTime: Object,
   },
   methods: {
-    openPopup() {
+    openPopup(e) {
+      e.target.focus();
       this.isOpenPopup = !this.isOpenPopup;
+    },
+    handleUnFocusPopup() {
+      this.isOpenPopup = false;
     },
   },
 };
