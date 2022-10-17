@@ -4,7 +4,7 @@
       base-input(:with-icon="true")
       button.filter-button.flex.items-center.justify-center.box-border(class="px-2.5")
         .icon-filter.text-xl.leading-4
-    clients-table-header-actions(v-if="!!isOpenActions" :is-selected-one="isOpenActions")
+    clients-table-header-actions(v-if="!!isOpenActions" :is-selected-one="isOpenActions===1")
     .flex.w-fit.h-fit.gap-x-2
       bass-export-button(:only-icon="true")
       base-create-button(:with-icon="true")
@@ -33,5 +33,5 @@ export default {
 <style lang="sass" scoped>
 .filter-button
   border-radius: 4px
-  border: 2px solid var(--br-grey-color)
+  border: 2px solid var(--border-light-grey-color)
 </style>

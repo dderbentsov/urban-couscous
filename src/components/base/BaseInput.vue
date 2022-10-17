@@ -30,7 +30,7 @@ export default {
 .right
   order: 1
 .input-wrapper
-  border: 2px solid var(--br-grey-color)
+  border: 2px solid var(--border-light-grey-color)
   border-radius: 4px
 .input-search
   min-width: 220px

@@ -103,7 +103,7 @@ export default {
       if (e.target.id === "all") {
         this.selectAll = !this.selectAll;
         this.marked = this.dataClients.map((el) => el.id);
-        !this.selectAll ? (this.marked = []) : true;
+        !this.selectAll && (this.marked = []);
       } else {
         if (e.target.checked) {
           this.marked = [...this.marked, e.target.id];
