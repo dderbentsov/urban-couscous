@@ -6,8 +6,8 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout")
     .schedule-body.flex
-      calendar-clock-column(:hoursArray="hoursArray" :currentTime="currentTime")
-      calendar-background(:hoursArray="hoursArray" :currentTime="currentTime")
+      calendar-clock-column(:hoursArray="hoursArray" :currentTime="currentTime" :currentDate="currentDate")
+      calendar-background(:hoursArray="hoursArray" :currentTime="currentTime" :currentDate="currentDate")
 </template>
 
 <script>
@@ -20,6 +20,12 @@ export default {
   components: { CalendarHeader, CalendarBackground, CalendarClockColumn },
   props: {
     currentDate: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    timeInformation: {
       type: Object,
       default() {
         return {};
@@ -68,7 +74,7 @@ export default {
     },
     hoursArrayInitialization() {
       for (let i = 8; i <= 18; i++) {
-        if (i === this.hours) {
+        if (i === this.hours && this.hours >= 8 && this.hours < 18) {
           this.hoursArray.push(this.hoursMinutes);
         } else this.hoursArray.push(`${i}:00`);
       }

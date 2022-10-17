@@ -2,6 +2,7 @@
   .calendar-container
     calendar-schedule(
       :currentDate="currentDate"
+      :timeInformation="timeInformation"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -18,6 +19,10 @@ export default {
     return {
       calendarLayout: "",
       currentDate: moment(),
+      timeInformation: {
+        dayStartTime: "8:00",
+        dayEndTime: "18:00",
+      },
     };
   },
   methods: {

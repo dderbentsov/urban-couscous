@@ -4,20 +4,30 @@
 </template>
 
 <script>
+import * as moment from "moment/moment";
 export default {
   name: "CalendarClockColumn",
   props: {
     hoursArray: Array,
     currentTime: String,
+    currentDate: Object,
   },
   computed: {
     currentHour() {
       return parseInt(this.currentTime.slice(0, -6), 10);
     },
+    isCurrentDay() {
+      return (
+        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY")
+      );
+    },
   },
   methods: {
     currentHourStyle(elem) {
-      if (parseInt(elem.slice(0, 3), 10) === this.currentHour) {
+      if (
+        parseInt(elem.slice(0, 3), 10) === this.currentHour &&
+        this.isCurrentDay
+      ) {
         return {
           "current-time": true,
           "font-bold": true,
