@@ -16,6 +16,7 @@ module.exports = defineConfig({
     pugRule.uses.clear();
     pugRule.oneOfs.clear();
   },
+  parallel: false,
 
   configureWebpack: {
     module: {
