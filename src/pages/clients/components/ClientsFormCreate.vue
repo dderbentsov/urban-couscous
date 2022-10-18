@@ -119,14 +119,11 @@ export default {
       this.priorityOption = this.priorityList[e.target.id];
       this.infoClient.priority = this.priorityList[e.target.id];
     },
-    saveClient() {
-      console.log(this.infoClient);
-    },
+    saveClient() {},
     saveDocFile(e) {
       this.infoClient.doc = e.target.files;
     },
     saveAdditionalFiles(e) {
-      console.log(e.target.id, e.target.files[0]);
       this.infoClient.additional.find((el) => el.id === e.target.id).file =
         e.target.file;
     },
