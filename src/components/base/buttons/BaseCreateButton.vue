@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.button.flex.gap-x-2.text-base.pt-3.pb-2.px-6
+  button.button.flex.w-fit.gap-x-2.text-base.pt-3.pb-2.px-6
     .flex.text-xs.w-fit.pt-1(v-if="withIcon")
       span.icon-plus
     span.text-base.font-semibold {{text}}

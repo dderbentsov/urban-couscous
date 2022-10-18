@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper.flex.flex-col.gap-y-8.px-6.pt-6.h-full.w-full.min-w-fit
-    clients-table-header(:is-open-actions="marked.length")
+    clients-table-header(:is-open-actions="marked.length" :open-form-create="openFormCreate" )
     table.w-full
       thead.head-table
         tr.head-row
@@ -62,6 +62,9 @@ import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbo
 export default {
   name: "ClientsTable",
   components: { ClientsTableCheckbox, ClientsTableRow, ClientsTableHeader },
+  props: {
+    openFormCreate: Function,
+  },
   data() {
     return {
       selectAll: false,
