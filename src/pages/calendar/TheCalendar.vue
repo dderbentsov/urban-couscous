@@ -1,8 +1,8 @@
 <template lang="pug">
   .calendar-container
     calendar-schedule(
-      :currentDate="currentDate"
-      :timeInformation="timeInformation"
+      :current-date="currentDate"
+      :time-information="timeInformation"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"

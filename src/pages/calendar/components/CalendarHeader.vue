@@ -5,12 +5,11 @@
       base-arrow-button.right-arrow.mr-6(@click="nextHandler")
       .text.flex.items-center
         span.font-medium.text-base {{ dateString }}
-          span.today.font-bold.text-xxs(v-if="isToday")  Сегодня
+          span.today.font-bold.text-xxs(v-if="isCurrentDate")  Сегодня
     calendar-layout-switch(@selected="changeSelectedLayout")
 </template>
 
 <script>
-import * as moment from "moment/moment";
 import BaseArrowButton from "@/components/base/buttons/BaseArrowButton.vue";
 import CalendarLayoutSwitch from "./CalendarLayoutSwitch.vue";
 export default {
@@ -18,11 +17,7 @@ export default {
   components: { BaseArrowButton, CalendarLayoutSwitch },
   props: {
     currentDate: Object,
-  },
-  data() {
-    return {
-      isToday: true,
-    };
+    isCurrentDate: Boolean,
   },
   computed: {
     dateString() {
@@ -45,12 +40,6 @@ export default {
     },
     nextHandler() {
       this.$emit("next-date");
-    },
-  },
-  watch: {
-    currentDate: function () {
-      this.isToday =
-        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
     },
   },
 };

@@ -1,32 +1,39 @@
 <template lang="pug">
   .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pt-9.pb-12.px-3
-    span.font-medium.text-base(v-for="hour in hoursArray" :key="hour" :class="currentHourStyle(hour)") {{ hour }}
+    span.font-medium.text-base(
+      v-for="hour in hoursArray"
+      :key="hour"
+      :class="currentHourStyle(hour)"
+      ) {{ hour }}
 </template>
 
 <script>
-import * as moment from "moment/moment";
 export default {
   name: "CalendarClockColumn",
   props: {
     hoursArray: Array,
     currentTime: String,
     currentDate: Object,
+    dayEndTime: Number,
+    isCurrentDate: Boolean,
   },
   computed: {
     currentHour() {
-      return parseInt(this.currentTime.slice(0, -6), 10);
+      return this.convertTime(this.currentTime, 0, -6);
     },
-    isCurrentDay() {
-      return (
-        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY")
-      );
+    currentMinute() {
+      return this.convertTime(this.currentTime, 3, -3);
+    },
+    isEndDay() {
+      return this.dayEndTime === this.currentHour && this.currentMinute > 0;
     },
   },
   methods: {
     currentHourStyle(elem) {
       if (
-        parseInt(elem.slice(0, 3), 10) === this.currentHour &&
-        this.isCurrentDay
+        this.convertTime(elem, 0, 3) === this.currentHour &&
+        !this.isEndDay &&
+        this.isCurrentDate
       ) {
         return {
           "current-time": true,
@@ -36,6 +43,9 @@ export default {
       return {
         "current-time": false,
       };
+    },
+    convertTime(str, startIndex, endIndex) {
+      return parseInt(str.slice(startIndex, endIndex), 10);
     },
   },
 };

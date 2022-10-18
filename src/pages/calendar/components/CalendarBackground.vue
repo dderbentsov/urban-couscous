@@ -3,10 +3,19 @@
     .header.flex.items-center.justify-between.py-2.px-6
     .body.flex.flex-col
       .line-wrapper
-        .line.flex.items-center(v-for="hour in hoursArray" :key="hour")
+        .line.flex.items-center(
+          v-for="hour in hoursArray"
+          :key="hour"
+          )
           .middle-line
-      .time-circle-indicator.-left-6px(v-if="isShownIndicator" :style="circleIndicatorLocation")
-      span.time-line-indicator.block(v-if="isShownIndicator" :style="lineIndicatorLocation")
+      .time-circle-indicator.-left-6px(
+        v-if="isShownIndicator"
+        :style="circleIndicatorLocation"
+        )
+      span.time-line-indicator.block(
+        v-if="isShownIndicator"
+        :style="lineIndicatorLocation"
+        )
 </template>
 
 <script>
@@ -17,10 +26,13 @@ export default {
     hoursArray: Array,
     currentTime: String,
     currentDate: Object,
+    dayStartTime: Number,
+    dayEndTime: Number,
   },
   data() {
     return {
       isShownIndicator: true,
+      pixelsPerHour: 62,
     };
   },
   computed: {
@@ -34,14 +46,22 @@ export default {
         top: `${this.calculateIndicatorLocation() - 6}px`,
       };
     },
+    scheduleSize() {
+      return (this.dayEndTime - this.dayStartTime) * this.pixelsPerHour;
+    },
+    pixelsPerMinute() {
+      return this.pixelsPerHour / 60;
+    },
   },
   methods: {
     calculateIndicatorLocation() {
       let newTime = this.currentTime
         .split(":")
         .map((elem) => parseInt(elem, 10));
-      let result = (newTime[0] - 8) * 62 + newTime[1] * 1.03;
-      if (result > 620) {
+      let result =
+        (newTime[0] - this.dayStartTime) * this.pixelsPerHour +
+        newTime[1] * this.pixelsPerMinute;
+      if (result > this.scheduleSize || result < 0) {
         this.isShownIndicator = false;
         return 0;
       }
