@@ -1,17 +1,25 @@
 <template lang="pug">
-  .input-wrapper.flex.gap-x-2.px-4.box-border(class="py-2.5")
+  .input-wrapper.flex.gap-x-2.px-4.box-border(class="py-2.5" :style="{ minWidth: widthInput + 'px' }")
     img.cursor-pointer( v-if="withIcon" :class="position" src="@/assets/icons/search-black.svg" alt="SearchTable")
-    input.input-search.outline-0.text-base.not-italic(placeholder="Искать")
+    input.w-full.outline-0.text-base.not-italic(:value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder")
 </template>
 
 <script>
 export default {
   name: "BaseInput",
   props: {
+    type: {
+      default: "text",
+    },
+    value: String,
     withIcon: {
       default: false,
     },
     iconPosition: String,
+    placeholder: {
+      default: "Поиск",
+    },
+    widthInput: Number,
   },
   computed: {
     position() {
@@ -32,6 +40,4 @@ export default {
 .input-wrapper
   border: 2px solid var(--border-light-grey-color)
   border-radius: 4px
-.input-search
-  min-width: 220px
 </style>

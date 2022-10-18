@@ -1,11 +1,11 @@
 <template lang="pug">
-  .flex.gap-2.py-2.px-4.w-full.container.items-center.cursor-pointer(@click="selectOpen")
+  .flex.justify-between.px-4.w-full.container.items-center.cursor-pointer(@click="openSelect" class="py-2.5" :class="{border: styleBorder}" :style="{ minWidth : widthSelect + 'px'}")
     .relative.flex.flex-col
-      .not-italic.text-base.select.cursor-pointer(:style="{ minWidth : width}") {{optionData}}
-        .absolute.options(v-if="isOpen" :id="id" @click="(event)=>chooseOption(event)")
-          .not-italic.text-base.option(v-for="(responsible, index) in listData" :key="index" :id="index") {{responsible}}
-    .select-form-separator.cursor-pointer
-    .text-sm.ml-2.pt-1.icon-down-arrow.icon.text-center(:class="{ open: isOpen}")
+      .not-italic.text-base.select.cursor-pointer.w-full {{optionData}}
+        .absolute.options(v-show="isSelectOpen" :id="id")
+          .not-italic.text-base.option(v-for="(responsible, index) in listData" @click="(e) => chooseOption(e)" :key="index" :id="index") {{responsible}}
+    .select-form-separator.cursor-pointer(v-if="withSeparator" )
+    .text-sm.ml-2.pt-1.icon-down-arrow.icon.text-center(:class="{ open: isSelectOpen}")
 </template>
 
 <script>
@@ -13,12 +13,29 @@ export default {
   name: "BaseSelect",
   props: {
     id: String,
-    width: String,
+    styleBorder: {
+      default: false,
+    },
+    widthSelect: Number,
+    withSeparator: {
+      default: false,
+    },
     optionData: String,
     listData: Array,
     chooseOption: Function,
-    isOpen: Boolean,
-    selectOpen: Function,
+  },
+  data() {
+    return {
+      isSelectOpen: false,
+    };
+  },
+  methods: {
+    openSelect() {
+      this.isSelectOpen = !this.isSelectOpen;
+    },
+    closeSelect() {
+      this.isSelectOpen = false;
+    },
   },
 };
 </script>
@@ -28,6 +45,9 @@ export default {
   border-radius: 4px
   width: fit-content
   background-color: var(--bg-ligth-blue-color)
+  &.border
+    background-color: rgba(255, 255, 255, 0)
+    border: 2px solid var(--border-light-grey-color)
 .select
   appearance: none
   border: none
