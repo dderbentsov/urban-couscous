@@ -1,7 +1,7 @@
 <template lang="pug">
   .change-person-wrapper(:class="openOptions")
     .header.flex.items-center.pl-1.pr-2
-      img.img-wrapper.mr-1(:src="info.avatarSrc" alt="Charge person avatar")
+      img.img-wrapper.mr-2(:src="info.avatarSrc" alt="Charge person avatar")
       span.font-bold.text-sm.mr-6px {{ info.name }}
       .dot.mr-4
       .icon-wrapper.icon-down-arrow.flex.items-center.justify-center.text-xxs(@click="changeState")
@@ -55,7 +55,7 @@ export default {
     transform: rotate(180deg)
 
 .header
-  width: 310px
+  width: 314px
   height: 42px
   position: relative
   background-color: var(--btn-blue-color)
