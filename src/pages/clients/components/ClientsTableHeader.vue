@@ -1,42 +1,35 @@
 <template lang="pug">
-  .flex.justify-between.w-full.h-fit
-    .flex.gap-2.w-fit.h-fit
-      .input
-        base-input(:with-icon="true")
-      button.filter-button.flex.items-center.justify-center.box-border(class="px-2.5")
-        .icon-filter.text-xl.leading-4
-    clients-table-header-actions(v-if="!!isOpenActions" :is-selected-one="isOpenActions===1")
-    .flex.w-fit.h-fit.gap-x-2
-      bass-export-button(:only-icon="true")
-      base-create-button(@click="openFormCreate" :with-icon="true")
-
+  .flex.row.text-base.font-semibold
+    clients-table-cell-header(v-for="cell in columnHead" :title="cell.title" :width="cell.width" :class="!cell.title && 'px-3'")
+      .icon-down-arrow.icon.text-xsm.cursor-pointer(v-if="cell.iconHead && cell.name !== 'fullName'" )
+      img.cursor-pointer(v-if="cell.iconHead && cell.name === 'fullName'" src="@/assets/icons/sort-number.svg" alt="SortNumber")
+      clients-table-checkbox(v-if="cell.name === 'checkbox'" :id="cell.name" :check="check" :is-check="isCheck")
 </template>
 
 <script>
-import ClientsTableHeaderActions from "@/pages/clients/components/ClientsTableHeaderActions";
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
-import BassExportButton from "@/components/base/buttons/BassExportButton";
-import BaseInput from "@/components/base/BaseInput";
+import { column } from "@/pages/clients/utils/tableConfig";
+import ClientsTableCellHeader from "@/pages/clients/components/cells/ClientsTableCellHeader";
+import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 export default {
-  name: "ClientsTAbleHeader",
-  components: {
-    BaseInput,
-    BassExportButton,
-    BaseCreateButton,
-    ClientsTableHeaderActions,
-  },
+  name: "ClientsTableHead",
+  components: { ClientsTableCheckbox, ClientsTableCellHeader },
   props: {
-    openFormCreate: Function,
-    isOpenActions: Number,
+    check: Function,
+    isCheck: Boolean,
+  },
+  data() {
+    return {
+      columnHead: column,
+    };
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.input
-  width: 280px
-  height: fit-content
-.filter-button
-  border-radius: 4px
-  border: 2px solid var(--border-light-grey-color)
+.row
+  min-height: 36px
+  color: var(--font-grey-color)
+  border-bottom: 1px solid var(--border-light-grey-color)
+.icon
+  color: var(--font-dark-blue-color)
 </style>

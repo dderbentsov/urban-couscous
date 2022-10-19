@@ -1,45 +1,11 @@
 <template lang="pug">
   .wrapper.flex.flex-col.gap-y-8.px-6.pt-6.h-full.w-full.min-w-fit
-    clients-table-header(:is-open-actions="marked.length" :open-form-create="openFormCreate" )
-    table.w-full
-      thead.head-table
-        tr.head-row
-          th.w-3
-            .px-4.py-3
-              clients-table-checkbox(:is-check="selectAll" :check="selectedCheck" id="all")
-          th
-            .flex.px-4.justify-between
-              span.text-sm ФИО
-              img.cursor-pointer(src="@/assets/icons/sort-number.svg" alt="SortNumber")
-          th
-            .flex.px-4.justify-between.gap-x-6
-              span.text-sm Возраст
-              .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
-          th
-            .px-4.text-left
-              span.text-sm Должность
-          th
-            .flex.relative.px-4.justify-between.gap-x-3
-              span.text-sm Приоритет
-              .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
-          th
-            .px-4.text-left
-              span.text-sm Телефон
-          th
-            .px-4.text-left
-              span.text-sm Email
-          th
-            .px-4.text-left
-              span.text-sm.leading-8 Сети
-          th
-            .flex.px-4.justify-between.gap-x-11
-              span.text-sm.leading-4.whitespace-nowrap Ближайшая встреча
-              .icon.icon-down-arrow.text-xsm.mt-1.cursor-pointer
-          th.w-5
-            .do.px-4
-              span.text-sm Do
-      tbody.tbody
-        clients-table-row(v-for="client in dataClients"
+    clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreate")
+    .flex.flex-col.h-full.gap-y-2
+      clients-table-header(:check="selectedCheck" :is-check="selectAll")
+      .flex.flex-col
+        clients-table-row(
+          v-for="client in dataClients"
           :key="client.id"
           :id="client.id"
           :is-check="marked.includes(client.id)"
@@ -51,17 +17,23 @@
           :phone="client.phone"
           :email="client.email"
           :networks="client.networks"
-          :meeting-time="client.meetingTime"
+          :meeting-time="client.meeting"
           )
 </template>
 
 <script>
 import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
+import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 export default {
   name: "ClientsTable",
-  components: { ClientsTableCheckbox, ClientsTableRow, ClientsTableHeader },
+  components: {
+    ClientsTableCheckbox,
+    ClientsTableRow,
+    ClientsTableHat,
+    ClientsTableHeader,
+  },
   props: {
     openFormCreate: Function,
   },
@@ -81,7 +53,7 @@ export default {
       fetch("/api/clients").then((res) => res.json()).then((data) => this.saveDataClients(data))
     },
     selectedCheck(e) {
-      if (e.target.id === "all") {
+      if (e.target.id === "checkbox") {
         this.selectAll = !this.selectAll;
         this.marked = this.dataClients.map((el) => el.id);
         !this.selectAll && (this.marked = []);
@@ -107,21 +79,9 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.icon
-  color: var(--font-dark-blue-color)
-  &.priority-open
-    transform: rotate(180deg)
-.head-table
-  color: var(--font-grey-color)
-.tbody:before
-    content: "-"
-    display: block
-    line-height: 8px
-    color: transparent
-.head-row
-  border-bottom: 1px solid #D3D4DC
+.row-body
+  min-height: 56px
+  border-bottom: 1px solid var(--border-light-grey-color)
 .wrapper
   background-color: var(--default-white)
-.color
-  background-color: red
 </style>
