@@ -25,4 +25,9 @@ export default {
   color: var(--default-white)
   background-color: var(--btn-blue-color)
   border-radius: 4px
+  &:hover
+    opacity: 0.7
+  &:active
+    opacity: 1
+    background-color: var(--font-dark-blue-color)
 </style>

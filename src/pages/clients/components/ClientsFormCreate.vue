@@ -43,7 +43,6 @@ export default {
   },
   data() {
     return {
-      name: "sdasdasd",
       infoClient: {
         fullName: "",
         priority: "",
