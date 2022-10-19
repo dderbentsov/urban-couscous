@@ -1,5 +1,5 @@
 <template lang="pug">
-  button.arrow-button.flex.items-center.icon-down-arrow.text-base.px-2.pt-1
+  button.arrow-button.flex.items-center.icon-down-arrow.text-base.px-2.pt-3px
 </template>
 
 <script>

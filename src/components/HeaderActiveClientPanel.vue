@@ -7,19 +7,19 @@
       .icon-wrapper.icon-down-arrow.flex.items-center.justify-center.text-xxs(@click="changeState")
     .options.flex.flex-col.p-4.mt-1.font-medium.text-sm.gap-y-3(v-if="isOpen")
       .flex.items-center
-        img.options-icon-wrapper.mr-2(src="@/assets/icons/white-star.svg")
+        .options-icon-wrapper.icon-star-off.flex.items-center.justify-center.text-base.mr-2
         span Снять с ведения
       .flex.items-center
-        img.options-icon-wrapper.mr-2(src="@/assets/icons/table.svg")
+        .options-icon-wrapper.icon-table.flex.items-center.justify-center.text-lg.mr-2.pb-px
         span Перейти в таблицу
       .flex.items-center
-        .options-icon-wrapper.flex.items-center.justify-center.icon-user-data.text-base.mr-2(src="@/assets/icons/table.svg")
+        .options-icon-wrapper.flex.items-center.justify-center.icon-user-data.text-base.mr-2
         span Данные 
 </template>
 
 <script>
 export default {
-  name: "HeaderChargePerson",
+  name: "HeaderActiveClientPanel",
   props: {
     info: Object,
   },

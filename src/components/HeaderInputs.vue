@@ -2,7 +2,7 @@
   .header-inputs-wrapper.flex.items-center.font-medium.text-base(:class="{ open: isOpen }")
     .select-container(@click="changeState")
       .select-wrapper.flex.items-center.cursor-pointer.mx-4.my-2
-        img.icon-wrapper.flex.justify-center.items-center(src="@/assets/icons/search.svg" alt="Search")
+        .icon-wrapper.icon-search.flex.text-lg.justify-center.items-center
         span.custom-input.select-input.inline-block.box-border.align-middle.pl-2.pr-1 {{ selectedFilter }}
         .arrow.icon-down-arrow.text-xsm.mt-px.flex.justify-center.items-center
       .options-wrapper.flex.flex-col.box-border.p-4.mt-1(v-if="isOpen")
@@ -76,6 +76,10 @@ export default {
 .search-input
   &::placeholder
     color: var(--font-grey-color)
+
+.icon-search
+  color: var(--btn-blue-color)
+  opacity: 0.5
 
 .option-list
   &:last-child
