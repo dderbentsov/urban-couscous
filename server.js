@@ -14,7 +14,7 @@ export function clientsServer() {
             phone: "+7 (915) 657–21–14",
             email: "Superboyband@yandex.ru",
             networks: [],
-            meetingTime: {
+            meeting: {
               date: "02.06.22",
               time: "18:30–19:30",
             },
@@ -28,7 +28,7 @@ export function clientsServer() {
             phone: "+7 (574) 364–53–36",
             email: "antimag@gmail.com",
             networks: [],
-            meetingTime: {
+            meeting: {
               date: "14.07.22",
               time: "17:30–21:30",
             },
