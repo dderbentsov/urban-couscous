@@ -23,6 +23,7 @@ export default {
         dayStartTime: "8:00",
         dayEndTime: "18:00",
       },
+      eventsData: [],
     };
   },
   methods: {
@@ -35,6 +36,18 @@ export default {
     changeCalendarLayout(option) {
       this.calendarLayout = option;
     },
+    saveEventsData(res) {
+      this.eventsData = res.results;
+    },
+    fetchEventsData() {
+      fetch("http://45.84.227.122:8080/registry/event/")
+        .then((res) => res.json())
+        .then((res) => this.saveEventsData(res));
+    },
+  },
+  mounted() {
+    this.fetchEventsData();
+    console.log(this.eventsData);
   },
 };
 </script>

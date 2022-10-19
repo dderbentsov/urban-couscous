@@ -35,6 +35,7 @@ export function clientsServer() {
           },
         ],
       }));
+      this.passthrough("http://45.84.227.122:8080/**");
     },
   });
 }
