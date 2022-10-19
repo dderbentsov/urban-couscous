@@ -1,7 +1,7 @@
 <template lang="pug">
   button.button.flex.gap-x-2.px-6.box-border(class="py-2.5")
-    img(v-if="withIcon || onlyIcon" src="@/assets/icons/export.svg" alt="Export")
-    span.text.text-base.font-semibold(v-if="!onlyIcon" ) Сохранить
+    .icon-download.text(v-if="withIcon || onlyIcon")
+    span.text-base.font-semibold(v-if="!onlyIcon" ) Сохранить
 </template>
 
 <script>
@@ -22,6 +22,7 @@ export default {
 .button
   border: 2px solid var(--btn-blue-color)
   border-radius: 4px
-.text
   color: var(--btn-blue-color)
+  &:hover
+    opacity: 0.7
 </style>
