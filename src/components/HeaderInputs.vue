@@ -41,11 +41,11 @@ export default {
 
 .header-inputs-wrapper
   background-color: var(--default-white)
+  border-radius: 4px
+  border: 1px solid var(--border-light-grey-color)
 
 .select-container
-  border-radius: 4px 0 0 4px
-  border: 1px solid var(--border-light-grey-color)
-  border-right: none
+  border-right: 1px solid var(--border-light-grey-color)
 
 .icon-wrapper
   width: 24px
@@ -74,8 +74,6 @@ export default {
   box-shadow: var(--default-shadow)
 
 .search-input
-  border-radius: 0 4px 4px 0
-  border: 1px solid var(--border-light-grey-color)
   &::placeholder
     color: var(--font-grey-color)
 

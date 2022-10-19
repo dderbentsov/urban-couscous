@@ -1,12 +1,14 @@
 <template lang="pug">
-  .header-wrapper.flex.flex-row.space-between.justify-between.box-border.py-2.px-6
-    .flex.items-center.box-border.cursor-pointer
-      img.logo-img(src="@/assets/images/logo.svg" alt="Logo")
-    .flex.flex-row
-      header-inputs.mr-10
+  .header-wrapper.flex.justify-center.box-border.py-2.px-6
+    .flex.items-center.box-border.cursor-pointer.mr-auto
+      img.logo-img.mr-16(src="@/assets/images/logo.svg" alt="Logo")
+      header-inputs
+    .charge-person-container
+      header-charge-person(:info="chargePersonInfo")
+    .flex.ml-auto
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
-      .flex.flex-row.justify-centflexer.items-center
+      .flex.justify-centflexer.items-center
         img.avatar-img.mr-2(:src="avatarSrc")
         button.header-buttons
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
@@ -14,13 +16,19 @@
 
 <script>
 import img from "@/assets/images/avatar.svg";
+import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
+import HeaderChargePerson from "./HeaderChargePerson.vue";
 export default {
   name: "TheHeader",
-  components: { HeaderInputs },
+  components: { HeaderInputs, HeaderChargePerson },
   data() {
     return {
       avatarSrc: img,
+      chargePersonInfo: {
+        avatarSrc: chargePersonAvatar,
+        name: "Гордеев Николай Степанович",
+      },
     };
   },
 };
@@ -55,4 +63,7 @@ export default {
 .avatar-img
   width: 32px
   height: 32px
+
+.charge-person-container
+  position: absolute
 </style>
