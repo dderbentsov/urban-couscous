@@ -1,5 +1,6 @@
 <template lang="pug">
-  .calendar-container
+  .calendar-container.flex
+    calendar-sidebar
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
@@ -12,9 +13,10 @@
 <script>
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
+import CalendarSidebar from "./components/CalendarSidebar.vue";
 export default {
   name: "TheCalendar",
-  components: { CalendarSchedule },
+  components: { CalendarSchedule, CalendarSidebar },
   data() {
     return {
       calendarLayout: "",

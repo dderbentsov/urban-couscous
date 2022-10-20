@@ -1,5 +1,5 @@
 <template lang="pug">
-  .schedule.ml-2
+  .schedule.ml-2.w-full
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
