@@ -8,12 +8,13 @@
       @selected-layout="selectedLayout"
       )
     .schedule-body.flex
-      calendar-clock-column(
-        :hours-array="hoursArray"
-        :current-time="currentTime"
-        :is-current-date="isCurrentDate"
-        :day-end-time="validateEndTime"
-        )
+      div
+        calendar-clock-column(
+          :hours-array="hoursArray"
+          :current-time="currentTime"
+          :is-current-date="isCurrentDate"
+          :day-end-time="validateEndTime"
+          )
       calendar-background(
         :hours-array="hoursArray"
         :current-time="currentTime"
@@ -177,4 +178,5 @@ export default {
 <style lang="sass" scoped>
 .schedule
   background-color: var(--default-white)
+  width: calc(100% - 8px)
 </style>

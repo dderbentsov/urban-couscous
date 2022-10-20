@@ -1,13 +1,15 @@
 <template lang="pug">
-  .calendar-background-wrapper.flex.flex-col
+  .calendar-background-wrapper.flex.flex-col(
+    ref="backgroundWrapper"
+    )
     calendar-column(
       v-for="(owner, index) in columnInformation.owners"
       :key="owner"
       :column-information="owner"
       :style="calculateColumnPosition(index)"
       )
-    .header
-    .body.flex.flex-col
+    .header(:style="backgroundExtendedWidth")
+    .body.flex.flex-col(:style="backgroundExtendedWidth")
       .line-wrapper
         .line.flex.items-center(
           v-for="hour in hoursArray"
@@ -42,7 +44,9 @@ export default {
     return {
       isShownIndicator: true,
       pixelsPerHour: 62,
-      columnWidth: 470,
+      backgroundWidth: 0,
+      columnWidth: 0,
+      defaultColumnWidth: 470,
     };
   },
   computed: {
@@ -62,6 +66,19 @@ export default {
     pixelsPerMinute() {
       return this.pixelsPerHour / 60;
     },
+    ownersArrayLength() {
+      return this.columnInformation.owners.length;
+    },
+    backgroundExtendedWidth() {
+      if (this.ownersArrayLength > 3) {
+        return {
+          width: `${this.defaultColumnWidth * this.ownersArrayLength}px`,
+        };
+      }
+      return {
+        width: "auto",
+      };
+    },
   },
   methods: {
     calculateIndicatorLocation() {
@@ -78,9 +95,20 @@ export default {
       return result;
     },
     calculateColumnPosition(elemIndex) {
+      if (this.ownersArrayLength < 4) {
+        this.columnWidth = this.backgroundWidth / this.ownersArrayLength;
+        return {
+          width: `${this.columnWidth}px`,
+          left: `${elemIndex * this.columnWidth}px`,
+        };
+      }
       return {
-        left: `${elemIndex * this.columnWidth}px`,
+        width: `${this.defaultColumnWidth}px`,
+        left: `${elemIndex * this.defaultColumnWidth}px`,
       };
+    },
+    calculateBackgroundWidth() {
+      this.backgroundWidth = this.$refs.backgroundWrapper.clientWidth;
     },
   },
   watch: {
@@ -89,6 +117,9 @@ export default {
         this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
     },
   },
+  mounted() {
+    this.calculateBackgroundWidth();
+  },
 };
 </script>
 
@@ -96,6 +127,7 @@ export default {
 .calendar-background-wrapper
   width: 100%
   position: relative
+  overflow-x: scroll
 
 .header
   height: 48px
@@ -120,6 +152,7 @@ export default {
   width: 100%
   border-top: 1px solid var(--time-indicator-color)
   position: absolute
+  z-index: 10
 
 .time-circle-indicator
   width: 12px
@@ -127,4 +160,5 @@ export default {
   background-color: var(--time-indicator-color)
   border-radius: 50%
   position: absolute
+  z-index: 10
 </style>

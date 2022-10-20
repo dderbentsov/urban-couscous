@@ -1,5 +1,5 @@
 <template lang="pug">
-  .calendar-column-wrapper.flex.flex-col(@click="output")
+  .calendar-column-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6
       .flex.items-center
         img.avatar-wrapper.mr-2(src="@/assets/images/team-member.svg" alt="Team member")
@@ -18,18 +18,12 @@ export default {
     columnInformation: String,
     elementKey: String,
   },
-  methods: {
-    output(event) {
-      console.log(event.target.id);
-    },
-  },
 };
 </script>
 
 <style lang="sass" scoped>
 .calendar-column-wrapper
   position: absolute
-  width: 470px
   border-right: 1px solid var(--border-light-grey-color)
   height: calc(100% - 54px)
 
