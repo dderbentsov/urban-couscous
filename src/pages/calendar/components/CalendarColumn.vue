@@ -6,7 +6,7 @@
         span.owner-name.font-medium.text-base.mr-6 {{ columnInformation }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
-    .body
+    div
 </template>
 
 <script>
@@ -16,7 +16,6 @@ export default {
   components: { BaseDocOkButton },
   props: {
     columnInformation: String,
-    elementKey: String,
   },
 };
 </script>
@@ -25,7 +24,6 @@ export default {
 .calendar-column-wrapper
   position: absolute
   border-right: 1px solid var(--border-light-grey-color)
-  height: calc(100% - 54px)
 
 .header
   height: 48px

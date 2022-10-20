@@ -17,12 +17,16 @@
           )
       calendar-background(
         :hours-array="hoursArray"
-        :current-time="currentTime"
-        :current-date="currentDate"
-        :day-start-time="validateStartTime"
-        :day-end-time="validateEndTime"
         :column-information="columnInformation"
         )
+      .time-circle-indicator.left-74px(
+        v-if="isShownIndicator"
+        :style="circleIndicatorLocation"
+        )
+      span.time-line-indicator.block.left-20(
+        v-if="isShownIndicator"
+        :style="lineIndicatorLocation"
+        )  
 </template>
 
 <script>
@@ -63,6 +67,9 @@ export default {
       hoursArray: [],
       timer: null,
       isCurrentDate: true,
+      isShownIndicator: true,
+      pixelsPerHour: 62,
+      columnHeaderHeight: 48,
     };
   },
   computed: {
@@ -80,6 +87,25 @@ export default {
     },
     validateEndTime() {
       return this.verifyTime(this.timeInformation.dayEndTime);
+    },
+    lineIndicatorLocation() {
+      return {
+        top: `${this.calculateIndicatorLocation()}px`,
+      };
+    },
+    circleIndicatorLocation() {
+      return {
+        top: `${this.calculateIndicatorLocation() - 6}px`,
+      };
+    },
+    pixelsPerMinute() {
+      return this.pixelsPerHour / 60;
+    },
+    scheduleSize() {
+      return (
+        (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour +
+        this.columnHeaderHeight
+      );
     },
   },
   methods: {
@@ -138,6 +164,20 @@ export default {
     convertTime(str, startIndex, endIndex) {
       return parseInt(str.slice(startIndex, endIndex), 10);
     },
+    calculateIndicatorLocation() {
+      let newTime = this.currentTime
+        .split(":")
+        .map((elem) => parseInt(elem, 10));
+      let result =
+        (newTime[0] - this.validateStartTime) * this.pixelsPerHour +
+        newTime[1] * this.pixelsPerMinute +
+        this.columnHeaderHeight;
+      if (result > this.scheduleSize || result < 0) {
+        this.isShownIndicator = false;
+        return 0;
+      }
+      return result;
+    },
   },
   watch: {
     currentTime() {
@@ -153,6 +193,7 @@ export default {
     currentDate: function () {
       this.isCurrentDate =
         this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
+      this.isShownIndicator = this.isCurrentDate;
       if (this.timer) {
         this.stopTimer();
         this.hoursArrayInitialization();
@@ -179,4 +220,19 @@ export default {
 .schedule
   background-color: var(--default-white)
   width: calc(100% - 8px)
+
+.time-line-indicator
+  width: calc(100% - 80px)
+  border-top: 1px solid var(--time-indicator-color)
+  position: absolute
+
+.time-circle-indicator
+  width: 12px
+  height: 12px
+  background-color: var(--time-indicator-color)
+  border-radius: 50%
+  position: absolute
+
+.schedule-body
+  position: relative
 </style>
