@@ -3,6 +3,7 @@
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
+      :column-information="columnInformation"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -24,6 +25,15 @@ export default {
         dayEndTime: "18:00",
       },
       eventsData: [],
+      columnInformation: {
+        owners: [
+          "Захарова А.О.",
+          "Константинопольская Ю.В.",
+          "Коломойцев И.К.",
+          "Ситников А.Г.",
+          null,
+        ],
+      },
     };
   },
   methods: {
@@ -40,7 +50,7 @@ export default {
       this.eventsData = res.results;
     },
     fetchEventsData() {
-      fetch("http://45.84.227.122:8080/registry/event/")
+      fetch("/registry/event/")
         .then((res) => res.json())
         .then((res) => this.saveEventsData(res));
     },

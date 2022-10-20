@@ -1,6 +1,12 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col
-    .header.flex.items-center.justify-between.py-2.px-6
+    calendar-column(
+      v-for="(owner, index) in columnInformation.owners"
+      :key="owner"
+      :column-information="owner"
+      :style="calculateColumnPosition(index)"
+      )
+    .header
     .body.flex.flex-col
       .line-wrapper
         .line.flex.items-center(
@@ -20,19 +26,23 @@
 
 <script>
 import * as moment from "moment/moment";
+import CalendarColumn from "./CalendarColumn.vue";
 export default {
   name: "CalendarBackground",
+  components: { CalendarColumn },
   props: {
     hoursArray: Array,
     currentTime: String,
     currentDate: Object,
     dayStartTime: Number,
     dayEndTime: Number,
+    columnInformation: Object,
   },
   data() {
     return {
       isShownIndicator: true,
       pixelsPerHour: 62,
+      columnWidth: 470,
     };
   },
   computed: {
@@ -67,6 +77,11 @@ export default {
       }
       return result;
     },
+    calculateColumnPosition(elemIndex) {
+      return {
+        left: `${elemIndex * this.columnWidth}px`,
+      };
+    },
   },
   watch: {
     currentDate: function () {
@@ -80,6 +95,7 @@ export default {
 <style lang="sass" scoped>
 .calendar-background-wrapper
   width: 100%
+  position: relative
 
 .header
   height: 48px

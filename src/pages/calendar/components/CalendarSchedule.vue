@@ -20,6 +20,7 @@
         :current-date="currentDate"
         :day-start-time="validateStartTime"
         :day-end-time="validateEndTime"
+        :column-information="columnInformation"
         )
 </template>
 
@@ -30,7 +31,11 @@ import CalendarBackground from "./CalendarBackground.vue";
 import CalendarClockColumn from "./CalendarClockColumn.vue";
 export default {
   name: "CalendarSchedule",
-  components: { CalendarHeader, CalendarBackground, CalendarClockColumn },
+  components: {
+    CalendarHeader,
+    CalendarBackground,
+    CalendarClockColumn,
+  },
   props: {
     currentDate: {
       type: Object,
@@ -39,6 +44,12 @@ export default {
       },
     },
     timeInformation: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
+    columnInformation: {
       type: Object,
       default() {
         return {};
