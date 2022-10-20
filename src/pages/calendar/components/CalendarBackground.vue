@@ -1,6 +1,7 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col(
     ref="backgroundWrapper"
+    :class="addScroll"
     )
     calendar-column(
       v-for="(owner, index) in columnInformation.owners"
@@ -54,6 +55,11 @@ export default {
     backgroundHeight() {
       return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
     },
+    addScroll() {
+      return {
+        scroll: this.ownersArrayLength > 3,
+      };
+    },
   },
   methods: {
     calculateColumnPosition(elemIndex) {
@@ -82,10 +88,12 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.scroll
+  overflow-x: scroll
+
 .calendar-background-wrapper
   width: 100%
   position: relative
-  overflow-x: scroll
 
 .header
   height: 48px
