@@ -2,7 +2,7 @@
   .flex.row.text-base.font-semibold
     clients-table-cell-header(v-for="cell in columnHead" :title="cell.title" :width="cell.width" :class="!cell.title && 'px-3'")
       .icon-down-arrow.icon.text-xsm.cursor-pointer(v-if="cell.iconHead && cell.name !== 'fullName'" )
-      img.cursor-pointer(v-if="cell.iconHead && cell.name === 'fullName'" src="@/assets/icons/sort-number.svg" alt="SortNumber")
+      .icon-sort-number.cursor-pointer.text-xs.icon(v-if="cell.iconHead && cell.name === 'fullName'")
       clients-table-checkbox(v-if="cell.name === 'checkbox'" :id="cell.name" :check="check" :is-check="isCheck")
 </template>
 

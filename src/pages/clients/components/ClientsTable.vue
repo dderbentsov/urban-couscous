@@ -79,9 +79,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.row-body
-  min-height: 56px
-  border-bottom: 1px solid var(--border-light-grey-color)
 .wrapper
   background-color: var(--default-white)
 </style>

@@ -59,3 +59,60 @@ export const column = [
     width: 53,
   },
 ];
+
+export const detail = [
+  {
+    name: "pass",
+    title: "Паспортные данные",
+    options: {
+      number: "Серия и номер",
+      issuedBy: "Выдан",
+      divisionCode: "Код подразделения",
+      dateIssue: "Дата выдачи",
+    },
+    width: 280,
+  },
+  {
+    name: "snils",
+    title: "СНИЛС",
+    options: {
+      number: "Номер",
+    },
+    width: 180,
+  },
+  {
+    name: "inn",
+    title: "ИНН",
+    options: {
+      number: "Номер",
+    },
+    width: 180,
+  },
+  {
+    name: "birthday",
+    title: "Дата рождения",
+    width: 292,
+    rollFlex: true,
+  },
+  {
+    name: "addresses",
+    title: "Адреса",
+    options: {
+      registrationPlace: "Адрес постоянной регистрации",
+      actualPlace: "Адрес фактического проживания",
+    },
+    width: 292,
+  },
+  {
+    name: "docs",
+    title: "Документы",
+    height: 280,
+    width: 360,
+  },
+  {
+    name: "additional",
+    title: "Дополнительные данные",
+    height: 280,
+    width: 360,
+  },
+];
