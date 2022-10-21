@@ -1,6 +1,6 @@
 <template lang="pug">
   .row-wrapper.flex.flex-col.w-full
-    .row-body.flex.w-full.cursor-pointer(@click="openDetailInfo")
+    .row-body.flex.w-full.cursor-pointer(:id="id" @dblclick="(e) => openDetailInfo(e)")
       .check-box.flex.justify-center.items-center
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
       table-cell-body-name(:value="fullName" :width="columnBody.find(el => el.name === 'fullName').width")
@@ -67,9 +67,9 @@ export default {
     meetingTime: Object,
   },
   methods: {
-    fetchClientDetail() {
+    fetchClientDetail(id) {
       // eslint-disable-next-line
-      fetch("/api/detail/1").then((res) => res.json()).then((data) => this.saveClientDetail(data))
+      fetch(`/api/detail/${id}`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
     },
     saveClientDetail(data) {
       this.dataDetail = data;
@@ -78,9 +78,9 @@ export default {
       e.target.focus();
       this.isOpenPopup = !this.isOpenPopup;
     },
-    openDetailInfo() {
+    openDetailInfo(e) {
       this.isOpenDetailInfo = !this.isOpenDetailInfo;
-      this.isOpenDetailInfo && this.fetchClientDetail();
+      this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id);
     },
     handleUnFocusPopup() {
       this.isOpenPopup = false;
