@@ -1,6 +1,6 @@
 <template lang="pug">
-  .calendar-container.flex
-    calendar-sidebar
+  .calendar-container.flex(:style="{ width: `calc(100% - ${currentWidth})` }")
+    calendar-sidebar(@width='changeWidth' :team="team")
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
@@ -15,11 +15,13 @@
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
+import img from "../../assets/images/team-member.svg";
 export default {
   name: "TheCalendar",
   components: { CalendarSchedule, CalendarSidebar },
   data() {
     return {
+      currentWidth: "152px",
       calendarLayout: "",
       currentDate: moment(),
       timeInformation: {
@@ -35,6 +37,12 @@ export default {
           "Зайцев В.С.",
         ],
       },
+      team: [
+        { id: 1, name: "Захарова А.О.", avatar: img },
+        { id: 2, name: "Константинопольская Ю.В.", avatar: img },
+        { id: 3, name: "Коломойцев И.К.", avatar: img },
+        { id: 4, name: "Зайцев В.С.", avatar: img },
+      ],
     };
   },
   methods: {
@@ -55,14 +63,12 @@ export default {
         .then((res) => res.json())
         .then((res) => this.saveEventsData(res));
     },
+    changeWidth(value) {
+      this.currentWidth = value.width;
+    },
   },
   mounted() {
     this.fetchEventsData();
   },
 };
 </script>
-
-<style lang="sass" scoped>
-.calendar-container
-  width: calc(100% - 80px)
-</style>
