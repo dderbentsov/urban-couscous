@@ -1,5 +1,5 @@
 <template lang="pug">
-  .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pt-9.pb-12.px-3
+  .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pt-9.pb-45px.px-3
     span.text-base(
       v-for="hour in hoursArray"
       :key="hour"

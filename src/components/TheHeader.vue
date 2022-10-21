@@ -45,6 +45,7 @@ export default {
 
 .header-wrapper
   width: 100%
+  height: 56px
   background-color: var(--default-white)
   position: relative
   z-index: 2
