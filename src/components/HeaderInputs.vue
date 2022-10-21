@@ -40,6 +40,7 @@ export default {
     transform: rotate(180deg)
 
 .header-inputs-wrapper
+  height: 40px
   background-color: var(--default-white)
   border-radius: 4px
   border: 1px solid var(--border-light-grey-color)
