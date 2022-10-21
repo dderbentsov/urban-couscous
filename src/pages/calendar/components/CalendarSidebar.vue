@@ -1,6 +1,6 @@
 <template lang="pug">
   .sidebar.flex.flex-col.bg-white
-    .sidebar-wrapper.h-full.my-13px
+    .sidebar-wrapper.h-full.my-13px(:style="{ width: windowSidebar }")
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px
         base-button-plus
         .flex.flex-col.items-center
@@ -38,6 +38,7 @@ export default {
       widthSidebarClose: "312px",
       isOpen: false,
       turnButton: "180deg",
+      windowSidebar: "72px",
     };
   },
   computed: {
@@ -54,14 +55,14 @@ export default {
         width: this.isOpen ? this.widthSidebarClose : this.widthSidebarOpen,
       });
       this.turnButton = this.isOpen ? "0deg" : "180deg";
+      this.windowSidebar = this.isOpen ? "232px" : "72px";
     },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-.sidebar
-  width: 72px
+
 .sidebar-wrapper
   border-left: 2px solid var(--btn-blue-color-3)
 .button-plus
