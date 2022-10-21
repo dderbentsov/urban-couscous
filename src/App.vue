@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.w-full.h-full.gap-y-4
+  .flex.flex-col.w-full.h-full.gap-y-2
     the-header
     .flex.flex-auto
       the-sidebar

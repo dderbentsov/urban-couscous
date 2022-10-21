@@ -248,6 +248,185 @@ export function clientsServer() {
           patronymic: el.patronymic,
         }));
       });
+      this.get("/registry/event/", () => ({
+        count: 4,
+        next: null,
+        previous: null,
+        results: [
+          {
+            id: "6faa6bb6-1de6-422c-a401-1b35cd455303",
+            start: "2022-10-20T20:23:49Z",
+            end: "2022-10-20T21:23:53Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "b0509f9a-e824-4bb3-a260-2b32dae9bc81",
+                person: {
+                  id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+                  last_name: "Гагарин",
+                  first_name: "Юрий",
+                  patronymic: "Алексеевич",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
+                },
+                role: null,
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db831a14-e836-481f-a653-6325de7c311e",
+                  last_name: "Жмыхов",
+                  first_name: "Егор",
+                  patronymic: "Сергеевич",
+                },
+                role: "owner",
+              },
+            ],
+          },
+          {
+            id: "7faa7bb7-2de6-422c-a401-1b35cd455303",
+            start: "2022-10-20T10:00:00Z",
+            end: "2022-10-20T11:10:00Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "b0509f9a-e824-4bb3-a260-2b32dae9bc81",
+                person: {
+                  id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+                  last_name: "Гагарин",
+                  first_name: "Юрий",
+                  patronymic: "Алексеевич",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c734-4f79-92c2-d7a5674459e422",
+                employee: {
+                  id: "db831a15-e876-481f-a658-6325de7c311e",
+                  last_name: "Константинопольская",
+                  first_name: "Юлия",
+                  patronymic: "Викторовна",
+                },
+                role: null,
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
+                },
+                role: "owner",
+              },
+            ],
+          },
+          {
+            id: "2faa7bb2-2de6-422c-a401-1b35cd455223",
+            start: "2022-10-20T10:00:00Z",
+            end: "2022-10-20T11:10:00Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "b0509f9a-e824-4bb3-a260-2b32dae9bc81",
+                person: {
+                  id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+                  last_name: "Гагарин",
+                  first_name: "Юрий",
+                  patronymic: "Алексеевич",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c734-4f79-92c2-d7a5674459e422",
+                employee: {
+                  id: "db831a15-e876-481f-a658-6325de7c311e",
+                  last_name: "Константинопольская",
+                  first_name: "Юлия",
+                  patronymic: "Викторовна",
+                },
+                role: "owner",
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
+                },
+                role: null,
+              },
+            ],
+          },
+          {
+            id: "6faa6bb2-1de4-425c-a401-1b35cd455303",
+            start: "2022-10-20T20:23:49Z",
+            end: "2022-10-20T21:23:53Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "b0509f9a-e824-4bb3-a260-2b32dae9bc81",
+                person: {
+                  id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+                  last_name: "Гагарин",
+                  first_name: "Юрий",
+                  patronymic: "Алексеевич",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
+                },
+                role: null,
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db831a14-e836-481f-a653-6325de7c311e",
+                  last_name: "Жмыхов",
+                  first_name: "Егор",
+                  patronymic: "Сергеевич",
+                },
+                role: null,
+              },
+            ],
+          },
+        ],
+      }));
       this.passthrough("http://45.84.227.122:8080/**");
       this.get("/api/detail/:id", (schema, request) => {
         let id = request.params.id;

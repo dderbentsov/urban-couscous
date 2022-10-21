@@ -1,85 +1,135 @@
 <template lang="pug">
-  .calendar-background-wrapper.flex.flex-col
-    .header.flex.items-center.justify-between.py-2.px-6
-    .body.flex.flex-col
+  .calendar-background-wrapper.flex.flex-col(
+    ref="backgroundWrapper"
+    :class="scrollPresence"
+    )
+    calendar-column(
+      v-for="(owner, index) in filteredOwners"
+      :key="owner.id"
+      :owner-data="owner"
+      :style="calculateColumnPosition(index)"
+      )
+    .header(:style="backgroundExtendedWidth")
+    .body.flex.flex-col(
+      :style="backgroundExtendedWidth"
+      )
       .line-wrapper
         .line.flex.items-center(
           v-for="hour in hoursArray"
           :key="hour"
           )
           .middle-line
-      .time-circle-indicator.-left-6px(
-        v-if="isShownIndicator"
-        :style="circleIndicatorLocation"
-        )
-      span.time-line-indicator.block(
-        v-if="isShownIndicator"
-        :style="lineIndicatorLocation"
-        )
 </template>
 
 <script>
-import * as moment from "moment/moment";
+import CalendarColumn from "./CalendarColumn.vue";
 export default {
   name: "CalendarBackground",
+  components: { CalendarColumn },
   props: {
     hoursArray: Array,
-    currentTime: String,
-    currentDate: Object,
-    dayStartTime: Number,
-    dayEndTime: Number,
+    eventsData: Array,
   },
   data() {
     return {
-      isShownIndicator: true,
+      backgroundWidth: 0,
+      columnWidth: 0,
+      defaultColumnWidth: 470,
       pixelsPerHour: 62,
     };
   },
   computed: {
-    lineIndicatorLocation() {
+    ownersArrayLength() {
+      return this.filteredOwners.length;
+    },
+    backgroundExtendedWidth() {
+      if (this.ownersArrayLength > 3) {
+        return {
+          width: `${this.defaultColumnWidth * this.ownersArrayLength}px`,
+        };
+      }
       return {
-        top: `${this.calculateIndicatorLocation()}px`,
+        width: "auto",
       };
     },
-    circleIndicatorLocation() {
+    backgroundHeight() {
+      return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
+    },
+    scrollPresence() {
       return {
-        top: `${this.calculateIndicatorLocation() - 6}px`,
+        scroll: this.ownersArrayLength > 3,
       };
     },
-    scheduleSize() {
-      return (this.dayEndTime - this.dayStartTime) * this.pixelsPerHour;
-    },
-    pixelsPerMinute() {
-      return this.pixelsPerHour / 60;
+    filteredOwners() {
+      let filteredArray = [];
+      let ownerAbsence = {
+        id: null,
+        last_name: null,
+        first_name: null,
+        patronymic: null,
+      };
+      this.eventsData.forEach(({ employees }) => {
+        let findedElement = employees.find((elem) => elem.role === "owner");
+        let emptyObjectPresence = this.findObjectInArray(
+          filteredArray,
+          ownerAbsence
+        );
+        if (!findedElement && !emptyObjectPresence) {
+          filteredArray.push(ownerAbsence);
+        }
+        if (findedElement) {
+          let ownerPresence = this.findObjectInArray(
+            filteredArray,
+            findedElement.employee
+          );
+          if (!ownerPresence) {
+            filteredArray.push(findedElement.employee);
+          }
+        }
+      });
+      return filteredArray.sort(
+        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
+      );
     },
   },
   methods: {
-    calculateIndicatorLocation() {
-      let newTime = this.currentTime
-        .split(":")
-        .map((elem) => parseInt(elem, 10));
-      let result =
-        (newTime[0] - this.dayStartTime) * this.pixelsPerHour +
-        newTime[1] * this.pixelsPerMinute;
-      if (result > this.scheduleSize || result < 0) {
-        this.isShownIndicator = false;
-        return 0;
+    calculateColumnPosition(elemIndex) {
+      if (this.ownersArrayLength < 4) {
+        this.columnWidth = this.backgroundWidth / this.ownersArrayLength;
+        return {
+          width: `${this.columnWidth}px`,
+          height: `${this.backgroundHeight}px`,
+          left: `${elemIndex * this.columnWidth}px`,
+        };
       }
-      return result;
+      return {
+        width: `${this.defaultColumnWidth}px`,
+        height: `${this.backgroundHeight}px`,
+        left: `${elemIndex * this.defaultColumnWidth}px`,
+      };
+    },
+    calculateBackgroundWidth() {
+      this.backgroundWidth = this.$refs.backgroundWrapper.offsetWidth;
+    },
+    findObjectInArray(array, object) {
+      return array.find(
+        (item) => JSON.stringify(item) === JSON.stringify(object)
+      );
     },
   },
-  watch: {
-    currentDate: function () {
-      this.isShownIndicator =
-        this.currentDate.format("DD.MM.YYYY") === moment().format("DD.MM.YYYY");
-    },
+  mounted() {
+    this.calculateBackgroundWidth();
   },
 };
 </script>
 
 <style lang="sass" scoped>
+.scroll
+  overflow-x: scroll
+
 .calendar-background-wrapper
   width: 100%
+  position: relative
 
 .header
   height: 48px
@@ -99,16 +149,4 @@ export default {
 .middle-line
   border-top: 1px dashed var(--border-light-grey-color)
   width: 100%
-
-.time-line-indicator
-  width: 100%
-  border-top: 1px solid var(--time-indicator-color)
-  position: absolute
-
-.time-circle-indicator
-  width: 12px
-  height: 12px
-  background-color: var(--time-indicator-color)
-  border-radius: 50%
-  position: absolute
 </style>

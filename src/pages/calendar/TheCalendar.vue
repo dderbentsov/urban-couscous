@@ -1,8 +1,10 @@
 <template lang="pug">
-  .calendar-container
+  .calendar-container.flex
+    calendar-sidebar
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
+      :events-data="eventsData"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -12,9 +14,10 @@
 <script>
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
+import CalendarSidebar from "./components/CalendarSidebar.vue";
 export default {
   name: "TheCalendar",
-  components: { CalendarSchedule },
+  components: { CalendarSchedule, CalendarSidebar },
   data() {
     return {
       calendarLayout: "",
@@ -40,7 +43,7 @@ export default {
       this.eventsData = res.results;
     },
     fetchEventsData() {
-      fetch("http://45.84.227.122:8080/registry/event/")
+      fetch("/registry/event/")
         .then((res) => res.json())
         .then((res) => this.saveEventsData(res));
     },
@@ -53,5 +56,5 @@ export default {
 
 <style lang="sass" scoped>
 .calendar-container
-  width: 100%
+  width: calc(100vw - 80px)
 </style>
