@@ -60,9 +60,8 @@ export const column = [
   },
 ];
 
-export const detail = [
-  {
-    name: "pass",
+export const detail = {
+  pass: {
     title: "Паспортные данные",
     options: {
       number: "Серия и номер",
@@ -72,30 +71,26 @@ export const detail = [
     },
     width: 280,
   },
-  {
-    name: "snils",
+  snils: {
     title: "СНИЛС",
     options: {
       number: "Номер",
     },
     width: 180,
   },
-  {
-    name: "inn",
+  inn: {
     title: "ИНН",
     options: {
       number: "Номер",
     },
     width: 180,
   },
-  {
-    name: "birthday",
+  birthday: {
     title: "Дата рождения",
     width: 292,
-    rollFlex: true,
+    rowFlex: true,
   },
-  {
-    name: "addresses",
+  addresses: {
     title: "Адреса",
     options: {
       registrationPlace: "Адрес постоянной регистрации",
@@ -103,16 +98,21 @@ export const detail = [
     },
     width: 292,
   },
-  {
-    name: "docs",
+  docs: {
     title: "Документы",
     height: 280,
     width: 360,
+    addFile: true,
   },
-  {
-    name: "additional",
+  additional: {
     title: "Дополнительные данные",
     height: 280,
     width: 360,
+    addFile: true,
   },
-];
+  docsColor: {
+    "application/pdf": "#ff6969",
+    "application/msword": "#6993ff",
+    "application/vnd.ms-excel": "#61c57d",
+  },
+};
