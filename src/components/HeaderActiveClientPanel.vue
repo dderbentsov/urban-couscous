@@ -56,7 +56,7 @@ export default {
 
 .header
   width: 314px
-  height: 42px
+  height: 40px
   position: relative
   background-color: var(--btn-blue-color)
   border-radius: 40px

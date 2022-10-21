@@ -18,7 +18,7 @@ import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
 import BassExportButton from "@/components/base/buttons/BassExportButton";
 import BaseInput from "@/components/base/BaseInput";
 export default {
-  name: "ClientsTAbleHeader",
+  name: "ClientsTableHat",
   components: {
     BaseInput,
     BassExportButton,

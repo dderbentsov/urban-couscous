@@ -4,7 +4,7 @@
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
-      :column-information="columnInformation"
+      :events-data="eventsData"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
