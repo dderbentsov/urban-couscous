@@ -17,7 +17,7 @@
           )
       calendar-background(
         :hours-array="hoursArray"
-        :column-information="columnInformation"
+        :events-data="eventsData"
         )
       .time-circle-indicator.left-74px(
         v-if="isShownIndicator"
@@ -54,10 +54,10 @@ export default {
         return {};
       },
     },
-    columnInformation: {
-      type: Object,
+    eventsData: {
+      type: Array,
       default() {
-        return {};
+        return [];
       },
     },
   },
@@ -219,7 +219,7 @@ export default {
 <style lang="sass" scoped>
 .schedule
   background-color: var(--default-white)
-  width: calc(100% - 8px)
+  width: calc(100% - 80px)
 
 .time-line-indicator
   width: calc(100% - 80px)

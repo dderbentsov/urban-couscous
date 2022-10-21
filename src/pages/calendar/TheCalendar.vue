@@ -4,7 +4,7 @@
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
-      :column-information="columnInformation"
+      :events-data="eventsData"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -27,14 +27,6 @@ export default {
         dayEndTime: "18:00",
       },
       eventsData: [],
-      columnInformation: {
-        owners: [
-          "Захарова А.О.",
-          "Константинопольская Ю.В.",
-          "Коломойцев И.К.",
-          "Зайцев В.С.",
-        ],
-      },
     };
   },
   methods: {
@@ -64,5 +56,5 @@ export default {
 
 <style lang="sass" scoped>
 .calendar-container
-  width: calc(100% - 80px)
+  width: calc(100vw - 80px)
 </style>
