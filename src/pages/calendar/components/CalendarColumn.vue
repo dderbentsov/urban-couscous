@@ -3,7 +3,7 @@
     .header.flex.items-center.justify-between.py-2.px-6
       .flex.items-center
         img.avatar-wrapper.mr-2(src="@/assets/images/team-member.svg" alt="Team member")
-        span.owner-name.font-medium.text-base.mr-6 {{ columnInformation }}
+        span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
     div
@@ -15,7 +15,18 @@ export default {
   name: "CalendarColumn",
   components: { BaseDocOkButton },
   props: {
-    columnInformation: String,
+    ownerData: Object,
+  },
+  computed: {
+    ownerName() {
+      if (this.ownerData.id) {
+        return `${this.ownerData.last_name} ${this.ownerData.first_name.slice(
+          0,
+          1
+        )}.${this.ownerData.patronymic.slice(0, 1)}.`;
+      }
+      return null;
+    },
   },
 };
 </script>
