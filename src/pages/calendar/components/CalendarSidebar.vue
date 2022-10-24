@@ -1,6 +1,6 @@
 <template lang="pug">
   .sidebar.flex.flex-col.bg-white
-    .sidebar-wrapper.h-full.my-13px(:style="{ width: windowSidebar }")
+    .sidebar-wrapper.h-full.my-13px(:style="sidebarWidth")
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px
         base-button-plus
         .flex.flex-col.items-center
@@ -19,6 +19,7 @@
 import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue";
 import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
 export default {
+  name: "CalendarSidebar",
   components: {
     BaseButtonPlus,
     BaseOpenButton,
@@ -29,16 +30,15 @@ export default {
   data() {
     return {
       events: [
-        { id: 1, color: "var(--bg-event-meeting-color)" },
-        { id: 2, color: "var(--bg-event-planning-color)" },
-        { id: 3, color: "var(--bg-event-interview-color)" },
-        { id: 4, color: "var(--bg-event-work-color)" },
+        { id: 1, color: "var(--bg-event-green-color)" },
+        { id: 2, color: "var(--bg-event-red-color)" },
+        { id: 3, color: "var(--bg-event-yellow-color)" },
+        { id: 4, color: "var(--bg-event-blue-color)" },
       ],
-      widthSidebarOpen: "152px",
-      widthSidebarClose: "312px",
+      widthSidebarOpen: "232px",
+      widthSidebarClose: "72px",
       isOpen: false,
       turnButton: "180deg",
-      windowSidebar: "72px",
     };
   },
   computed: {
@@ -47,22 +47,31 @@ export default {
         "button-styled": true,
       };
     },
+    sidebarWidth() {
+      if (this.isOpen) {
+        return {
+          width: this.widthSidebarOpen,
+        };
+      }
+      return {
+        width: this.widthSidebarClose,
+      };
+    },
   },
   methods: {
     changeSize() {
       this.isOpen = !this.isOpen;
-      this.$emit("width", {
-        width: this.isOpen ? this.widthSidebarClose : this.widthSidebarOpen,
-      });
+      this.$emit(
+        "width",
+        this.isOpen ? this.widthSidebarOpen : this.widthSidebarClose
+      );
       this.turnButton = this.isOpen ? "0deg" : "180deg";
-      this.windowSidebar = this.isOpen ? "232px" : "72px";
     },
   },
 };
 </script>
 
 <style lang="sass" scoped>
-
 .sidebar-wrapper
   border-left: 2px solid var(--btn-blue-color-3)
 .button-plus
