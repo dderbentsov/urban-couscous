@@ -435,6 +435,49 @@ export function clientsServer() {
               },
             ],
           },
+          {
+            id: "2faa7bb2-2de6-422c-a401-1b35cd455223",
+            start: "2022-10-24T10:00:00Z",
+            end: "2022-10-24T11:10:00Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "a9239f9a-e824-4bb3-a260-2b32dae9bc76",
+                person: {
+                  id: "15ff465c-2b7b-4d9a-9159-720c74d8b56d",
+                  last_name: "Елесеевская",
+                  first_name: "Татьяна",
+                  patronymic: "Ивановна",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f451a0c3-c734-4f73-91c2-d7a5674459e422",
+                employee: {
+                  id: "dv841a15-e867-331f-a658-6325de7c311e",
+                  last_name: "Коломойцев",
+                  first_name: "Илья",
+                  patronymic: "Петрович",
+                },
+                role: "owner",
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
+                },
+                role: null,
+              },
+            ],
+          },
         ],
       }));
       this.passthrough("http://45.84.227.122:8080/**");

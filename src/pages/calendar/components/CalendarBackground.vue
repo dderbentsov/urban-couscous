@@ -31,6 +31,7 @@ export default {
     hoursArray: Array,
     eventsData: Array,
     currentDate: Object,
+    sidebarWidth: String,
   },
   data() {
     return {
@@ -102,8 +103,10 @@ export default {
   },
   methods: {
     calculateColumnPosition(elemIndex) {
+      let deductible = parseInt(this.sidebarWidth.slice(0, -2), 10) - 72;
       if (this.ownersArrayLength < 4) {
-        this.columnWidth = this.backgroundWidth / this.ownersArrayLength;
+        this.columnWidth =
+          (this.backgroundWidth - deductible) / this.ownersArrayLength;
         return {
           width: `${this.columnWidth}px`,
           height: `${this.backgroundHeight}px`,
