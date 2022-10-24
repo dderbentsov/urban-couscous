@@ -55,7 +55,6 @@ export default {
 <style lang="sass" scoped>
 .current-time
   color: var(--bg-event-red-color)
-
 .calendar-clock-column
   width: 80px
   height: 100%

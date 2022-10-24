@@ -1,6 +1,6 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border(class="py-2.5" :style="{ minWidth: widthInput + 'px' }")
-    input.w-full.outline-0.text-base.not-italic(:value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder" :maxlength="maxLength")
+    input.w-full.outline-0.text-base.not-italic(:style="{ backgroundColor: backgroundInput, fontSize: fontSizeInput }" :value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder" :maxlength="maxLength")
     .slot(v-if="withIcon" :class="iconPosition")
       slot.cursor-pointer
 </template>
@@ -24,6 +24,8 @@ export default {
       default: "Поиск",
     },
     widthInput: Number,
+    backgroundInput: String,
+    fontSizeInput: String,
   },
 };
 </script>

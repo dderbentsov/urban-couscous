@@ -1,28 +1,53 @@
 <template lang="pug">
-  .sidebar.flex.flex-col.bg-white
+  .sidebar.flex.flex-col.bg-white(:class="openSidebar")
     .sidebar-wrapper.h-full.my-13px(:style="sidebarWidth")
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px
-        base-button-plus
-        .flex.flex-col.items-center
-          base-button-plus(:class="buttonStyled")
+        base-button-plus(:size="40" v-if="!isOpen")
+        .create-event.flex.items-center.justify-center(v-else)
+          base-create-button.font-medium.pl-15px.py-10.5px(text="Создать событие" :withIcon="true")
+        .flex.flex-col.items-center(v-if="!isOpen")
+          base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
           .flex.flex-col.gap-y-2.items-center.mt-4
             .event.flex.items-center.justify-center(v-for="event in events" :key="event.id")
               .event-type(:style="{ background: event.color }")
-        .flex.flex-col.items-center.gap-y-2.justify-center
-          base-button-plus.mb-2(:class="buttonStyled")
+        .flex.items-center.flex-col.gap-y-4(v-else)
+          .events-wrapper.flex.items-center.justify-between
+            .flex {{ "Виды событий" }}
+            base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+          .flex.flex-col.gap-y-2
+            .relative.flex.items-center.gap-x-3(v-for="event in events")
+              base-input.py-2.pl-6(:placeholder="event.name" :key="event.id" :backgroundInput="red" background-input="transparent" font-size-input="12px")
+              .event-type(:style="{ background: event.color }")
+              span.icon-edit.cursor-pointer
+        .flex.flex-col.items-center.gap-y-2.justify-center(v-if="!isOpen")
+          base-button-plus.mb-2(:class="buttonStyled" :size="24" :icon-size="10")
           .team-card(v-for="teammate in team" :key="teammate.id")
             img.avatar-wrapper(:src="teammate.avatar" alt="Team member")
+        .flex.flex-col.gap-y-4(v-else)
+          .events-wrapper.flex.items-center.justify-between
+            .flex {{ "Команды" }}
+            base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+          .box-team.flex.flex-col.gap-y-2
+            .team-card.flex.items-center.justify-between(v-for="teammate in team" :key="teammate.id")
+              .flex.items-center
+                img.avatar-wrapper(:src="teammate.avatar" alt="Team member")
+                .flex.ml-2.not-italic.font-medium.text-xxs {{ changeLastName(teammate.last_name) + changeInitials(teammate.first_name, teammate.patronymic) }}
+              .span.icon-change-place.cursor-pointer
         base-open-button.mt-148px(@click="changeSize" :style="{ transform: `rotate(${turnButton})` }")
 </template>
 
 <script>
 import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue";
 import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
+import BaseCreateButton from "../../../components/base/buttons/BaseCreateButton.vue";
+import BaseInput from "../../../components/base/BaseInput.vue";
 export default {
   name: "CalendarSidebar",
   components: {
     BaseButtonPlus,
     BaseOpenButton,
+    BaseCreateButton,
+    BaseInput,
   },
   props: {
     team: Array,
@@ -30,18 +55,24 @@ export default {
   data() {
     return {
       events: [
-        { id: 1, color: "var(--bg-event-green-color)" },
-        { id: 2, color: "var(--bg-event-red-color)" },
-        { id: 3, color: "var(--bg-event-yellow-color)" },
-        { id: 4, color: "var(--bg-event-blue-color)" },
+        { id: 1, name: "Встреча", color: "var(--bg-event-green-color)" },
+        { id: 2, name: "Планерка", color: "var(--bg-event-red-color)" },
+        { id: 3, name: "Интервью", color: "var(--bg-event-yellow-color)" },
+        { id: 4, name: "Важная работа", color: "var(--bg-event-blue-color)" },
       ],
       widthSidebarOpen: "232px",
       widthSidebarClose: "72px",
       isOpen: false,
       turnButton: "180deg",
+      maxLengthLastName: 13,
     };
   },
   computed: {
+    openSidebar() {
+      return {
+        "open-sidebar": this.isOpen,
+      };
+    },
     buttonStyled() {
       return {
         "button-styled": true,
@@ -67,6 +98,14 @@ export default {
       );
       this.turnButton = this.isOpen ? "0deg" : "180deg";
     },
+    changeLastName(lastName) {
+      return lastName.length > this.maxLengthLastName
+        ? lastName.substr(0, this.maxLengthLastName) + "... "
+        : lastName + " ";
+    },
+    changeInitials(firstName, patronymic) {
+      return firstName.substr(0, 1) + "." + patronymic.substr(0, 1) + ".";
+    },
   },
 };
 </script>
@@ -75,8 +114,6 @@ export default {
 .sidebar-wrapper
   border-left: 2px solid var(--btn-blue-color-3)
 .button-plus
-  width: 40px
-  height: 40px
   max-height: 40px
   background: var(--btn-blue-color)
   color: var(--default-white)
@@ -97,10 +134,28 @@ export default {
   height: 40px
   max-height: 40px
 .button-styled
-  width: 24px
-  height: 24px
   max-height: 24px
   background: var(--btn-blue-color-1)
   color: var(--btn-blue-color)
-  font-size: 10px
+.open-sidebar
+  .sidebar-content
+    align-items: flex-end
+    padding-left: 15px
+  .event-type
+    position: absolute
+    width: 8px
+    height: 16px
+    top: 8px
+    left: 8px
+.create-event
+  width: 200px
+  height: 40px
+  border-radius: 4px
+.events-wrapper
+  width: 200px
+.input-wrapper
+  border: none
+  background: var(--bg-event-box-color)
+  height: 32px
+  width: 169px
 </style>
