@@ -1,5 +1,5 @@
 <template lang="pug">
-  .schedule.ml-2.w-full
+  .schedule.ml-2.w-full(:style="scheduleWidth")
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -60,6 +60,7 @@ export default {
         return [];
       },
     },
+    sidebarWidth: String,
   },
   data() {
     return {
@@ -101,11 +102,16 @@ export default {
     pixelsPerMinute() {
       return this.pixelsPerHour / 60;
     },
-    scheduleSize() {
+    scheduleHeight() {
       return (
         (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour +
         this.columnHeaderHeight
       );
+    },
+    scheduleWidth() {
+      return {
+        "--sidebar-width": this.sidebarWidth,
+      };
     },
   },
   methods: {
@@ -172,7 +178,7 @@ export default {
         (newTime[0] - this.validateStartTime) * this.pixelsPerHour +
         newTime[1] * this.pixelsPerMinute +
         this.columnHeaderHeight;
-      if (result > this.scheduleSize || result < 0) {
+      if (result > this.scheduleHeight || result < 0) {
         this.isShownIndicator = false;
         return 0;
       }
@@ -219,17 +225,17 @@ export default {
 <style lang="sass" scoped>
 .schedule
   background-color: var(--default-white)
-  width: calc(100% - 80px)
+  width: calc(100% - (var(--sidebar-width) + 8px))
 
 .time-line-indicator
   width: calc(100% - 80px)
-  border-top: 1px solid var(--time-indicator-color)
+  border-top: 1px solid var(--bg-event-red-color)
   position: absolute
 
 .time-circle-indicator
   width: 12px
   height: 12px
-  background-color: var(--time-indicator-color)
+  background-color: var(--bg-event-red-color)
   border-radius: 50%
   position: absolute
 
