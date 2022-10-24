@@ -5,6 +5,7 @@
       :current-date="currentDate"
       :time-information="timeInformation"
       :events-data="eventsData"
+      :sidebar-width="sidebarWidth"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -21,7 +22,7 @@ export default {
   components: { CalendarSchedule, CalendarSidebar },
   data() {
     return {
-      currentWidth: "152px",
+      sidebarWidth: "72px",
       calendarLayout: "",
       currentDate: moment(),
       timeInformation: {
@@ -56,7 +57,7 @@ export default {
         .then((res) => this.saveEventsData(res));
     },
     changeWidth(value) {
-      this.currentWidth = value;
+      this.sidebarWidth = value;
     },
   },
   mounted() {
@@ -64,3 +65,8 @@ export default {
   },
 };
 </script>
+
+<style lang="sass" scoped>
+.calendar-container
+  width: calc(100vw - 80px)
+</style>
