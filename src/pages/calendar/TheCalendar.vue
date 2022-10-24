@@ -31,10 +31,34 @@ export default {
       },
       eventsData: [],
       team: [
-        { id: 1, name: "Захарова А.О.", avatar: img },
-        { id: 2, name: "Константинопольская Ю.В.", avatar: img },
-        { id: 3, name: "Коломойцев И.К.", avatar: img },
-        { id: 4, name: "Зайцев В.С.", avatar: img },
+        {
+          id: 1,
+          last_name: "Гагарин",
+          first_name: "Юрий",
+          patronymic: "Алексеевич",
+          avatar: img,
+        },
+        {
+          id: 2,
+          last_name: "Константинопольская",
+          first_name: "Юлия",
+          patronymic: "Витальевна",
+          avatar: img,
+        },
+        {
+          id: 3,
+          last_name: "Коломойцев",
+          first_name: "Игорь",
+          patronymic: "Константинович",
+          avatar: img,
+        },
+        {
+          id: 4,
+          last_name: "Зайцев",
+          first_name: "Валерий",
+          patronymic: "Сергеевич",
+          avatar: img,
+        },
       ],
     };
   },
