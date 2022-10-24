@@ -13,7 +13,7 @@ export default {
   },
   computed: {
     heightInput() {
-      return ((this.width / 100) * 70) / 8;
+      return ((this.width / 100) * 70) / 11;
     },
   },
 };

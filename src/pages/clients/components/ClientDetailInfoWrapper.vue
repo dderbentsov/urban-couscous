@@ -7,8 +7,8 @@
     .flex.flex-col.gap-y-2
       client-detail-info-section(:section-info="dataDetail.birthday" section="birthday")
       client-detail-info-section(:section-info="dataDetail.addresses" section="addresses")
-    client-detail-info-section(:section-info="dataDetail.docs" section="docs")
-    client-detail-info-section(:section-info="dataDetail.additional" section="additional")
+    client-detail-info-section(:section-info="dataDetail.docs" section="docs" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
+    client-detail-info-section(:section-info="dataDetail.additional" section="additional" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
 
 <script>
@@ -18,6 +18,8 @@ export default {
   components: { ClientDetailInfoSection },
   props: {
     dataDetail: Object,
+    saveNewDoc: Function,
+    deleteDoc: Function,
   },
 };
 </script>

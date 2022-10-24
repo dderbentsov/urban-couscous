@@ -6,16 +6,23 @@
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
-    div
+    .px-1
+      calendar-event-card(
+        v-for="event in dayEvents"
+        :key="event.id"
+        :ownerEvent="event"
+        )
 </template>
 
 <script>
 import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
+import CalendarEventCard from "./CalendarEventCard.vue";
 export default {
   name: "CalendarColumn",
-  components: { BaseDocOkButton },
+  components: { BaseDocOkButton, CalendarEventCard },
   props: {
     ownerData: Object,
+    dayEvents: Array,
   },
   computed: {
     ownerName() {
