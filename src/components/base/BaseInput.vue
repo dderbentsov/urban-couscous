@@ -1,7 +1,8 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border(class="py-2.5" :style="{ minWidth: widthInput + 'px' }")
-    img.cursor-pointer( v-if="withIcon" :class="position" src="@/assets/icons/search-black.svg" alt="SearchTable")
-    input.w-full.outline-0.text-base.not-italic(:value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder")
+    input.w-full.outline-0.text-base.not-italic(:value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder" :maxlength="maxLength")
+    .slot(v-if="withIcon" :class="iconPosition")
+      slot.cursor-pointer
 </template>
 
 <script>
@@ -11,30 +12,25 @@ export default {
     type: {
       default: "text",
     },
+    maxLength: Number,
     value: String,
     withIcon: {
       default: false,
     },
-    iconPosition: String,
+    iconPosition: {
+      default: "right",
+    },
     placeholder: {
       default: "Поиск",
     },
     widthInput: Number,
-  },
-  computed: {
-    position() {
-      if (this.iconPosition === "right") {
-        return "right";
-      }
-      return "left";
-    },
   },
 };
 </script>
 
 <style lang="sass" scoped>
 .left
-  order: 0
+  order: -1
 .right
   order: 1
 .input-wrapper
