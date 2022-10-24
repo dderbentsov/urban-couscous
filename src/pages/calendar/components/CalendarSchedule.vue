@@ -16,6 +16,7 @@
           :day-end-time="validateEndTime"
           )
       calendar-background(
+        :current-date="currentDate"
         :hours-array="hoursArray"
         :events-data="eventsData"
         )

@@ -8,6 +8,7 @@
       :key="owner.id"
       :owner-data="owner"
       :style="calculateColumnPosition(index)"
+      :day-events="filterEventsByOwner(owner)"
       )
     .header(:style="backgroundExtendedWidth")
     .body.flex.flex-col(
@@ -29,6 +30,7 @@ export default {
   props: {
     hoursArray: Array,
     eventsData: Array,
+    currentDate: Object,
   },
   data() {
     return {
@@ -91,6 +93,12 @@ export default {
         (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
       );
     },
+    filteredEventsByDate() {
+      return this.eventsData.filter(
+        ({ start }) =>
+          start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
+      );
+    },
   },
   methods: {
     calculateColumnPosition(elemIndex) {
@@ -115,6 +123,18 @@ export default {
       return array.find(
         (item) => JSON.stringify(item) === JSON.stringify(object)
       );
+    },
+    filterEventsByOwner(owner) {
+      let filteredArray = [];
+      this.filteredEventsByDate.forEach((item) => {
+        let foundEvent = item.employees.find(
+          (elem) =>
+            JSON.stringify(elem.employee) === JSON.stringify(owner) &&
+            elem.role === "owner"
+        );
+        if (foundEvent) filteredArray.push(item);
+      });
+      return filteredArray;
     },
   },
   mounted() {
