@@ -29,14 +29,6 @@ export default {
         dayEndTime: "18:00",
       },
       eventsData: [],
-      columnInformation: {
-        owners: [
-          "Захарова А.О.",
-          "Константинопольская Ю.В.",
-          "Коломойцев И.К.",
-          "Зайцев В.С.",
-        ],
-      },
       team: [
         { id: 1, name: "Захарова А.О.", avatar: img },
         { id: 2, name: "Константинопольская Ю.В.", avatar: img },
