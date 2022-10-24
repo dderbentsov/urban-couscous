@@ -16,8 +16,10 @@
           :day-end-time="validateEndTime"
           )
       calendar-background(
+        :current-date="currentDate"
         :hours-array="hoursArray"
         :events-data="eventsData"
+        :sidebar-width="sidebarWidth"
         )
       .time-circle-indicator.left-74px(
         v-if="isShownIndicator"
