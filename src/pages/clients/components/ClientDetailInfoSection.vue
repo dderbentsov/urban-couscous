@@ -5,18 +5,22 @@
       .flex.items-center.gap-x-8(v-if="isOpenChange")
         base-button-ok(@click="saveChange" v-if="isChange" :size="20" :icon-size="10" :dark-style="true")
         .edit.icon-edit.cursor-pointer.text-sm(v-if="!isChange" @click="changeClientData")
-        base-button-plus(v-if="settings[section].addFile" :size="20" :icon-size="10" :with-border="true")
+        .flex.relative
+          base-button-plus(v-if="settings[section].addFile" :size="20" :icon-size="10" :with-border="true" @click="openAddingWrap")
+          table-adding-new-doc(v-if="section === 'docs' && isOpenAddingWrap" :add-new-doc="addNewDoc" :save-docs="saveDocs" :new-docs="docData")
+          table-adding-new-additional(v-if="section === 'additional' && isOpenAddingWrap" :new-additional-data="additionalData" :add-new-additional="addDocAdditional" :save-additional="saveDocs" )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
       .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
         span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
         span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
         client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange && item.value" :style="{fontWeight:item.copy&&600}" v-model:value="item.value" :width="settings[section].width")
           .copy.icon-copy.cursor-pointer(v-if="item.copy")
-        .flex.gap-x-4(v-if="item.value && !isChange")
+        .flex(v-if="item.value && !isChange")
           span.text-sm.w-fit(:style="{fontWeight:item.copy&&600}") {{item.value}}
-          .copy.icon-copy.cursor-pointer(v-if="item.copy")
-        .flex.gap-x-4(v-if="item.name")
-          .icon-files.cursor-pointer(:style="{color:settings.docsColor[item.type]}")
+          .copy.icon-copy.cursor-pointer.pl-4(v-if="item.copy")
+        .flex.items-center(v-if="item.name")
+          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(v-if="isChange" :id="item.name" @click="(e) => deleteDoc(e, section)")
+          .icon-files.cursor-pointer.pr-3.text-xl(:style="{color:settings.docsColor[item.type]}")
           span.text-sm {{item.name}}
 </template>
 
@@ -24,16 +28,34 @@
 import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
 import BaseButtonOk from "@/components/base/buttons/BaseButtonOk";
 import BaseButtonPlus from "@/components/base/buttons/BaseButtonPlus";
+import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
+import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import { detail } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "ClientDetailInfoSection",
-  components: { BaseButtonPlus, BaseButtonOk, ClientDetailInput },
+  components: {
+    TableAddingNewAdditional,
+    BaseButtonPlus,
+    BaseButtonOk,
+    ClientDetailInput,
+    TableAddingNewDoc,
+  },
   props: {
+    saveNewDoc: Function,
     sectionInfo: Object,
     section: String,
+    deleteDoc: Function,
   },
   data() {
     return {
+      additionalData: {
+        header: "",
+        value: "",
+        name: "",
+        type: "",
+      },
+      docData: [],
+      isOpenAddingWrap: false,
       isOpenChange: false,
       isChange: false,
       settings: detail,
@@ -49,6 +71,32 @@ export default {
     saveChange() {
       this.isOpenChange = false;
       this.isChange = false;
+    },
+    openAddingWrap() {
+      this.isOpenAddingWrap = true;
+    },
+    addNewDoc(e) {
+      this.docData = [...this.docData, ...e.target.files];
+    },
+    addDocAdditional(e) {
+      this.additionalData.name = e.target.files[0].name;
+      this.additionalData.type = e.target.files[0].type;
+    },
+    saveDocs() {
+      if (this.section === "additional") {
+        this.saveNewDoc(this.section, [this.additionalData]);
+      } else {
+        this.saveNewDoc(this.section, this.docData);
+      }
+      this.isOpenAddingWrap = false;
+      this.isOpenChange = false;
+      this.docData = [];
+      this.additionalData = {
+        header: "",
+        value: "",
+        name: "",
+        type: "",
+      };
     },
   },
 };
@@ -85,6 +133,10 @@ export default {
     background-color: var(--btn-blue-color)
 .edit
   color: var(--btn-blue-color)
+  &:hover
+    opacity: 0.6
+.cancel
+  color: var(--font-grey-color)
   &:hover
     opacity: 0.6
 </style>

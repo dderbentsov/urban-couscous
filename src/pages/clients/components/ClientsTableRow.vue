@@ -14,7 +14,7 @@
       .dots.flex.justify-center.items-center
         .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(:tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup")
-    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail")
+    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
 
 <script>
@@ -84,6 +84,21 @@ export default {
     },
     handleUnFocusPopup() {
       this.isOpenPopup = false;
+    },
+    saveNewDoc(section, data) {
+      this.dataDetail[section] = [...this.dataDetail[section], ...data];
+    },
+    deleteDoc(e, section) {
+      if (section === "additional") {
+        this.dataDetail[section].forEach((el, index) => {
+          if (el.name === e.target.id) {
+            delete this.dataDetail[section][index].name;
+          }
+        });
+      }
+      this.dataDetail[section] = this.dataDetail[section].filter(
+        (el) => el.name !== e.target.id
+      );
     },
   },
 };
