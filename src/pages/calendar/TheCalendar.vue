@@ -1,6 +1,6 @@
 <template lang="pug">
-  .calendar-container.flex(:style="{ width: `calc(100% - ${currentWidth})` }")
-    calendar-sidebar(@width='changeWidth' :team="team")
+  .calendar-container.flex
+    calendar-sidebar(@width="changeWidth" :team="team")
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
@@ -56,7 +56,7 @@ export default {
         .then((res) => this.saveEventsData(res));
     },
     changeWidth(value) {
-      this.currentWidth = value.width;
+      this.currentWidth = value;
     },
   },
   mounted() {
