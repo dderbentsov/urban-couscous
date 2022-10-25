@@ -26,8 +26,8 @@ export default {
       calendarLayout: "",
       currentDate: moment(),
       timeInformation: {
-        dayStartTime: "8:00",
-        dayEndTime: "18:00",
+        dayStartTime: "0:00",
+        dayEndTime: "20:00",
       },
       eventsData: [],
       team: [

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .schedule.ml-2.w-full(:style="scheduleWidth")
+  .schedule.ml-2.pb-5.w-full(:style="scheduleWidth")
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -7,19 +7,23 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
       )
-    .schedule-body.flex
+    .schedule-body.flex(
+      :class="bodyVerticalScroll"
+      )
       div
         calendar-clock-column(
-          :hours-array="hoursArray"
+          :timeCoil="timeCoil"
           :current-time="currentTime"
           :is-current-date="isCurrentDate"
           :day-end-time="validateEndTime"
           )
       calendar-background(
         :current-date="currentDate"
-        :hours-array="hoursArray"
+        :time-coil="timeCoil"
         :events-data="eventsData"
         :sidebar-width="sidebarWidth"
+        :day-start-time="validateStartTime"
+        :day-end-time="validateEndTime"
         )
       .time-circle-indicator.left-74px(
         v-if="isShownIndicator"
@@ -67,7 +71,7 @@ export default {
   data() {
     return {
       currentTime: "",
-      hoursArray: [],
+      timeCoil: [],
       timer: null,
       isCurrentDate: true,
       isShownIndicator: true,
@@ -115,6 +119,11 @@ export default {
         "--sidebar-width": this.sidebarWidth,
       };
     },
+    bodyVerticalScroll() {
+      return {
+        "scroll-y": this.scheduleHeight > 855,
+      };
+    },
   },
   methods: {
     previousDate() {
@@ -133,7 +142,7 @@ export default {
       ) {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
-          this.changeHoursArray();
+          this.changeTimeCoil();
         }, 5000);
       }
     },
@@ -144,20 +153,20 @@ export default {
     changeCurrentTime() {
       this.currentTime = moment().format("HH:mm:ss");
     },
-    hoursArrayInitialization() {
-      this.hoursArray = [];
+    timeCoilInitialization() {
+      this.timeCoil = [];
       for (let i = this.validateStartTime; i <= this.validateEndTime; i++) {
         if (
           i === this.hours &&
           this.hours !== this.validateEndTime &&
           this.isCurrentDate
         ) {
-          this.hoursArray.push(this.hoursMinutes);
-        } else this.hoursArray.push(`${i}:00`);
+          this.timeCoil.push(this.hoursMinutes);
+        } else this.timeCoil.push(`${i}:00`);
       }
     },
-    changeHoursArray() {
-      this.hoursArray = this.hoursArray.map((elem) => {
+    changeTimeCoil() {
+      this.timeCoil = this.timeCoil.map((elem) => {
         if (this.convertTime(elem, 0, -3) === this.hours) {
           return this.hoursMinutes;
         }
@@ -195,7 +204,7 @@ export default {
         this.timer
       ) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
     },
     currentDate: function () {
@@ -204,18 +213,18 @@ export default {
       this.isShownIndicator = this.isCurrentDate;
       if (this.timer) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
       if (this.isCurrentDate) {
         this.changeCurrentTime();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
         this.startTimer();
       }
     },
   },
   mounted() {
     this.changeCurrentTime();
-    this.hoursArrayInitialization();
+    this.timeCoilInitialization();
     this.startTimer();
   },
   beforeUnmount() {
@@ -228,6 +237,9 @@ export default {
 .schedule
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
+
+.scroll-y
+  overflow-y: scroll
 
 .time-line-indicator
   width: calc(100% - 80px)
@@ -243,4 +255,5 @@ export default {
 
 .schedule-body
   position: relative
+  height: 855px
 </style>

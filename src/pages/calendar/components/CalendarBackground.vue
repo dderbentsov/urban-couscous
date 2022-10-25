@@ -1,22 +1,25 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col(
     ref="backgroundWrapper"
-    :class="scrollPresence"
+    :class="horizontalScrollPresence"
     )
+    .header-wrapper
+      .header(:style="backgroundExtendedWidth")
     calendar-column(
       v-for="(owner, index) in filteredOwners"
       :key="owner.id"
       :owner-data="owner"
       :style="calculateColumnPosition(index)"
       :day-events="filterEventsByOwner(owner)"
+      :day-start-time="dayStartTime"
+      :day-end-time="dayEndTime"
       )
-    .header(:style="backgroundExtendedWidth")
     .body.flex.flex-col(
       :style="backgroundExtendedWidth"
       )
       .line-wrapper
         .line.flex.items-center(
-          v-for="hour in hoursArray"
+          v-for="hour in timeCoil"
           :key="hour"
           )
           .middle-line
@@ -28,10 +31,12 @@ export default {
   name: "CalendarBackground",
   components: { CalendarColumn },
   props: {
-    hoursArray: Array,
+    timeCoil: Array,
     eventsData: Array,
     currentDate: Object,
     sidebarWidth: String,
+    dayStartTime: Number,
+    dayEndTime: Number,
   },
   data() {
     return {
@@ -56,11 +61,11 @@ export default {
       };
     },
     backgroundHeight() {
-      return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
+      return (this.timeCoil.length - 1) * this.pixelsPerHour + 48;
     },
-    scrollPresence() {
+    horizontalScrollPresence() {
       return {
-        scroll: this.ownersArrayLength > 3,
+        "scroll-x": this.ownersArrayLength > 3 && this.backgroundHeight < 855,
       };
     },
     filteredOwners() {
@@ -73,11 +78,11 @@ export default {
       };
       this.eventsData.forEach(({ employees }) => {
         let findedElement = employees.find((elem) => elem.role === "owner");
-        let emptyObjectPresence = this.findObjectInArray(
+        let emptyDataPresence = this.findObjectInArray(
           filteredArray,
           ownerAbsence
         );
-        if (!findedElement && !emptyObjectPresence) {
+        if (!findedElement && !emptyDataPresence) {
           filteredArray.push(ownerAbsence);
         }
         if (findedElement) {
@@ -147,11 +152,15 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.scroll
+.scroll-x
   overflow-x: scroll
+  overflow-y: hidden
 
 .calendar-background-wrapper
   width: 100%
+  position: relative
+
+.header-wrapper
   position: relative
 
 .header
