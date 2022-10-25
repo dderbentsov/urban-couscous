@@ -48,7 +48,7 @@ export default {
   background-color: var(--bg-event-yellow-color)
   color: var(--font-black-color)
   position: relative
-  z-index: 2
+  z-index: 3
 
 .header
   width: 100%

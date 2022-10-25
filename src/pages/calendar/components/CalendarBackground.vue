@@ -1,8 +1,10 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col(
     ref="backgroundWrapper"
-    :class="scrollPresence"
+    :class="horizontalScrollPresence"
     )
+    .header-wrapper
+      .header(:style="backgroundExtendedWidth")
     calendar-column(
       v-for="(owner, index) in filteredOwners"
       :key="owner.id"
@@ -10,7 +12,6 @@
       :style="calculateColumnPosition(index)"
       :day-events="filterEventsByOwner(owner)"
       )
-    .header(:style="backgroundExtendedWidth")
     .body.flex.flex-col(
       :style="backgroundExtendedWidth"
       )
@@ -58,9 +59,9 @@ export default {
     backgroundHeight() {
       return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
     },
-    scrollPresence() {
+    horizontalScrollPresence() {
       return {
-        scroll: this.ownersArrayLength > 3,
+        "scroll-x": this.ownersArrayLength > 3 && this.backgroundHeight < 855,
       };
     },
     filteredOwners() {
@@ -147,11 +148,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.scroll
+.scroll-x
   overflow-x: scroll
 
 .calendar-background-wrapper
   width: 100%
+  position: relative
+
+.header-wrapper
   position: relative
 
 .header

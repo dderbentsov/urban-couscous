@@ -59,4 +59,6 @@ export default {
   width: 80px
   height: 100%
   color: var(--font-dark-blue-color)
+  position: sticky
+  left: 0
 </style>

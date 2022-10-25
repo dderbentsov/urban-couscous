@@ -1,5 +1,5 @@
 <template lang="pug">
-  .schedule.ml-2.w-full(:style="scheduleWidth")
+  .schedule.ml-2.pb-5.w-full(:style="scheduleWidth")
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -7,7 +7,9 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
       )
-    .schedule-body.flex
+    .schedule-body.flex(
+      :class="bodyVerticalScroll"
+      )
       div
         calendar-clock-column(
           :hours-array="hoursArray"
@@ -115,6 +117,11 @@ export default {
         "--sidebar-width": this.sidebarWidth,
       };
     },
+    bodyVerticalScroll() {
+      return {
+        "scroll-y": this.scheduleHeight > 855,
+      };
+    },
   },
   methods: {
     previousDate() {
@@ -186,6 +193,11 @@ export default {
       }
       return result;
     },
+    bodyScheduleHeight() {
+      if (this.scheduleHeight > 855) {
+        return this.scheduleHeight;
+      }
+    },
   },
   watch: {
     currentTime() {
@@ -229,6 +241,9 @@ export default {
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
 
+.scroll-y
+  overflow-y: scroll
+
 .time-line-indicator
   width: calc(100% - 80px)
   border-top: 1px solid var(--bg-event-red-color)
@@ -243,4 +258,5 @@ export default {
 
 .schedule-body
   position: relative
+  height: 855px
 </style>

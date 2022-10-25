@@ -6,7 +6,7 @@
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-doc-ok-button
-    .px-1
+    .body
       calendar-event-card(
         v-for="event in dayEvents"
         :key="event.id"
@@ -45,6 +45,16 @@ export default {
 
 .header
   height: 48px
+  position: sticky
+  top: 0px
+  z-index: 3
+  width: inherit
+  border-right: 1px solid var(--border-light-grey-color)
+  background-color: var(--default-white)
+
+.body
+  position: relative
+  z-index: 3
 
 .avatar-wrapper
   width: 32px
