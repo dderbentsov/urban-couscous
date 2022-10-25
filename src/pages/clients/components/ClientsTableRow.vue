@@ -5,12 +5,10 @@
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
       table-cell-body-name(:value="fullName" :width="columnBody.find(el => el.name === 'fullName').width")
       table-cell-body-age(:value="age" :width="columnBody.find(el => el.name === 'age').width")
-      table-cell-body-job-title(:value="jobTitle" :width="columnBody.find(el => el.name === 'jobTitle').width")
       table-cell-body-priority(:value="priority" :width="columnBody.find(el => el.name === 'priority').width")
-      table-cell-body-phone(:value="phone" :width="columnBody.find(el => el.name === 'phone').width")
-      table-cell-body-email(:value="email" :width="columnBody.find(el => el.name === 'email').width")
-      table-cell-body-networks(:networks="networks" :width="columnBody.find(el => el.name === 'networks').width")
-      table-cell-body-meeting(:date="meetingTime.date" :time="meetingTime.time" :width="columnBody.find(el => el.name === 'meeting').width")
+      table-cell-body-phone(:value="contacts" :width="columnBody.find(el => el.name === 'phone').width")
+      table-cell-body-email(:value="contacts" :width="columnBody.find(el => el.name === 'email').width")
+      table-cell-body-networks(:networks="contacts" :width="columnBody.find(el => el.name === 'networks').width")
       .dots.flex.justify-center.items-center
         .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(:tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup")
@@ -47,6 +45,7 @@ export default {
   },
   data() {
     return {
+      dataIdentityDocument: {},
       dataDetail: {},
       isOpenDetailInfo: false,
       isOpenPopup: false,
@@ -57,22 +56,27 @@ export default {
     id: String,
     check: Function,
     isCheck: Boolean,
-    fullName: String,
+    fullName: Array,
     age: String,
-    jobTitle: String,
-    priority: String,
-    phone: String,
-    email: String,
-    networks: Array,
-    meetingTime: Object,
+    priority: {
+      default: null,
+    },
+    contacts: Array,
   },
   methods: {
     fetchClientDetail(id) {
       // eslint-disable-next-line
       fetch(`/api/detail/${id}`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
     },
+    fetchClientIdentityDocument(id) {
+      // eslint-disable-next-line
+      fetch(`/api/detail/identity_document/${id}`).then((res) => res.json()).then((data) => this.saveIdentityDocument(data))
+    },
     saveClientDetail(data) {
       this.dataDetail = data;
+    },
+    saveIdentityDocument(data) {
+      this.dataIdentityDocument = data;
     },
     openPopup(e) {
       e.target.focus();
@@ -81,6 +85,7 @@ export default {
     openDetailInfo(e) {
       this.isOpenDetailInfo = !this.isOpenDetailInfo;
       this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id);
+      this.isOpenDetailInfo && this.fetchClientIdentityDocument(e.currentTarget.id);
     },
     handleUnFocusPopup() {
       this.isOpenPopup = false;

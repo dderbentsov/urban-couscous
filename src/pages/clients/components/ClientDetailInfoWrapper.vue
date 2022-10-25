@@ -1,6 +1,6 @@
 <template lang="pug">
   .w-full.h-fit.pt-4.flex.gap-x-4(class="px-[52px] pb-[30px]")
-    client-detail-info-section(v-model:section-info="dataDetail.pass" section="pass")
+    client-detail-info-section(v-model:section-info="dataDocument" section="pass")
     .flex.flex-col.gap-y-2
       client-detail-info-section(:section-info="dataDetail.snils" section="snils" )
       client-detail-info-section(:section-info="dataDetail.inn" section="inn" )
@@ -20,6 +20,7 @@ export default {
     dataDetail: Object,
     saveNewDoc: Function,
     deleteDoc: Function,
+    dataDocument: Object,
   },
 };
 </script>

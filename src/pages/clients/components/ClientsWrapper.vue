@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.w-full.relative.mx-6
+  .wrapper.flex.w-full.relative.mx-6
     clients-table(:open-form-create="openFormCreateClient")
     clients-form-create(v-if="isOpenForm" :close-form="closeFormCreateClient")
 </template>
@@ -25,3 +25,8 @@ export default {
   },
 };
 </script>
+
+<style lang="sass" scoped>
+.wrapper
+  overflow: auto
+</style>

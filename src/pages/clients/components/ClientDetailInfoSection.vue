@@ -10,10 +10,10 @@
           table-adding-new-doc(v-if="section === 'docs' && isOpenAddingWrap" :add-new-doc="addNewDoc" :save-docs="saveDocs" :new-docs="docData")
           table-adding-new-additional(v-if="section === 'additional' && isOpenAddingWrap" :new-additional-data="additionalData" :add-new-additional="addDocAdditional" :save-additional="saveDocs" )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
-      .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
-        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
+      .flex.flex-col(v-for="(item, key) in settings[section].options" class="gap-y-1.5")
+        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{item}}
         span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-        client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange && item.value" :style="{fontWeight:item.copy&&600}" v-model:value="item.value" :width="settings[section].width")
+        client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange && item.value" :style="{fontWeight:item.copy&&600}" v-model:value="sectionInfo[key]" :width="settings[section].width")
           .copy.icon-copy.cursor-pointer(v-if="item.copy")
         .flex(v-if="item.value && !isChange")
           span.text-sm.w-fit(:style="{fontWeight:item.copy&&600}") {{item.value}}

@@ -10,14 +10,10 @@
           :id="client.id"
           :is-check="marked.includes(client.id)"
           :check="selectedCheck"
-          :full-name="`${client.last_name} ${client.first_name} ${client.patronymic}`"
-          :age="client.age"
-          :job-title="client.jobTitle"
+          :full-name="[client.last_name, client.first_name, client.patronymic]"
+          :age="client.birth_date"
           :priority="client.priority"
-          :phone="client.phone"
-          :email="client.email"
-          :networks="client.networks"
-          :meeting-time="client.meeting"
+          :contacts="client.contacts"
           )
 </template>
 
@@ -46,7 +42,7 @@ export default {
   },
   methods: {
     saveDataClients(data) {
-      this.dataClients = data;
+      this.dataClients = data.results;
     },
     fetchDataClients() {
       // eslint-disable-next-line
