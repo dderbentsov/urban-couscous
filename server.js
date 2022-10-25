@@ -1,252 +1,512 @@
 import { createServer } from "miragejs";
 
-const dataClients = [
+const dataClients = {
+  count: 4,
+  next: null,
+  previous: null,
+  results: [
+    {
+      id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+      last_name: "Гагарин",
+      first_name: "Юрий",
+      patronymic: "Алексеевич",
+      birth_date: "1994-12-04",
+      priority: 1,
+      contacts: [
+        {
+          id: "92d19144-8c1d-4061-a9c4-755ee2d4ead1",
+          kind: "EMAIL",
+          username: "gagarin@yandex.ru",
+        },
+        {
+          id: "92d13223-8c1d-4061-a9c4-8155344eae23",
+          kind: "TELEGRAM",
+          username: "+79309856765",
+        },
+      ],
+      identity_documents: [
+        {
+          id: "9023ce5c-4a9a-4c0d-a777-a2d7d2690ec3",
+          created_at: "2022-10-20T22:01:09.201794Z",
+          updated_at: "2022-10-24T15:44:29.235350Z",
+          deleted_flg: false,
+          kind: "Паспорт",
+          numba: "1233 123312",
+          issued_by_org: "Отделом УФМС России по рязанской области",
+          issued_by_date: "2022-10-10",
+          issued_by_org_code: "426–234",
+          created_by: null,
+          updated_by: null,
+          person_id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+        },
+      ],
+    },
+    {
+      id: "db831a14-e836-481f-a653-6325de7c311e",
+      last_name: "Жмыхов",
+      first_name: "Егор",
+      patronymic: "Сергеевич",
+      birth_date: "1997-09-03",
+      priority: 3,
+      contacts: [
+        {
+          id: "d2dd7cf2-e4a4-41d7-8987-381ea827da0a",
+          kind: "PHONE",
+          username: "+79991239988",
+        },
+        {
+          id: "dak2b4n4-669e-4c18-8b7e-fsk7261f82m1",
+          kind: "VK",
+          username: "@id13592839",
+        },
+      ],
+      identity_documents: [
+        {
+          id: "np334sw24-4a9a-4c0d-a777-zr348cv4bv",
+          created_at: "2022-10-20T22:01:09.201794Z",
+          updated_at: "2022-10-24T15:44:29.235350Z",
+          deleted_flg: false,
+          kind: "Паспорт",
+          numba: "9543 547021",
+          issued_by_org: "Отделом УФМС России по владимирской области",
+          issued_by_date: "2014-09-08",
+          issued_by_org_code: "743–126",
+          created_by: null,
+          updated_by: null,
+          person_id: "db831a14-e836-481f-a653-6325de7c311e",
+        },
+      ],
+    },
+    {
+      id: "db8jd58x-e836-481f-a653-oq1m4e7c09e1",
+      last_name: "Калинкин",
+      first_name: "Дмитрий",
+      patronymic: "Александрович",
+      birth_date: "1990-11-05",
+      priority: 2,
+      contacts: [
+        {
+          id: "ds81ncf2-1e3v-41d7-0127-381323n6da0a",
+          kind: "PHONE",
+          username: "+79208324523",
+        },
+        {
+          id: "lc5n7cf2-1m9v-41d7-12z7-kdj5j8821cm7",
+          kind: "EMAIL",
+          username: "kalindm@gmail.com",
+        },
+        {
+          id: "1f0323n2-669e-xzv9-8b7e-dk11nsd882kd",
+          kind: "DISCORD",
+          username: "kalin123",
+        },
+        {
+          id: "ds4323n2-669e-xzv9-8b7e-vkj2mcv05sx2",
+          kind: "TELEGRAM",
+          username: "+79208324523",
+        },
+      ],
+      identity_documents: [
+        {
+          id: "ob234uf432-e836-481f-a653-334qq9sdw22",
+          created_at: "2022-10-20T22:01:09.201794Z",
+          updated_at: "2022-10-24T15:44:29.235350Z",
+          deleted_flg: false,
+          kind: "Паспорт",
+          numba: "4308 205732",
+          issued_by_org: "Отделом УФМС России по московской области",
+          issued_by_date: "2018-11-03",
+          issued_by_org_code: "902–571",
+          created_by: null,
+          updated_by: null,
+          person_id: "db8jd58x-e836-481f-a653-oq1m4e7c09e1",
+        },
+      ],
+    },
+    {
+      id: "cs5ms771-e836-kdc4-a653-sc4n567sx123",
+      last_name: "Артышова",
+      first_name: "Юлия",
+      patronymic: "Андреевна",
+      birth_date: "2000-08-17",
+      priority: null,
+      contacts: [
+        {
+          id: "d2dd7cf2-e4a4-41d7-8987-381ea827da0a",
+          kind: "PHONE",
+          username: "+79238433421",
+        },
+        {
+          id: "34cka2k5-669e-4c18-8b7e-34ncv82224mv",
+          kind: "VK",
+          username: "@id382804",
+        },
+        {
+          id: "jdf921nx-669e-4c18-8b7e-cvx722mvu6o2",
+          kind: "DISCORD",
+          username: "artshow23",
+        },
+      ],
+      identity_documents: [
+        {
+          id: "3nb4v223-e836-481f-a653-9012nf3b2",
+          created_at: "2022-10-20T22:01:09.201794Z",
+          updated_at: "2022-10-24T15:44:29.235350Z",
+          deleted_flg: false,
+          kind: "Паспорт",
+          numba: "1602 671922",
+          issued_by_org: "Отделом УФМС России по тульской области",
+          issued_by_date: "2017-01-21",
+          issued_by_org_code: "101–238",
+          created_by: null,
+          updated_by: null,
+          person_id: "cs5ms771-e836-kdc4-a653-sc4n567sx123",
+        },
+      ],
+    },
+  ],
+};
+
+const clientDetail = [
   {
-    id: "1",
-    last_name: "Вильгейльм",
-    first_name: "Арнольд",
-    patronymic: "Витальевич",
-    identity_document_to_person: {
-      pass: {
+    person_id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
+    additional_info: {
+      snils: {
         number: {
-          value: "5261 918732",
+          value: "812–183–139 21",
           copy: true,
         },
-        issuedBy: {
-          value: "Отделом УФМС России по рязанской области",
-        },
-        divisionCode: {
-          value: "426–234",
-        },
-        dateIssue: {
-          value: "02.04.2022",
+      },
+      inn: {
+        number: {
+          value: "138291382731",
+          copy: true,
         },
       },
-    },
-    note_to_person: {
-      basic_info: {
-        age: "34",
-        jobTitle: "Менеджер",
-        priority: "Высокий",
-        phone: "+7 (915) 657–21–14",
-        email: "Superboyband@yandex.ru",
-        networks: [],
-        meeting: {
-          date: "02.06.22",
-          time: "18:30–19:30",
+      birthday: {
+        date: {
+          value: "1994-12-04",
         },
       },
-      additional_info: {
-        snils: {
-          number: {
-            value: "812–183–139 21",
-            copy: true,
-          },
+      addresses: {
+        registrationPlace: {
+          value:
+            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
         },
-        inn: {
-          number: {
-            value: "138291382731",
-            copy: true,
-          },
+        actualPlace: {
+          value:
+            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
         },
-        birthday: {
-          date: {
-            value: "21.04.1999",
-          },
-        },
-        addresses: {
-          registrationPlace: {
-            value:
-              "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-          },
-          actualPlace: {
-            value:
-              "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-          },
-        },
-        docs: [
-          {
-            name: "Договор оферты.pdf",
-            type: "application/pdf",
-          },
-          {
-            name: "Договор о долевом строительстве.pdf",
-            type: "application/pdf",
-          },
-          {
-            name: "Какое-то очень очень очень очень длинное название.doc",
-            type: "application/msword",
-          },
-          {
-            name: "Договор об оплате.doc",
-            type: "application/msword",
-          },
-          {
-            name: "Коммерческое предложение.xls",
-            type: "application/vnd.ms-excel",
-          },
-          {
-            name: "Таблица заказов.xls",
-            type: "application/vnd.ms-excel",
-          },
-        ],
-        additional: [
-          {
-            header: "Предпочтения",
-            value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
-            name: "",
-            type: "",
-          },
-          {
-            header: "Доп.документы",
-            value: "",
-            name: "Памятка с вопросами на созвоне.pdf",
-            type: "application/pdf",
-          },
-          {
-            header: "Его должность",
-            value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
-            name: "",
-            type: "",
-          },
-          {
-            header: "Чтобы не забыть",
-            value: "Не забудь!",
-            name: "",
-            type: "",
-          },
-        ],
       },
+      docs: [
+        {
+          name: "Договор оферты.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о долевом строительстве.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Какое-то очень очень очень очень длинное название.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Договор об оплате.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Коммерческое предложение.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          name: "Таблица заказов.xls",
+          type: "application/vnd.ms-excel",
+        },
+      ],
+      additional: [
+        {
+          header: "Предпочтения",
+          value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Доп.документы",
+          value: "",
+          name: "Памятка с вопросами на созвоне.pdf",
+          type: "application/pdf",
+        },
+        {
+          header: "Его должность",
+          value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Чтобы не забыть",
+          value: "Не забудь!",
+          name: "",
+          type: "",
+        },
+      ],
     },
   },
   {
-    id: "2",
-    last_name: "Астафоркина",
-    first_name: "Екатерина",
-    patronymic: "Геннадьевна",
-    identity_document_to_person: {
-      pass: {
+    person_id: "db831a14-e836-481f-a653-6325de7c311e",
+    additional_info: {
+      snils: {
         number: {
-          value: "1324 103496",
+          value: "834–001–555 35",
           copy: true,
         },
-        issuedBy: {
-          value: "Отделом УФМС России по владимирской области",
-        },
-        divisionCode: {
-          value: "675–901",
-        },
-        dateIssue: {
-          value: "01.01.2011",
+      },
+      inn: {
+        number: {
+          value: "371942327342",
+          copy: true,
         },
       },
+      birthday: {
+        date: {
+          value: "1997-09-03",
+        },
+      },
+      addresses: {
+        registrationPlace: {
+          value:
+            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+        },
+        actualPlace: {
+          value:
+            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+        },
+      },
+      docs: [
+        {
+          name: "Договор покупки.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о оптовых поставках.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о предоставлении услуг.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Какое-то очень очень очень очень короткое название.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Документация.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Отчет.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          name: "Заказы.xls",
+          type: "application/vnd.ms-excel",
+        },
+      ],
+      additional: [
+        {
+          header: "По каким вопросам обращатся",
+          value: "Обращатся только по вопросам закупок",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Доп.документы",
+          value: "Ответственные за работу",
+          name: "Список ответсвенных.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          header: "Портфолио",
+          value: "Информация о клиенте",
+          name: "Портфолио.doc",
+          type: "application/msword",
+        },
+      ],
     },
-    note_to_person: {
-      basic_info: {
-        age: "54",
-        jobTitle: "Менеджер",
-        priority: "-",
-        phone: "+7 (574) 364–53–36",
-        email: "antimag@gmail.com",
-        networks: [],
-        meeting: {
-          date: "14.07.22",
-          time: "17:30–21:30",
+  },
+  {
+    person_id: "db8jd58x-e836-481f-a653-oq1m4e7c09e1",
+    additional_info: {
+      snils: {
+        number: {
+          value: "812–183–139 21",
+          copy: true,
         },
       },
-      additional_info: {
-        snils: {
-          number: {
-            value: "834–001–555 35",
-            copy: true,
-          },
+      inn: {
+        number: {
+          value: "138291382731",
+          copy: true,
         },
-        inn: {
-          number: {
-            value: "371942327342",
-            copy: true,
-          },
-        },
-        birthday: {
-          date: {
-            value: "07.12.1993",
-          },
-        },
-        addresses: {
-          registrationPlace: {
-            value:
-              "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-          },
-          actualPlace: {
-            value:
-              "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-          },
-        },
-        docs: [
-          {
-            name: "Договор покупки.pdf",
-            type: "application/pdf",
-          },
-          {
-            name: "Договор о оптовых поставках.pdf",
-            type: "application/pdf",
-          },
-          {
-            name: "Договор о предоставлении услуг.pdf",
-            type: "application/pdf",
-          },
-          {
-            name: "Какое-то очень очень очень очень короткое название.doc",
-            type: "application/msword",
-          },
-          {
-            name: "Документация.doc",
-            type: "application/msword",
-          },
-          {
-            name: "Отчет.xls",
-            type: "application/vnd.ms-excel",
-          },
-          {
-            name: "Заказы.xls",
-            type: "application/vnd.ms-excel",
-          },
-        ],
-        additional: [
-          {
-            header: "По каким вопросам обращатся",
-            value: "Обращатся только по вопросам закупок",
-            name: "",
-            type: "",
-          },
-          {
-            header: "Доп.документы",
-            value: "Ответственные за работу",
-            name: "Список ответсвенных.xls",
-            type: "application/vnd.ms-excel",
-          },
-          {
-            header: "Портфолио",
-            value: "Информация о клиенте",
-            name: "Портфолио.doc",
-            type: "application/msword",
-          },
-        ],
       },
+      birthday: {
+        date: {
+          value: "1990-11-05",
+        },
+      },
+      addresses: {
+        registrationPlace: {
+          value:
+            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+        },
+        actualPlace: {
+          value:
+            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+        },
+      },
+      docs: [
+        {
+          name: "Договор оферты.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о долевом строительстве.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Какое-то очень очень очень очень длинное название.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Договор об оплате.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Коммерческое предложение.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          name: "Таблица заказов.xls",
+          type: "application/vnd.ms-excel",
+        },
+      ],
+      additional: [
+        {
+          header: "Предпочтения",
+          value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Доп.документы",
+          value: "",
+          name: "Памятка с вопросами на созвоне.pdf",
+          type: "application/pdf",
+        },
+        {
+          header: "Его должность",
+          value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Чтобы не забыть",
+          value: "Не забудь!",
+          name: "",
+          type: "",
+        },
+      ],
+    },
+  },
+  {
+    person_id: "cs5ms771-e836-kdc4-a653-sc4n567sx123",
+    additional_info: {
+      snils: {
+        number: {
+          value: "834–001–555 35",
+          copy: true,
+        },
+      },
+      inn: {
+        number: {
+          value: "371942327342",
+          copy: true,
+        },
+      },
+      birthday: {
+        date: {
+          value: "2000-08-17",
+        },
+      },
+      addresses: {
+        registrationPlace: {
+          value:
+            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+        },
+        actualPlace: {
+          value:
+            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+        },
+      },
+      docs: [
+        {
+          name: "Договор покупки.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о оптовых поставках.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Договор о предоставлении услуг.pdf",
+          type: "application/pdf",
+        },
+        {
+          name: "Какое-то очень очень очень очень короткое название.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Документация.doc",
+          type: "application/msword",
+        },
+        {
+          name: "Отчет.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          name: "Заказы.xls",
+          type: "application/vnd.ms-excel",
+        },
+      ],
+      additional: [
+        {
+          header: "По каким вопросам обращатся",
+          value: "Обращатся только по вопросам закупок",
+          name: "",
+          type: "",
+        },
+        {
+          header: "Доп.документы",
+          value: "Ответственные за работу",
+          name: "Список ответсвенных.xls",
+          type: "application/vnd.ms-excel",
+        },
+        {
+          header: "Портфолио",
+          value: "Информация о клиенте",
+          name: "Портфолио.doc",
+          type: "application/msword",
+        },
+      ],
     },
   },
 ];
+
 export function clientsServer() {
   createServer({
     routes() {
       this.get("/api/clients", () => {
-        return dataClients.map((el) => ({
-          ...el.note_to_person.basic_info,
-          id: el.id,
-          last_name: el.last_name,
-          first_name: el.first_name,
-          patronymic: el.patronymic,
-        }));
+        return dataClients;
       });
       this.get("/registry/event/", () => ({
         count: 4,
@@ -483,12 +743,12 @@ export function clientsServer() {
       this.passthrough("http://45.84.227.122:8080/**");
       this.get("/api/detail/:id", (schema, request) => {
         let id = request.params.id;
-        let client = dataClients.find((el) => el.id === id);
-        return {
-          ...client.note_to_person.additional_info,
-          id: client.id,
-          pass: client.identity_document_to_person.pass,
-        };
+        return clientDetail.find((el) => el.person_id === id);
+      });
+      this.get("/api/detail/identity_document/:id", (schema, request) => {
+        let id = request.params.id;
+        let pass = dataClients.results.find((el) => el.id === id);
+        return pass.identity_documents[0];
       });
     },
   });

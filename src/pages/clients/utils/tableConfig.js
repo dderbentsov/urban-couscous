@@ -17,14 +17,30 @@ export const column = [
     width: 140,
   },
   {
-    name: "jobTitle",
-    title: "Должность",
-    iconHead: false,
-    width: 200,
-  },
-  {
     name: "priority",
     title: "Приоритет",
+    settings: [
+      {
+        priority: 1,
+        text: "Высокий",
+        color: "#FF6F6F",
+      },
+      {
+        priority: 2,
+        text: "Средний",
+        color: "#FFC75B",
+      },
+      {
+        priority: 3,
+        text: "Низкий",
+        color: "#81ACFF",
+      },
+      {
+        priority: null,
+        text: "-",
+        color: "#9294A7",
+      },
+    ],
     iconHead: true,
     width: 124,
   },
@@ -43,14 +59,30 @@ export const column = [
   {
     name: "networks",
     title: "Сети",
+    settings: [
+      {
+        network: "VK",
+        icon: "icon-vk",
+      },
+      {
+        network: "TELEGRAM",
+        icon: "icon-tg",
+      },
+      {
+        network: "GOOGLE",
+        icon: "icon-google",
+      },
+      {
+        network: "SLACK",
+        icon: "icon-slack",
+      },
+      {
+        network: "DISCORD",
+        icon: "icon-discord",
+      },
+    ],
     iconHead: false,
     width: 152,
-  },
-  {
-    name: "meeting",
-    title: "Ближайшая встреча",
-    iconHead: true,
-    width: 220,
   },
   {
     name: "dots",
@@ -64,10 +96,10 @@ export const detail = {
   pass: {
     title: "Паспортные данные",
     options: {
-      number: "Серия и номер",
-      issuedBy: "Выдан",
-      divisionCode: "Код подразделения",
-      dateIssue: "Дата выдачи",
+      numba: "Серия и номер",
+      issued_by_org: "Выдан",
+      issued_by_org_code: "Код подразделения",
+      issued_by_date: "Дата выдачи",
     },
     width: 280,
   },
