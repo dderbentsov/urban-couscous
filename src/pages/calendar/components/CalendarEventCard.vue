@@ -47,7 +47,7 @@ export default {
   border-radius: 4px
   background-color: var(--bg-event-yellow-color)
   color: var(--font-black-color)
-  position: relative
+  position: absolute
   z-index: 3
 
 .header

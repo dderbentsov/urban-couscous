@@ -22,6 +22,8 @@
         :time-coil="timeCoil"
         :events-data="eventsData"
         :sidebar-width="sidebarWidth"
+        :day-start-time="validateStartTime"
+        :day-end-time="validateEndTime"
         )
       .time-circle-indicator.left-74px(
         v-if="isShownIndicator"
@@ -192,11 +194,6 @@ export default {
         return 0;
       }
       return result;
-    },
-    bodyScheduleHeight() {
-      if (this.scheduleHeight > 855) {
-        return this.scheduleHeight;
-      }
     },
   },
   watch: {

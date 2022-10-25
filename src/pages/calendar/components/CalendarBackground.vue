@@ -11,6 +11,8 @@
       :owner-data="owner"
       :style="calculateColumnPosition(index)"
       :day-events="filterEventsByOwner(owner)"
+      :day-start-time="dayStartTime"
+      :day-end-time="dayEndTime"
       )
     .body.flex.flex-col(
       :style="backgroundExtendedWidth"
@@ -33,6 +35,8 @@ export default {
     eventsData: Array,
     currentDate: Object,
     sidebarWidth: String,
+    dayStartTime: Number,
+    dayEndTime: Number,
   },
   data() {
     return {
@@ -150,6 +154,7 @@ export default {
 <style lang="sass" scoped>
 .scroll-x
   overflow-x: scroll
+  overflow-y: hidden
 
 .calendar-background-wrapper
   width: 100%
