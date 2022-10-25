@@ -12,14 +12,14 @@
       )
       div
         calendar-clock-column(
-          :hours-array="hoursArray"
+          :timeCoil="timeCoil"
           :current-time="currentTime"
           :is-current-date="isCurrentDate"
           :day-end-time="validateEndTime"
           )
       calendar-background(
         :current-date="currentDate"
-        :hours-array="hoursArray"
+        :time-coil="timeCoil"
         :events-data="eventsData"
         :sidebar-width="sidebarWidth"
         )
@@ -69,7 +69,7 @@ export default {
   data() {
     return {
       currentTime: "",
-      hoursArray: [],
+      timeCoil: [],
       timer: null,
       isCurrentDate: true,
       isShownIndicator: true,
@@ -140,7 +140,7 @@ export default {
       ) {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
-          this.changeHoursArray();
+          this.changeTimeCoil();
         }, 5000);
       }
     },
@@ -151,20 +151,20 @@ export default {
     changeCurrentTime() {
       this.currentTime = moment().format("HH:mm:ss");
     },
-    hoursArrayInitialization() {
-      this.hoursArray = [];
+    timeCoilInitialization() {
+      this.timeCoil = [];
       for (let i = this.validateStartTime; i <= this.validateEndTime; i++) {
         if (
           i === this.hours &&
           this.hours !== this.validateEndTime &&
           this.isCurrentDate
         ) {
-          this.hoursArray.push(this.hoursMinutes);
-        } else this.hoursArray.push(`${i}:00`);
+          this.timeCoil.push(this.hoursMinutes);
+        } else this.timeCoil.push(`${i}:00`);
       }
     },
-    changeHoursArray() {
-      this.hoursArray = this.hoursArray.map((elem) => {
+    changeTimeCoil() {
+      this.timeCoil = this.timeCoil.map((elem) => {
         if (this.convertTime(elem, 0, -3) === this.hours) {
           return this.hoursMinutes;
         }
@@ -207,7 +207,7 @@ export default {
         this.timer
       ) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
     },
     currentDate: function () {
@@ -216,18 +216,18 @@ export default {
       this.isShownIndicator = this.isCurrentDate;
       if (this.timer) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
       if (this.isCurrentDate) {
         this.changeCurrentTime();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
         this.startTimer();
       }
     },
   },
   mounted() {
     this.changeCurrentTime();
-    this.hoursArrayInitialization();
+    this.timeCoilInitialization();
     this.startTimer();
   },
   beforeUnmount() {

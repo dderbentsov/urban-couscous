@@ -17,7 +17,7 @@
       )
       .line-wrapper
         .line.flex.items-center(
-          v-for="hour in hoursArray"
+          v-for="hour in timeCoil"
           :key="hour"
           )
           .middle-line
@@ -29,7 +29,7 @@ export default {
   name: "CalendarBackground",
   components: { CalendarColumn },
   props: {
-    hoursArray: Array,
+    timeCoil: Array,
     eventsData: Array,
     currentDate: Object,
     sidebarWidth: String,
@@ -57,7 +57,7 @@ export default {
       };
     },
     backgroundHeight() {
-      return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
+      return (this.timeCoil.length - 1) * this.pixelsPerHour + 48;
     },
     horizontalScrollPresence() {
       return {
@@ -74,11 +74,11 @@ export default {
       };
       this.eventsData.forEach(({ employees }) => {
         let findedElement = employees.find((elem) => elem.role === "owner");
-        let emptyObjectPresence = this.findObjectInArray(
+        let emptyDataPresence = this.findObjectInArray(
           filteredArray,
           ownerAbsence
         );
-        if (!findedElement && !emptyObjectPresence) {
+        if (!findedElement && !emptyDataPresence) {
           filteredArray.push(ownerAbsence);
         }
         if (findedElement) {
