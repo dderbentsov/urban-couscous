@@ -85,7 +85,8 @@ export default {
     openDetailInfo(e) {
       this.isOpenDetailInfo = !this.isOpenDetailInfo;
       this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id);
-      this.isOpenDetailInfo && this.fetchClientIdentityDocument(e.currentTarget.id);
+      this.isOpenDetailInfo &&
+        this.fetchClientIdentityDocument(e.currentTarget.id);
     },
     handleUnFocusPopup() {
       this.isOpenPopup = false;
