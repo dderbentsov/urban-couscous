@@ -1,6 +1,6 @@
 <template lang="pug">
   .calendar-container.flex
-    calendar-sidebar(@width="changeWidth" :team="team")
+    calendar-sidebar(@width="changeWidth" :team-data="teamData")
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
@@ -16,7 +16,6 @@
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
-import img from "../../assets/images/team-member.svg";
 export default {
   name: "TheCalendar",
   components: { CalendarSchedule, CalendarSidebar },
@@ -30,36 +29,7 @@ export default {
         dayEndTime: "18:00",
       },
       eventsData: [],
-      team: [
-        {
-          id: 1,
-          last_name: "Гагарин",
-          first_name: "Юрий",
-          patronymic: "Алексеевич",
-          avatar: img,
-        },
-        {
-          id: 2,
-          last_name: "Константинопольская",
-          first_name: "Юлия",
-          patronymic: "Витальевна",
-          avatar: img,
-        },
-        {
-          id: 3,
-          last_name: "Коломойцев",
-          first_name: "Игорь",
-          patronymic: "Константинович",
-          avatar: img,
-        },
-        {
-          id: 4,
-          last_name: "Зайцев",
-          first_name: "Валерий",
-          patronymic: "Сергеевич",
-          avatar: img,
-        },
-      ],
+      teamData: [],
     };
   },
   methods: {
@@ -75,10 +45,16 @@ export default {
     saveEventsData(res) {
       this.eventsData = res.results;
     },
+    saveTeamData(res) {
+      this.teamData = res.results;
+    },
     fetchEventsData() {
       fetch("/registry/event/")
         .then((res) => res.json())
         .then((res) => this.saveEventsData(res));
+      fetch("http://45.84.227.122:8080/general/employee/")
+        .then((res) => res.json())
+        .then((res) => this.saveTeamData(res));
     },
     changeWidth(value) {
       this.sidebarWidth = value;
