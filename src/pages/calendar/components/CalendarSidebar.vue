@@ -4,12 +4,7 @@
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px
         base-button-plus(:size="40" v-if="!isOpen")
         .create-event.flex.items-center.justify-center(v-else)
-          base-create-button.pl-15px.pb-2.pr-3.pt-2.items-center.h-10(
-            text-styled="createEvent"
-            :icon-size="10"
-            text="Создать событие"
-            :with-icon="true"
-            icon-position="right")
+          base-create-button.pl-15px.pb-2.pr-3.pt-2.items-center.h-10(text-styled="createEvent" :icon-size="10" text="Создать событие" :with-icon="true" icon-position="right")
         .flex.flex-col.items-center(v-if="!isOpen")
           base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
           .flex.flex-col.gap-y-2.items-center.mt-4
@@ -21,26 +16,22 @@
             base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
           .flex.flex-col.gap-y-2
             .relative.flex.items-center.gap-x-3.h-8(v-for="event in events")
-              input.custom-input.py-2.pl-6.h-full.not-italic.font-medium.text-xxs(
-                :placeholder="event.name"
-                :key="event.id")
+              input.custom-input.py-2.pl-6.h-full.not-italic.font-medium.text-xxs(:placeholder="event.name" :key="event.id")
               .event-type(:style="{ background: event.color }")
               span.icon-edit.cursor-pointer
         .flex.flex-col.items-center.gap-y-2.justify-center(v-if="!isOpen")
           base-button-plus.mb-2(:class="buttonStyled" :size="24" :icon-size="10")
-          .team-card(v-for="teammate in teamData" :key="teammate.id")
-            img.avatar-wrapper(:src="avatar" alt="Team member")
+          .team-card(v-for="teammate in team" :key="teammate.id")
+            img.avatar-wrapper(:src="teammate.avatar" alt="Team member")
         .flex.flex-col.gap-y-4(v-else)
           .events-wrapper.flex.items-center.justify-between
             .flex {{ "Команды" }}
             base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
           .box-team.flex.flex-col.gap-y-2
-            .team-card.flex.items-center.justify-between.cursor-pointer(
-              v-for="teammate in teamData"
-              :key="teammate.id")
+            .team-card.flex.items-center.justify-between.cursor-pointer(v-for="teammate in team" :key="teammate.id")
               .flex.items-center
-                img.avatar-wrapper(:src="avatar" alt="Team member")
-                .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
+                img.avatar-wrapper(:src="teammate.avatar" alt="Team member")
+                .flex.ml-2.not-italic.font-medium.text-xxs {{ changeLastName(teammate.last_name) + changeInitials(teammate.first_name, teammate.patronymic) }}
               span.icon-change-place.cursor-pointer.w-5
         base-open-button.mt-148px(@click="changeSize" :style="{ transform: `rotate(${turnButton})` }")
 </template>
@@ -49,8 +40,6 @@
 import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue";
 import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
 import BaseCreateButton from "../../../components/base/buttons/BaseCreateButton.vue";
-import img from "../../../assets/images/team-member.svg";
-
 export default {
   name: "CalendarSidebar",
   components: {
@@ -59,7 +48,7 @@ export default {
     BaseCreateButton,
   },
   props: {
-    teamData: Array,
+    team: Array,
   },
   data() {
     return {
@@ -74,7 +63,6 @@ export default {
       isOpen: false,
       turnButton: "180deg",
       maxLengthLastName: 13,
-      avatar: img,
     };
   },
   computed: {
@@ -108,15 +96,13 @@ export default {
       );
       this.turnButton = this.isOpen ? "0deg" : "180deg";
     },
-    changeName(lastName, fitstName, patronymic) {
+    changeLastName(lastName) {
       return lastName.length > this.maxLengthLastName
-        ? lastName.slice(0, this.maxLengthLastName) + "... "
-        : lastName +
-            " " +
-            fitstName.slice(0, 1) +
-            "." +
-            patronymic.slice(0, 1) +
-            ".";
+        ? lastName.substr(0, this.maxLengthLastName) + "... "
+        : lastName + " ";
+    },
+    changeInitials(firstName, patronymic) {
+      return firstName.substr(0, 1) + "." + patronymic.substr(0, 1) + ".";
     },
   },
 };
