@@ -1,14 +1,18 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px' }")
-    span.text-sm {{value.some((el) => el.kind === "PHONE")?value.find((el) => el.kind === "PHONE").username:''}}
+  .flex.box-border.px-4.items-center.w-full.text-sm(:style="{ minWidth : width + 'px' }")
+    span.text-sm(v-if="!isOpenChange") {{value.phone.username}}
+    base-input(v-if="isOpenChange" :width-input="154" v-model:value="value.phone.username" :placeholder="value.phone.username")
 </template>
 
 <script>
+import BaseInput from "@/components/base/BaseInput";
 export default {
   name: "TableCellBodyPhone",
+  components: { BaseInput },
   props: {
-    value: Array,
+    value: Object,
     width: Number,
+    isOpenChange: Boolean,
   },
 };
 </script>

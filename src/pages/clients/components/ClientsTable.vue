@@ -10,10 +10,7 @@
           :id="client.id"
           :is-check="marked.includes(client.id)"
           :check="selectedCheck"
-          :full-name="[client.last_name, client.first_name, client.patronymic]"
-          :age="client.birth_date"
-          :priority="client.priority"
-          :contacts="client.contacts"
+          :client="client"
           )
 </template>
 

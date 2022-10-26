@@ -1,14 +1,18 @@
 <template lang="pug">
   .flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px' }")
-    span.text-sm {{value.some((el) => el.kind === "EMAIL")?value.find((el) => el.kind === "EMAIL").username:''}}
+    span.text-sm(v-if="!isOpenChange") {{value.email.username}}
+    base-input(v-if="isOpenChange" :width-input="234" v-model:value="value.email.username" :placeholder="value.email.username" )
 </template>
 
 <script>
+import BaseInput from "@/components/base/BaseInput";
 export default {
   name: "TableCellBodyEmail",
+  components: { BaseInput },
   props: {
-    value: Array,
+    value: Object,
     width: Number,
+    isOpenChange: Boolean,
   },
 };
 </script>

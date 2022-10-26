@@ -106,14 +106,14 @@ export const detail = {
   snils: {
     title: "СНИЛС",
     options: {
-      number: "Номер",
+      numba: "Номер",
     },
     width: 180,
   },
   inn: {
     title: "ИНН",
     options: {
-      number: "Номер",
+      numba: "Номер",
     },
     width: 180,
   },

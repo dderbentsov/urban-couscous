@@ -170,335 +170,279 @@ const dataClients = {
 const clientDetail = [
   {
     person_id: "14ff401c-2b7b-4d9a-9159-720c74d8b23c",
-    additional_info: {
-      snils: {
-        number: {
-          value: "812–183–139 21",
-          copy: true,
-        },
-      },
-      inn: {
-        number: {
-          value: "138291382731",
-          copy: true,
-        },
-      },
-      birthday: {
-        date: {
-          value: "1994-12-04",
-        },
-      },
-      addresses: {
-        registrationPlace: {
-          value:
-            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-        },
-        actualPlace: {
-          value:
-            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-        },
-      },
-      docs: [
-        {
-          name: "Договор оферты.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о долевом строительстве.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Какое-то очень очень очень очень длинное название.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Договор об оплате.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Коммерческое предложение.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          name: "Таблица заказов.xls",
-          type: "application/vnd.ms-excel",
-        },
-      ],
-      additional: [
-        {
-          header: "Предпочтения",
-          value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Доп.документы",
-          value: "",
-          name: "Памятка с вопросами на созвоне.pdf",
-          type: "application/pdf",
-        },
-        {
-          header: "Его должность",
-          value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Чтобы не забыть",
-          value: "Не забудь!",
-          name: "",
-          type: "",
-        },
-      ],
+    snils: {
+      numba: "812–183–139 21",
     },
+    inn: {
+      numba: "138291382731",
+    },
+    birthday: {
+      date: "1994-12-04",
+    },
+    addresses: {
+      registrationPlace:
+        "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+      actualPlace:
+        "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+    },
+    docs: [
+      {
+        name: "Договор оферты.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о долевом строительстве.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Какое-то очень очень очень очень длинное название.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Договор об оплате.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Коммерческое предложение.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        name: "Таблица заказов.xls",
+        type: "application/vnd.ms-excel",
+      },
+    ],
+    additional: [
+      {
+        header: "Предпочтения",
+        value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Доп.документы",
+        value: "",
+        name: "Памятка с вопросами на созвоне.pdf",
+        type: "application/pdf",
+      },
+      {
+        header: "Его должность",
+        value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Чтобы не забыть",
+        value: "Не забудь!",
+        name: "",
+        type: "",
+      },
+    ],
   },
   {
     person_id: "db831a14-e836-481f-a653-6325de7c311e",
-    additional_info: {
-      snils: {
-        number: {
-          value: "834–001–555 35",
-          copy: true,
-        },
-      },
-      inn: {
-        number: {
-          value: "371942327342",
-          copy: true,
-        },
-      },
-      birthday: {
-        date: {
-          value: "1997-09-03",
-        },
-      },
-      addresses: {
-        registrationPlace: {
-          value:
-            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-        },
-        actualPlace: {
-          value:
-            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-        },
-      },
-      docs: [
-        {
-          name: "Договор покупки.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о оптовых поставках.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о предоставлении услуг.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Какое-то очень очень очень очень короткое название.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Документация.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Отчет.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          name: "Заказы.xls",
-          type: "application/vnd.ms-excel",
-        },
-      ],
-      additional: [
-        {
-          header: "По каким вопросам обращатся",
-          value: "Обращатся только по вопросам закупок",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Доп.документы",
-          value: "Ответственные за работу",
-          name: "Список ответсвенных.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          header: "Портфолио",
-          value: "Информация о клиенте",
-          name: "Портфолио.doc",
-          type: "application/msword",
-        },
-      ],
+    snils: {
+      numba: "834–001–555 35",
     },
+    inn: {
+      numba: "371942327342",
+    },
+    birthday: {
+      date: "1997-09-03",
+    },
+    addresses: {
+      registrationPlace:
+        "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+      actualPlace:
+        "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+    },
+    docs: [
+      {
+        name: "Договор покупки.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о оптовых поставках.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о предоставлении услуг.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Какое-то очень очень очень очень короткое название.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Документация.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Отчет.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        name: "Заказы.xls",
+        type: "application/vnd.ms-excel",
+      },
+    ],
+    additional: [
+      {
+        header: "По каким вопросам обращатся",
+        value: "Обращатся только по вопросам закупок",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Доп.документы",
+        value: "Ответственные за работу",
+        name: "Список ответсвенных.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        header: "Портфолио",
+        value: "Информация о клиенте",
+        name: "Портфолио.doc",
+        type: "application/msword",
+      },
+    ],
   },
   {
     person_id: "db8jd58x-e836-481f-a653-oq1m4e7c09e1",
-    additional_info: {
-      snils: {
-        number: {
-          value: "812–183–139 21",
-          copy: true,
-        },
-      },
-      inn: {
-        number: {
-          value: "138291382731",
-          copy: true,
-        },
-      },
-      birthday: {
-        date: {
-          value: "1990-11-05",
-        },
-      },
-      addresses: {
-        registrationPlace: {
-          value:
-            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-        },
-        actualPlace: {
-          value:
-            "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
-        },
-      },
-      docs: [
-        {
-          name: "Договор оферты.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о долевом строительстве.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Какое-то очень очень очень очень длинное название.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Договор об оплате.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Коммерческое предложение.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          name: "Таблица заказов.xls",
-          type: "application/vnd.ms-excel",
-        },
-      ],
-      additional: [
-        {
-          header: "Предпочтения",
-          value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Доп.документы",
-          value: "",
-          name: "Памятка с вопросами на созвоне.pdf",
-          type: "application/pdf",
-        },
-        {
-          header: "Его должность",
-          value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Чтобы не забыть",
-          value: "Не забудь!",
-          name: "",
-          type: "",
-        },
-      ],
+    snils: {
+      numba: "812–183–139 21",
     },
+    inn: {
+      numba: "138291382731",
+    },
+    birthday: {
+      date: "1990-11-05",
+    },
+    addresses: {
+      registrationPlace:
+        "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+      actualPlace:
+        "371311, Московская обл., г. Москва, ул. Комсомольская, д.6, кв. 13",
+    },
+    docs: [
+      {
+        name: "Договор оферты.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о долевом строительстве.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Какое-то очень очень очень очень длинное название.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Договор об оплате.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Коммерческое предложение.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        name: "Таблица заказов.xls",
+        type: "application/vnd.ms-excel",
+      },
+    ],
+    additional: [
+      {
+        header: "Предпочтения",
+        value: "Разговор на “Вы”\nТолько по делу\nТолько официальный стиль",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Доп.документы",
+        value: "",
+        name: "Памятка с вопросами на созвоне.pdf",
+        type: "application/pdf",
+      },
+      {
+        header: "Его должность",
+        value: "Вроде бы важная шишка, пусть будет – Гуру в дизайне",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Чтобы не забыть",
+        value: "Не забудь!",
+        name: "",
+        type: "",
+      },
+    ],
   },
   {
     person_id: "cs5ms771-e836-kdc4-a653-sc4n567sx123",
-    additional_info: {
-      snils: {
-        number: {
-          value: "834–001–555 35",
-          copy: true,
-        },
-      },
-      inn: {
-        number: {
-          value: "371942327342",
-          copy: true,
-        },
-      },
-      birthday: {
-        date: {
-          value: "2000-08-17",
-        },
-      },
-      addresses: {
-        registrationPlace: {
-          value:
-            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-        },
-        actualPlace: {
-          value:
-            "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
-        },
-      },
-      docs: [
-        {
-          name: "Договор покупки.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о оптовых поставках.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Договор о предоставлении услуг.pdf",
-          type: "application/pdf",
-        },
-        {
-          name: "Какое-то очень очень очень очень короткое название.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Документация.doc",
-          type: "application/msword",
-        },
-        {
-          name: "Отчет.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          name: "Заказы.xls",
-          type: "application/vnd.ms-excel",
-        },
-      ],
-      additional: [
-        {
-          header: "По каким вопросам обращатся",
-          value: "Обращатся только по вопросам закупок",
-          name: "",
-          type: "",
-        },
-        {
-          header: "Доп.документы",
-          value: "Ответственные за работу",
-          name: "Список ответсвенных.xls",
-          type: "application/vnd.ms-excel",
-        },
-        {
-          header: "Портфолио",
-          value: "Информация о клиенте",
-          name: "Портфолио.doc",
-          type: "application/msword",
-        },
-      ],
+    snils: {
+      numba: "834–001–555 35",
     },
+    inn: {
+      numba: "371942327342",
+    },
+    birthday: {
+      date: "2000-08-17",
+    },
+    addresses: {
+      registrationPlace:
+        "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+      actualPlace:
+        "371311, Московская обл., г. Владимир, ул. Гагарина, д.12, кв. 24",
+    },
+    docs: [
+      {
+        name: "Договор покупки.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о оптовых поставках.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Договор о предоставлении услуг.pdf",
+        type: "application/pdf",
+      },
+      {
+        name: "Какое-то очень очень очень очень короткое название.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Документация.doc",
+        type: "application/msword",
+      },
+      {
+        name: "Отчет.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        name: "Заказы.xls",
+        type: "application/vnd.ms-excel",
+      },
+    ],
+    additional: [
+      {
+        header: "По каким вопросам обращатся",
+        value: "Обращатся только по вопросам закупок",
+        name: "",
+        type: "",
+      },
+      {
+        header: "Доп.документы",
+        value: "Ответственные за работу",
+        name: "Список ответсвенных.xls",
+        type: "application/vnd.ms-excel",
+      },
+      {
+        header: "Портфолио",
+        value: "Информация о клиенте",
+        name: "Портфолио.doc",
+        type: "application/msword",
+      },
+    ],
   },
 ];
 

@@ -3,16 +3,17 @@
     .row-body.flex.w-full.cursor-pointer(:id="id" @dblclick="(e) => openDetailInfo(e)")
       .check-box.flex.justify-center.items-center
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
-      table-cell-body-name(:value="fullName" :width="columnBody.find(el => el.name === 'fullName').width")
-      table-cell-body-age(:value="age" :width="columnBody.find(el => el.name === 'age').width")
-      table-cell-body-priority(:value="priority" :width="columnBody.find(el => el.name === 'priority').width")
-      table-cell-body-phone(:value="contacts" :width="columnBody.find(el => el.name === 'phone').width")
-      table-cell-body-email(:value="contacts" :width="columnBody.find(el => el.name === 'email').width")
-      table-cell-body-networks(:networks="contacts" :width="columnBody.find(el => el.name === 'networks').width")
+      table-cell-body-name(:value="dataClient" :avatar="dataClient.avatar" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'fullName').width")
+      table-cell-body-age(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'age').width")
+      table-cell-body-priority(:value="dataClient.priority" :choose-priority="choosePriority" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'priority').width")
+      table-cell-body-phone(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'phone').width")
+      table-cell-body-email(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'email').width")
+      table-cell-body-networks(:delete-network="deleteNetwork" :networks="dataClient.contacts" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'networks').width")
       .dots.flex.justify-center.items-center
-        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(:tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
-          clients-action-popup(v-if="isOpenPopup")
-    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
+        base-button-ok(v-if="isOpenChange" :size="20" :icon-size="10" :dark-style="true" @click="closeChangeData")
+        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-if="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
+          clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
+    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
 
 <script>
@@ -27,6 +28,7 @@ import TableCellBodyName from "@/pages/clients/components/cells/TableCellBodyNam
 import ClientsActionPopup from "@/pages/clients/components/ClientsActionPopup";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import ClientDetailInfoWrapper from "@/pages/clients/components/ClientDetailInfoWrapper";
+import BaseButtonOk from "@/components/base/buttons/BaseButtonOk";
 import { column } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "ClientsTableRow",
@@ -42,6 +44,7 @@ export default {
     TableCellBodyNetworks,
     TableCellBodyMeeting,
     ClientDetailInfoWrapper,
+    BaseButtonOk,
   },
   data() {
     return {
@@ -50,20 +53,50 @@ export default {
       isOpenDetailInfo: false,
       isOpenPopup: false,
       columnBody: column,
+      isOpenChange: false,
+      dataClient: {},
     };
   },
   props: {
     id: String,
     check: Function,
     isCheck: Boolean,
-    fullName: Array,
-    age: String,
-    priority: {
-      default: null,
-    },
-    contacts: Array,
+    client: Object,
+  },
+  created() {
+    this.dataClient = {
+      fullName: `${this.client.last_name} ${this.client.first_name} ${this.client.patronymic}`,
+      age: this.client.birth_date,
+      priority: this.client.priority,
+      phone: this.client.contacts.find((el) => el.kind === "PHONE") || {
+        kind: "EMAIL",
+        username: "",
+      },
+      email: this.client.contacts.find((el) => el.kind === "EMAIL") || {
+        kind: "EMAIL",
+        username: "",
+      },
+      contacts: [...this.client.contacts],
+      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
+    };
   },
   methods: {
+    deleteNetwork(e) {
+      this.dataClient.contacts = this.dataClient.contacts.filter(
+        (el) => el.id !== e.target.id
+      );
+    },
+    choosePriority(e) {
+      this.dataClient.priority = this.columnBody
+        .find((el) => el.name === "priority")
+        ["settings"].find((el) => el.text === e.target.id).priority;
+    },
+    closeChangeData() {
+      this.isOpenChange = false;
+    },
+    openChangeData() {
+      this.isOpenChange = true;
+    },
     fetchClientDetail(id) {
       // eslint-disable-next-line
       fetch(`/api/detail/${id}`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
@@ -76,7 +109,12 @@ export default {
       this.dataDetail = data;
     },
     saveIdentityDocument(data) {
-      this.dataIdentityDocument = data;
+      this.dataIdentityDocument = {
+        numba: data.numba,
+        issued_by_org: data.issued_by_org,
+        issued_by_org_code: data.issued_by_org_code,
+        issued_by_date: data.issued_by_date,
+      };
     },
     openPopup(e) {
       e.target.focus();
@@ -84,8 +122,7 @@ export default {
     },
     openDetailInfo(e) {
       this.isOpenDetailInfo = !this.isOpenDetailInfo;
-      this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id);
-      this.isOpenDetailInfo &&
+      this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id),
         this.fetchClientIdentityDocument(e.currentTarget.id);
     },
     handleUnFocusPopup() {
