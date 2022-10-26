@@ -1,7 +1,7 @@
 <template lang="pug">
   .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pt-9.pb-45px.px-3
     span.text-base(
-      v-for="hour in hoursArray"
+      v-for="hour in timeCoil"
       :key="hour"
       :class="currentHourStyle(hour)"
       ) {{ hour }}
@@ -11,7 +11,7 @@
 export default {
   name: "CalendarClockColumn",
   props: {
-    hoursArray: Array,
+    timeCoil: Array,
     currentTime: String,
     currentDate: Object,
     dayEndTime: Number,
@@ -59,4 +59,6 @@ export default {
   width: 80px
   height: 100%
   color: var(--font-dark-blue-color)
+  position: sticky
+  left: 0
 </style>

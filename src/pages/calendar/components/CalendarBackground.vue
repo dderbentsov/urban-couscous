@@ -1,22 +1,25 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col(
     ref="backgroundWrapper"
-    :class="scrollPresence"
+    :class="horizontalScrollPresence"
     )
+    .header-wrapper
+      .header(:style="backgroundExtendedWidth")
     calendar-column(
       v-for="(owner, index) in filteredOwners"
       :key="owner.id"
       :owner-data="owner"
       :style="calculateColumnPosition(index)"
       :day-events="filterEventsByOwner(owner)"
+      :day-start-time="dayStartTime"
+      :day-end-time="dayEndTime"
       )
-    .header(:style="backgroundExtendedWidth")
     .body.flex.flex-col(
       :style="backgroundExtendedWidth"
       )
       .line-wrapper
         .line.flex.items-center(
-          v-for="hour in hoursArray"
+          v-for="hour in timeCoil"
           :key="hour"
           )
           .middle-line
@@ -28,10 +31,13 @@ export default {
   name: "CalendarBackground",
   components: { CalendarColumn },
   props: {
-    hoursArray: Array,
+    timeCoil: Array,
+    filteredOwners: Array,
     eventsData: Array,
     currentDate: Object,
     sidebarWidth: String,
+    dayStartTime: Number,
+    dayEndTime: Number,
   },
   data() {
     return {
@@ -56,49 +62,18 @@ export default {
       };
     },
     backgroundHeight() {
-      return (this.hoursArray.length - 1) * this.pixelsPerHour + 48;
-    },
-    scrollPresence() {
-      return {
-        scroll: this.ownersArrayLength > 3,
-      };
-    },
-    filteredOwners() {
-      let filteredArray = [];
-      let ownerAbsence = {
-        id: null,
-        last_name: null,
-        first_name: null,
-        patronymic: null,
-      };
-      this.eventsData.forEach(({ employees }) => {
-        let findedElement = employees.find((elem) => elem.role === "owner");
-        let emptyObjectPresence = this.findObjectInArray(
-          filteredArray,
-          ownerAbsence
-        );
-        if (!findedElement && !emptyObjectPresence) {
-          filteredArray.push(ownerAbsence);
-        }
-        if (findedElement) {
-          let ownerPresence = this.findObjectInArray(
-            filteredArray,
-            findedElement.employee
-          );
-          if (!ownerPresence) {
-            filteredArray.push(findedElement.employee);
-          }
-        }
-      });
-      return filteredArray.sort(
-        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
-      );
+      return (this.timeCoil.length - 1) * this.pixelsPerHour + 48;
     },
     filteredEventsByDate() {
       return this.eventsData.filter(
         ({ start }) =>
           start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
       );
+    },
+    horizontalScrollPresence() {
+      return {
+        "scroll-x": this.ownersArrayLength > 3,
+      };
     },
   },
   methods: {
@@ -120,12 +95,7 @@ export default {
       };
     },
     calculateBackgroundWidth() {
-      this.backgroundWidth = this.$refs.backgroundWrapper.offsetWidth;
-    },
-    findObjectInArray(array, object) {
-      return array.find(
-        (item) => JSON.stringify(item) === JSON.stringify(object)
-      );
+      this.backgroundWidth = this.$refs.backgroundWrapper.scrollWidth;
     },
     filterEventsByOwner(owner) {
       let filteredArray = [];
@@ -147,11 +117,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.scroll
-  overflow-x: scroll
+.scroll-x
+  overflow-x: auto
 
 .calendar-background-wrapper
   width: 100%
+  position: relative
+
+.header-wrapper
   position: relative
 
 .header

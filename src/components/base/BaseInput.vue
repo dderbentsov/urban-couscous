@@ -24,8 +24,6 @@ export default {
       default: "Поиск",
     },
     widthInput: Number,
-    backgroundInput: String,
-    fontSizeInput: String,
   },
 };
 </script>

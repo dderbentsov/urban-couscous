@@ -48,7 +48,7 @@ export default {
   height: 56px
   background-color: var(--default-white)
   position: relative
-  z-index: 2
+  z-index: 11
 
 .logo-img
   height: 32px

@@ -1,5 +1,8 @@
 <template lang="pug">
-  .schedule.ml-2.w-full(:style="scheduleWidth")
+  .schedule.ml-2(
+    :style="scheduleWidth"
+    ref="shedule"
+    )
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -7,19 +10,23 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
       )
-    .schedule-body.flex
+    .schedule-body.flex(
+      )
       div
         calendar-clock-column(
-          :hours-array="hoursArray"
+          :timeCoil="timeCoil"
           :current-time="currentTime"
           :is-current-date="isCurrentDate"
           :day-end-time="validateEndTime"
           )
       calendar-background(
         :current-date="currentDate"
-        :hours-array="hoursArray"
+        :time-coil="timeCoil"
         :events-data="eventsData"
+        :filtered-owners="filteredOwners"
         :sidebar-width="sidebarWidth"
+        :day-start-time="validateStartTime"
+        :day-end-time="validateEndTime"
         )
       .time-circle-indicator.left-74px(
         v-if="isShownIndicator"
@@ -67,12 +74,14 @@ export default {
   data() {
     return {
       currentTime: "",
-      hoursArray: [],
+      timeCoil: [],
       timer: null,
       isCurrentDate: true,
       isShownIndicator: true,
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
+      defaultColumnWidth: 470,
+      sheduleHeight: 0,
     };
   },
   computed: {
@@ -92,6 +101,12 @@ export default {
       return this.verifyTime(this.timeInformation.dayEndTime);
     },
     lineIndicatorLocation() {
+      if (this.filteredOwners.length > 3 && this.timeCoil.length - 1 > 13) {
+        return {
+          width: `${this.filteredOwners.length * this.defaultColumnWidth}px`,
+          top: `${this.calculateIndicatorLocation()}px`,
+        };
+      }
       return {
         top: `${this.calculateIndicatorLocation()}px`,
       };
@@ -115,6 +130,37 @@ export default {
         "--sidebar-width": this.sidebarWidth,
       };
     },
+    filteredOwners() {
+      let filteredArray = [];
+      let ownerAbsence = {
+        id: null,
+        last_name: null,
+        first_name: null,
+        patronymic: null,
+      };
+      this.eventsData.forEach(({ employees }) => {
+        let findedElement = employees.find((elem) => elem.role === "owner");
+        let emptyDataPresence = this.findObjectInArray(
+          filteredArray,
+          ownerAbsence
+        );
+        if (!findedElement && !emptyDataPresence) {
+          filteredArray.push(ownerAbsence);
+        }
+        if (findedElement) {
+          let ownerPresence = this.findObjectInArray(
+            filteredArray,
+            findedElement.employee
+          );
+          if (!ownerPresence) {
+            filteredArray.push(findedElement.employee);
+          }
+        }
+      });
+      return filteredArray.sort(
+        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
+      );
+    },
   },
   methods: {
     previousDate() {
@@ -133,7 +179,7 @@ export default {
       ) {
         this.timer = setInterval(() => {
           this.changeCurrentTime();
-          this.changeHoursArray();
+          this.changeTimeCoil();
         }, 5000);
       }
     },
@@ -144,20 +190,20 @@ export default {
     changeCurrentTime() {
       this.currentTime = moment().format("HH:mm:ss");
     },
-    hoursArrayInitialization() {
-      this.hoursArray = [];
+    timeCoilInitialization() {
+      this.timeCoil = [];
       for (let i = this.validateStartTime; i <= this.validateEndTime; i++) {
         if (
           i === this.hours &&
           this.hours !== this.validateEndTime &&
           this.isCurrentDate
         ) {
-          this.hoursArray.push(this.hoursMinutes);
-        } else this.hoursArray.push(`${i}:00`);
+          this.timeCoil.push(this.hoursMinutes);
+        } else this.timeCoil.push(`${i}:00`);
       }
     },
-    changeHoursArray() {
-      this.hoursArray = this.hoursArray.map((elem) => {
+    changeTimeCoil() {
+      this.timeCoil = this.timeCoil.map((elem) => {
         if (this.convertTime(elem, 0, -3) === this.hours) {
           return this.hoursMinutes;
         }
@@ -186,6 +232,11 @@ export default {
       }
       return result;
     },
+    findObjectInArray(array, object) {
+      return array.find(
+        (item) => JSON.stringify(item) === JSON.stringify(object)
+      );
+    },
   },
   watch: {
     currentTime() {
@@ -195,7 +246,7 @@ export default {
         this.timer
       ) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
     },
     currentDate: function () {
@@ -204,18 +255,18 @@ export default {
       this.isShownIndicator = this.isCurrentDate;
       if (this.timer) {
         this.stopTimer();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
       }
       if (this.isCurrentDate) {
         this.changeCurrentTime();
-        this.hoursArrayInitialization();
+        this.timeCoilInitialization();
         this.startTimer();
       }
     },
   },
   mounted() {
     this.changeCurrentTime();
-    this.hoursArrayInitialization();
+    this.timeCoilInitialization();
     this.startTimer();
   },
   beforeUnmount() {
@@ -226,8 +277,12 @@ export default {
 
 <style lang="sass" scoped>
 .schedule
+  position: relative
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
+  height: calc(100vh - 56px - 8px)
+  overflow-y: auto
+  overflow-x: hidden
 
 .time-line-indicator
   width: calc(100% - 80px)
