@@ -32,6 +32,7 @@ export default {
   components: { CalendarColumn },
   props: {
     timeCoil: Array,
+    filteredOwners: Array,
     eventsData: Array,
     currentDate: Object,
     sidebarWidth: String,
@@ -68,37 +69,6 @@ export default {
         "scroll-x": this.ownersArrayLength > 3 && this.backgroundHeight < 855,
       };
     },
-    filteredOwners() {
-      let filteredArray = [];
-      let ownerAbsence = {
-        id: null,
-        last_name: null,
-        first_name: null,
-        patronymic: null,
-      };
-      this.eventsData.forEach(({ employees }) => {
-        let findedElement = employees.find((elem) => elem.role === "owner");
-        let emptyDataPresence = this.findObjectInArray(
-          filteredArray,
-          ownerAbsence
-        );
-        if (!findedElement && !emptyDataPresence) {
-          filteredArray.push(ownerAbsence);
-        }
-        if (findedElement) {
-          let ownerPresence = this.findObjectInArray(
-            filteredArray,
-            findedElement.employee
-          );
-          if (!ownerPresence) {
-            filteredArray.push(findedElement.employee);
-          }
-        }
-      });
-      return filteredArray.sort(
-        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
-      );
-    },
     filteredEventsByDate() {
       return this.eventsData.filter(
         ({ start }) =>
@@ -126,11 +96,6 @@ export default {
     },
     calculateBackgroundWidth() {
       this.backgroundWidth = this.$refs.backgroundWrapper.offsetWidth;
-    },
-    findObjectInArray(array, object) {
-      return array.find(
-        (item) => JSON.stringify(item) === JSON.stringify(object)
-      );
     },
     filterEventsByOwner(owner) {
       let filteredArray = [];

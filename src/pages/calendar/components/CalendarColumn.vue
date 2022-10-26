@@ -58,7 +58,7 @@ export default {
         start[1] * this.pixelsPerMinute;
       if (
         parseInt(start[0], 10) < this.dayStartTime ||
-        parseInt(end, 10) > this.dayEndTime
+        parseInt(end, 10) >= this.dayEndTime
       ) {
         return {
           top: "0px",
