@@ -1,5 +1,8 @@
 <template lang="pug">
-  .schedule.ml-2.pb-5.w-full(:style="scheduleWidth")
+  .schedule.ml-2(
+    :style="scheduleWidth"
+    ref="shedule"
+    )
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -8,8 +11,6 @@
       @selected-layout="selectedLayout"
       )
     .schedule-body.flex(
-      :class="bodyVerticalScroll"
-      :style="setBodySize"
       )
       div
         calendar-clock-column(
@@ -80,6 +81,7 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
+      sheduleHeight: 0,
     };
   },
   computed: {
@@ -126,21 +128,6 @@ export default {
     scheduleWidth() {
       return {
         "--sidebar-width": this.sidebarWidth,
-      };
-    },
-    bodyVerticalScroll() {
-      return {
-        "scroll-y": this.scheduleHeight > 855,
-      };
-    },
-    setBodySize() {
-      if (this.validateEndTime - this.validateStartTime > 13) {
-        return {
-          height: "855px",
-        };
-      }
-      return {
-        width: "auto",
       };
     },
     filteredOwners() {
@@ -290,11 +277,12 @@ export default {
 
 <style lang="sass" scoped>
 .schedule
+  position: relative
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
-
-.scroll-y
-  overflow-y: scroll
+  height: calc(100vh - 56px - 8px)
+  overflow-y: auto
+  overflow-x: hidden
 
 .time-line-indicator
   width: calc(100% - 80px)

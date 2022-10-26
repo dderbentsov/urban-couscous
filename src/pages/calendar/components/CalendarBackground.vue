@@ -64,16 +64,16 @@ export default {
     backgroundHeight() {
       return (this.timeCoil.length - 1) * this.pixelsPerHour + 48;
     },
-    horizontalScrollPresence() {
-      return {
-        "scroll-x": this.ownersArrayLength > 3 && this.backgroundHeight < 855,
-      };
-    },
     filteredEventsByDate() {
       return this.eventsData.filter(
         ({ start }) =>
           start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
       );
+    },
+    horizontalScrollPresence() {
+      return {
+        "scroll-x": this.ownersArrayLength > 3,
+      };
     },
   },
   methods: {
@@ -95,7 +95,7 @@ export default {
       };
     },
     calculateBackgroundWidth() {
-      this.backgroundWidth = this.$refs.backgroundWrapper.offsetWidth;
+      this.backgroundWidth = this.$refs.backgroundWrapper.scrollWidth;
     },
     filterEventsByOwner(owner) {
       let filteredArray = [];
@@ -118,8 +118,7 @@ export default {
 
 <style lang="sass" scoped>
 .scroll-x
-  overflow-x: scroll
-  overflow-y: hidden
+  overflow-x: auto
 
 .calendar-background-wrapper
   width: 100%
