@@ -1,21 +1,26 @@
 <template lang="pug">
   .sidebar.flex.flex-col.bg-white(:class="openSidebar")
-    .sidebar-wrapper.h-full.my-13px(:style="sidebarWidth")
-      .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px
-        base-button-plus(:size="40" v-if="!isOpen")
-        .create-event.flex.items-center.justify-center(v-else)
+    .sidebar-wrapper.h-full.my-13px.flex.flex-col.justify-between(:style="sidebarWidth")
+      .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-if="!isOpen")
+        base-button-plus(:size="40")
+        .flex.flex-col.items-center(v-if="!isOpen")
+          base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+          .flex.flex-col.gap-y-2.items-center.mt-4
+            .event.flex.items-center.justify-center(v-for="event in events" :key="event.id")
+              .event-type(:style="{ background: event.color }")
+        .flex.flex-col.items-center.gap-y-2.justify-center
+          base-button-plus.mb-2(:class="buttonStyled" :size="24" :icon-size="10")
+          .team-card(v-for="teammate in teamData" :key="teammate.id")
+            img.avatar-wrapper(:src="avatar" alt="Team member")
+      .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-else)
+        .create-event.flex.items-center.justify-center
           base-create-button.pl-15px.pb-2.pr-3.pt-2.items-center.h-10(
             text-styled="createEvent"
             :icon-size="10"
             text="Создать событие"
             :with-icon="true"
             icon-position="right")
-        .flex.flex-col.items-center(v-if="!isOpen")
-          base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
-          .flex.flex-col.gap-y-2.items-center.mt-4
-            .event.flex.items-center.justify-center(v-for="event in events" :key="event.id")
-              .event-type(:style="{ background: event.color }")
-        .flex.items-center.flex-col.gap-y-4(v-else)
+        .flex.items-center.flex-col.gap-y-4
           .events-wrapper.flex.items-center.justify-between
             .flex {{ "Виды событий" }}
             base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
@@ -26,11 +31,7 @@
                 :key="event.id")
               .event-type(:style="{ background: event.color }")
               span.icon-edit.cursor-pointer
-        .flex.flex-col.items-center.gap-y-2.justify-center(v-if="!isOpen")
-          base-button-plus.mb-2(:class="buttonStyled" :size="24" :icon-size="10")
-          .team-card(v-for="teammate in teamData" :key="teammate.id")
-            img.avatar-wrapper(:src="avatar" alt="Team member")
-        .flex.flex-col.gap-y-4(v-else)
+        .flex.flex-col.gap-y-4
           .events-wrapper.flex.items-center.justify-between
             .flex {{ "Команды" }}
             base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
@@ -42,7 +43,8 @@
                 img.avatar-wrapper(:src="avatar" alt="Team member")
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
               span.icon-change-place.cursor-pointer.w-5
-        base-open-button.mt-148px(@click="changeSize" :style="{ transform: `rotate(${turnButton})` }")
+      .button-wrapper.flex.justify-center.mb-23px
+        base-open-button(@click="changeSize" :style="{ transform: `rotate(${turnButton})`}")
 </template>
 
 <script>
@@ -166,6 +168,9 @@ export default {
     height: 16px
     top: 8px
     left: 8px
+  .button-wrapper
+    justify-content: end
+    padding-right: 16px
 
 .create-event
   width: 200px
