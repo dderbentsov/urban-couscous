@@ -10,14 +10,16 @@
           table-adding-new-doc(v-if="section === 'docs' && isOpenAddingWrap" :add-new-doc="addNewDoc" :save-docs="saveDocs" :new-docs="docData")
           table-adding-new-additional(v-if="section === 'additional' && isOpenAddingWrap" :new-additional-data="additionalData" :add-new-additional="addDocAdditional" :save-additional="saveDocs" )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
-      .flex.flex-col(v-for="(item, key) in settings[section].options" class="gap-y-1.5")
-        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{item}}
+      .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
+        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
         span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-        client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange && item.value" :style="{fontWeight:item.copy&&600}" v-model:value="sectionInfo[key]" :width="settings[section].width")
-          .copy.icon-copy.cursor-pointer(v-if="item.copy")
+        client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange" :style="{fontWeight:key === 'numba'&&600}" v-model:value="sectionInfo[key]" :width="settings[section].width")
+          .copy.icon-copy.cursor-pointer(v-if="item.copy" @click="() => copyValue(item)")
+        .flex(v-if="settings[section].options && !isChange")
+          span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
+          .copy.icon-copy.cursor-pointer.pl-4(v-if="key === 'numba'" @click="() => copyValue(item)")
         .flex(v-if="item.value && !isChange")
-          span.text-sm.w-fit(:style="{fontWeight:item.copy&&600}") {{item.value}}
-          .copy.icon-copy.cursor-pointer.pl-4(v-if="item.copy")
+          span.text-sm.w-fit {{item.value}}
         .flex.items-center(v-if="item.name")
           .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(v-if="isChange" :id="item.name" @click="(e) => deleteDoc(e, section)")
           .icon-files.cursor-pointer.pr-3.text-xl(:style="{color:settings.docsColor[item.type]}")
@@ -62,6 +64,9 @@ export default {
     };
   },
   methods: {
+    copyValue(text) {
+      navigator.clipboard.writeText(text);
+    },
     openInterfaceChange() {
       this.isOpenChange = !this.isOpenChange;
     },

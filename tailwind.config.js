@@ -6,6 +6,7 @@ module.exports = {
         sans: ["Raleway", "sans-serif"],
       },
       fontSize: {
+        smx: ["6px", { lineHeight: "8px" }],
         xsm: ["10px", { lineHeight: "12px" }],
         ins: ["11px", { lineHeight: "12px" }],
         xxs: ["12px", { lineHeight: "14px" }],

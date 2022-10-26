@@ -20,7 +20,7 @@
         span.text-sm Ссылки на соцсети
         .flex(class="gap-x-1.5" v-for="network in basicInfo.networks" :key="network.id")
           .icon.flex.justify-center.items-center
-            span.icon-telegram.leading-2.text-lg
+            span.icon-tg.leading-2.text-lg
           base-input.input-info.w-full(v-model:value="network.network" :id="network.id" placeholder="Ссылкa")
         span.add-network.cursor-pointer(@click="addNetwork") Добавить соцсеть
     base-create-button(text="Создать клиента" @click="saveClient")

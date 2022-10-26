@@ -1,17 +1,22 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.gap-x-3.w-full(:style="{ minWidth : width + 'px' }")
+  .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(:style="{ minWidth : width + 'px' }")
     .flex.avatar.justify-center.items-center
-      span {{`${value[0][0]}${value[1][0]}`}}
-    span.text-sm.font-semibold {{value.join(' ')}}
+      span {{avatar}}
+    span.text-sm.font-semibold(v-if="!isOpenChange") {{value.fullName}}
+    base-input(v-if="isOpenChange" type="text" v-model:value="value.fullName" :width-input="300")
 </template>
 
 <script>
+import BaseInput from "@/components/base/BaseInput";
 export default {
   name: "TableCellBodyName",
+  components: { BaseInput },
   props: {
-    value: Array,
+    value: Object,
+    avatar: String,
     width: Number,
     imgUrl: String,
+    isOpenChange: Boolean,
   },
 };
 </script>

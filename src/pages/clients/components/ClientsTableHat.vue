@@ -2,7 +2,7 @@
   .flex.justify-between.w-full.h-fit
     .flex.gap-2.w-fit.h-fit
       .input
-        base-input(:with-icon="true")
+        base-input(:with-icon="true" icon-position="left")
           .icon-search
       button.filter-button.flex.items-center.justify-center.box-border(class="px-2.5")
         .icon-filter.text-xl.leading-4
