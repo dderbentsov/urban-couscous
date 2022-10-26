@@ -642,7 +642,6 @@ export function clientsServer() {
               },
             ],
           },
-
           {
             id: "2faa5ff2-2de6-422c-a401-1b35cd455223",
             start: "2022-10-25T17:10:00Z",
@@ -681,6 +680,49 @@ export function clientsServer() {
                   last_name: "Захарова",
                   first_name: "Ольга",
                   patronymic: "Александровна",
+                },
+                role: "owner",
+              },
+            ],
+          },
+          {
+            id: "2faa5ff2-2de6-422c-a401-1b35cd455223",
+            start: "2022-10-26T20:10:00Z",
+            end: "2022-10-26T21:00:00Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "a9239f9a-e824-4bb3-a260-2b32dae9bc76",
+                person: {
+                  id: "15ff465c-2b7b-4d9a-9159-720c74d8b56d",
+                  last_name: "Елесеевская",
+                  first_name: "Татьяна",
+                  patronymic: "Ивановна",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c734-4f79-92c2-d7a5674459e422",
+                employee: {
+                  id: "db831a15-e876-481f-a658-6325de7c311e",
+                  last_name: "Константинопольская",
+                  first_name: "Юлия",
+                  patronymic: "Викторовна",
+                },
+                role: null,
+              },
+              {
+                id: "f541a0c7-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db938a67-e756-481f-a653-6325de7c567e",
+                  last_name: "Коломойцев",
+                  first_name: "Илья",
+                  patronymic: "Константинович",
                 },
                 role: "owner",
               },

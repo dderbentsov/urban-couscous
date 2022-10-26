@@ -1,5 +1,8 @@
 <template lang="pug">
-  .schedule.ml-2.pb-5.w-full(:style="scheduleWidth")
+  .schedule.ml-2(
+    :style="scheduleWidth"
+    ref="shedule"
+    )
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
@@ -8,7 +11,6 @@
       @selected-layout="selectedLayout"
       )
     .schedule-body.flex(
-      :class="bodyVerticalScroll"
       )
       div
         calendar-clock-column(
@@ -21,6 +23,7 @@
         :current-date="currentDate"
         :time-coil="timeCoil"
         :events-data="eventsData"
+        :filtered-owners="filteredOwners"
         :sidebar-width="sidebarWidth"
         :day-start-time="validateStartTime"
         :day-end-time="validateEndTime"
@@ -77,6 +80,8 @@ export default {
       isShownIndicator: true,
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
+      defaultColumnWidth: 470,
+      sheduleHeight: 0,
     };
   },
   computed: {
@@ -96,6 +101,12 @@ export default {
       return this.verifyTime(this.timeInformation.dayEndTime);
     },
     lineIndicatorLocation() {
+      if (this.filteredOwners.length > 3 && this.timeCoil.length - 1 > 13) {
+        return {
+          width: `${this.filteredOwners.length * this.defaultColumnWidth}px`,
+          top: `${this.calculateIndicatorLocation()}px`,
+        };
+      }
       return {
         top: `${this.calculateIndicatorLocation()}px`,
       };
@@ -119,10 +130,36 @@ export default {
         "--sidebar-width": this.sidebarWidth,
       };
     },
-    bodyVerticalScroll() {
-      return {
-        "scroll-y": this.scheduleHeight > 855,
+    filteredOwners() {
+      let filteredArray = [];
+      let ownerAbsence = {
+        id: null,
+        last_name: null,
+        first_name: null,
+        patronymic: null,
       };
+      this.eventsData.forEach(({ employees }) => {
+        let findedElement = employees.find((elem) => elem.role === "owner");
+        let emptyDataPresence = this.findObjectInArray(
+          filteredArray,
+          ownerAbsence
+        );
+        if (!findedElement && !emptyDataPresence) {
+          filteredArray.push(ownerAbsence);
+        }
+        if (findedElement) {
+          let ownerPresence = this.findObjectInArray(
+            filteredArray,
+            findedElement.employee
+          );
+          if (!ownerPresence) {
+            filteredArray.push(findedElement.employee);
+          }
+        }
+      });
+      return filteredArray.sort(
+        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
+      );
     },
   },
   methods: {
@@ -195,6 +232,11 @@ export default {
       }
       return result;
     },
+    findObjectInArray(array, object) {
+      return array.find(
+        (item) => JSON.stringify(item) === JSON.stringify(object)
+      );
+    },
   },
   watch: {
     currentTime() {
@@ -235,11 +277,12 @@ export default {
 
 <style lang="sass" scoped>
 .schedule
+  position: relative
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
-
-.scroll-y
-  overflow-y: scroll
+  height: calc(100vh - 56px - 8px)
+  overflow-y: auto
+  overflow-x: hidden
 
 .time-line-indicator
   width: calc(100% - 80px)
@@ -255,5 +298,4 @@ export default {
 
 .schedule-body
   position: relative
-  height: 855px
 </style>

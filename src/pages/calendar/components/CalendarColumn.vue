@@ -1,6 +1,6 @@
 <template lang="pug">
   .calendar-column-wrapper.flex.flex-col
-    .header.flex.items-center.justify-between.py-2.px-6
+    .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
         img.avatar-wrapper.mr-2(src="@/assets/images/team-member.svg" alt="Team member")
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
@@ -58,7 +58,7 @@ export default {
         start[1] * this.pixelsPerMinute;
       if (
         parseInt(start[0], 10) < this.dayStartTime ||
-        parseInt(end, 10) > this.dayEndTime
+        parseInt(end, 10) >= this.dayEndTime
       ) {
         return {
           top: "0px",
@@ -77,11 +77,14 @@ export default {
 .calendar-column-wrapper
   position: absolute
   border-right: 1px solid var(--border-light-grey-color)
+  &:nth-last-child(2) .header
+    border-right: none
+  &:nth-last-child(2)
+    border-right: none
 
 .header
   height: 48px
   position: sticky
-  top: 0px
   z-index: 5
   width: inherit
   border-right: 1px solid var(--border-light-grey-color)
