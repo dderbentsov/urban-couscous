@@ -2,28 +2,24 @@
   .sidebar.flex.flex-col.bg-white(:class="openSidebar")
     .sidebar-wrapper.h-full.my-13px.flex.flex-col.justify-between(:style="sidebarWidth")
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-if="!isOpen")
-        base-button-plus(:size="40")
+        base-button(left-icon="icon-plus", rounded, size="40", icon-left-size="10" )
         .flex.flex-col.items-center(v-if="!isOpen")
-          base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+          base-button(left-icon="icon-plus", rounded, size="24", icon-left-size="10", secondary )
           .flex.flex-col.gap-y-2.items-center.mt-4
             .event.flex.items-center.justify-center(v-for="event in events" :key="event.id")
               .event-type(:style="{ background: event.color }")
         .flex.flex-col.items-center.gap-y-2.justify-center
-          base-button-plus.mb-2(:class="buttonStyled" :size="24" :icon-size="10")
+          base-button.mb-2(left-icon="icon-plus", rounded, size="24", icon-left-size="10", secondary )
           .team-card(v-for="teammate in teamData" :key="teammate.id")
             img.avatar-wrapper(:src="avatar" alt="Team member")
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-else)
         .create-event.flex.items-center.justify-center
-          base-create-button.pl-15px.pb-2.pr-3.pt-2.items-center.h-10(
-            text-styled="createEvent"
-            :icon-size="10"
-            text="Создать событие"
-            :with-icon="true"
-            icon-position="right")
+          base-button(right-icon="icon-plus", split, size="40", icon-right-size="10" ) Создать событие
+
         .flex.items-center.flex-col.gap-y-4
           .events-wrapper.flex.items-center.justify-between
             .flex {{ "Виды событий" }}
-            base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+            base-button(left-icon="icon-plus", rounded, size="24", icon-left-size="10", secondary )
           .flex.flex-col.gap-y-2
             .relative.flex.items-center.gap-x-3.h-8(v-for="event in events")
               input.custom-input.py-2.pl-6.h-full.not-italic.font-medium.text-xxs(
@@ -34,7 +30,7 @@
         .flex.flex-col.gap-y-4
           .events-wrapper.flex.items-center.justify-between
             .flex {{ "Команды" }}
-            base-button-plus(:class="buttonStyled" :size="24" :icon-size="10")
+            base-button(left-icon="icon-plus", rounded, size="24", icon-left-size="10", secondary )
           .box-team.flex.flex-col.gap-y-2
             .team-card.flex.items-center.justify-between.cursor-pointer(
               v-for="teammate in teamData"
@@ -44,7 +40,7 @@
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
               span.icon-change-place.cursor-pointer.w-5
       .button-wrapper.flex.justify-center.mb-23px
-        base-open-button(@click="changeSize" :style="{ transform: `rotate(${turnButton})`}")
+        base-button(left-icon="icon-long-arrow", rounded, size="40", icon-left-size="18", secondary, :style="{ transform: `rotate(${turnButton})`}", @click="changeSize")
 </template>
 
 <script>
@@ -52,10 +48,12 @@ import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue"
 import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
 import BaseCreateButton from "../../../components/base/buttons/BaseCreateButton.vue";
 import img from "../../../assets/images/team-member.svg";
+import BaseButton from "@/components/base/BaseButton";
 
 export default {
   name: "CalendarSidebar",
   components: {
+    BaseButton,
     BaseButtonPlus,
     BaseOpenButton,
     BaseCreateButton,
@@ -187,7 +185,7 @@ export default {
   width: 169px
 
 .team-card
-  border-radius:16px
+  border-radius: 16px
   &:hover
     background: var(--font-dark-blue-color)
     color: var(--default-white)
