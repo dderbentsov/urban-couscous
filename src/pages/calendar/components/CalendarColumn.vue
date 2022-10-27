@@ -75,19 +75,15 @@ export default {
 
 <style lang="sass" scoped>
 .calendar-column-wrapper
-  position: absolute
   border-right: 1px solid var(--border-light-grey-color)
   &:nth-last-child(2) .header
     border-right: none
-  &:nth-last-child(2)
+  &:last-child
     border-right: none
 
 .header
-  height: 48px
   position: sticky
   z-index: 5
-  width: inherit
-  border-right: 1px solid var(--border-light-grey-color)
   background-color: var(--default-white)
 
 .body
