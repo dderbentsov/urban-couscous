@@ -1,7 +1,8 @@
 <template lang="pug">
   .change-person-wrapper(:class="openOptions")
     .header.flex.items-center.pl-1.pr-2
-      img.img-wrapper.mr-2(:src="info.avatarSrc" alt="Charge person avatar")
+      BaseAvatar(:size="32").mr-6px
+        img(:src="info.avatarSrc" alt="Charge person avatar")
       span.font-bold.text-sm.mr-6px {{ info.name }}
       .dot.mr-4
       .icon-wrapper.icon-down-arrow.flex.items-center.justify-center.text-xxs.cursor-pointer(@click="changeState")
@@ -18,8 +19,10 @@
 </template>
 
 <script>
+import BaseAvatar from "@/components/base/BaseAvatar";
 export default {
   name: "HeaderActiveClientPanel",
+  components: { BaseAvatar },
   props: {
     info: Object,
   },

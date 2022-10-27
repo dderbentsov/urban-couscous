@@ -10,7 +10,8 @@
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
-        img.avatar-img.mr-2(:src="avatarSrc")
+        BaseAvatar(:size="32").mr-2
+          img(:src="avatarSrc")
         button.header-buttons
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
 </template>
@@ -21,9 +22,15 @@ import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
 import HeaderActiveClientPanel from "./HeaderActiveClientPanel.vue";
 import HeaderAddClientButton from "./HeaderAddClientButton.vue";
+import BaseAvatar from "@/components/base/BaseAvatar";
 export default {
   name: "TheHeader",
-  components: { HeaderInputs, HeaderActiveClientPanel, HeaderAddClientButton },
+  components: {
+    BaseAvatar,
+    HeaderInputs,
+    HeaderActiveClientPanel,
+    HeaderAddClientButton,
+  },
   data() {
     return {
       avatarSrc: img,
