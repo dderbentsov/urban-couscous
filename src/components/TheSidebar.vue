@@ -18,14 +18,8 @@ export default {
     return {
       pageSettings: [
         {
-          id: "home",
-          path: "#/",
-          active: true,
-          icon: "icon-home",
-        },
-        {
           id: "calendar",
-          path: "#/calendar",
+          path: "#/",
           active: false,
           icon: "icon-calendar-2",
         },
