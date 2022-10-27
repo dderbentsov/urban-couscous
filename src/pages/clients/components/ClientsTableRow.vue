@@ -8,10 +8,10 @@
       table-cell-body-priority(:value="dataClient.priority" :choose-priority="choosePriority" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'priority').width")
       table-cell-body-phone(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'phone').width")
       table-cell-body-email(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'email').width")
-      table-cell-body-networks(:delete-network="deleteNetwork" :networks="dataClient.contacts" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'networks').width")
+      table-cell-body-networks(:delete-network="deleteNetwork" :add-network="addNetwork" :networks="dataClient.contacts" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'networks').width")
       .dots.flex.justify-center.items-center
         base-button-ok(v-if="isOpenChange" :size="20" :icon-size="10" :dark-style="true" @click="closeChangeData")
-        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-if="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
+        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-show="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
     client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
@@ -81,9 +81,12 @@ export default {
     };
   },
   methods: {
+    addNetwork(network) {
+      this.dataClient.contacts.push(network);
+    },
     deleteNetwork(e) {
       this.dataClient.contacts = this.dataClient.contacts.filter(
-        (el) => el.id !== e.target.id
+        (el) => el.kind !== e.target.id
       );
     },
     choosePriority(e) {

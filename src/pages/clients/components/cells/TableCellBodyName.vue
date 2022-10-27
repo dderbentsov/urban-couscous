@@ -2,7 +2,7 @@
   .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(:style="{ minWidth : width + 'px' }")
     .flex.avatar.justify-center.items-center
       span {{avatar}}
-    span.text-sm.font-semibold(v-if="!isOpenChange") {{value.fullName}}
+    span.font-semibold(v-if="!isOpenChange") {{value.fullName}}
     base-input(v-if="isOpenChange" type="text" v-model:value="value.fullName" :width-input="300")
 </template>
 

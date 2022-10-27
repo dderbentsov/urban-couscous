@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex(class="gap-x-1.5")
-    base-select(:for-networks="true" :style-border="true" :list-data="listAddingNetworks" :option-data="value.kind")
+    base-select(:for-networks="true" :style-border="true" :list-data="listAddingNetworks" :option-data="selectedOption" :choose-option="chooseNetwork" :width-select="42")
     base-input.input-info.w-full(v-model:value="value.username" :id="value.id" placeholder="Ссылкa")
 </template>
 
@@ -11,8 +11,10 @@ export default {
   name: "TableAddingNetwork",
   components: { BaseInput, BaseSelect },
   props: {
+    selectedOption: String,
     value: Object,
     listAddingNetworks: Array,
+    chooseNetwork: Function,
   },
 };
 </script>

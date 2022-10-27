@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3(:id="id")
+    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3(:id="id" :class="{active:active}" @click="(e) => changeStylePage(e)")
       slot
 </template>
 
@@ -10,7 +10,8 @@ export default {
   props: {
     path: String,
     id: String,
-    changeStyle: Function,
+    changeStylePage: Function,
+    active: Boolean,
   },
   data() {
     return {
@@ -31,7 +32,7 @@ export default {
   border-top: none
   border-bottom: none
   border-left-style: solid
-.button:focus
+.active
   background-color: var(--btn-blue-color-1)
   border-left-color: var(--btn-blue-color)
   color: var(--btn-blue-color)
