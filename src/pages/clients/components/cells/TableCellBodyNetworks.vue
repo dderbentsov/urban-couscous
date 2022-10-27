@@ -2,12 +2,12 @@
   .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px' }")
     .flex.gap-x-1
       .text-xl.icon.relative(v-for="network in getNetworks" :class="settings.settings.find((el) => el.network === network.kind).icon")
-        .absolute.icon-cancel-mini.delete.flex.w-4.h-4.justify-center.items-center.bottom-4.left-2(v-if="isOpenChange" :id="network.id" @click="(e) => deleteNetwork(e)")
+        .absolute.icon-cancel-mini.delete.flex.w-4.h-4.justify-center.items-center.bottom-4.left-2(v-if="isOpenChange" :id="network.kind" @click="(e) => deleteNetwork(e)")
     .flex.relative
       base-button-plus.ml-3(v-if="isOpenChange && settings.settings.length !== getNetworks.length" :with-border="true" @click="openPopupAdding")
       base-popup.right-3.top-6(v-if="isOpenPopupAdding" :width="485")
-        base-adding-network(:value="network" :list-adding-networks="getAddingNetworks")
-        base-create-button(text="Добавить" @click="closePopupAdding")
+        base-adding-network(:value="network" :selected-option="getSelectedIcon" :list-adding-networks="getAddingNetworks" :choose-network="chooseNetwork")
+        base-create-button(text="Добавить" @click="saveNetwork")
 </template>
 
 <script>
@@ -35,7 +35,6 @@ export default {
     return {
       isOpenPopupAdding: false,
       network: {
-        id: Math.floor(Math.random() * 100000),
         kind: "TELEGRAM",
         username: "",
       },
@@ -43,6 +42,11 @@ export default {
     };
   },
   computed: {
+    getSelectedIcon() {
+      return this.settings.settings.find(
+        (el) => el.network === this.network.kind
+      ).icon;
+    },
     getAddingNetworks() {
       let kinds = this.networks.map((el) => el.kind);
       return this.settings.settings.filter((el) => !kinds.includes(el.network));
@@ -54,7 +58,11 @@ export default {
     },
   },
   methods: {
-    closePopupAdding() {
+    chooseNetwork(e) {
+      this.network.kind = e.target.id;
+    },
+    saveNetwork() {
+      this.addNetwork(this.network);
       this.isOpenPopupAdding = false;
     },
     openPopupAdding() {

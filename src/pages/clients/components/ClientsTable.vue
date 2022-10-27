@@ -43,7 +43,7 @@ export default {
     },
     fetchDataClients() {
       // eslint-disable-next-line
-      fetch("/api/clients").then((res) => res.json()).then((data) => this.saveDataClients(data))
+      fetch("api/clients").then((res) => res.json()).then((data) => this.saveDataClients(data))
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {
