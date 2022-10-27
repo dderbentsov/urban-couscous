@@ -42,7 +42,7 @@
               .flex.items-center
                 img.avatar-wrapper(:src="avatar" alt="Team member")
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
-              span.icon-change-place.cursor-pointer.w-5
+              span.icon-change-place.cursor-pointer.w-5.flex.items-center.justify-center.w-6.h-6
       .button-wrapper.flex.justify-center.mb-23px
         base-open-button(@click="changeSize" :style="{ transform: `rotate(${turnButton})`}")
 </template>
