@@ -3,8 +3,8 @@
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-16(src="@/assets/images/logo.svg" alt="Logo")
       header-inputs
-    .charge-person-container
-      header-active-client-panel(:info="chargePersonInfo")
+    //- .charge-person-container
+    //-   header-active-client-panel(:info="chargePersonInfo")
     .flex.ml-auto
       header-add-client-button.mr-9
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
@@ -20,17 +20,11 @@
 import img from "@/assets/images/avatar.svg";
 import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
-import HeaderActiveClientPanel from "./HeaderActiveClientPanel.vue";
 import HeaderAddClientButton from "./HeaderAddClientButton.vue";
 import BaseAvatar from "@/components/base/BaseAvatar";
 export default {
   name: "TheHeader",
-  components: {
-    BaseAvatar,
-    HeaderInputs,
-    HeaderActiveClientPanel,
-    HeaderAddClientButton,
-  },
+  components: { HeaderInputs, HeaderAddClientButton, BaseAvatar },
   data() {
     return {
       avatarSrc: img,
