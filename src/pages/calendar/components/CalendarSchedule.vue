@@ -1,7 +1,6 @@
 <template lang="pug">
   .schedule.ml-2(
     :style="scheduleWidth"
-    ref="shedule"
     )
     calendar-header(
       :current-date="currentDate"
@@ -11,7 +10,7 @@
       @selected-layout="selectedLayout"
       )
     .schedule-body
-      .column-wrapper.flex.ml-20.absolute(:style="columnWrapperWidth")
+      .column-wrapper.flex.ml-20.relative(:style="columnWrapperWidth")
         calendar-column(
           v-for="(owner, index) in filteredOwners"
           :key="owner.id"
@@ -29,7 +28,15 @@
             :is-current-date="isCurrentDate"
             :day-end-time="validateEndTime"
           )
-        .flex
+          .time-circle-indicator.left-74px(
+            v-if="isShownIndicator"
+            :style="circleIndicatorLocation"
+          )  
+        span.time-line-indicator.block.left-20(
+          v-if="isShownIndicator"
+          :style="lineIndicatorLocation"
+        )
+        .flex(:class="calendarBackgroundWidth")
           calendar-background(
             :current-date="currentDate"
             :time-coil="timeCoil"
@@ -39,14 +46,6 @@
             :day-end-time="validateEndTime"
             :owners-count="ownersCount"
             )
-        .time-circle-indicator.left-74px(
-          v-if="isShownIndicator"
-          :style="circleIndicatorLocation"
-          )
-        span.time-line-indicator.block.left-20(
-          v-if="isShownIndicator"
-          :style="lineIndicatorLocation"
-          )  
 </template>
 
 <script>
@@ -113,19 +112,20 @@ export default {
       return this.verifyTime(this.timeInformation.dayEndTime);
     },
     lineIndicatorLocation() {
-      if (this.ownersCount > 3 && this.timeCoil.length - 1 > 13) {
+      if (this.ownersCount > 3) {
         return {
-          width: `${this.ownersCount * this.defaultColumnWidth}px`,
+          width: `${this.defaultColumnWidth * this.ownersCount}px`,
           top: `${this.calculateIndicatorLocation()}px`,
         };
       }
       return {
+        width: "calc(100% - 80px)",
         top: `${this.calculateIndicatorLocation()}px`,
       };
     },
     circleIndicatorLocation() {
       return {
-        top: `${this.calculateIndicatorLocation() - 6}px`,
+        top: `${this.calculateIndicatorLocation() + 6}px`,
       };
     },
     pixelsPerMinute() {
@@ -133,8 +133,7 @@ export default {
     },
     scheduleHeight() {
       return (
-        (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour +
-        this.columnHeaderHeight
+        (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour
       );
     },
     scheduleWidth() {
@@ -182,26 +181,37 @@ export default {
           start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
       );
     },
+    columnHeight() {
+      return (
+        (this.timeCoil.length - 1) * this.pixelsPerHour +
+        this.columnHeaderHeight
+      );
+    },
     columnWidth() {
       if (this.ownersCount > 3) {
-        console.log(this.defaultColumnWidth * this.ownersCount);
         return {
+          height: `${this.columnHeight}px`,
           width: `${this.defaultColumnWidth}px`,
         };
       }
       return {
+        height: `${this.columnHeight}px`,
         width: `calc(100% / ${this.ownersCount})`,
       };
     },
     columnWrapperWidth() {
       if (this.ownersCount > 3) {
-        console.log(this.defaultColumnWidth * this.ownersCount);
         return {
           width: `${this.defaultColumnWidth * this.ownersCount}px`,
         };
       }
       return {
-        width: "100%",
+        width: "calc(100% - 80px)",
+      };
+    },
+    calendarBackgroundWidth() {
+      return {
+        "w-full": this.ownersCount <= 3,
       };
     },
   },
@@ -337,9 +347,9 @@ export default {
   height: calc(100vh - 56px - 8px)
 
 .time-line-indicator
-  width: calc(100% - 80px)
   border-top: 1px solid var(--bg-event-red-color)
   position: absolute
+  z-index: 4
 
 .time-circle-indicator
   width: 12px
@@ -347,6 +357,7 @@ export default {
   background-color: var(--bg-event-red-color)
   border-radius: 50%
   position: absolute
+  z-index: 5
 
 .column-wrapper
   height: 48px
@@ -355,7 +366,6 @@ export default {
 .time-coil-wrapper
   position: sticky
   z-index: 5
-  background-color: var(--default-white)
 
 .schedule-body
   width: 100%

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pb-45px.px-3
+  .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pb-5.px-3
     span.text-base(
       v-for="hour in timeCoil"
       :key="hour"
@@ -59,4 +59,5 @@ export default {
   width: 80px
   height: 100%
   color: var(--font-dark-blue-color)
+  background-color: var(--default-white)
 </style>
