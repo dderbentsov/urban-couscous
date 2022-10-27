@@ -74,7 +74,7 @@ export default {
     border: 1px solid var(--btn-blue-color-disabled)
 
 .rounded
-  padding: 0px
+  padding: 0
   border-radius: 50%
 
 .outlined
