@@ -1,7 +1,7 @@
 <template lang="pug">
-  .flex(class="gap-x-1.5")
+  .flex.w-full(class="gap-x-1.5")
     base-select(:for-networks="true" :style-border="true" :list-data="listAddingNetworks" :option-data="selectedOption" :choose-option="chooseNetwork" :width-select="42")
-    base-input.input-info.w-full(v-model:value="value.username" :id="value.id" placeholder="Ссылкa")
+    base-input.input-info.w-full(v-model:value="value.username" placeholder="Ссылкa")
 </template>
 
 <script>

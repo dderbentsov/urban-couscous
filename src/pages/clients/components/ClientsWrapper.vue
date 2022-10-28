@@ -1,7 +1,6 @@
 <template lang="pug">
   .wrapper.flex.w-full.relative.mx-6
     clients-table(:open-form-create="openFormCreateClient")
-    clients-form-create(v-if="isOpenForm" :close-form="closeFormCreateClient")
 </template>
 
 <script>

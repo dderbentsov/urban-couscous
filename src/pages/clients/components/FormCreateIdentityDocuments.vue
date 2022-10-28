@@ -1,0 +1,53 @@
+<template lang="pug">
+  .wrapper-documents.flex.flex-col.flex-auto.h-full.gap-y-8.justify-between
+    .flex.flex-col.gap-y-6.px-4
+      span.title-info.text-base.font-bold Паспортные данные
+      .grid.grid-cols-2.gap-x-4.gap-y-6
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm Серия и номер
+          base-input.input-info(v-model:value="identityDocument.numba" placeholder="0000 000000" :width-input="277")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm Кем и когда выдан
+          base-input.input-info(v-model:value="identityDocument.issued_by_org" placeholder="Точно как в паспорте" :width-input="277")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm Код подразделения
+          base-input.input-info(v-model:value="identityDocument.issued_by_org_code" placeholder="000–000" :width-input="277")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm Дата выдачи
+          base-input.input-info(type="date" v-model:value="identityDocument.issued_by_date" placeholder="Дата" :width-input="277")
+    .px-4
+      base-create-button(text="Создать клиента" @click="saveClient")
+</template>
+
+<script>
+import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
+import BaseInput from "@/components/base/BaseInput";
+export default {
+  name: "FormCreateIdentityDocuments",
+  components: { BaseCreateButton, BaseInput },
+  props: {
+    identityDocument: Object,
+    saveClient: Function,
+  },
+};
+</script>
+
+<style lang="sass" scoped>
+.wrapper-documents
+  min-height: 443px
+  max-height: 443px
+  overflow-y: auto
+  color: var(--font-grey-color)
+  &::-webkit-scrollbar
+    width: 4px
+  &::-webkit-scrollbar-track
+    background-color: rgba(211, 212, 220, 0.5)
+    border-radius: 8px
+  &::-webkit-scrollbar-thumb
+    border-radius: 8px
+    background-color: var(--btn-blue-color)
+.input-info
+  color: var(--font-dark-blue-color)
+.title-info
+  color: var(--font-dark-blue-color)
+</style>

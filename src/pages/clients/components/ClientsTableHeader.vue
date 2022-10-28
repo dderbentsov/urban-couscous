@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.row.text-base.font-semibold
+  .flex.row.text-base.font-semibold.min-w-fit
     clients-table-cell-header(v-for="cell in columnHead" :title="cell.title" :width="cell.width" :class="!cell.title && 'px-3'")
       .icon-down-arrow.icon.text-xsm.cursor-pointer(v-if="cell.iconHead && cell.name !== 'fullName'" )
       .icon-sort-number.cursor-pointer.text-xs.icon(v-if="cell.iconHead && cell.name === 'fullName'")

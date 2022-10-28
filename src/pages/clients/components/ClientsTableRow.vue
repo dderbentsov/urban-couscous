@@ -1,5 +1,5 @@
 <template lang="pug">
-  .row-wrapper.flex.flex-col.w-full
+  .row-wrapper.flex.flex-col.w-full.min-w-fit
     .row-body.flex.w-full.cursor-pointer(:id="id" @dblclick="(e) => openDetailInfo(e)")
       .check-box.flex.justify-center.items-center
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
