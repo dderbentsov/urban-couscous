@@ -2,10 +2,11 @@
   .calendar-column-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
-        img.avatar-wrapper.mr-2(src="@/assets/images/team-member.svg" alt="Team member")
+        base-avatar.mr-2(:size="32")
+          img(src="@/assets/images/team-member.svg" alt="Team member")
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
-      base-doc-ok-button
+      base-button.btn(left-icon="icon-doc-ok", :icon-left-size="24", :size="32", secondary)
     .body
       calendar-event-card(
         v-for="event in dayEvents"
@@ -16,11 +17,12 @@
 </template>
 
 <script>
-import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
+import BaseAvatar from "@/components/base/BaseAvatar";
+import BaseButton from "@/components/base/BaseButton.vue";
 import CalendarEventCard from "./CalendarEventCard.vue";
 export default {
   name: "CalendarColumn",
-  components: { BaseDocOkButton, CalendarEventCard },
+  components: { CalendarEventCard, BaseButton, BaseAvatar },
   props: {
     ownerData: Object,
     dayEvents: Array,
@@ -88,9 +90,9 @@ export default {
   position: relative
   z-index: 3
 
-.avatar-wrapper
-  width: 32px
-  height: 32px
+.btn
+  opacity: 0.5
+  padding: 7px 13px !important
 
 .icon-wrapper
   width: 24px

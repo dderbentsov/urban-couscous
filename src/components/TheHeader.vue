@@ -6,11 +6,11 @@
     //- .charge-person-container
     //-   header-active-client-panel(:info="chargePersonInfo")
     .flex.ml-auto
-      header-add-client-button.mr-9
+      base-button.mr-9(left-icon="icon-plus", :icon-left-size="10", :size="40", right-icon="icon-person", :icon-right-size="18")
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
-        BaseAvatar(:size="32").mr-2
+        base-avatar(:size="32").mr-2
           img(:src="avatarSrc")
         button.header-buttons
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
@@ -20,11 +20,11 @@
 import img from "@/assets/images/avatar.svg";
 import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
-import HeaderAddClientButton from "./HeaderAddClientButton.vue";
 import BaseAvatar from "@/components/base/BaseAvatar";
+import BaseButton from "@/components/base/BaseButton.vue";
 export default {
   name: "TheHeader",
-  components: { HeaderInputs, HeaderAddClientButton, BaseAvatar },
+  components: { HeaderInputs, BaseAvatar, BaseButton },
   data() {
     return {
       avatarSrc: img,
@@ -63,10 +63,6 @@ export default {
   width: 24px
   height: 24px
   color: var(--font-dark-blue-color)
-
-.avatar-img
-  width: 32px
-  height: 32px
 
 .charge-person-container
   position: absolute

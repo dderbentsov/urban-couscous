@@ -1,8 +1,10 @@
 <template lang="pug">
   .calendar-header-wrapper.flex.items-center.justify-between.py-3.pl-5.pr-6
     .flex
-      base-arrow-button.left-arrow.mr-4(@click="previousHandler")
-      base-arrow-button.right-arrow.mr-6(@click="nextHandler")
+      base-button.left-arrow.mr-4(left-icon="icon-down-arrow", rounded, secondary,
+        :iconLeftSize="16", :size="32", @click="previousHandler")
+      base-button.right-arrow.mr-6(left-icon="icon-down-arrow", rounded, secondary,
+        :iconLeftSize="16", :size="32", @click="nextHandler")
       .text.flex.items-center
         span.font-medium.text-base {{ dateString }}
           span.today.font-bold.text-xxs(v-if="isCurrentDate")  Сегодня
@@ -10,11 +12,11 @@
 </template>
 
 <script>
-import BaseArrowButton from "@/components/base/buttons/BaseArrowButton.vue";
+import BaseButton from "@/components/base/BaseButton.vue";
 import CalendarLayoutSwitch from "./CalendarLayoutSwitch.vue";
 export default {
   name: "CalendarHeader",
-  components: { BaseArrowButton, CalendarLayoutSwitch },
+  components: { CalendarLayoutSwitch, BaseButton },
   props: {
     currentDate: Object,
     isCurrentDate: Boolean,
@@ -54,9 +56,11 @@ export default {
   z-index: 10
 
 .left-arrow
+  padding: 3px 4px 0 4px !important
   transform: rotate(90deg)
 
 .right-arrow
+  padding: 3px 4px 0 4px !important
   transform: rotate(270deg)
 
 .text
