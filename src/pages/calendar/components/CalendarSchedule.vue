@@ -1,7 +1,6 @@
 <template lang="pug">
   .schedule.ml-2(
     :style="scheduleWidth"
-    ref="shedule"
     )
     calendar-header(
       :current-date="currentDate"
@@ -10,32 +9,43 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
       )
-    .schedule-body.flex(
-      )
-      div
-        calendar-clock-column(
-          :timeCoil="timeCoil"
-          :current-time="currentTime"
-          :is-current-date="isCurrentDate"
+    .schedule-body
+      .column-wrapper.flex.ml-20.relative(:style="columnWrapperWidth")
+        calendar-column(
+          v-for="(owner, index) in filteredOwners"
+          :key="owner.id"
+          :owner-data="owner"
+          :day-events="filterEventsByOwner(owner)"
+          :day-start-time="validateStartTime"
           :day-end-time="validateEndTime"
+          :style="columnWidth"
+        )
+      .flex.w-full.relative
+        .time-coil-wrapper.left-0.-mt-3
+          calendar-clock-column(
+            :timeCoil="timeCoil"
+            :current-time="currentTime"
+            :is-current-date="isCurrentDate"
+            :day-end-time="validateEndTime"
           )
-      calendar-background(
-        :current-date="currentDate"
-        :time-coil="timeCoil"
-        :events-data="eventsData"
-        :filtered-owners="filteredOwners"
-        :sidebar-width="sidebarWidth"
-        :day-start-time="validateStartTime"
-        :day-end-time="validateEndTime"
+          .time-circle-indicator.left-74px(
+            v-if="isShownIndicator"
+            :style="circleIndicatorLocation"
+          )  
+        span.time-line-indicator.block.left-20(
+          v-if="isShownIndicator"
+          :style="lineIndicatorLocation"
         )
-      .time-circle-indicator.left-74px(
-        v-if="isShownIndicator"
-        :style="circleIndicatorLocation"
-        )
-      span.time-line-indicator.block.left-20(
-        v-if="isShownIndicator"
-        :style="lineIndicatorLocation"
-        )  
+        .flex(:class="calendarBackgroundWidth")
+          calendar-background(
+            :current-date="currentDate"
+            :time-coil="timeCoil"
+            :events-data="eventsData"
+            :sidebar-width="sidebarWidth"
+            :day-start-time="validateStartTime"
+            :day-end-time="validateEndTime"
+            :owners-count="ownersCount"
+            )
 </template>
 
 <script>
@@ -43,12 +53,14 @@ import * as moment from "moment/moment";
 import CalendarHeader from "./CalendarHeader.vue";
 import CalendarBackground from "./CalendarBackground.vue";
 import CalendarClockColumn from "./CalendarClockColumn.vue";
+import CalendarColumn from "./CalendarColumn.vue";
 export default {
   name: "CalendarSchedule",
   components: {
     CalendarHeader,
     CalendarBackground,
     CalendarClockColumn,
+    CalendarColumn,
   },
   props: {
     currentDate: {
@@ -81,7 +93,6 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
-      sheduleHeight: 0,
     };
   },
   computed: {
@@ -101,19 +112,20 @@ export default {
       return this.verifyTime(this.timeInformation.dayEndTime);
     },
     lineIndicatorLocation() {
-      if (this.filteredOwners.length > 3 && this.timeCoil.length - 1 > 13) {
+      if (this.ownersCount > 3) {
         return {
-          width: `${this.filteredOwners.length * this.defaultColumnWidth}px`,
+          width: `${this.defaultColumnWidth * this.ownersCount}px`,
           top: `${this.calculateIndicatorLocation()}px`,
         };
       }
       return {
+        width: "calc(100% - 80px)",
         top: `${this.calculateIndicatorLocation()}px`,
       };
     },
     circleIndicatorLocation() {
       return {
-        top: `${this.calculateIndicatorLocation() - 6}px`,
+        top: `${this.calculateIndicatorLocation() + 6}px`,
       };
     },
     pixelsPerMinute() {
@@ -121,8 +133,7 @@ export default {
     },
     scheduleHeight() {
       return (
-        (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour +
-        this.columnHeaderHeight
+        (this.validateEndTime - this.validateStartTime) * this.pixelsPerHour
       );
     },
     scheduleWidth() {
@@ -160,6 +171,48 @@ export default {
       return filteredArray.sort(
         (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
       );
+    },
+    ownersCount() {
+      return this.filteredOwners.length;
+    },
+    filteredEventsByDate() {
+      return this.eventsData.filter(
+        ({ start }) =>
+          start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
+      );
+    },
+    columnHeight() {
+      return (
+        (this.timeCoil.length - 1) * this.pixelsPerHour +
+        this.columnHeaderHeight
+      );
+    },
+    columnWidth() {
+      if (this.ownersCount > 3) {
+        return {
+          height: `${this.columnHeight}px`,
+          width: `${this.defaultColumnWidth}px`,
+        };
+      }
+      return {
+        height: `${this.columnHeight}px`,
+        width: `calc(100% / ${this.ownersCount})`,
+      };
+    },
+    columnWrapperWidth() {
+      if (this.ownersCount > 3) {
+        return {
+          width: `${this.defaultColumnWidth * this.ownersCount}px`,
+        };
+      }
+      return {
+        width: "calc(100% - 80px)",
+      };
+    },
+    calendarBackgroundWidth() {
+      return {
+        "w-full": this.ownersCount <= 3,
+      };
     },
   },
   methods: {
@@ -224,8 +277,7 @@ export default {
         .map((elem) => parseInt(elem, 10));
       let result =
         (newTime[0] - this.validateStartTime) * this.pixelsPerHour +
-        newTime[1] * this.pixelsPerMinute +
-        this.columnHeaderHeight;
+        newTime[1] * this.pixelsPerMinute;
       if (result > this.scheduleHeight || result < 0) {
         this.isShownIndicator = false;
         return 0;
@@ -236,6 +288,18 @@ export default {
       return array.find(
         (item) => JSON.stringify(item) === JSON.stringify(object)
       );
+    },
+    filterEventsByOwner(owner) {
+      let filteredArray = [];
+      this.filteredEventsByDate.forEach((item) => {
+        let foundEvent = item.employees.find(
+          (elem) =>
+            JSON.stringify(elem.employee) === JSON.stringify(owner) &&
+            elem.role === "owner"
+        );
+        if (foundEvent) filteredArray.push(item);
+      });
+      return filteredArray;
     },
   },
   watch: {
@@ -281,13 +345,11 @@ export default {
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 8px))
   height: calc(100vh - 56px - 8px)
-  overflow-y: auto
-  overflow-x: hidden
 
 .time-line-indicator
-  width: calc(100% - 80px)
   border-top: 1px solid var(--bg-event-red-color)
   position: absolute
+  z-index: 4
 
 .time-circle-indicator
   width: 12px
@@ -295,7 +357,19 @@ export default {
   background-color: var(--bg-event-red-color)
   border-radius: 50%
   position: absolute
+  z-index: 5
+
+.column-wrapper
+  height: 48px
+  background-color: var(--default-white)
+
+.time-coil-wrapper
+  position: sticky
+  z-index: 5
 
 .schedule-body
-  position: relative
+  width: 100%
+  height: calc(100vh - 56px - 8px - 56px)
+  overflow-y: auto
+  overflow-x: auto
 </style>

@@ -1,22 +1,9 @@
 <template lang="pug">
   .calendar-background-wrapper.flex.flex-col(
     ref="backgroundWrapper"
-    :class="horizontalScrollPresence"
+    :style="backgroundExtendedWidth"
     )
-    .header-wrapper
-      .header(:style="backgroundExtendedWidth")
-    calendar-column(
-      v-for="(owner, index) in filteredOwners"
-      :key="owner.id"
-      :owner-data="owner"
-      :style="calculateColumnPosition(index)"
-      :day-events="filterEventsByOwner(owner)"
-      :day-start-time="dayStartTime"
-      :day-end-time="dayEndTime"
-      )
-    .body.flex.flex-col(
-      :style="backgroundExtendedWidth"
-      )
+    .body.flex.flex-col
       .line-wrapper
         .line.flex.items-center(
           v-for="hour in timeCoil"
@@ -26,10 +13,8 @@
 </template>
 
 <script>
-import CalendarColumn from "./CalendarColumn.vue";
 export default {
   name: "CalendarBackground",
-  components: { CalendarColumn },
   props: {
     timeCoil: Array,
     filteredOwners: Array,
@@ -38,6 +23,7 @@ export default {
     sidebarWidth: String,
     dayStartTime: Number,
     dayEndTime: Number,
+    ownersCount: Number,
   },
   data() {
     return {
@@ -52,23 +38,17 @@ export default {
       return this.filteredOwners.length;
     },
     backgroundExtendedWidth() {
-      if (this.ownersArrayLength > 3) {
+      if (this.ownersCount > 3) {
         return {
-          width: `${this.defaultColumnWidth * this.ownersArrayLength}px`,
+          width: `${this.defaultColumnWidth * this.ownersCount}px`,
         };
       }
       return {
-        width: "auto",
+        width: "100%",
       };
     },
     backgroundHeight() {
       return (this.timeCoil.length - 1) * this.pixelsPerHour + 48;
-    },
-    filteredEventsByDate() {
-      return this.eventsData.filter(
-        ({ start }) =>
-          start.slice(0, 10) === this.currentDate.format("YYYY-MM-DD")
-      );
     },
     horizontalScrollPresence() {
       return {
@@ -97,18 +77,6 @@ export default {
     calculateBackgroundWidth() {
       this.backgroundWidth = this.$refs.backgroundWrapper.scrollWidth;
     },
-    filterEventsByOwner(owner) {
-      let filteredArray = [];
-      this.filteredEventsByDate.forEach((item) => {
-        let foundEvent = item.employees.find(
-          (elem) =>
-            JSON.stringify(elem.employee) === JSON.stringify(owner) &&
-            elem.role === "owner"
-        );
-        if (foundEvent) filteredArray.push(item);
-      });
-      return filteredArray;
-    },
   },
   mounted() {
     this.calculateBackgroundWidth();
@@ -117,11 +85,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.scroll-x
-  overflow-x: auto
-
 .calendar-background-wrapper
-  width: 100%
   position: relative
 
 .header-wrapper
