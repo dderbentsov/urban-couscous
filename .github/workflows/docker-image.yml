@@ -48,7 +48,7 @@ jobs:
   deploy:
     needs: build
     name: Deploy to host
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     steps:
     - name: Get branch data
       uses: actions/checkout@v2
@@ -62,5 +62,6 @@ jobs:
         script: |
           docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
           docker pull gurtsn/calendar-front:master
+          cd docker
           docker-compose stop -t 1 frontend && docker-compose rm -f frontend
           docker-compose up -d frontend
