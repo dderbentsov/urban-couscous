@@ -76,8 +76,6 @@ export default {
 <style lang="sass" scoped>
 .calendar-column-wrapper
   border-right: 1px solid var(--border-light-grey-color)
-  &:nth-last-child(2) .header
-    border-right: none
   &:last-child
     border-right: none
 

@@ -26,7 +26,7 @@ export default {
       currentDate: moment(),
       timeInformation: {
         dayStartTime: "8:00",
-        dayEndTime: "24:00",
+        dayEndTime: "13:00",
       },
       eventsData: [],
       teamData: [],
