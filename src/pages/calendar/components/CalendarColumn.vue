@@ -3,11 +3,12 @@
     .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
         base-avatar.mr-2(:size="32")
-          img(src="@/assets/images/team-member.svg" alt="Team member")
+          img(:src="ownerData.avatar" alt="Team member" v-if="ownerData.avatar")
+          span(v-if="!ownerData.avatar") {{ defaultAvatar }}
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       base-button.btn(left-icon="icon-doc-ok", :icon-left-size="24", :size="32", secondary)
-    .body
+    .body.pl-1
       calendar-event-card(
         v-for="event in dayEvents"
         :key="event.id"
@@ -43,6 +44,9 @@ export default {
         )}.${this.ownerData.patronymic.slice(0, 1)}.`;
       }
       return null;
+    },
+    defaultAvatar() {
+      return `${this.ownerData.last_name[0]}${this.ownerData.first_name[0]}`;
     },
     pixelsPerMinute() {
       return this.pixelsPerHour / 60;

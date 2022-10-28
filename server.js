@@ -458,9 +458,9 @@ export function clientsServer() {
         previous: null,
         results: [
           {
-            id: "6faa6bb6-1de6-422c-a401-1b35cd455303",
-            start: "2022-10-27T11:15:49Z",
-            end: "2022-10-27T12:00:53Z",
+            id: "6fgg6bb6-1de6-422c-a401-1b35cd455303",
+            start: "2022-10-28T11:15:49Z",
+            end: "2022-10-28T12:00:53Z",
             kind: "call",
             subkind: null,
             description: "",
@@ -502,8 +502,8 @@ export function clientsServer() {
           },
           {
             id: "6faa6bb6-1de6-422c-a401-1b35cd455303",
-            start: "2022-10-27T13:00:49Z",
-            end: "2022-10-27T13:30:53Z",
+            start: "2022-10-28T13:00:49Z",
+            end: "2022-10-28T13:30:53Z",
             kind: "call",
             subkind: null,
             description: "",
@@ -545,8 +545,8 @@ export function clientsServer() {
           },
           {
             id: "2faa7bb2-2de6-422c-a401-1b35cd455223",
-            start: "2022-10-27T15:00:00Z",
-            end: "2022-10-27T16:10:00Z",
+            start: "2022-10-28T15:00:00Z",
+            end: "2022-10-28T16:10:00Z",
             kind: "call",
             subkind: null,
             description: "",
@@ -588,8 +588,8 @@ export function clientsServer() {
           },
           {
             id: "2faa5ff2-2de6-422c-a401-1b35cd455223",
-            start: "2022-10-25T17:10:00Z",
-            end: "2022-10-25T18:00:00Z",
+            start: "2022-10-28T17:10:00Z",
+            end: "2022-10-28T18:00:00Z",
             kind: "call",
             subkind: null,
             description: "",
@@ -631,8 +631,8 @@ export function clientsServer() {
           },
           {
             id: "2faa5ff2-2de6-422c-a401-1b35cd455223",
-            start: "2022-10-27T20:10:00Z",
-            end: "2022-10-27T21:00:00Z",
+            start: "2022-10-28T20:10:00Z",
+            end: "2022-10-28T21:00:00Z",
             kind: "call",
             subkind: null,
             description: "",
@@ -667,6 +667,49 @@ export function clientsServer() {
                   last_name: "Коломойцев",
                   first_name: "Илья",
                   patronymic: "Константинович",
+                },
+                role: "owner",
+              },
+            ],
+          },
+          {
+            id: "3faa5ff3-3de6-422c-a401-1b35cd455333",
+            start: "2022-10-28T12:30:00Z",
+            end: "2022-10-28T15:30:00Z",
+            kind: "call",
+            subkind: null,
+            description: "",
+            location: null,
+            members: [
+              {
+                id: "a9239f9a-e824-4bb3-a260-2b32dae9bc76",
+                person: {
+                  id: "15ff465c-2b7b-4d9a-9159-720c74d8b56d",
+                  last_name: "Елесеевская",
+                  first_name: "Татьяна",
+                  patronymic: "Ивановна",
+                },
+                role: null,
+              },
+            ],
+            employees: [
+              {
+                id: "f941a0c6-c734-4f79-92c2-d7a5674459e422",
+                employee: {
+                  id: "db831a15-e876-481f-a658-6325de7c311e",
+                  last_name: "Константинопольская",
+                  first_name: "Юлия",
+                  patronymic: "Викторовна",
+                },
+                role: null,
+              },
+              {
+                id: "f941a0c6-c750-4f79-92c0-d7a19354e422",
+                employee: {
+                  id: "db541a67-e836-481f-a653-6325de7c567e",
+                  last_name: "Захарова",
+                  first_name: "Ольга",
+                  patronymic: "Александровна",
                 },
                 role: "owner",
               },
