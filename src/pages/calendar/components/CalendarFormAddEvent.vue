@@ -1,17 +1,14 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-5.pb-6.px-8.event-form(v-if="formOpen" )
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.not-italic.text-xs.opacity-40.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeEventForm")
-      base-select(
-        id="responsible"
+        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
+      base-select.ba-sel(
         width="205px"
         :option-data="eventData.responsible"
         :list-data="listResponsible"
-        :choose-option="chooseOption"
-        :is-open="selectResponsibleOpen"
-        :select-open="openSelectResponsible"
+        :choose-option="chooseOptionResponsible"
       )
     .flex.flex-col.gap-y-2
       span.not-italic.text-xs.opacity-40.leading-3 Основная информация
@@ -27,53 +24,63 @@
         .icon-person.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
           input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
-    .flex.flex-col.gap-y-2(class='additional-information')
-      .flex.gap-x-4.items-center
-        span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
-        button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
-      .flex.gap-x-4.items-center(v-for="(info, index) in listFriendInfo" :key="index")
-        span.ml-1 {{info}}
-        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
+    //- .flex.flex-col.gap-y-2(class='additional-information')
+      //- .flex.gap-x-4.items-center
+      //-   span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
+      //-   button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
+      //-   base-button(
+            left-icon="icon-plus"
+            rounded secondary
+            :size="24"
+            :icon-left-size="10"
+            id="addInfo"
+            @click="(e)=>addFriendInfo(e)")
+      //- .flex.gap-x-4.items-center(v-for="(info, index) in listFriendInfo" :key="index")
+      //-   span.ml-1 {{info}}
+      //-   .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
+      //-     input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
     .flex.flex-col.gap-y-2
       span.not-italic.text-xs.opacity-40.leading-3 Вид события
       base-select(
-        id="kind"
         width="118px"
         :option-data="eventData.kindEvent"
         :list-data="kindEvents"
-        :choose-option="chooseOption"
-        :is-open="selectKindEventOpen"
-        :select-open="openSelectKindEvent"
+        :choose-option="chooseOptionTypeEvent"
       )
     .flex.flex-col.gap-y-2
       .flex.gap-x-4.items-center
         span.not-italic.text-xs.opacity-40.leading-3 Контакты
-        button-plus(id="addContact" @click="(e)=>addFriendInfo(e)")
+        base-button(
+        left-icon="icon-plus"
+        rounded secondary
+        :size="24"
+        :icon-left-size="10"
+        id="addContact"
+        @click="(e)=>addFriendInfo(e)")
       .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
         .icon-mail.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
           input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
-    add-event-button(@click="createEvent")
+    base-button.styled-button.not-italic.text-base.font-semibold(
+    :size="40"
+    @click="closeForm"
+    ) Создать событие
 </template>
 
 <script>
 import BaseSelect from "@/components/base/BaseSelect";
-import AddEventButton from "@/components/base/buttons/BaseCreateButton";
-import ButtonPlus from "@/components/base/buttons/BaseButtonPlus";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "FormChangeEvent",
-  components: { AddEventButton, ButtonPlus, BaseSelect },
+  components: { BaseSelect, BaseButton },
   props: {
+    closeForm: Function,
     listResponsible: {
       default: ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."],
     },
   },
   data() {
     return {
-      formOpen: true,
-      selectResponsibleOpen: false,
-      selectKindEventOpen: false,
       listFriendInfo: [1],
       listContacts: [1],
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
@@ -84,15 +91,18 @@ export default {
           firstTime: "11:00",
           secondTime: "12:30",
         },
-        friendInfo: {},
+        // friendInfo: {},
         kindEvent: "Вид события",
         contacts: {},
       },
     };
   },
   methods: {
-    createEvent() {
-      this.formOpen = !this.formOpen;
+    chooseOptionResponsible(e) {
+      this.eventData.responsible = e.target.id;
+    },
+    chooseOptionTypeEvent(e) {
+      this.eventData.kindEvent = e.target.id;
     },
     addFriendInfo(e) {
       if (e.currentTarget.id === "addInfo") {
@@ -106,34 +116,20 @@ export default {
         );
       }
     },
-    closeEventForm() {
-      this.formOpen = !this.formOpen;
-    },
-    openSelectResponsible() {
-      this.selectResponsibleOpen = !this.selectResponsibleOpen;
-    },
-    openSelectKindEvent() {
-      this.selectKindEventOpen = !this.selectKindEventOpen;
-    },
-    chooseOption(event) {
-      if (event.currentTarget.id === "responsible") {
-        this.eventData.responsible = this.listResponsible[event.target.id];
-      }
-      if (event.currentTarget.id === "kind") {
-        this.eventData.kindEvent = this.kindEvents[event.target.id];
-      }
-    },
   },
 };
 </script>
 
 <style lang="sass" scoped>
+.ba-sel
+  color: red
 .event-form
   height: fit-content
   min-width: 448px
   background-color: var(--default-white)
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
+  z-index: 5
 
 .form-item
   border-radius: 4px
@@ -161,4 +157,6 @@ export default {
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)
+.styled-button
+  width: 183px
 </style>
