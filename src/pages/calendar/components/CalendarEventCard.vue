@@ -40,7 +40,6 @@ export default {
       let startTime = this.trimTime(this.ownerEvent.start)
         .split(":")
         .map((elem) => parseInt(elem, 10));
-      console.log(startTime);
       let endTime = this.trimTime(this.ownerEvent.end)
         .split(":")
         .map((elem) => parseInt(elem, 10));

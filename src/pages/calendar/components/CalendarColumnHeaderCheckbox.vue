@@ -3,7 +3,6 @@
       :class="{disable: !isChecked}"
       @click="changeState"
     )
-    span(v-if="numberIsVisible") 3
     .icon-doc-ok.text-xxl
 </template>
 
