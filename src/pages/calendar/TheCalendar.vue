@@ -1,6 +1,8 @@
 <template lang="pug">
   .calendar-container.flex
-    calendar-sidebar(@width="changeWidth" :team-data="teamData")
+    calendar-sidebar(@width="changeWidth"
+    :team-data="teamData"
+    :open-form-create="openFormCreateEvent")
     calendar-schedule(
       :current-date="currentDate"
       :time-information="timeInformation"
@@ -10,15 +12,21 @@
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
       )
+    calendar-form-add-event(v-if="isOpenForm" :close-form="closeFormCreateEvent")
 </template>
 
 <script>
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
+import CalendarFormAddEvent from "./components/CalendarFormAddEvent.vue";
 export default {
   name: "TheCalendar",
-  components: { CalendarSchedule, CalendarSidebar },
+  components: {
+    CalendarSchedule,
+    CalendarSidebar,
+    CalendarFormAddEvent,
+  },
   data() {
     return {
       sidebarWidth: "72px",
@@ -30,6 +38,7 @@ export default {
       },
       eventsData: [],
       teamData: [],
+      isOpenForm: false,
     };
   },
   methods: {
@@ -58,6 +67,13 @@ export default {
     },
     changeWidth(value) {
       this.sidebarWidth = value;
+    },
+
+    openFormCreateEvent() {
+      this.isOpenForm = true;
+    },
+    closeFormCreateEvent() {
+      this.isOpenForm = false;
     },
   },
   mounted() {
