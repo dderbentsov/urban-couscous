@@ -16,14 +16,14 @@
         .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
           .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base.cursor-pointer(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
+            input.item-input.no-italic.text-base.cursor-text(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
           span —
           .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base.cursor-pointer(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
+            input.item-input.no-italic.text-base.cursor-text(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
+          input.item-input.cursor-text.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
     //- .flex.flex-col.gap-y-2(class='additional-information')
       //- .flex.gap-x-4.items-center
       //-   span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
@@ -60,7 +60,7 @@
       .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
         .icon-mail.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
+          input.item-input.cursor-text.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
     base-button.styled-button.not-italic.text-base.font-semibold(
     :size="40"
     @click="closeForm"
