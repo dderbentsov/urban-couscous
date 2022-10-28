@@ -2,11 +2,13 @@
   .calendar-column-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
-        img.avatar-wrapper.mr-2(src="@/assets/images/team-member.svg" alt="Team member")
+        base-avatar.mr-2(:size="32")
+          img(:src="ownerData.avatar" alt="Team member" v-if="ownerData.avatar")
+          span(v-if="!ownerData.avatar") {{ defaultAvatar }}
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
-      base-doc-ok-button
-    .body
+      column-header-checkbox
+    .body.pl-1
       calendar-event-card(
         v-for="event in dayEvents"
         :key="event.id"
@@ -16,11 +18,16 @@
 </template>
 
 <script>
-import BaseDocOkButton from "@/components/base/buttons/BaseDocOkButton.vue";
+import ColumnHeaderCheckbox from "./CalendarColumnHeaderCheckbox.vue";
+import BaseAvatar from "@/components/base/BaseAvatar";
 import CalendarEventCard from "./CalendarEventCard.vue";
 export default {
   name: "CalendarColumn",
-  components: { BaseDocOkButton, CalendarEventCard },
+  components: {
+    CalendarEventCard,
+    BaseAvatar,
+    ColumnHeaderCheckbox,
+  },
   props: {
     ownerData: Object,
     dayEvents: Array,
@@ -41,6 +48,9 @@ export default {
         )}.${this.ownerData.patronymic.slice(0, 1)}.`;
       }
       return null;
+    },
+    defaultAvatar() {
+      return `${this.ownerData.last_name[0]}${this.ownerData.first_name[0]}`;
     },
     pixelsPerMinute() {
       return this.pixelsPerHour / 60;
@@ -76,8 +86,6 @@ export default {
 <style lang="sass" scoped>
 .calendar-column-wrapper
   border-right: 1px solid var(--border-light-grey-color)
-  &:nth-last-child(2) .header
-    border-right: none
   &:last-child
     border-right: none
 
@@ -90,9 +98,9 @@ export default {
   position: relative
   z-index: 3
 
-.avatar-wrapper
-  width: 32px
-  height: 32px
+.btn
+  opacity: 0.5
+  padding: 7px 13px !important
 
 .icon-wrapper
   width: 24px

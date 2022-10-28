@@ -10,7 +10,7 @@
       @selected-layout="selectedLayout"
       )
     .schedule-body
-      .column-wrapper.flex.ml-20.relative(:style="columnWrapperWidth")
+      .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
           v-for="(owner, index) in filteredOwners"
           :key="owner.id"
@@ -18,10 +18,10 @@
           :day-events="filterEventsByOwner(owner)"
           :day-start-time="validateStartTime"
           :day-end-time="validateEndTime"
-          :style="columnWidth"
+          :style="columnSize"
         )
       .flex.w-full.relative
-        .time-coil-wrapper.left-0.-mt-3
+        .time-coil-wrapper.left-0.-mt-12.pt-9
           calendar-clock-column(
             :timeCoil="timeCoil"
             :current-time="currentTime"
@@ -38,12 +38,7 @@
         )
         .flex(:class="calendarBackgroundWidth")
           calendar-background(
-            :current-date="currentDate"
             :time-coil="timeCoil"
-            :events-data="eventsData"
-            :sidebar-width="sidebarWidth"
-            :day-start-time="validateStartTime"
-            :day-end-time="validateEndTime"
             :owners-count="ownersCount"
             )
 </template>
@@ -125,7 +120,7 @@ export default {
     },
     circleIndicatorLocation() {
       return {
-        top: `${this.calculateIndicatorLocation() + 6}px`,
+        top: `${this.calculateIndicatorLocation() + 42}px`,
       };
     },
     pixelsPerMinute() {
@@ -187,7 +182,7 @@ export default {
         this.columnHeaderHeight
       );
     },
-    columnWidth() {
+    columnSize() {
       if (this.ownersCount > 3) {
         return {
           height: `${this.columnHeight}px`,
@@ -260,7 +255,7 @@ export default {
         if (this.convertTime(elem, 0, -3) === this.hours) {
           return this.hoursMinutes;
         }
-        return elem;
+        return elem.slice(0, -3) + ":00";
       });
     },
     verifyTime(dayTime) {
@@ -360,12 +355,14 @@ export default {
   z-index: 5
 
 .column-wrapper
+  position: relative
   height: 48px
   background-color: var(--default-white)
 
 .time-coil-wrapper
   position: sticky
   z-index: 5
+  background-color: var(--default-white)
 
 .schedule-body
   width: 100%
