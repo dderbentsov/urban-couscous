@@ -7,7 +7,7 @@
           span(v-if="!ownerData.avatar") {{ defaultAvatar }}
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
-      base-button.btn(left-icon="icon-doc-ok", :icon-left-size="24", :size="32", secondary)
+      column-header-checkbox
     .body.pl-1
       calendar-event-card(
         v-for="event in dayEvents"
@@ -18,12 +18,16 @@
 </template>
 
 <script>
+import ColumnHeaderCheckbox from "./CalendarColumnHeaderCheckbox.vue";
 import BaseAvatar from "@/components/base/BaseAvatar";
-import BaseButton from "@/components/base/BaseButton.vue";
 import CalendarEventCard from "./CalendarEventCard.vue";
 export default {
   name: "CalendarColumn",
-  components: { CalendarEventCard, BaseButton, BaseAvatar },
+  components: {
+    CalendarEventCard,
+    BaseAvatar,
+    ColumnHeaderCheckbox,
+  },
   props: {
     ownerData: Object,
     dayEvents: Array,
