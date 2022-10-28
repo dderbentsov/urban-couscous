@@ -21,7 +21,7 @@
           :style="columnSize"
         )
       .flex.w-full.relative
-        .time-coil-wrapper.left-0.-mt-3
+        .time-coil-wrapper.left-0.-mt-12.pt-9
           calendar-clock-column(
             :timeCoil="timeCoil"
             :current-time="currentTime"
@@ -120,7 +120,7 @@ export default {
     },
     circleIndicatorLocation() {
       return {
-        top: `${this.calculateIndicatorLocation() + 6}px`,
+        top: `${this.calculateIndicatorLocation() + 42}px`,
       };
     },
     pixelsPerMinute() {
@@ -362,6 +362,7 @@ export default {
 .time-coil-wrapper
   position: sticky
   z-index: 5
+  background-color: var(--default-white)
 
 .schedule-body
   width: 100%
