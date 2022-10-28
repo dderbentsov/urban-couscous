@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper-additional.flex.flex-col.gap-y-8.justify-between.text-base
-    .flex.flex-col.gap-y-6.w-full
+    .flex.flex-col.gap-y-6.w-full.px-4
       .flex.flex-col.gap-y-4.w-full(v-for="info in additionalInfo" :key="info.id")
         .flex.flex-col.gap-y-1
           base-input(v-model:value="info.header" placeholder="Заголовок")
@@ -15,7 +15,8 @@
       .add-additional.flex.gap-x-3.cursor-pointer(@click="addNewAdditional")
         .icon-plus
         span Добавить еще пункт
-    base-create-button(@click="saveClient" text="Создать клиента")
+    .px-4
+      base-create-button(@click="saveClient" text="Создать клиента")
 </template>
 
 <script>

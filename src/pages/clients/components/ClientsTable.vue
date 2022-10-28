@@ -1,7 +1,8 @@
 <template lang="pug">
-  .wrapper.flex.flex-col.gap-y-8.px-6.pt-6.h-full.w-full.min-w-fit
-    clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreate")
-    .flex.flex-col.h-full.gap-y-2
+  .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
+    clients-form-create(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
+    clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreateClient")
+    .flex.flex-col.h-full.gap-y-2.table-container
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
         clients-table-row(
@@ -19,6 +20,7 @@ import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
+import ClientsFormCreate from "@/pages/clients/components/ClientsFormCreate";
 export default {
   name: "ClientsTable",
   components: {
@@ -26,18 +28,23 @@ export default {
     ClientsTableRow,
     ClientsTableHat,
     ClientsTableHeader,
-  },
-  props: {
-    openFormCreate: Function,
+    ClientsFormCreate,
   },
   data() {
     return {
+      isOpenFormCreate: false,
       selectAll: false,
       marked: [],
       dataClients: [],
     };
   },
   methods: {
+    openFormCreateClient() {
+      this.isOpenFormCreate = true;
+    },
+    closeFormCreateClient() {
+      this.isOpenFormCreate = false;
+    },
     saveDataClients(data) {
       this.dataClients = data.results;
     },
@@ -72,6 +79,16 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.wrapper
+.wrapper-table
   background-color: var(--default-white)
+.table-container
+  overflow: auto
+  &::-webkit-scrollbar
+      height: 4px
+  &::-webkit-scrollbar-track
+    background-color: rgba(211, 212, 220, 0.5)
+    border-radius: 8px
+  &::-webkit-scrollbar-thumb
+    border-radius: 8px
+    background-color: var(--btn-blue-color)
 </style>

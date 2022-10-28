@@ -26,7 +26,7 @@
           :style="{ minWidth : widthSelect + 'px'}")
           .flex.not-italic.option.justify-center.py-1.text-xl(
             v-for="responsible in listData"
-            @click="(e) => chooseOption(e)"
+            @click="chooseOption"
             :key="responsible.network"
             :id="responsible.network"
             :class="responsible.icon"
