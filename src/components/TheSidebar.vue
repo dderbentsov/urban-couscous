@@ -19,8 +19,8 @@ export default {
       pageSettings: [
         {
           id: "calendar",
-          path: "#/",
-          active: false,
+          path: "#/calendar",
+          active: true,
           icon: "icon-calendar-2",
         },
         {
