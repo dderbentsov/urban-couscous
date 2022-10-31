@@ -1,7 +1,7 @@
 <template lang="pug">
-  .header-wrapper.flex.justify-center.box-border.py-2.px-6
+  .header-wrapper.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
     .flex.items-center.box-border.cursor-pointer.mr-auto
-      img.logo-img.mr-16(src="@/assets/images/logo.svg" alt="Logo")
+      img.logo-img.mr-29_25px(src="@/assets/images/logo.svg" alt="Logo")
       header-inputs
     //- .charge-person-container
     //-   header-active-client-panel(:info="chargePersonInfo")
