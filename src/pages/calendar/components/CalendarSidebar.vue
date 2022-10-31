@@ -11,8 +11,9 @@
         .flex.flex-col.items-center.gap-y-2.justify-center
           base-button.mb-2(left-icon="icon-plus", rounded, :size="24", :icon-left-size="10", secondary )
           .team-card(v-for="teammate in teamData" :key="teammate.id")
-            BaseAvatar(:size="32")
-              img(:src="avatar" alt="Team member")
+            base-avatar(:size="32")
+              img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
+              span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-else)
         base-button(right-icon="icon-plus", split, :size="40", :icon-right-size="10", @click="openFormCreate" ) Создать событие
         .flex.items-center.flex-col.gap-y-4
@@ -35,8 +36,9 @@
               v-for="teammate in teamData"
               :key="teammate.id")
               .flex.items-center
-                BaseAvatar(:size="32")
-                  img(:src="avatar" alt="Team member")
+                base-avatar(:size="32")
+                  img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
+                  span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
               span.icon-change-place.cursor-pointer.w-5.flex.items-center.justify-center.w-6.h-6
       .button-wrapper.flex.justify-center.mb-23px
@@ -100,6 +102,9 @@ export default {
       return {
         width: this.widthSidebarClose,
       };
+    },
+    defaultName(last, first) {
+      return `${last[0]}${first[0]}`;
     },
   },
   methods: {

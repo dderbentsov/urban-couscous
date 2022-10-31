@@ -20,8 +20,11 @@ module.exports = {
         "2xl": ["28px", { lineHeight: "33px" }],
         "3xl": ["60px", { lineHeight: "70px" }],
         "4xl": ["44px", { lineHeight: "48px" }],
+        "5xl": ["28px", { lineHeight: "38px" }],
       },
       gap: {
+        6: "6px",
+        11: "11px",
         43: "43px",
       },
       spacing: {
