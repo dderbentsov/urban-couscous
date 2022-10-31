@@ -2,66 +2,61 @@
   .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
-        span.not-italic.text-xs.opacity-40.leading-3 Ответственный
+        span.text-xs.opacity-40.font-bold.leading-3 Ответственный
         .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
-      base-select.ba-sel(
-        width="205px"
+      base-select(
+        :size-input="responsibleInputSize"
         :option-data="eventData.responsible"
         :list-data="listResponsible"
         :choose-option="chooseOptionResponsible"
+        placeholder="Выберите ответственного"
+        separator
       )
     .flex.flex-col.gap-y-2
-      span.not-italic.text-xs.opacity-40.leading-3 Основная информация
+      span.text-xs.opacity-40.font-bold.leading-3 Основная информация
       .flex.gap-x-4.items-center
         .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
-          .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base.cursor-text(v-model="eventData.timeEvent.firstTime" type="time" min="08:00" max="18:00")
+          .time-input.flex.gap-x-2.px-4.py-2.items-center
+            input.item-input.text-base.cursor-text(
+                v-model="eventData.timeEvent.firstTime"
+                placeholder ="11:00"
+              )
           span —
-          .form-item.flex.gap-x-2.px-4.py-2.items-center
-            input.item-input.no-italic.text-base.cursor-text(v-model="eventData.timeEvent.secondTime" type="time" min="08:00" max="18:00")
+          .time-input.flex.gap-x-2.px-4.py-2.items-center
+            input.item-input.text-base.cursor-text(
+                v-model="eventData.timeEvent.secondTime"
+                placeholder ="12:30"
+              )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
-    //- .flex.flex-col.gap-y-2(class='additional-information')
-      //- .flex.gap-x-4.items-center
-      //-   span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
-      //-   button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
-      //-   base-button(
-            left-icon="icon-plus"
-            rounded secondary
-            :size="24"
-            :icon-left-size="10"
-            id="addInfo"
-            @click="(e)=>addFriendInfo(e)")
-      //- .flex.gap-x-4.items-center(v-for="(info, index) in listFriendInfo" :key="index")
-      //-   span.ml-1 {{info}}
-      //-   .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-      //-     input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
+          input.item-input.cursor-text.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
     .flex.flex-col.gap-y-2
-      span.not-italic.text-xs.opacity-40.leading-3 Вид события
+      span.text-xs.opacity-40.font-bold.leading-3 Вид события
       base-select(
-        width="118px"
+        :size-input="kindEventSize"
         :option-data="eventData.kindEvent"
         :list-data="kindEvents"
         :choose-option="chooseOptionTypeEvent"
+        placeholder="Вид события"
+        separator
       )
     .flex.flex-col.gap-y-2
       .flex.gap-x-4.items-center
-        span.not-italic.text-xs.opacity-40.leading-3 Контакты
+        span.text-xs.opacity-40.font-bold.leading-3 Контакты
         base-button(
         left-icon="icon-plus"
         rounded secondary
         :size="24"
         :icon-left-size="10"
         id="addContact"
-        @click="(e)=>addFriendInfo(e)")
+        @click="(e)=>addContact(e)")
       .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
         .icon-mail.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.no-italic.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
-    base-button.styled-button.not-italic.text-base.font-semibold(
+          input.item-input.cursor-text.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
+    base-button.styled-button.text-base.font-semibold(
     :size="40"
     @click="closeForm"
     ) Создать событие
@@ -81,18 +76,18 @@ export default {
   },
   data() {
     return {
-      listFriendInfo: [1],
       listContacts: [1],
+      responsibleInputSize: 22,
+      kindEventSize: 10,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
       eventData: {
-        responsible: "Выберите ответственного",
+        responsible: "",
         eventClient: "",
         timeEvent: {
-          firstTime: "11:00",
-          secondTime: "12:30",
+          firstTime: "",
+          secondTime: "",
         },
-        // friendInfo: {},
-        kindEvent: "Вид события",
+        kindEvent: "",
         contacts: {},
       },
     };
@@ -100,16 +95,15 @@ export default {
   methods: {
     chooseOptionResponsible(e) {
       this.eventData.responsible = e.target.id;
+      this.responsibleInputSize = this.eventData.responsible
+        .split(" ")
+        .join("").length;
     },
     chooseOptionTypeEvent(e) {
       this.eventData.kindEvent = e.target.id;
+      this.kindEventSize = this.eventData.kindEvent.split(" ").join("").length;
     },
-    addFriendInfo(e) {
-      if (e.currentTarget.id === "addInfo") {
-        this.listFriendInfo.push(
-          this.listFriendInfo[this.listFriendInfo.length - 1] + 1
-        );
-      }
+    addContact(e) {
       if (e.currentTarget.id === "addContact") {
         this.listContacts.push(
           this.listContacts[this.listContacts.length - 1] + 1
@@ -121,8 +115,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.ba-sel
-  color: red
 .event-form
   height: fit-content
   min-width: 448px
@@ -133,7 +125,7 @@ export default {
 
 .form-item
   border-radius: 4px
-  width: fit-content
+  width: 344px
   background-color: var(--bg-ligth-blue-color)
 
 .item-input
@@ -147,6 +139,11 @@ export default {
     -webkit-appearance: none
   &::placeholder
     color: var(--font-black-color-1)
+
+.time-input
+  width: 72px
+  border-radius: 4px
+  background-color: var(--bg-ligth-blue-color)
 
 .icon
   width: 24px
