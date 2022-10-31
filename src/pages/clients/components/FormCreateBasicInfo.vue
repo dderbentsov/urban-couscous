@@ -3,7 +3,7 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(:list-data="priorityList" :option-data="priorityOption" default-option="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :width-select="277")
+        base-select(:list-data="priorityList" :option-data="basicInfo.priority" placeholder="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :size-input="22")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
           span.obligatory *
@@ -37,9 +37,6 @@ export default {
   props: {
     choosePriority: Function,
     priorityList: Array,
-    priorityOption: {
-      default: "Приоритет",
-    },
     saveNetworkId: Function,
     chooseOption: Function,
     phone: Object,
