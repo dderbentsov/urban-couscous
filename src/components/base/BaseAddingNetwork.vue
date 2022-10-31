@@ -1,7 +1,8 @@
 <template lang="pug">
   .flex.w-full(class="gap-x-1.5")
-    base-select(:for-networks="true" :style-border="true" :list-data="listAddingNetworks" :option-data="selectedOption" :choose-option="chooseNetwork" :width-select="42")
-    base-input.input-info.w-full(v-model:value="value.username" placeholder="Ссылкa")
+    .flex(:id="value.id" @click="(e) => saveNetworkId(e)")
+      base-select(:for-networks="true" :style-border="true" :list-data="listAddingNetworks" :option-data="selectedOption" :choose-option="chooseNetwork" :width-select="42")
+    base-input.w-full(v-model:value="value.username" placeholder="Ссылкa")
 </template>
 
 <script>
@@ -11,6 +12,7 @@ export default {
   name: "TableAddingNetwork",
   components: { BaseInput, BaseSelect },
   props: {
+    saveNetworkId: Function,
     selectedOption: String,
     value: Object,
     listAddingNetworks: Array,
@@ -18,12 +20,3 @@ export default {
   },
 };
 </script>
-
-<style lang="sass" scoped>
-.icon
-  color: var(--font-dark-blue-color)
-  width: 48px
-  height: 42px
-  border: 2px solid var(--border-light-grey-color)
-  border-radius: 4px
-</style>

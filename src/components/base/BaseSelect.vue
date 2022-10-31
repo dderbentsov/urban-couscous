@@ -28,7 +28,7 @@
           :id="id")
           .flex.option.justify-center.py-1.text-xl(
             v-for="responsible in listData"
-            @click="chooseOption"
+            @click="(e) => chooseOption(e)"
             :key="responsible.network"
             :id="responsible.network"
             :class="responsible.icon"
@@ -41,6 +41,7 @@
 export default {
   name: "BaseSelect",
   props: {
+    defaultOption: String,
     id: String,
     styleBorder: {
       default: false,
@@ -59,11 +60,16 @@ export default {
   data() {
     return {
       isSelectOpen: false,
+      isSelectedOption: false,
     };
   },
   methods: {
     openSelect() {
       this.isSelectOpen = !this.isSelectOpen;
+    },
+    selectOption(e) {
+      this.chooseOption(e);
+      this.isSelectedOption = true;
     },
   },
 };
@@ -82,7 +88,10 @@ export default {
   appearance: none
   border: none
   outline: none
+  color: var(--font-dark-blue-color)
   background-color: var(--font-black-color-0)
+  &.default
+    color: var(--font-black-color-1)
   &::-webkit-calendar-picker-indicator
     display: none
     -webkit-appearance: none
