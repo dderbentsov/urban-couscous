@@ -1,6 +1,6 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border(class="py-2.5" :style="{ minWidth: widthInput + 'px' }")
-    input.w-full.outline-0.not-italic(:value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder" :maxlength="maxLength")
+    input.input.w-full.outline-0.not-italic(:class="{date:type === 'date'}" :value="value" :type="type" @input="$emit('update:value', $event.target.value)" :placeholder="placeholder" :maxlength="maxLength")
     .slot(v-if="withIcon" :class="iconPosition")
       slot.cursor-pointer
 </template>
@@ -37,4 +37,9 @@ export default {
   border: 2px solid var(--border-light-grey-color)
   border-radius: 4px
   background-color: var(--default-white)
+  color: var(--font-dark-blue-color)
+.date
+  background: url("../../assets/icons/calendar-input.svg") no-repeat 100% 50%
+  &::-webkit-calendar-picker-indicator
+    opacity: 0
 </style>

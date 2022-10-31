@@ -6,16 +6,26 @@
       .flex.gap-x-3.w-full
         .export-avatar.cursor-pointer.flex.justify-center.items-center
           .icon-download.text-xl
-        base-input(v-model:value="infoClient.basic.full_name" placeholder="ФИО*" :width-input="326" )
-        base-select(:list-data="priorityList" :option-data="getPriorityOption" :width-select="176" :for-networks="false" :style-border="true" :choose-option="chooseOptionSelect")
+        base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")
     .flex.flex-col.flex-auto.l.gap-y-8
       .flex.px-4
-        button.title-info.px-6.py-2.cursor-pointer.w-full.text-sm(v-for="(info, index) in listInfoTitle" @click="(e) => selectTab(e)" :class="{active:info.active}" :key="index" :id="info.title") {{info.title}}
+        button.title-info.px-6.py-2.cursor-pointer.w-full.text-sm(v-for="info in listInfoTitle" @click="(e) => selectTab(e)" :class="{active:info.active}" :key="info.key" :id="info.key") {{info.title}}
       .flex(:style="{display :'block'}" ref="basic")
-        form-create-basic-info( :basic-info="infoClient.basic" :phone="infoClient.phone" :email="infoClient.email" :add-network="addNewNetwork" :save-client="saveClient" :choose-option="chooseOptionNetworks")
+        form-create-basic-info(
+          :basic-info="infoClient.basic"
+          :phone="infoClient.phone"
+          :email="infoClient.email"
+          :save-network-id="saveNetworkId"
+          :add-network="addNewNetwork"
+          :save-client="saveClient"
+          :choose-option="chooseOptionNetworks"
+          :choose-priority="choosePriority"
+          :priority-list="priorityList"
+          :priority-option="getPriorityOption"
+          )
       .flex(:style="{display :'none'}" ref="doc")
-        form-create-identity-documents(:identity-document="infoClient.pass" :save-client="saveClient")
-      .flex(:style="{display :'none'}" ref="addresses")
+        form-create-identity-documents(:identity-document="infoClient.identity_document" :save-client="saveClient")
+      .flex(:style="{display :'none'}" ref="address")
         form-create-addresses(:addresses="infoClient.addresses" :save-file="saveDocFile" :save-client="saveClient")
       .flex(:style="{display :'none'}" ref="additional")
         form-create-additional(:additional-info="infoClient.additional" :add-new-additional="addNewAdditionalInfo" :save-file="saveAdditionalFiles" :save-client="saveClient")
@@ -44,7 +54,9 @@ export default {
   },
   data() {
     return {
+      networksSettings: column.find((el) => el.name === "networks"),
       prioritySettings: column.find((el) => el.name === "priority"),
+      networkId: "",
       infoClient: {
         basic: {
           full_name: "",
@@ -53,8 +65,9 @@ export default {
           contacts: [
             {
               id: "network",
-              kind: "",
+              kind: "TELEGRAM",
               username: "",
+              icon: "icon-tg",
             },
           ],
         },
@@ -66,18 +79,27 @@ export default {
           kind: "EMAIL",
           username: "",
         },
-        pass: {
-          kind: "Паспорт",
-          numba: "",
-          issued_by_org: "",
-          issued_by_date: "",
-          issued_by_org_code: "",
+        identity_document: {
+          pass: {
+            kind: "Паспорт",
+            numba: "",
+            issued_by_org: "",
+            issued_by_date: "",
+            issued_by_org_code: "",
+          },
+          snils: {
+            kind: "СНИЛС",
+            numba: "",
+          },
+          inn: {
+            kind: "ИНН",
+            numba: "",
+          },
         },
         addresses: {
           actualPlace: "",
           registrationPlace: "",
         },
-        doc: {},
         additional: [
           {
             id: "add",
@@ -94,18 +116,13 @@ export default {
           active: true,
         },
         {
-          title: "Документы",
+          title: "ДУЛ",
           key: "doc",
           active: false,
         },
         {
-          title: "Адреса",
-          key: "addresses",
-          active: false,
-        },
-        {
-          title: "Дополнительное",
-          key: "additional",
+          title: "Адрес",
+          key: "address",
           active: false,
         },
       ],
@@ -121,27 +138,56 @@ export default {
     },
   },
   methods: {
+    createIdentityDocument(id) {
+      fetch("http://45.84.227.122:8080/general/identity_document/create/", {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          ...this.infoClient.identity_document.pass,
+          person_id: id,
+        }),
+      });
+    },
     postNewClient() {
       fetch("http://45.84.227.122:8080/general/person/create/", {
         method: "POST",
         headers: {
-          Accept: "text/html; q=1.0, */*",
+          Accept: "*/*",
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify({
           full_name: this.infoClient.basic.full_name,
           birth_date: this.infoClient.basic.birth_date,
+          priority: this.infoClient.basic.priority,
         }),
-      });
+      })
+        .then((res) => res.json())
+        .then((result) => this.createIdentityDocument(result.id));
     },
-    chooseOptionSelect(e) {
+    saveNetworkId(e) {
+      this.networkId = e.currentTarget.id;
+    },
+    choosePriority(e) {
       this.infoClient.basic.priority = this.prioritySettings.settings.find(
         (el) => el.text === e.target.id
       ).priority;
     },
-    chooseOptionNetworks() {},
+    chooseOptionNetworks(e) {
+      let index = this.infoClient.basic.contacts.findIndex(
+        (el) => el.id === this.networkId
+      );
+      let icon = this.networksSettings.settings.find(
+        (el) => el.network === e.target.id
+      ).icon;
+      this.infoClient.basic.contacts[index].kind = e.target.id;
+      this.infoClient.basic.contacts[index].icon = icon;
+    },
     saveClient() {
       this.postNewClient();
+      this.closeForm();
     },
     saveDocFile(e) {
       this.infoClient.doc = e.target.files;
@@ -164,13 +210,14 @@ export default {
         id:
           this.infoClient.basic.contacts[0].id +
           this.infoClient.basic.contacts.length,
-        kind: "",
+        kind: "TELEGRAM",
         username: "",
+        icon: "icon-tg",
       });
     },
     selectTab(event) {
       this.listInfoTitle.forEach((el) => {
-        if (el.title === event.target.id) {
+        if (el.key === event.target.id) {
           el.active = true;
           this.$refs[el.key].style.display = "block";
         } else {
@@ -194,7 +241,7 @@ export default {
 .title
   color: var(--font-dark-blue-color)
 .export-avatar
-  width: 40px
+  min-width: 40px
   height: 40px
   border-radius: 50%
   background-color: var(--bg-btn-icons-color)

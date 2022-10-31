@@ -2,9 +2,12 @@
   .wrapper-info.flex.flex-col.flex-auto.h-full.gap-y-8.justify-between
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
+        span.text-sm Приоритет
+        base-select(:list-data="priorityList" :option-data="priorityOption" default-option="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :width-select="277")
+      .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
           span.obligatory *
-        base-input.input-info(v-model:value="basicInfo.birth_date" type="date" :width-input="277")
+        base-input.input-info(v-model:value="basicInfo.birth_date" type="date" placeholder="00.00.0000" :width-input="277")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Номер телефона
           span.obligatory *
@@ -16,21 +19,28 @@
       .flex.flex-col.col-start-1.col-end-3.w-100(class="gap-y-1.5")
         span.text-sm Ссылки на соцсети
         .flex(class="gap-x-1.5" v-for="network in basicInfo.contacts" :key="network.id")
-          base-adding-network(:list-adding-networks="networks.settings" selected-option="icon-tg" :value="network" :choose-network="chooseOption")
+          base-adding-network(:list-adding-networks="networks.settings" :selected-option="network.icon" :value="network" :choose-network="chooseOption" :save-network-id="saveNetworkId")
         span.add-network.cursor-pointer(v-show="networks.settings.length !== basicInfo.contacts.length" @click="addNetwork") Добавить соцсеть
     .px-4
-      base-create-button(text="Сохранить" @click="saveClient")
+      base-create-button(text="Создать клиента" @click="saveClient")
 </template>
 
 <script>
 import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
 import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
+import BaseSelect from "@/components/base/BaseSelect";
 import { column } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "FormCreateBasicInfo",
-  components: { BaseInput, BaseCreateButton, BaseAddingNetwork },
+  components: { BaseInput, BaseCreateButton, BaseAddingNetwork, BaseSelect },
   props: {
+    choosePriority: Function,
+    priorityList: Array,
+    priorityOption: {
+      default: "Приоритет",
+    },
+    saveNetworkId: Function,
     chooseOption: Function,
     phone: Object,
     email: Object,

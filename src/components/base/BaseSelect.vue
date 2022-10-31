@@ -5,7 +5,7 @@
     :style="{ minWidth : widthSelect + 'px'}"
     )
     .relative.flex.flex-col
-      .not-italic.select.cursor-pointer.w-full(v-if="!forNetworks") {{optionData}}
+      .not-italic.select.cursor-pointer.w-full(v-if="!forNetworks" :class="{default:!isSelectedOption}") {{isSelectedOption || !defaultOption ? optionData : defaultOption}}
         .absolute.options(
           v-show="isSelectOpen"
           :id="id"
@@ -14,7 +14,7 @@
           )
           .not-italic.option.pl-4.py-1(
             v-for="responsible in listData"
-            @click="(e) => chooseOption(e)"
+            @click="(e) => selectOption(e)"
             :key="responsible"
             :id="responsible"
             ) {{responsible}}
@@ -26,7 +26,7 @@
           :style="{ minWidth : widthSelect + 'px'}")
           .flex.not-italic.option.justify-center.py-1.text-xl(
             v-for="responsible in listData"
-            @click="chooseOption"
+            @click="(e) => chooseOption(e)"
             :key="responsible.network"
             :id="responsible.network"
             :class="responsible.icon"
@@ -39,6 +39,7 @@
 export default {
   name: "BaseSelect",
   props: {
+    defaultOption: String,
     id: String,
     styleBorder: {
       default: false,
@@ -55,11 +56,16 @@ export default {
   data() {
     return {
       isSelectOpen: false,
+      isSelectedOption: false,
     };
   },
   methods: {
     openSelect() {
       this.isSelectOpen = !this.isSelectOpen;
+    },
+    selectOption(e) {
+      this.chooseOption(e);
+      this.isSelectedOption = true;
     },
   },
 };
@@ -77,8 +83,10 @@ export default {
   appearance: none
   border: none
   outline: none
-  color: var(--font-black-color-1)
+  color: var(--font-dark-blue-color)
   background-color: var(--font-black-color-0)
+  &.default
+    color: var(--font-black-color-1)
   &::-webkit-calendar-picker-indicator
     display: none
     -webkit-appearance: none
