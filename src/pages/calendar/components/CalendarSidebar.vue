@@ -11,8 +11,9 @@
         .flex.flex-col.items-center.gap-y-2.justify-center
           base-button.mb-2(left-icon="icon-plus", rounded, :size="24", :icon-left-size="10", secondary )
           .team-card(v-for="teammate in teamData" :key="teammate.id")
-            BaseAvatar(:size="32")
-              img(:src="avatar" alt="Team member")
+            base-avatar(:size="32")
+              img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
+              span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-else)
         base-button(right-icon="icon-plus", split, :size="40", :icon-right-size="10", @click="openFormCreate" ) Создать событие
         .flex.items-center.flex-col.gap-y-4
@@ -35,8 +36,9 @@
               v-for="teammate in teamData"
               :key="teammate.id")
               .flex.items-center
-                BaseAvatar(:size="32")
-                  img(:src="avatar" alt="Team member")
+                base-avatar(:size="32")
+                  img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
+                  span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
               span.icon-change-place.cursor-pointer.w-5.flex.items-center.justify-center.w-6.h-6
       .button-wrapper.flex.justify-center.mb-23px
@@ -44,10 +46,6 @@
 </template>
 
 <script>
-import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue";
-import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
-import BaseCreateButton from "../../../components/base/buttons/BaseCreateButton.vue";
-import img from "../../../assets/images/team-member.svg";
 import BaseButton from "@/components/base/BaseButton";
 import BaseAvatar from "@/components/base/BaseAvatar";
 
@@ -55,9 +53,6 @@ export default {
   name: "CalendarSidebar",
   components: {
     BaseButton,
-    BaseButtonPlus,
-    BaseOpenButton,
-    BaseCreateButton,
     BaseAvatar,
   },
   props: {
@@ -77,7 +72,6 @@ export default {
       isOpen: false,
       turnButton: "180deg",
       maxLengthLastName: 13,
-      avatar: img,
     };
   },
   computed: {
@@ -101,6 +95,9 @@ export default {
         width: this.widthSidebarClose,
       };
     },
+    defaultName(last, first) {
+      return `${last[0]}${first[0]}`;
+    },
   },
   methods: {
     changeSize() {
@@ -113,13 +110,13 @@ export default {
     },
     changeName(lastName, fitstName, patronymic) {
       return lastName.length > this.maxLengthLastName
-        ? lastName.slice(0, this.maxLengthLastName) + "... "
-        : lastName +
-            " " +
-            fitstName.slice(0, 1) +
+        ? lastName.slice(0, this.maxLengthLastName) +
+            "... " +
+            fitstName[0] +
             "." +
-            patronymic.slice(0, 1) +
-            ".";
+            patronymic[0] +
+            "."
+        : lastName + " " + fitstName[0] + "." + patronymic[0] + ".";
     },
   },
 };
