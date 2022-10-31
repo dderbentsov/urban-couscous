@@ -15,21 +15,21 @@
         :id="id"
         )
         .option.px-4.py-1(
-          v-for="responsible in listData"
+          v-for="data in listData"
           @click="(e) => chooseOption(e)"
-          :key="responsible"
-          :id="responsible"
-          ) {{responsible}}
+          :key="data.id || data"
+          :id="data.id || data"
+          ) {{data.name || data}}
     .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData, 'px-2.5'")
       .absolute.options.top-11.left-0(
         v-show="isSelectOpen"
         :id="id")
         .flex.option.justify-center.py-1.text-xl(
-          v-for="responsible in listData"
+          v-for="data in listData"
           @click="(e) => chooseOption(e)"
-          :key="responsible.network"
-          :id="responsible.network"
-          :class="responsible.icon"
+          :key="data.network"
+          :id="data.network"
+          :class="data.icon"
           )
     .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
     .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(v-if="!forNetworks" :class="{ open: isSelectOpen}")

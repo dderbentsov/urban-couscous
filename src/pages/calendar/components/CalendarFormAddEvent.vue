@@ -1,14 +1,14 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14(@click="output")
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.text-xs.opacity-40.font-bold.leading-3 Ответственный
         .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
       base-select(
         :size-input="responsibleInputSize"
-        :option-data="eventData.responsible"
-        :list-data="listResponsible"
-        :choose-option="chooseOptionResponsible"
+        :option-data="ownerName"
+        :list-data="filteredOwners"
+        :choose-option="chooseOptionOwner"
         placeholder="Выберите ответственного"
         separator
       )
@@ -19,13 +19,13 @@
         .flex.gap-x-2.items-center
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="eventData.timeEvent.firstTime"
+                v-model="eventData.start"
                 placeholder ="11:00"
               )
           span —
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="eventData.timeEvent.secondTime"
+                v-model="eventData.end"
                 placeholder ="12:30"
               )
       .flex.gap-x-4.items-center
@@ -70,8 +70,11 @@ export default {
   components: { BaseSelect, BaseButton },
   props: {
     closeForm: Function,
-    listResponsible: {
-      default: ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."],
+    ownersData: {
+      type: Array,
+      default() {
+        return [];
+      },
     },
   },
   data() {
@@ -81,6 +84,17 @@ export default {
       kindEventSize: 10,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
       eventData: {
+        start: "",
+        end: "",
+        kind: "",
+        members: [],
+        employees: [
+          {
+            employee: null,
+            role: "owner",
+          },
+        ],
+        contacts: [],
         responsible: "",
         eventClient: "",
         timeEvent: {
@@ -88,16 +102,36 @@ export default {
           secondTime: "",
         },
         kindEvent: "",
-        contacts: {},
       },
     };
   },
+  computed: {
+    filteredOwners() {
+      if (this.ownersData) {
+        let filteredArray = [];
+        this.ownersData.forEach((elem) => {
+          filteredArray.push({
+            id: elem.id,
+            name: this.trimName(elem),
+          });
+        });
+        return filteredArray;
+      }
+      return ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."];
+    },
+    ownerName() {
+      if (this.eventData.employees[0].employee) {
+        return this.trimName(this.eventData.employees[0].employee);
+      }
+      return "";
+    },
+  },
   methods: {
-    chooseOptionResponsible(e) {
-      this.eventData.responsible = e.target.id;
-      this.responsibleInputSize = this.eventData.responsible
-        .split(" ")
-        .join("").length;
+    chooseOptionOwner(e) {
+      let foundEmployee = this.ownersData.find(
+        (elem) => elem.id === e.target.id.split(" ")[0]
+      );
+      this.eventData.employees[0].employee = foundEmployee;
     },
     chooseOptionTypeEvent(e) {
       this.eventData.kindEvent = e.target.id;
@@ -109,6 +143,9 @@ export default {
           this.listContacts[this.listContacts.length - 1] + 1
         );
       }
+    },
+    trimName(obj) {
+      return `${obj.last_name} ${obj.first_name[0]}.${obj.patronymic[0]}.`;
     },
   },
 };

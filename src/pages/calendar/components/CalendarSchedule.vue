@@ -77,6 +77,12 @@ export default {
       },
     },
     sidebarWidth: String,
+    ownersData: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -138,34 +144,15 @@ export default {
     },
     filteredOwners() {
       let filteredArray = [];
-      let ownerAbsence = {
-        id: null,
-        last_name: null,
-        first_name: null,
-        patronymic: null,
-      };
-      this.eventsData.forEach(({ employees }) => {
-        let findedElement = employees.find((elem) => elem.role === "owner");
-        let emptyDataPresence = this.findObjectInArray(
-          filteredArray,
-          ownerAbsence
-        );
-        if (!findedElement && !emptyDataPresence) {
-          filteredArray.push(ownerAbsence);
-        }
-        if (findedElement) {
-          let ownerPresence = this.findObjectInArray(
-            filteredArray,
-            findedElement.employee
-          );
-          if (!ownerPresence) {
-            filteredArray.push(findedElement.employee);
-          }
-        }
+      this.ownersData.forEach((elem) => {
+        filteredArray.push({
+          id: elem.id,
+          last_name: elem.last_name,
+          first_name: elem.first_name,
+          patronymic: elem.patronymic,
+        });
       });
-      return filteredArray.sort(
-        (previous, subsequent) => Boolean(subsequent.id) - Boolean(previous.id)
-      );
+      return filteredArray;
     },
     ownersCount() {
       return this.filteredOwners.length;
