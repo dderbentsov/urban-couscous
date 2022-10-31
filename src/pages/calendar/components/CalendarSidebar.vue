@@ -46,10 +46,6 @@
 </template>
 
 <script>
-import BaseButtonPlus from "../../../components/base/buttons/BaseButtonPlus.vue";
-import BaseOpenButton from "../../../components/base/buttons/BaseOpenButton.vue";
-import BaseCreateButton from "../../../components/base/buttons/BaseCreateButton.vue";
-import img from "../../../assets/images/team-member.svg";
 import BaseButton from "@/components/base/BaseButton";
 import BaseAvatar from "@/components/base/BaseAvatar";
 
@@ -57,9 +53,6 @@ export default {
   name: "CalendarSidebar",
   components: {
     BaseButton,
-    BaseButtonPlus,
-    BaseOpenButton,
-    BaseCreateButton,
     BaseAvatar,
   },
   props: {
@@ -79,7 +72,6 @@ export default {
       isOpen: false,
       turnButton: "180deg",
       maxLengthLastName: 13,
-      avatar: img,
     };
   },
   computed: {
@@ -118,13 +110,13 @@ export default {
     },
     changeName(lastName, fitstName, patronymic) {
       return lastName.length > this.maxLengthLastName
-        ? lastName.slice(0, this.maxLengthLastName) + "... "
-        : lastName +
-            " " +
-            fitstName.slice(0, 1) +
+        ? lastName.slice(0, this.maxLengthLastName) +
+            "... " +
+            fitstName[0] +
             "." +
-            patronymic.slice(0, 1) +
-            ".";
+            patronymic[0] +
+            "."
+        : lastName + " " + fitstName[0] + "." + patronymic[0] + ".";
     },
   },
 };

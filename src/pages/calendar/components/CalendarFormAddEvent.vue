@@ -24,21 +24,6 @@
         .icon-person.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
           input.item-input.cursor-text.no-italic.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
-    //- .flex.flex-col.gap-y-2(class='additional-information')
-      //- .flex.gap-x-4.items-center
-      //-   span.not-italic.text-xs.opacity-40.leading-3 Дополнительная информация
-      //-   button-plus(id="addInfo" @click="(e)=>addFriendInfo(e)")
-      //-   base-button(
-            left-icon="icon-plus"
-            rounded secondary
-            :size="24"
-            :icon-left-size="10"
-            id="addInfo"
-            @click="(e)=>addFriendInfo(e)")
-      //- .flex.gap-x-4.items-center(v-for="(info, index) in listFriendInfo" :key="index")
-      //-   span.ml-1 {{info}}
-      //-   .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-      //-     input.item-input.cursor-pointer.no-italic.text-base(v-model="eventData.friendInfo[info]" type="text" placeholder="Что-то важное")
     .flex.flex-col.gap-y-2
       span.not-italic.text-xs.opacity-40.leading-3 Вид события
       base-select(
@@ -91,7 +76,6 @@ export default {
           firstTime: "11:00",
           secondTime: "12:30",
         },
-        // friendInfo: {},
         kindEvent: "Вид события",
         contacts: {},
       },
