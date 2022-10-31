@@ -21,7 +21,6 @@
           :choose-option="chooseOptionNetworks"
           :choose-priority="choosePriority"
           :priority-list="priorityList"
-          :priority-option="getPriorityOption"
           )
       .flex(:style="{display :'none'}" ref="doc")
         form-create-identity-documents(:identity-document="infoClient.identity_document" :save-client="saveClient")
@@ -61,7 +60,7 @@ export default {
         basic: {
           full_name: "",
           birth_date: "",
-          priority: null,
+          priority: "",
           contacts: [
             {
               id: "network",
@@ -130,13 +129,6 @@ export default {
       priorityList: ["Высокий", "Средний", "Низкий", "-"],
     };
   },
-  computed: {
-    getPriorityOption() {
-      return this.prioritySettings.settings.find(
-        (el) => el.priority === this.infoClient.basic.priority
-      ).text;
-    },
-  },
   methods: {
     createIdentityDocument(id) {
       fetch("http://45.84.227.122:8080/general/identity_document/create/", {
@@ -161,7 +153,9 @@ export default {
         body: JSON.stringify({
           full_name: this.infoClient.basic.full_name,
           birth_date: this.infoClient.basic.birth_date,
-          priority: this.infoClient.basic.priority,
+          priority: this.prioritySettings.settings.find(
+            (el) => el.text === this.infoClient.basic.priority
+          ).priority,
         }),
       })
         .then((res) => res.json())
@@ -171,9 +165,7 @@ export default {
       this.networkId = e.currentTarget.id;
     },
     choosePriority(e) {
-      this.infoClient.basic.priority = this.prioritySettings.settings.find(
-        (el) => el.text === e.target.id
-      ).priority;
+      this.infoClient.basic.priority = e.target.id;
     },
     chooseOptionNetworks(e) {
       let index = this.infoClient.basic.contacts.findIndex(

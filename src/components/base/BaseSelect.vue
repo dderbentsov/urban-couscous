@@ -3,36 +3,34 @@
     @click="openSelect"
     :class="{border: styleBorder, 'py-2.5 px-4':!forNetworks, 'justify-center':forNetworks, 'justify-between':!forNetworks}"
     )
-    .flex.mr-2
+    .flex.mr-2(v-if="!forNetworks")
       input.text-base.select.cursor-pointer(
           :size="sizeInput"
-          v-if="!forNetworks"
           v-model="optionData"
           :placeholder="placeholder"
           disabled
-        ) 
-    .absolute.options.top-12.left-0(
-      v-show="isSelectOpen"
-      :id="id"
-      )
-      .option.px-4.py-1(
-        v-for="responsible in listData"
-        @click="(e) => chooseOption(e)"
-        :key="responsible"
-        :id="responsible"
-        ) {{responsible}}
-      .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData")
-        .absolute.options.top-5(
-          v-show="isSelectOpen"
-          class="left-[-11px]"
-          :id="id")
-          .flex.option.justify-center.py-1.text-xl(
-            v-for="responsible in listData"
-            @click="(e) => chooseOption(e)"
-            :key="responsible.network"
-            :id="responsible.network"
-            :class="responsible.icon"
-            )
+        )
+      .absolute.options.top-12.left-0(
+        v-show="isSelectOpen"
+        :id="id"
+        )
+        .option.px-4.py-1(
+          v-for="responsible in listData"
+          @click="(e) => chooseOption(e)"
+          :key="responsible"
+          :id="responsible"
+          ) {{responsible}}
+    .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData, 'px-2.5'")
+      .absolute.options.top-11.left-0(
+        v-show="isSelectOpen"
+        :id="id")
+        .flex.option.justify-center.py-1.text-xl(
+          v-for="responsible in listData"
+          @click="(e) => chooseOption(e)"
+          :key="responsible.network"
+          :id="responsible.network"
+          :class="responsible.icon"
+          )
     .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
     .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(v-if="!forNetworks" :class="{ open: isSelectOpen}")
 </template>
@@ -41,7 +39,6 @@
 export default {
   name: "BaseSelect",
   props: {
-    defaultOption: String,
     id: String,
     styleBorder: {
       default: false,
@@ -60,16 +57,11 @@ export default {
   data() {
     return {
       isSelectOpen: false,
-      isSelectedOption: false,
     };
   },
   methods: {
     openSelect() {
       this.isSelectOpen = !this.isSelectOpen;
-    },
-    selectOption(e) {
-      this.chooseOption(e);
-      this.isSelectedOption = true;
     },
   },
 };
