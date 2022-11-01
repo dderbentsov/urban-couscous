@@ -12,7 +12,10 @@ export default {
   name: "TableAddingNetwork",
   components: { BaseInput, BaseSelect },
   props: {
-    saveNetworkId: Function,
+    saveNetworkId: {
+      type: Function,
+      default: () => {},
+    },
     selectedOption: String,
     value: Object,
     listAddingNetworks: Array,

@@ -81,7 +81,7 @@ export default {
         identity_document: {
           pass: {
             kind: "Паспорт",
-            numba: "",
+            series_number: "",
             issued_by_org: "",
             issued_by_date: "",
             issued_by_org_code: "",

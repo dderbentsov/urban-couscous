@@ -5,7 +5,7 @@
       .grid.grid-cols-2.gap-x-4.gap-y-6
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Серия и номер
-          base-input.input-info(v-model:value="identityDocument.pass.numba" placeholder="0000 000000" :width-input="277")
+          base-input.input-info(v-model:value="identityDocument.pass.series_number" placeholder="0000 000000" :width-input="277")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Кем и когда выдан
           base-input.input-info(v-model:value="identityDocument.pass.issued_by_org" placeholder="Точно как в паспорте" :width-input="277")
