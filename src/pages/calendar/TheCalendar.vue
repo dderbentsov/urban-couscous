@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     switchPreviousDate() {
-      this.currentDate = this.currentDate.cloddContactne().subtract(1, "day");
+      this.currentDate = this.currentDate.clone().subtract(1, "day");
     },
     switchNextDate() {
       this.currentDate = this.currentDate.clone().add(1, "day");
