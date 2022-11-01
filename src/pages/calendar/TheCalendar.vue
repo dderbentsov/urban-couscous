@@ -1,9 +1,10 @@
 <template lang="pug">
   .calendar-container.flex
     calendar-sidebar(@width="changeWidth"
-    :team-data="teamData"
+    :team-data="employeesData"
     :open-form-create="openFormCreateEvent")
     calendar-schedule(
+      :owners-data="employeesData"
       :current-date="currentDate"
       :time-information="timeInformation"
       :events-data="eventsData"
@@ -11,8 +12,13 @@
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
-      )
-    calendar-form-add-event(v-if="isOpenForm" :close-form="closeFormCreateEvent")
+    )
+    calendar-form-add-event(
+      v-if="isOpenForm"
+      :close-form="closeFormCreateEvent"
+      :owners-data="employeesData"
+      :members-data="membersData"
+    )
 </template>
 
 <script>
@@ -37,13 +43,14 @@ export default {
         dayEndTime: "20:00",
       },
       eventsData: [],
-      teamData: [],
+      employeesData: [],
       isOpenForm: false,
+      membersData: [],
     };
   },
   methods: {
     switchPreviousDate() {
-      this.currentDate = this.currentDate.clone().subtract(1, "day");
+      this.currentDate = this.currentDate.cloddContactne().subtract(1, "day");
     },
     switchNextDate() {
       this.currentDate = this.currentDate.clone().add(1, "day");
@@ -54,16 +61,22 @@ export default {
     saveEventsData(res) {
       this.eventsData = res.results;
     },
-    saveTeamData(res) {
-      this.teamData = res.results;
+    saveEmployeesData(res) {
+      this.employeesData = res.results;
+    },
+    saveMembersData(res) {
+      this.membersData = res.results;
     },
     fetchEventsData() {
-      fetch("/registry/event/")
+      fetch("http://45.84.227.122:8080/registry/event/")
         .then((res) => res.json())
         .then((res) => this.saveEventsData(res));
       fetch("http://45.84.227.122:8080/general/employee/")
         .then((res) => res.json())
-        .then((res) => this.saveTeamData(res));
+        .then((res) => this.saveEmployeesData(res));
+      fetch("http://45.84.227.122:8080/general/person/")
+        .then((res) => res.json())
+        .then((res) => this.saveMembersData(res));
     },
     changeWidth(value) {
       this.sidebarWidth = value;
