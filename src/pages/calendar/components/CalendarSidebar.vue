@@ -11,7 +11,7 @@
         .flex.flex-col.items-center.gap-y-2.justify-center
           base-button.mb-2(left-icon="icon-plus", rounded, :size="24", :icon-left-size="10", secondary )
           .team-card(v-for="teammate in teamData" :key="teammate.id")
-            base-avatar(:size="32")
+            base-avatar(:size="32" :color="teammate.color")
               img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
               span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
       .sidebar-content.items-center.flex.flex-col.gap-y-8.px-4.py-19px(v-else)
@@ -36,7 +36,7 @@
               v-for="teammate in teamData"
               :key="teammate.id")
               .flex.items-center
-                base-avatar(:size="32")
+                base-avatar(:size="32" :color="teammate.color")
                   img(:src="teammate.avatar" alt="Team member" v-if="teammate.avatar")
                   span(v-if="!teammate.avatar") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
                 .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}

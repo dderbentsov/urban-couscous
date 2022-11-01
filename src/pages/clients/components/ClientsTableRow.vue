@@ -3,7 +3,7 @@
     .row-body.flex.w-full.cursor-pointer(:id="id" @dblclick="(e) => openDetailInfo(e)")
       .check-box.flex.justify-center.items-center
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
-      table-cell-body-name(:value="dataClient" :avatar="dataClient.avatar" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'fullName').width")
+      table-cell-body-name(:value="dataClient" :avatar="dataClient.avatar" :avatar-color="dataClient.color" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'fullName').width")
       table-cell-body-age(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'age').width")
       table-cell-body-priority(:value="dataClient.priority" :choose-priority="choosePriority" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'priority').width")
       table-cell-body-phone(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'phone').width")
