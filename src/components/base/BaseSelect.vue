@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex.box-border.container.items-center.cursor-pointer.relative(
-    @click="openSelect"
+    @click="changeSelect"
     :class="{border: styleBorder, 'py-2.5 px-4':!forNetworks, 'justify-center':forNetworks, 'justify-between':!forNetworks}"
     )
     .flex.mr-2(v-if="!forNetworks")
@@ -8,14 +8,15 @@
           :size="sizeInput"
           v-model="optionData"
           :placeholder="placeholder"
-          disabled
+          :disabled="disabled"
+          @input="sendData"
         )
       .absolute.options.top-12.left-0(
         v-show="isSelectOpen"
         :id="id"
         )
         .option.px-4.py-1(
-          v-for="data in listData"
+          v-for="data in filteredListData"
           @click="(e) => chooseOption(e)"
           :key="data.id || data"
           :id="data.id || data"
@@ -53,15 +54,42 @@ export default {
       default: "",
     },
     sizeInput: Number,
+    disabled: Boolean,
   },
   data() {
     return {
       isSelectOpen: false,
     };
   },
+  computed: {
+    filteredListData() {
+      if (!this.disabled && this.optionData) {
+        let filteredList = [];
+        filteredList = this.listData.filter((elem) => {
+          let reg = new RegExp(`${this.optionData}`, "img");
+          if (elem.name) {
+            return elem.name.match(reg);
+          }
+          return elem.match(reg);
+        });
+        filteredList.length === 0 ? this.closeSelect() : this.openSelect();
+        return filteredList;
+      }
+      return this.listData;
+    },
+  },
   methods: {
-    openSelect() {
+    changeSelect() {
       this.isSelectOpen = !this.isSelectOpen;
+    },
+    openSelect() {
+      this.isSelectOpen = true;
+    },
+    closeSelect() {
+      this.isSelectOpen = false;
+    },
+    sendData(e) {
+      this.$emit("changeInput", e.target.value);
     },
   },
 };

@@ -1,16 +1,18 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14(@click="output")
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.text-xs.opacity-40.font-bold.leading-3 Ответственный
         .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
       base-select(
+        id="owners"
         :size-input="ownerSelectSize"
         :option-data="ownerName"
         :list-data="ownersList"
         :choose-option="chooseOptionOwner"
         placeholder="Выберите ответственного"
         separator
+        disabled
       )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Основная информация
@@ -19,34 +21,38 @@
         .flex.gap-x-2.items-center
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="eventData.start"
+                v-model="start"
                 placeholder ="11:00"
               )
           span —
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="eventData.end"
+                v-model="end"
                 placeholder ="12:30"
               )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         base-select(
+          id="members"
           :size-input="memberSelectSize"
           :list-data="membersList"
-          :option-data="memberName"
+          :optionData="memberName"
           :choose-option="chooseOptionMember"
+          @changeInput="addMember"
           placeholder="Выберите участника"
           separator
           )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Вид события
       base-select(
+        id="kind"
         :size-input="kindEventSelectSize"
-        :option-data="eventData.kindEvent"
+        :option-data="kind"
         :list-data="kindEvents"
         :choose-option="chooseOptionTypeEvent"
         placeholder="Вид события"
         separator
+        disabled
       )
     .flex.flex-col.gap-y-2
       .flex.gap-x-4.items-center
@@ -61,10 +67,11 @@
       .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
         .icon-mail.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.text-base(v-model="eventData.contacts[contact]" type="text" placeholder="E-mail")
+          input.item-input.cursor-text.text-base(v-model="contacts" type="text" placeholder="E-mail")
     base-button.styled-button.text-base.font-semibold(
     :size="40"
-    @click="closeForm"
+    :disabled="disabledButton"
+    @click="sendEventData"
     ) Создать событие
 </template>
 
@@ -97,31 +104,19 @@ export default {
       kindEventSelectSize: 10,
       memberSelectSize: 29,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
-      eventData: {
-        start: "",
-        end: "",
-        kind: "",
-        members: [
-          {
-            person: null,
-            role: null,
-          },
-        ],
-        employees: [
-          {
-            employee: null,
-            role: "owner",
-          },
-        ],
-        contacts: [],
-        responsible: "",
-        eventClient: "",
-        timeEvent: {
-          firstTime: "",
-          secondTime: "",
-        },
-        kindEvent: "",
+      eventData: {},
+      members: {
+        member: null,
+        role: null,
       },
+      contacts: [],
+      start: "",
+      end: "",
+      employees: {
+        employee: null,
+        role: "owner",
+      },
+      kind: "",
     };
   },
   computed: {
@@ -131,7 +126,7 @@ export default {
         this.ownersData.forEach((elem) => {
           filteredArray.push({
             id: elem.id,
-            name: this.trimName(elem),
+            name: this.trimOwnerName(elem),
           });
         });
         return filteredArray;
@@ -144,7 +139,8 @@ export default {
         this.membersData.forEach((elem) => {
           filteredArray.push({
             id: elem.id,
-            name: `${elem.last_name} ${elem.first_name} ${elem.patronymic}`,
+            name: this.trimMemberName(elem),
+            contacts: elem.contacts,
           });
         });
         return filteredArray;
@@ -152,26 +148,40 @@ export default {
       return [];
     },
     ownerName() {
-      if (this.eventData.employees[0].employee) {
-        return this.trimName(this.eventData.employees[0].employee);
+      if (this.employees.employee) {
+        return this.trimOwnerName(this.employees.employee);
       }
       return "";
     },
     memberName() {
-      let data = this.eventData.members[0].person;
-      if (data) {
-        return `${data.last_name} ${data.first_name} ${data.patronymic}`;
+      if (this.members.member) {
+        return this.trimMemberName(this.members.member);
       }
       return "";
     },
     eventStartTime() {
-      if (this.eventData.start) {
-        console.log(
-          `${moment().format("YYYY-MM-DD")}T${this.eventData.start}:00Z`
-        );
-        return `${moment().format("YYYY-MM-DD")}T${this.eventData.start}:00Z`;
+      if (this.start) {
+        return `${moment().format("YYYY-MM-DD")}T${this.start}:00Z`;
       }
       return "";
+    },
+    eventEndTime() {
+      if (this.end) {
+        return `${moment().format("YYYY-MM-DD")}T${this.end}:00Z`;
+      }
+      return "";
+    },
+    disabledButton() {
+      if (
+        this.eventStartTime &&
+        this.eventEndTime &&
+        this.employees.employee &&
+        this.members.member &&
+        this.kind
+      ) {
+        return false;
+      }
+      return true;
     },
   },
   methods: {
@@ -179,26 +189,23 @@ export default {
       let foundEmployee = this.ownersData.find(
         (elem) => elem.id === e.target.id
       );
-      this.eventData.employees[0].employee = {
+      this.employees.employee = {
         id: foundEmployee.id,
         last_name: foundEmployee.last_name,
         first_name: foundEmployee.first_name,
         patronymic: foundEmployee.patronymic,
       };
-      console.log(this.eventData.employees[0].employee);
       this.ownerSelectSize = this.ownerName.split(" ").join("").length;
     },
     chooseOptionTypeEvent(e) {
-      this.eventData.kindEvent = e.target.id;
-      this.kindEventSelectSize = this.eventData.kindEvent
-        .split(" ")
-        .join("").length;
+      this.kind = e.target.id;
+      this.kindEventSelectSize = this.kind.split(" ").join("").length;
     },
     chooseOptionMember(e) {
       let foundMember = this.membersData.find(
         (elem) => elem.id === e.target.id
       );
-      this.eventData.members[0].person = {
+      this.members.member = {
         id: foundMember.id,
         last_name: foundMember.last_name,
         first_name: foundMember.first_name,
@@ -212,8 +219,32 @@ export default {
         );
       }
     },
-    trimName(obj) {
+    trimOwnerName(obj) {
       return `${obj.last_name} ${obj.first_name[0]}.${obj.patronymic[0]}.`;
+    },
+    trimMemberName(obj) {
+      return `${obj.last_name} ${obj.first_name} ${obj.patronymic}`;
+    },
+    addMember(memberName) {
+      let memberData = memberName.split(" ");
+      if (memberData.length === 3) {
+        this.members.member = {
+          id: null,
+          last_name: memberData[0],
+          first_name: memberData[1],
+          patronymic: memberData[2],
+        };
+      }
+    },
+    sendEventData() {
+      this.eventData = {
+        start: this.eventStartTime,
+        end: this.eventEndTime,
+        kind: this.kind,
+        employees: [this.employees],
+        members: [this.members],
+      };
+      this.closeForm();
     },
   },
 };
