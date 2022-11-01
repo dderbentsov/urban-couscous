@@ -12,6 +12,7 @@
           :is-check="marked.includes(client.id)"
           :check="selectedCheck"
           :client="client"
+          :fetch-data-clients="fetchDataClients"
           )
 </template>
 
@@ -44,13 +45,14 @@ export default {
     },
     closeFormCreateClient() {
       this.isOpenFormCreate = false;
+      this.fetchDataClients();
     },
     saveDataClients(data) {
       this.dataClients = data.results;
     },
     fetchDataClients() {
       // eslint-disable-next-line
-      fetch("api/clients").then((res) => res.json()).then((data) => this.saveDataClients(data))
+      fetch("http://45.84.227.122:8080/general/person/").then((res) => res.json()).then((data) => this.saveDataClients(data))
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {

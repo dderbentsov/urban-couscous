@@ -80,6 +80,14 @@ export const column = [
         network: "DISCORD",
         icon: "icon-discord",
       },
+      {
+        network: "VIBER",
+        icon: "icon-mail",
+      },
+      {
+        network: "WHATS_APP",
+        icon: "icon-mail",
+      },
     ],
     iconHead: false,
     width: 152,
@@ -125,8 +133,7 @@ export const detail = {
   addresses: {
     title: "Адреса",
     options: {
-      registrationPlace: "Адрес постоянной регистрации",
-      actualPlace: "Адрес фактического проживания",
+      join_address: "Полный адрес",
     },
     width: 292,
   },

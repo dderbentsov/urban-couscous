@@ -13,7 +13,7 @@
         base-button-ok(v-if="isOpenChange" :size="20" :icon-size="10" :dark-style="true" @click="closeChangeData")
         .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-show="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
-    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-detail="dataDetail" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
+    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-address="dataAddress" :data-detail="dataDetail" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
 
 <script>
@@ -49,6 +49,7 @@ export default {
   data() {
     return {
       dataIdentityDocument: {},
+      dataAddress: {},
       dataDetail: {},
       isOpenDetailInfo: false,
       isOpenPopup: false,
@@ -62,25 +63,127 @@ export default {
     check: Function,
     isCheck: Boolean,
     client: Object,
+    fetchDataClients: Function,
   },
   created() {
     this.dataClient = {
-      fullName: `${this.client.last_name} ${this.client.first_name} ${this.client.patronymic}`,
-      age: this.client.birth_date,
+      id: this.client.id,
+      fullName: `${this.client.last_name || ""} ${
+        this.client.first_name || ""
+      } ${this.client.patronymic || ""}`,
+      age: this.client.birth_date || "",
       priority: this.client.priority,
-      phone: this.client.contacts.find((el) => el.kind === "PHONE") || {
-        kind: "EMAIL",
-        username: "",
+      phone: {
+        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
+        kind: "PHONE",
+        username:
+          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+          "",
       },
-      email: this.client.contacts.find((el) => el.kind === "EMAIL") || {
+      email: {
+        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
         kind: "EMAIL",
-        username: "",
+        username:
+          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
+          "",
       },
       contacts: [...this.client.contacts],
       avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
     };
   },
   methods: {
+    postUpdateClient() {
+      fetch(
+        `http://45.84.227.122:8080/general/person/${this.client.id}/update/`,
+        {
+          method: "POST",
+          headers: {
+            Accept: "*/*",
+            "Content-Type": "application/json;charset=utf-8",
+          },
+          body: JSON.stringify({
+            full_name: this.dataClient.fullName,
+            birth_date: this.dataClient.age,
+            priority: this.dataClient.priority,
+          }),
+        }
+      );
+    },
+    postContactsClient() {
+      let contacts = [...this.dataClient.contacts];
+      if (
+        this.dataClient.email.username &&
+        !contacts.find((el) => el.kind === "EMAIL")
+      ) {
+        contacts.push(this.dataClient.email);
+      }
+      if (
+        this.dataClient.phone.username &&
+        !contacts.find((el) => el.kind === "PHONE")
+      ) {
+        contacts.push(this.dataClient.phone);
+      }
+      let mapCreateContacts = this.client.contacts.map((el) => el.kind);
+      // let mapDeleteContacts = contacts.map((el) => el.kind);
+      let createContacts = contacts.filter(
+        (el) => !mapCreateContacts.includes(el.kind)
+      );
+      // let deleteContacts = this.client.contacts.filter(
+      //   (el) => !mapDeleteContacts.includes(el.kind)
+      // );
+      let updateContacts = [];
+      this.client.contacts.forEach((el) => {
+        if (
+          el.kind === "PHONE" &&
+          el.username !== this.dataClient.phone.username
+        ) {
+          updateContacts.push(this.dataClient.phone);
+        }
+        if (
+          el.kind === "EMAIL" &&
+          el.username !== this.dataClient.email.username
+        ) {
+          updateContacts.push(this.dataClient.email);
+        }
+      });
+      createContacts.forEach((el) => this.postCreateContact(el));
+      // deleteContacts.forEach((el) => this.postDeleteContact(el));
+      updateContacts.forEach((el) => this.postUpdateContact(el));
+    },
+
+    postCreateContact(contact) {
+      fetch("http://45.84.227.122:8080/general/contact/create/", {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          kind: contact.kind,
+          username: contact.username,
+          person_id: this.client.id,
+        }),
+      });
+    },
+    postUpdateContact(contact) {
+      fetch(`http://45.84.227.122:8080/general/contact/${contact.id}/update/`, {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          kind: contact.kind,
+          username: contact.username,
+          person_id: this.client.id,
+        }),
+      });
+    },
+    postDeleteContact(contact) {
+      fetch(`http://45.84.227.122:8080/general/contact/${contact.id}/delete/`, {
+        method: "DELETE",
+      });
+    },
     addNetwork(network) {
       this.dataClient.contacts.push(network);
     },
@@ -96,27 +199,34 @@ export default {
     },
     closeChangeData() {
       this.isOpenChange = false;
+      this.postUpdateClient();
+      this.postContactsClient();
     },
     openChangeData() {
       this.isOpenChange = true;
     },
     fetchClientDetail(id) {
       // eslint-disable-next-line
-      fetch(`/api/detail/${id}`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
-    },
-    fetchClientIdentityDocument(id) {
-      // eslint-disable-next-line
-      fetch(`/api/detail/identity_document/${id}`).then((res) => res.json()).then((data) => this.saveIdentityDocument(data))
+      fetch(`http://45.84.227.122:8080/general/person/${id}/detail`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
     },
     saveClientDetail(data) {
-      this.dataDetail = data;
+      this.saveIdentityDocument(
+        data.identity_documents.find((el) => el.kind === "Паспорт")
+      );
+      this.saveAddress(data.address[0]);
+      console.log(this.dataIdentityDocument);
     },
     saveIdentityDocument(data) {
       this.dataIdentityDocument = {
-        numba: data.numba,
-        issued_by_org: data.issued_by_org,
-        issued_by_org_code: data.issued_by_org_code,
-        issued_by_date: data.issued_by_date,
+        numba: data?.numba || "-",
+        issued_by_org: data?.issued_by_org || "-",
+        issued_by_org_code: data?.issued_by_org_code || "-",
+        issued_by_date: data?.issued_by_date || "-",
+      };
+    },
+    saveAddress(data) {
+      this.dataAddress = {
+        join_address: data?.join_address || "-",
       };
     },
     openPopup(e) {
@@ -125,8 +235,7 @@ export default {
     },
     openDetailInfo(e) {
       this.isOpenDetailInfo = !this.isOpenDetailInfo;
-      this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id),
-        this.fetchClientIdentityDocument(e.currentTarget.id);
+      this.isOpenDetailInfo && this.fetchClientDetail(e.currentTarget.id);
     },
     handleUnFocusPopup() {
       this.isOpenPopup = false;

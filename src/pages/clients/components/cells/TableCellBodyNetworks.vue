@@ -1,9 +1,9 @@
 <template lang="pug">
   .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px' }")
     .flex.gap-x-1
-      .text-xl.icon.relative(v-for="network in getNetworks" :class="settings.settings.find((el) => el.network === network.kind).icon")
+      .text-xl.icon.relative(v-for="network in getNetworks" :class="settings.settings.find((el) => el.network === network.kind)?.icon || ''")
         .absolute.icon-cancel-mini.delete.flex.w-4.h-4.justify-center.items-center.bottom-4.left-2(v-if="isOpenChange" :id="network.kind" @click="(e) => deleteNetwork(e)")
-    .flex.relative
+    .flex.relative.pb-2
       base-button-plus.ml-3(v-if="isOpenChange && settings.settings.length !== getNetworks.length" :with-border="true" @click="openPopupAdding")
       base-popup.right-3.top-6(v-if="isOpenPopupAdding" :width="485")
         base-adding-network(:value="network" :selected-option="getSelectedIcon" :list-adding-networks="getAddingNetworks" :choose-network="chooseNetwork")
@@ -25,7 +25,14 @@ export default {
     BaseCreateButton,
   },
   props: {
-    networks: Array,
+    networks: {
+      default: [
+        {
+          kind: "TELEGRAM",
+          username: "",
+        },
+      ],
+    },
     width: Number,
     isOpenChange: Boolean,
     deleteNetwork: Function,
@@ -42,6 +49,11 @@ export default {
     };
   },
   computed: {
+    getNetworks() {
+      return this.networks.filter(
+        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE"
+      );
+    },
     getSelectedIcon() {
       return this.settings.settings.find(
         (el) => el.network === this.network.kind
@@ -51,11 +63,6 @@ export default {
       let kinds = this.networks.map((el) => el.kind);
       return this.settings.settings.filter((el) => !kinds.includes(el.network));
     },
-    getNetworks() {
-      return this.networks.filter(
-        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE"
-      );
-    },
   },
   methods: {
     chooseNetwork(e) {
@@ -64,6 +71,10 @@ export default {
     saveNetwork() {
       this.addNetwork(this.network);
       this.isOpenPopupAdding = false;
+      this.network = {
+        kind: "TELEGRAM",
+        username: "",
+      };
     },
     openPopupAdding() {
       this.isOpenPopupAdding = true;
