@@ -23,8 +23,8 @@ module.exports = {
         "5xl": ["28px", { lineHeight: "38px" }],
       },
       gap: {
-        6: "6px",
-        11: "11px",
+        "6px": "6px",
+        "11px": "11px",
         43: "43px",
       },
       spacing: {

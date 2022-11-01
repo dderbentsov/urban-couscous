@@ -9,13 +9,13 @@
           .text-under.flex.not-italic.font-medium.text-base(
             :style="{color: this.colorUnderText}") Очень рады вас видеть. Войдите в аккаунт, чтобы начать пользоваться сервисом «Астра».
         .flex.flex-col.gap-y-5
-          .flex.flex-col.gap-y-6
+          .flex.flex-col.gap-y-6px
             .flex Логин
             base-input(placeholder="Введите ваш логин")
-          .flex.flex-col.gap-y-6
+          .flex.flex-col.gap-y-6px
             .flex Пароль
             base-input(type="password" placeholder="Введите ваш пароль")
-          .flex.items-center.gap-x-11
+          .flex.items-center.gap-x-11px
             input.w-4.h-4.checkbox.cursor-pointer(type="checkbox" @change="(e) => check(e)")
             .flex Запомнить меня
         base-button.font-semibold(:size="48") Войти в аккаунт
