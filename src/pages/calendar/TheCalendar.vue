@@ -17,6 +17,7 @@
       v-if="isOpenForm"
       :close-form="closeFormCreateEvent"
       :owners-data="employeesData"
+      :members-data="membersData"
     )
 </template>
 
@@ -44,6 +45,7 @@ export default {
       eventsData: [],
       employeesData: [],
       isOpenForm: false,
+      membersData: [],
     };
   },
   methods: {
@@ -62,6 +64,9 @@ export default {
     saveEmployeesData(res) {
       this.employeesData = res.results;
     },
+    saveMembersData(res) {
+      this.membersData = res.results;
+    },
     fetchEventsData() {
       fetch("http://45.84.227.122:8080/registry/event/")
         .then((res) => res.json())
@@ -69,6 +74,9 @@ export default {
       fetch("http://45.84.227.122:8080/general/employee/")
         .then((res) => res.json())
         .then((res) => this.saveEmployeesData(res));
+      fetch("http://45.84.227.122:8080/general/person/")
+        .then((res) => res.json())
+        .then((res) => this.saveMembersData(res));
     },
     changeWidth(value) {
       this.sidebarWidth = value;

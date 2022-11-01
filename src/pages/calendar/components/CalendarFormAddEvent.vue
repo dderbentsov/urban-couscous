@@ -5,9 +5,9 @@
         span.text-xs.opacity-40.font-bold.leading-3 Ответственный
         .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
       base-select(
-        :size-input="responsibleInputSize"
+        :size-input="ownerSelectSize"
         :option-data="ownerName"
-        :list-data="filteredOwners"
+        :list-data="ownersList"
         :choose-option="chooseOptionOwner"
         placeholder="Выберите ответственного"
         separator
@@ -30,12 +30,18 @@
               )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
-        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.text-base(v-model="eventData.eventClient" type="text" placeholder="ФИО клиента")
+        base-select(
+          :size-input="memberSelectSize"
+          :list-data="membersList"
+          :option-data="memberName"
+          :choose-option="chooseOptionMember"
+          placeholder="Выберите участника"
+          separator
+          )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Вид события
       base-select(
-        :size-input="kindEventSize"
+        :size-input="kindEventSelectSize"
         :option-data="eventData.kindEvent"
         :list-data="kindEvents"
         :choose-option="chooseOptionTypeEvent"
@@ -63,6 +69,7 @@
 </template>
 
 <script>
+import * as moment from "moment/moment";
 import BaseSelect from "@/components/base/BaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
@@ -76,18 +83,30 @@ export default {
         return [];
       },
     },
+    membersData: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
       listContacts: [1],
-      responsibleInputSize: 22,
-      kindEventSize: 10,
+      ownerSelectSize: 22,
+      kindEventSelectSize: 10,
+      memberSelectSize: 29,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
       eventData: {
         start: "",
         end: "",
         kind: "",
-        members: [],
+        members: [
+          {
+            person: null,
+            role: null,
+          },
+        ],
         employees: [
           {
             employee: null,
@@ -106,7 +125,7 @@ export default {
     };
   },
   computed: {
-    filteredOwners() {
+    ownersList() {
       if (this.ownersData) {
         let filteredArray = [];
         this.ownersData.forEach((elem) => {
@@ -117,7 +136,20 @@ export default {
         });
         return filteredArray;
       }
-      return ["Захарова А.О.", "Коломойцев И.К.", "Ситников А.Г."];
+      return [];
+    },
+    membersList() {
+      if (this.membersData) {
+        let filteredArray = [];
+        this.membersData.forEach((elem) => {
+          filteredArray.push({
+            id: elem.id,
+            name: `${elem.last_name} ${elem.first_name} ${elem.patronymic}`,
+          });
+        });
+        return filteredArray;
+      }
+      return [];
     },
     ownerName() {
       if (this.eventData.employees[0].employee) {
@@ -125,17 +157,53 @@ export default {
       }
       return "";
     },
+    memberName() {
+      let data = this.eventData.members[0].person;
+      if (data) {
+        return `${data.last_name} ${data.first_name} ${data.patronymic}`;
+      }
+      return "";
+    },
+    eventStartTime() {
+      if (this.eventData.start) {
+        console.log(
+          `${moment().format("YYYY-MM-DD")}T${this.eventData.start}:00Z`
+        );
+        return `${moment().format("YYYY-MM-DD")}T${this.eventData.start}:00Z`;
+      }
+      return "";
+    },
   },
   methods: {
     chooseOptionOwner(e) {
       let foundEmployee = this.ownersData.find(
-        (elem) => elem.id === e.target.id.split(" ")[0]
+        (elem) => elem.id === e.target.id
       );
-      this.eventData.employees[0].employee = foundEmployee;
+      this.eventData.employees[0].employee = {
+        id: foundEmployee.id,
+        last_name: foundEmployee.last_name,
+        first_name: foundEmployee.first_name,
+        patronymic: foundEmployee.patronymic,
+      };
+      console.log(this.eventData.employees[0].employee);
+      this.ownerSelectSize = this.ownerName.split(" ").join("").length;
     },
     chooseOptionTypeEvent(e) {
       this.eventData.kindEvent = e.target.id;
-      this.kindEventSize = this.eventData.kindEvent.split(" ").join("").length;
+      this.kindEventSelectSize = this.eventData.kindEvent
+        .split(" ")
+        .join("").length;
+    },
+    chooseOptionMember(e) {
+      let foundMember = this.membersData.find(
+        (elem) => elem.id === e.target.id
+      );
+      this.eventData.members[0].person = {
+        id: foundMember.id,
+        last_name: foundMember.last_name,
+        first_name: foundMember.first_name,
+        patronymic: foundMember.patronymic,
+      };
     },
     addContact(e) {
       if (e.currentTarget.id === "addContact") {
