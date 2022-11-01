@@ -13,7 +13,7 @@ export default {
     },
     color: {
       type: String,
-      default: "#D3D4DC",
+      default: "d3d4dc",
     },
   },
 
@@ -23,7 +23,7 @@ export default {
         width: this.size + "px",
         height: this.size + "px",
         minWidth: this.size + "px",
-        backgroundColor: this.color,
+        backgroundColor: "#" + this.color,
       };
     },
   },
