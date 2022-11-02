@@ -89,6 +89,7 @@ export default {
       },
       contacts: [...this.client.contacts],
       avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
+      color: this.client.color,
     };
   },
   methods: {

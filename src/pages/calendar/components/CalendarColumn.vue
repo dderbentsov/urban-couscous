@@ -2,7 +2,7 @@
   .calendar-column-wrapper.flex.flex-col
     .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
-        base-avatar.mr-2(:size="32" :color="ownerData.color")
+        base-avatar.mr-2(:size="32", :color="ownerData.color")
           img(:src="ownerData.avatar" alt="Team member" v-if="ownerData.avatar")
           span(v-if="!ownerData.avatar") {{ defaultAvatar }}
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}

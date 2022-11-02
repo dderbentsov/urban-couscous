@@ -150,6 +150,7 @@ export default {
           last_name: elem.last_name,
           first_name: elem.first_name,
           patronymic: elem.patronymic,
+          color: elem.color,
         });
       });
       return filteredArray;
