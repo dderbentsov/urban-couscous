@@ -3,11 +3,11 @@
     button#day.py-2.px-3(
       :class="dayLayoutState"
       @click="changeSelectedLayout"
-      ) День
+    ) День
     button#week.py-2.px-3(
       :class="weekLayoutState"
       @click="changeSelectedLayout"
-      ) Неделя
+    ) Неделя
 </template>
 
 <script>
