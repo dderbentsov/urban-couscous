@@ -16,6 +16,7 @@
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
+      @open-change-form="openFormCreateEvent"
     )
 </template>
 

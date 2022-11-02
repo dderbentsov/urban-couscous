@@ -103,6 +103,12 @@ export default {
         return [];
       },
     },
+    selectedEventData: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -124,6 +130,7 @@ export default {
         role: "owner",
       },
       kind: "",
+      id: null,
     };
   },
   computed: {
@@ -245,6 +252,7 @@ export default {
     },
     sendEventData() {
       this.eventData = {
+        id: this.id,
         start: this.eventStartTime,
         end: this.eventEndTime,
         kind: this.kind,
