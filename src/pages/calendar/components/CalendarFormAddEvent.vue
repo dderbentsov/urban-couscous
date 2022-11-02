@@ -21,15 +21,15 @@
         .flex.gap-x-2.items-center
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="start"
-                placeholder ="11:00"
-              )
+              v-model="start"
+              placeholder ="11:00"
+            )
           span —
           .time-input.flex.gap-x-2.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-                v-model="end"
-                placeholder ="12:30"
-              )
+              v-model="end"
+              placeholder ="12:30"
+            )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         base-select(
@@ -41,7 +41,7 @@
           @changeInput="addMember"
           placeholder="Выберите участника"
           separator
-          )
+        )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Вид события
       base-select(
@@ -64,14 +64,21 @@
         :icon-left-size="10"
         id="addContact"
         @click="(e)=>addContact(e)")
-      .flex.gap-x-4.items-center(v-for="(contact, index) in listContacts" :key="index")
+      .flex.gap-x-4.items-center(
+        v-for="(contact, index) in listContacts"
+        :key="index"
+      )
         .icon-mail.text-xl.icon
         .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.text-base(v-model="contacts" type="text" placeholder="E-mail")
+          input.item-input.cursor-text.text-base(
+            v-model="contacts"
+            type="text"
+            placeholder="E-mail"
+          )
     base-button.styled-button.text-base.font-semibold(
-    :size="40"
-    :disabled="disabledButton"
-    @click="sendEventData"
+      :size="40"
+      :disabled="disabledButton"
+      @click="sendEventData"
     ) Создать событие
 </template>
 

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper.flex.px-2.my-1.items-start.cursor-pointer(:style="cardHeight")
+  .wrapper.flex.px-2.my-1.items-start.cursor-pointer(:style="cardHeight", @click="transmitEventData")
     .header.flex.justify-between.items-center
       .header-text
         span.inline-block.align-middle.font-bold.text-base.mr-4 {{ eventTime }}
@@ -60,6 +60,9 @@ export default {
     },
     composeFullName(object) {
       return `${object.last_name} ${object.first_name} ${object.patronymic}`;
+    },
+    transmitEventData() {
+      this.$emit("selected-event", this.ownerEvent);
     },
   },
 };

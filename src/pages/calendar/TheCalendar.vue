@@ -1,23 +1,21 @@
 <template lang="pug">
   .calendar-container.flex
-    calendar-sidebar(@width="changeWidth"
-    :team-data="employeesData"
-    :open-form-create="openFormCreateEvent")
+    calendar-sidebar(
+      @width="changeWidth"
+      :team-data="employeesData"
+      :open-form-create="openFormCreateEvent"
+    )
     calendar-schedule(
       :owners-data="employeesData"
       :current-date="currentDate"
       :time-information="timeInformation"
       :events-data="eventsData"
       :sidebar-width="sidebarWidth"
+      :close-form-create-event="closeFormCreateEvent"
+      :is-open-form="isOpenForm"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
-    )
-    calendar-form-add-event(
-      v-if="isOpenForm"
-      :close-form="closeFormCreateEvent"
-      :owners-data="employeesData"
-      :members-data="membersData"
     )
 </template>
 
@@ -82,7 +80,6 @@ export default {
     changeWidth(value) {
       this.sidebarWidth = value;
     },
-
     openFormCreateEvent() {
       this.isOpenForm = true;
     },
