@@ -30,15 +30,15 @@
               v-model="endTime"
               placeholder ="12:30"
             )
-      .flex.items-center
+      .flex.items-center.ml-10
         .flex.gap-x-2.items-center
-          .data-input.flex.px-4.py-2.items-center
+          .date-input.flex.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
               v-model="startDate"
               placeholder ="2022-10-01"
             )
           span —
-          .data-input.flex.px-4.py-2.items-center
+          .date-input.flex.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
               v-model="endDate"
               placeholder ="2022-10-01"
@@ -96,7 +96,7 @@
 </template>
 
 <script>
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "FormChangeEvent",
@@ -140,6 +140,7 @@ export default {
         role: "owner",
       },
       startDate: "",
+      endDate: "",
       kind: "",
       id: null,
     };
@@ -191,7 +192,7 @@ export default {
       return "";
     },
     eventEndTime() {
-      if (this.endtime && this.endDate) {
+      if (this.endTime && this.endDate) {
         return this.addDate(this.endDate, this.endTime);
       }
       return "";
