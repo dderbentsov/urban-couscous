@@ -1,24 +1,42 @@
 <template lang="pug">
   .wrapper-addresses.flex.flex-col.flex-auto.h-full.gap-y-8.justify-between
     .flex.flex-col.gap-y-6.px-4
-      span.title-info.text-base.font-bold Адреса
-      .grid.grid-cols-2.gap-x-4.gap-y-6
-        .flex.flex-col.col-start-1.col-end-3(class="gap-y-1.5")
-          span.text-sm Адрес постоянной регистрации
-          base-input.input-info(v-model:value="addresses.actualPlace" placeholder="Место регистрации  (в паспорте)")
-        .flex.flex-col.col-start-1.col-end-3(class="gap-y-1.5")
-          span.text-sm Адрес фактического проживания
-          base-input.input-info(v-model:value="addresses.registrationPlace" placeholder="Место проживания на данный момент")
+      .flex.flex-col.col-start-1.col-end-3(class="gap-y-1.5")
+        span.text-sm.font-semibold Полный адрес
+        base-input.input-info(v-model:value="addresses.full_address" placeholder="Введите адрес целиком")
+      .flex.items-center.justify-center.relative
+        .line.absolute
+        span.text-sm.separator.px-2 или
+      .grid.grid-cols-2.gap-y-6.gap-x-4
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Город
+          base-input.input-info(v-model:value="addresses.city" placeholder="Ввыберите город")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Область
+          base-input.input-info(v-model:value="addresses.region" placeholder="Введите область")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Улица
+          base-input.input-info(v-model:value="addresses.street" placeholder="Введите улицу")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Дом
+          base-input.input-info(v-model:value="addresses.house_number" placeholder="Номер дома")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Квартира
+          base-input.input-info(v-model:value="addresses.apartment_number" placeholder="Номер квартиры")
+        .flex.flex-col(class="gap-y-1.5")
+          span.text-sm.font-semibold Индекс
+          base-input.input-info(v-model:value="addresses.index_of_address" placeholder="000000")
     .px-4
-      base-create-button(text="Создать клиента" @click="saveClient")
+      base-button(@click="saveClient" :size="40")
+        span.font-semibold Создать клиента
 </template>
 
 <script>
+import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
 export default {
   name: "FormCreateAddresses",
-  components: { BaseCreateButton, BaseInput },
+  components: { BaseInput, BaseButton },
   props: {
     addresses: Object,
     saveClient: Function,
@@ -45,4 +63,12 @@ export default {
   color: var(--font-dark-blue-color)
 .title-info
   color: var(--font-dark-blue-color)
+.line
+  width: 570px
+  height: 1px
+  background-color: var(--border-light-grey-color)
+  z-index: -1
+.separator
+  color: var(--font-dark-blue-color)
+  background-color: var(--default-white)
 </style>

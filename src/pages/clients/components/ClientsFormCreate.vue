@@ -4,7 +4,7 @@
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
       .flex.gap-x-3.w-full
-        .export-avatar.cursor-pointer.flex.justify-center.items-center
+        base-button(:rounded="true" :secondary="true" :size="40")
           .icon-download.text-xl
         base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")
     .flex.flex-col.flex-auto.l.gap-y-8
@@ -38,6 +38,7 @@ import FormCreateAddresses from "@/pages/clients/components/FormCreateAddresses"
 import FormCreateAdditional from "@/pages/clients/components/FormCreateAdditional";
 import BaseInput from "@/components/base/BaseInput";
 import BaseSelect from "@/components/base/BaseSelect";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "ClientsFormCreate",
   components: {
@@ -47,6 +48,7 @@ export default {
     FormCreateIdentityDocuments,
     FormCreateAddresses,
     FormCreateAdditional,
+    BaseButton,
   },
   props: {
     closeForm: Function,
@@ -96,8 +98,13 @@ export default {
           },
         },
         addresses: {
-          actualPlace: "",
-          registrationPlace: "",
+          full_address: "",
+          region: "",
+          city: "",
+          street: "",
+          house_number: "",
+          apartment_number: "",
+          index_of_address: "",
         },
         additional: [
           {
@@ -138,7 +145,22 @@ export default {
           "Content-Type": "application/json;charset=utf-8",
         },
         body: JSON.stringify({
-          ...this.infoClient.identity_document.pass,
+          ...this.filterDataEmptyProperty(
+            this.infoClient.identity_document.pass
+          ),
+          person_id: id,
+        }),
+      });
+    },
+    createAddress(id) {
+      fetch("http://45.84.227.122:8080/general/address/create/", {
+        method: "POST",
+        headers: {
+          Accept: "*/*",
+          "Content-Type": "application/json;charset=utf-8",
+        },
+        body: JSON.stringify({
+          ...this.filterDataEmptyProperty(this.infoClient.addresses),
           person_id: id,
         }),
       });
@@ -159,7 +181,20 @@ export default {
         }),
       })
         .then((res) => res.json())
-        .then((result) => this.createIdentityDocument(result.id));
+        .then((result) => {
+          this.createIdentityDocument(result.id);
+          this.createAddress(result.id);
+        });
+    },
+    filterDataEmptyProperty(data) {
+      let postData = data;
+      let keys = Object.keys(postData);
+      keys.forEach((key) => {
+        if (!postData[key]) {
+          delete postData[key];
+        }
+      });
+      return postData;
     },
     saveNetworkId(e) {
       this.networkId = e.currentTarget.id;

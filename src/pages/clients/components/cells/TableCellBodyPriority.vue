@@ -4,7 +4,7 @@
       .dot.w-2.h-2(:style="{ backgroundColor : settings.settings.find((el) => el.priority == value).color }")
       span.text-sm(:style="{ color : settings.settings.find((el) => el.priority == value).color }") {{settings.settings.find((el) => el.priority == value).text}}
     .flex.gap-x-2.text-sm
-      base-select(v-if="isOpenChange" :width-select="120" :option-data="settings.settings.find((el) => el.priority == value).text" :list-data="selectData" :style-border="true" :choose-option="choosePriority")
+      base-select(v-if="isOpenChange" :size-input="10" :option-data="getOption" :list-data="selectData" :style-border="true" :choose-option="choosePriority" disabled)
 </template>
 
 <script>
@@ -19,6 +19,12 @@ export default {
       settings: column.find((el) => el.name === "priority"),
       selectData: ["Высокий", "Средний", "Низкий", "-"],
     };
+  },
+  computed: {
+    getOption() {
+      return this.settings.settings.find((el) => el.priority == this.value)
+        .text;
+    },
   },
 };
 </script>

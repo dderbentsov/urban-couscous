@@ -13,15 +13,16 @@
           span Загрузите элемент
             label.label.cursor-pointer(for="file-upload")  с компьютера
             span  или перетащите их сюда
-      base-create-button(text="Добавить" @click="saveAdditional")
+      base-button(@click="saveAdditional" :size="40")
+        span.font-semibold Добавить
 </template>
 
 <script>
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
 import BaseInput from "@/components/base/BaseInput";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "TableAddingNewAdditional",
-  components: { BaseInput, BaseCreateButton },
+  components: { BaseInput, BaseButton },
   props: {
     addNewAdditional: Function,
     saveAdditional: Function,

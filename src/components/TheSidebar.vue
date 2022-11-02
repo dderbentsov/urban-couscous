@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import TheButtonSidebar from "@/components/base/buttons/BaseSidebarButton";
+import TheButtonSidebar from "@/components/base/BaseSidebarButton";
 
 export default {
   name: "TheSidebar",

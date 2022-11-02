@@ -3,10 +3,12 @@
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
       .flex.items-center.gap-x-8(v-if="isOpenChange")
-        base-button-ok(@click="saveChange" v-if="isChange" :size="20" :icon-size="10" :dark-style="true")
+        base-button(v-if="isChange" @click="saveChange" :confirm="true" :rounded="true" :outlined="true" :size="20")
+          .icon-ok.text-xsm(class="pt-[3px]")
         .edit.icon-edit.cursor-pointer.text-sm(v-if="!isChange" @click="changeClientData")
         .flex.relative
-          base-button-plus(v-if="settings[section].addFile" :size="20" :icon-size="10" :with-border="true" @click="openAddingWrap")
+          base-button(v-if="settings[section].addFile" @click="openAddingWrap" :rounded="true" :outlined="true" :added="true" :size="24")
+            .icon-plus(class="pt-[2px]")
           table-adding-new-doc(v-if="section === 'docs' && isOpenAddingWrap" :add-new-doc="addNewDoc" :save-docs="saveDocs" :new-docs="docData")
           table-adding-new-additional(v-if="section === 'additional' && isOpenAddingWrap" :new-additional-data="additionalData" :add-new-additional="addDocAdditional" :save-additional="saveDocs" )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
@@ -28,8 +30,7 @@
 
 <script>
 import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
-import BaseButtonOk from "@/components/base/buttons/BaseButtonOk";
-import BaseButtonPlus from "@/components/base/buttons/BaseButtonPlus";
+import BaseButton from "@/components/base/BaseButton";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import { detail } from "@/pages/clients/utils/tableConfig";
@@ -37,8 +38,7 @@ export default {
   name: "ClientDetailInfoSection",
   components: {
     TableAddingNewAdditional,
-    BaseButtonPlus,
-    BaseButtonOk,
+    BaseButton,
     ClientDetailInput,
     TableAddingNewDoc,
   },

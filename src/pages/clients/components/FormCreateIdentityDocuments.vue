@@ -25,15 +25,16 @@
           span.text-sm Номер ИНН
           base-input.input-info(v-model:value="identityDocument.inn.numba" placeholder="000000000000" :width-input="277")
     .px-4
-      base-create-button(text="Создать клиента" @click="saveClient")
+      base-button(@click="saveClient" :size="40")
+        span.font-semibold Создать клиента
 </template>
 
 <script>
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
+import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
 export default {
   name: "FormCreateIdentityDocuments",
-  components: { BaseCreateButton, BaseInput },
+  components: { BaseInput, BaseButton },
   props: {
     identityDocument: Object,
     saveClient: Function,

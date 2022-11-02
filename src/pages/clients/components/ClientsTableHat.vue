@@ -8,23 +8,21 @@
         .icon-filter.text-xl.leading-4
     clients-table-header-actions(v-if="!!isOpenActions" :is-selected-one="isOpenActions===1")
     .flex.w-fit.h-fit.gap-x-2
-      base-export-button(:only-icon="true")
-      base-create-button(@click="openFormCreate" :with-icon="true")
-
+      base-button(left-icon="icon-download" :icon-left-size="16" :size="40" :outlined="true")
+      base-button(left-icon="icon-plus" :icon-left-size="13" :size="40" @click="openFormCreate")
+        span.font-semibold Создать
 </template>
 
 <script>
 import ClientsTableHeaderActions from "@/pages/clients/components/ClientsTableHeaderActions";
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
-import BaseExportButton from "@/components/base/buttons/BaseExportButton";
 import BaseInput from "@/components/base/BaseInput";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "ClientsTableHat",
   components: {
     BaseInput,
-    BaseExportButton,
-    BaseCreateButton,
     ClientsTableHeaderActions,
+    BaseButton,
   },
   props: {
     openFormCreate: Function,
