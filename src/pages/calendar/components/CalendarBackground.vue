@@ -1,13 +1,13 @@
 <template lang="pug">
   .flex.flex-col(
     :style="backgroundExtendedWidth"
-    )
+  )
     .flex.flex-col
       .line-wrapper
         .line.flex.items-center(
           v-for="hour in timeCoil"
           :key="hour"
-          )
+        )
           .middle-line
 </template>
 

@@ -1,14 +1,14 @@
 <template lang="pug">
   .schedule.ml-2(
     :style="scheduleWidth"
-    )
+  )
     calendar-header(
       :current-date="currentDate"
       :is-current-date="isCurrentDate"
       @previous-date="previousDate"
       @next-date="nextDate"
       @selected-layout="selectedLayout"
-      )
+    )
     .schedule-body
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
@@ -19,6 +19,7 @@
           :day-start-time="validateStartTime"
           :day-end-time="validateEndTime"
           :style="columnSize"
+          @selected-event="writeEventData"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9
@@ -40,7 +41,14 @@
           calendar-background(
             :time-coil="timeCoil"
             :owners-count="ownersCount"
-            )
+          )
+      calendar-form-add-event(
+        v-if="isOpenForm"
+        :close-form="closeFormCreateEvent"
+        :owners-data="ownersData"
+        :members-data="membersData"
+        :selected-event-data="selectedEvent"
+      )
 </template>
 
 <script>
@@ -49,6 +57,7 @@ import CalendarHeader from "./CalendarHeader.vue";
 import CalendarBackground from "./CalendarBackground.vue";
 import CalendarClockColumn from "./CalendarClockColumn.vue";
 import CalendarColumn from "./CalendarColumn.vue";
+import CalendarFormAddEvent from "./CalendarFormAddEvent.vue";
 export default {
   name: "CalendarSchedule",
   components: {
@@ -56,6 +65,7 @@ export default {
     CalendarBackground,
     CalendarClockColumn,
     CalendarColumn,
+    CalendarFormAddEvent,
   },
   props: {
     currentDate: {
@@ -83,6 +93,14 @@ export default {
         return [];
       },
     },
+    membersData: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
+    closeFormCreateEvent: Function,
+    isOpenForm: Boolean,
   },
   data() {
     return {
@@ -94,6 +112,20 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
+      selectedEvent: {
+        id: null,
+        start: "",
+        end: "",
+        kind: "",
+        employees: {
+          employee: null,
+          role: "owner",
+        },
+        members: {
+          member: null,
+          role: null,
+        },
+      },
     };
   },
   computed: {
@@ -283,6 +315,10 @@ export default {
         if (foundEvent) filteredArray.push(item);
       });
       return filteredArray;
+    },
+    writeEventData(eventData) {
+      this.selectedEvent = eventData;
+      this.$emit("open-change-form");
     },
   },
   watch: {

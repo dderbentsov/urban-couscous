@@ -4,7 +4,7 @@
       v-for="hour in timeCoil"
       :key="hour"
       :class="currentHourStyle(hour)"
-      ) {{ hour }}
+    ) {{ hour }}
 </template>
 
 <script>

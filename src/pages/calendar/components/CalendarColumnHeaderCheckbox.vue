@@ -1,8 +1,8 @@
 <template lang="pug">
   div.icon-wrap.flex.items-center.justify-center.cursor-pointer.py-1.px-2(
-      :class="{disable: !isChecked}"
-      @click="changeState"
-    )
+    :class="{disable: !isChecked}"
+    @click="changeState"
+  )
     .icon-doc-ok.text-xxl
 </template>
 
