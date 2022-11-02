@@ -10,6 +10,7 @@
       :current-date="currentDate"
       :time-information="timeInformation"
       :events-data="eventsData"
+      :members-data="membersData"
       :sidebar-width="sidebarWidth"
       :close-form-create-event="closeFormCreateEvent"
       :is-open-form="isOpenForm"

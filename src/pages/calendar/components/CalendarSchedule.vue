@@ -112,7 +112,20 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
-      selectedEvent: {},
+      selectedEvent: {
+        id: null,
+        start: "",
+        end: "",
+        kind: "",
+        employees: {
+          employee: null,
+          role: "owner",
+        },
+        members: {
+          member: null,
+          role: null,
+        },
+      },
     };
   },
   computed: {
