@@ -70,7 +70,7 @@ export default {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(this.user),
       };
-      fetch("http://45.84.227.122:8080/auth/jwt/create", requestOptions)
+      fetch("http://45.84.227.122:8080/auth/jwt/create/", requestOptions)
         .then((result) => result.json())
         .then((token) => {
           localStorage.setItem("tokenAccess", token.access);

@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { fetchWrapper } from "../../shared/fetchWrapper.js";
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
@@ -68,14 +69,14 @@ export default {
       this.membersData = res.results;
     },
     fetchEventsData() {
-      fetch("http://45.84.227.122:8080/registry/event/")
-        .then((res) => res.json())
+      fetchWrapper
+        .get("registry/event/")
         .then((res) => this.saveEventsData(res));
-      fetch("http://45.84.227.122:8080/general/employee/")
-        .then((res) => res.json())
+      fetchWrapper
+        .get("general/employee/")
         .then((res) => this.saveEmployeesData(res));
-      fetch("http://45.84.227.122:8080/general/person/")
-        .then((res) => res.json())
+      fetchWrapper
+        .get("general/person/")
         .then((res) => this.saveMembersData(res));
     },
     changeWidth(value) {
