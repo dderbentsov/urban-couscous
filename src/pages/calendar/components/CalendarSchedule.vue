@@ -47,6 +47,7 @@
         :close-form="closeFormCreateEvent"
         :owners-data="ownersData"
         :members-data="membersData"
+        :selected-event-data="selectedEvent"
       )
 </template>
 
@@ -303,6 +304,7 @@ export default {
     },
     writeEventData(eventData) {
       this.selectedEvent = eventData;
+      this.$emit("open-change-form");
     },
   },
   watch: {
