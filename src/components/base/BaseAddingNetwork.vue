@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 import BaseInput from "@/components/base/BaseInput";
 export default {
   name: "TableAddingNetwork",

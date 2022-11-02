@@ -30,7 +30,7 @@
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 import { column } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "FormCreateBasicInfo",

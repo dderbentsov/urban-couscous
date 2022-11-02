@@ -37,7 +37,7 @@ import FormCreateIdentityDocuments from "@/pages/clients/components/FormCreateId
 import FormCreateAddresses from "@/pages/clients/components/FormCreateAddresses";
 import FormCreateAdditional from "@/pages/clients/components/FormCreateAdditional";
 import BaseInput from "@/components/base/BaseInput";
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "ClientsFormCreate",

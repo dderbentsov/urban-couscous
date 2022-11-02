@@ -9,7 +9,7 @@
 
 <script>
 import { column } from "@/pages/clients/utils/tableConfig";
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 export default {
   name: "TableCellBodyPriority",
   props: ["value", "width", "isOpenChange", "choosePriority"],

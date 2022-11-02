@@ -1,142 +1,101 @@
 <template lang="pug">
-  .flex.box-border.container.items-center.cursor-pointer.relative(
-    @click="changeSelect"
-    :class="{border: styleBorder, 'py-2.5 px-4':!forNetworks, 'justify-center':forNetworks, 'justify-between':!forNetworks}"
-    )
-    .flex.mr-2(v-if="!forNetworks")
-      input.text-base.select.cursor-pointer(
-          :size="sizeInput"
-          v-model="optionData"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          @input="sendData"
-        )
-      .absolute.options.top-12.left-0(
-        v-show="isSelectOpen"
-        :id="id"
-        )
-        .option.px-4.py-1(
-          v-for="data in filteredListData"
-          @click="(e) => chooseOption(e)"
-          :key="data.id || data"
-          :id="data.id || data"
-          ) {{data.name || data}}
-    .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData, 'px-2.5'")
-      .absolute.options.top-11.left-0(
-        v-show="isSelectOpen"
-        :id="id")
-        .flex.option.justify-center.py-1.text-xl(
-          v-for="data in listData"
-          @click="(e) => chooseOption(e)"
-          :key="data.network"
-          :id="data.network"
-          :class="data.icon"
-          )
-    .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
-    .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(v-if="!forNetworks" :class="{ open: isSelectOpen}")
+  .base-select(@click="open = !open", :class="{'open': open }")
+    .placeholder.text-base {{ itemsMap[value] || placeholder }}
+    span.icon-down-arrow.open-icon(:class="{'open': open }")
+    base-menu(v-if="open")
+      .items-container(@click="open = false", @mouseleave="fasdfasd")
+        .item(v-for="item in items", :key="item.id" @click="clickItem(item.id)") {{ item.label }}
 </template>
 
 <script>
+import BaseMenu from "@/components/base/BaseMenu";
 export default {
-  name: "BaseSelect",
+  name: "VSelect",
+  components: { BaseMenu },
   props: {
-    id: String,
-    styleBorder: {
-      default: false,
+    placeholder: String,
+    modelValue: String,
+    items: {
+      type: Array,
+      default: () => [],
     },
-    separator: Boolean,
-    optionData: String,
-    listData: Array,
-    chooseOption: Function,
-    forNetworks: Boolean,
-    placeholder: {
-      type: String,
-      default: "",
-    },
-    sizeInput: Number,
-    disabled: Boolean,
   },
+  emits: ["update:modelValue"],
   data() {
     return {
-      isSelectOpen: false,
+      open: false,
     };
   },
   computed: {
-    filteredListData() {
-      if (!this.disabled && this.optionData) {
-        let filteredList = [];
-        filteredList = this.listData.filter((elem) => {
-          let reg = new RegExp(`${this.optionData}`, "img");
-          if (elem.name) {
-            return elem.name.match(reg);
-          }
-          return elem.match(reg);
-        });
-        filteredList.length === 0 ? this.closeSelect() : this.openSelect();
-        return filteredList;
-      }
-      return this.listData;
+    value: {
+      get() {
+        return this.modelValue;
+      },
+      set(value) {
+        this.$emit("update:modelValue", value);
+      },
+    },
+    itemsMap() {
+      return this.items.reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item.label,
+        }),
+        {}
+      );
     },
   },
   methods: {
-    changeSelect() {
-      this.isSelectOpen = !this.isSelectOpen;
+    clickItem(id) {
+      this.value = id;
     },
-    openSelect() {
-      this.isSelectOpen = true;
+    fasdfasd() {
+      this.open = false;
     },
-    closeSelect() {
-      this.isSelectOpen = false;
-    },
-    sendData(e) {
-      this.$emit("changeInput", e.target.value);
-    },
+  },
+  mounted() {
+    console.log(this.$.appContext.app._container);
   },
 };
 </script>
 
-<style lang="sass" scoped>
-.container
-  border-radius: 4px
-  width: fit-content
-  color: var(--font-dark-blue-color)
-  background-color: var(--bg-ligth-blue-color)
-  &.border
-    background-color: var(--default-white)
-    border: 2px solid var(--border-light-grey-color)
-.select
-  appearance: none
-  border: none
-  outline: none
-  color: var(--font-dark-blue-color)
-  background-color: var(--font-black-color-0)
-  &.default
-    color: var(--font-black-color-1)
-  &::-webkit-calendar-picker-indicator
-    display: none
-    -webkit-appearance: none
-  &.networks
-    color: var(--font-dark-blue-color)
-  &::placeholder
-    color: var(--font-black-color-1)
-.options
-  z-index: 3
-  background-color: var(--default-white)
-  border-radius: 4px
-  box-shadow: var(--default-shadow)
+<style scoped lang="sass">
+.base-select
   width: 100%
-.option
-  color: var(--font-black-color)
+  border: 1.5px solid #D3D4DC
+  border-radius: 4px
+  padding: 9px 16px
+  background-color: white
+  user-select: none
+  display: flex
+  justify-content: space-between
+  align-items: center
+  gap: 16px
+  cursor: pointer
+  &.open
+    border: 1.5px solid #4772F2
+.items-container
+  box-shadow: 1px 1px 8px rgba(37, 40, 80, 0.15)
+  border-radius: 4px
+  background-color: white
+  margin-top: 4px
+.placeholder
+  color: #090A15
+  opacity: 0.5
+  text-overflow: ellipsis
+  overflow: hidden
+.item
+  padding: 8px 16px
+  border-bottom: 0.5px solid #D3D4DC
+  color: #090A15
+  cursor: pointer
   &:hover
-    background-color: var(--btn-blue-color)
-    color: var(--default-white)
-.select-form-separator
-  background-color: var(--btn-blue-color-3)
-  height: 24px
-  width: 1px
-  border-radius: 1px
-.icon
-  color: var(--font-dark-blue-color)
+   background-color: rgba(215, 217, 255, 0.25)
+  &:last-child
+    border-bottom: none
+.open-icon
+  font-size: 10px
+  display: flex
   &.open
     transform: rotate(180deg)
 </style>

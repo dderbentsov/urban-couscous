@@ -77,7 +77,7 @@
 
 <script>
 import * as moment from "moment/moment";
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseSelect from "@/components/base/OldBaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "FormChangeEvent",
