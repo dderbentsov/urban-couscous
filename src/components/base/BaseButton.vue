@@ -1,7 +1,7 @@
 <template lang="pug">
   button.base-button.text-base(
     :disabled="disabled",
-    :class="{'rounded': rounded, 'outlined': outlined, 'secondary': secondary}"
+    :class="{'rounded': rounded, 'outlined': outlined, 'secondary': secondary, 'confirm': confirm, 'added': added}"
     :style="{height: size + 'px', minWidth: size + 'px'}"
     )
     .button-container
@@ -23,7 +23,9 @@
 export default {
   name: "BaseButton",
   props: {
+    confirm: Boolean,
     outlined: Boolean,
+    added: Boolean,
     rounded: Boolean,
     disabled: Boolean,
     split: Boolean,
@@ -72,7 +74,6 @@ export default {
   &:disabled, &[disabled]
     background-color: var(--btn-blue-color-disabled)
     border: 1px solid var(--btn-blue-color-disabled)
-
 .rounded
   padding: 0
   border-radius: 50%
@@ -94,6 +95,13 @@ export default {
     border: 1px solid var(--btn-blue-color-1)
     color: var(--btn-blue-color-1)
 
+.added
+  border: 2px solid var(--btn-blue-color)
+  &:hover
+    border: none
+    background-color: var(--btn-blue-color)
+    color: var(--default-white)
+
 .secondary
   background-color: var(--btn-blue-sec-color)
   border: 1px solid var(--btn-blue-sec-color)
@@ -106,6 +114,17 @@ export default {
     background-color: var(--btn-blue-sec-color)
     border: 1px solid var(--btn-blue-sec-color)
     color: var(--btn-blue-color)
+
+.confirm
+  border-color: var(--btn-blue-color)
+  border: 2px solid var(--btn-blue-color)
+  &:hover
+    border: none
+    background-color: var(--btn-blue-color)
+    color: var(--default-white)
+  &:active
+    background-color: var(--btn-light-green-color)
+    color: var(--btn-green-color)
 
 .button-container
   display: flex

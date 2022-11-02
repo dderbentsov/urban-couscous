@@ -11,14 +11,15 @@
               span  или перетащите их сюда
         .flex.flex-col
           span.name-doc.py-2.px-3(v-for="doc in newDocs") {{doc.name}}
-      base-create-button(text="Добавить" @click="saveDocs")
+      base-button(@click="saveDocs" :size="40")
+        span.font-semibold Добавить
 </template>
 
 <script>
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "TableAddingNewDoc",
-  components: { BaseCreateButton },
+  components: { BaseButton },
   props: {
     addNewDoc: Function,
     saveDocs: Function,

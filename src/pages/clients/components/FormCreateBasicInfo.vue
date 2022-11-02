@@ -3,7 +3,7 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(:list-data="priorityList" :option-data="basicInfo.priority" placeholder="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :size-input="22")
+        base-select(:list-data="priorityList" :option-data="basicInfo.priority" placeholder="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :size-input="22" disabled)
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
           span.obligatory *
@@ -22,18 +22,24 @@
           base-adding-network(:list-adding-networks="networks.settings" :selected-option="network.icon" :value="network" :choose-network="chooseOption" :save-network-id="saveNetworkId")
         span.add-network.cursor-pointer(v-show="networks.settings.length !== basicInfo.contacts.length" @click="addNetwork") Добавить соцсеть
     .px-4
-      base-create-button(text="Создать клиента" @click="saveClient")
+      base-button(@click="saveClient" :size="40")
+        span.font-semibold Создать клиента
 </template>
 
 <script>
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
+import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
 import BaseSelect from "@/components/base/BaseSelect";
 import { column } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "FormCreateBasicInfo",
-  components: { BaseInput, BaseCreateButton, BaseAddingNetwork, BaseSelect },
+  components: {
+    BaseInput,
+    BaseAddingNetwork,
+    BaseSelect,
+    BaseButton,
+  },
   props: {
     choosePriority: Function,
     priorityList: Array,

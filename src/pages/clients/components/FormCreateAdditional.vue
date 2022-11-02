@@ -16,15 +16,16 @@
         .icon-plus
         span Добавить еще пункт
     .px-4
-      base-create-button(@click="saveClient" text="Создать клиента")
+      base-button(@click="saveClient" :size="40")
+        span.font-semibold Создать клиента
 </template>
 
 <script>
 import BaseInput from "@/components/base/BaseInput";
-import BaseCreateButton from "@/components/base/buttons/BaseCreateButton";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "FormCreateAdditional",
-  components: { BaseCreateButton, BaseInput },
+  components: { BaseInput, BaseButton },
   props: {
     additionalInfo: Object,
     saveClient: Function,
