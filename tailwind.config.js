@@ -11,6 +11,7 @@ module.exports = {
         ins: ["11px", { lineHeight: "12px" }],
         xxs: ["12px", { lineHeight: "14px" }],
         xs: ["13px", { lineHeight: "15px" }],
+        xss: ["13px", { lineHeight: "19px" }],
         sm: ["14px", { lineHeight: "16px" }],
         base: ["16px", { lineHeight: "19px" }],
         m: ["16px", { lineHeight: "21.6px" }],
