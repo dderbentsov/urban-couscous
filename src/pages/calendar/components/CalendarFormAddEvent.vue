@@ -19,16 +19,29 @@
       .flex.gap-x-4.items-center
         .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
-          .time-input.flex.gap-x-2.px-4.py-2.items-center
+          .time-input.flex.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-              v-model="start"
+              v-model="startTime"
               placeholder ="11:00"
             )
           span —
-          .time-input.flex.gap-x-2.px-4.py-2.items-center
+          .time-input.flex.px-4.py-2.items-center
             input.item-input.text-base.cursor-text(
-              v-model="end"
+              v-model="endTime"
               placeholder ="12:30"
+            )
+      .flex.items-center
+        .flex.gap-x-2.items-center
+          .data-input.flex.px-4.py-2.items-center
+            input.item-input.text-base.cursor-text(
+              v-model="startDate"
+              placeholder ="2022-10-01"
+            )
+          span —
+          .data-input.flex.px-4.py-2.items-center
+            input.item-input.text-base.cursor-text(
+              v-model="endDate"
+              placeholder ="2022-10-01"
             )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
@@ -83,8 +96,7 @@
 </template>
 
 <script>
-import * as moment from "moment/moment";
-import BaseSelect from "@/components/base/OldBaseSelect";
+import BaseSelect from "@/components/base/BaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "FormChangeEvent",
@@ -113,8 +125,6 @@ export default {
   data() {
     return {
       listContacts: [1],
-      ownerSelectSize: 22,
-      kindEventSelectSize: 10,
       memberSelectSize: 29,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
       eventData: {},
@@ -123,12 +133,13 @@ export default {
         role: null,
       },
       contacts: [],
-      start: "",
-      end: "",
+      startTime: "",
+      endTime: "",
       employees: {
         employee: null,
         role: "owner",
       },
+      startDate: "",
       kind: "",
       id: null,
     };
@@ -174,14 +185,14 @@ export default {
       return "";
     },
     eventStartTime() {
-      if (this.start) {
-        return `${moment().format("YYYY-MM-DD")}T${this.start}:00Z`;
+      if (this.startTime && this.startDate) {
+        return this.addDate(this.startDate, this.startTime);
       }
       return "";
     },
     eventEndTime() {
-      if (this.end) {
-        return `${moment().format("YYYY-MM-DD")}T${this.end}:00Z`;
+      if (this.endtime && this.endDate) {
+        return this.addDate(this.endDate, this.endTime);
       }
       return "";
     },
@@ -197,6 +208,18 @@ export default {
       }
       return true;
     },
+    ownerSelectSize() {
+      if (this.ownerName) {
+        return this.ownerName.split(" ").join("").length;
+      }
+      return 22;
+    },
+    kindEventSelectSize() {
+      if (this.kind) {
+        return this.kind.split(" ").join("").length;
+      }
+      return 10;
+    },
   },
   methods: {
     chooseOptionOwner(e) {
@@ -209,11 +232,9 @@ export default {
         first_name: foundEmployee.first_name,
         patronymic: foundEmployee.patronymic,
       };
-      this.ownerSelectSize = this.ownerName.split(" ").join("").length;
     },
     chooseOptionTypeEvent(e) {
       this.kind = e.target.id;
-      this.kindEventSelectSize = this.kind.split(" ").join("").length;
     },
     chooseOptionMember(e) {
       let foundMember = this.membersData.find(
@@ -253,14 +274,39 @@ export default {
     sendEventData() {
       this.eventData = {
         id: this.id,
-        start: this.eventStartTime,
-        end: this.eventEndTime,
+        start: this.addDate(this.startTime, this.startDate),
+        end: this.addDate(this.endTime, this.endDate),
         kind: this.kind,
         employees: [this.employees],
         members: [this.members],
       };
       this.closeForm();
     },
+    addDate(time, data) {
+      return `${data}T${time}:00Z`;
+    },
+    trimTime(str) {
+      return str.slice(11, -4);
+    },
+    trimDate(str) {
+      return str.slice(0, 12);
+    },
+  },
+  mounted() {
+    this.id = this.selectedEventData.id || null;
+    this.startTime = this.trimTime(this.selectedEventData.start) || "";
+    this.endTime = this.trimTime(this.selectedEventData.end) || "";
+    this.kind = this.selectedEventData.kind || "";
+    this.employees = this.selectedEventData.employees[0] || {
+      employee: null,
+      role: "owner",
+    };
+    this.members = this.selectedEventData.members[0] || {
+      member: null,
+      role: null,
+    };
+    this.startDate = this.trimDate(this.selectedEventData.start);
+    this.endDate = this.trimDate(this.selectedEventData.end);
   },
 };
 </script>
@@ -293,6 +339,11 @@ export default {
 
 .time-input
   width: 72px
+  border-radius: 4px
+  background-color: var(--bg-ligth-blue-color)
+
+.date-input
+  width: 120px
   border-radius: 4px
   background-color: var(--bg-ligth-blue-color)
 
