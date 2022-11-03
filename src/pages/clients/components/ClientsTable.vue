@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
