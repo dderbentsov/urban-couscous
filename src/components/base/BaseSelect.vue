@@ -3,7 +3,7 @@
     .placeholder.text-base {{ itemsMap[value] || placeholder }}
     span.icon-down-arrow.open-icon(:class="{'open': open }")
     base-menu(v-if="open")
-      .items-container(@click="open = false", @mouseleave="fasdfasd")
+      .items-container(@click="open = false", @mouseleave="leaveSelect")
         .item(v-for="item in items", :key="item.id" @click="clickItem(item.id)") {{ item.label }}
 </template>
 
@@ -49,12 +49,9 @@ export default {
     clickItem(id) {
       this.value = id;
     },
-    fasdfasd() {
+    leaveSelect() {
       this.open = false;
     },
-  },
-  mounted() {
-    console.log(this.$.appContext.app._container);
   },
 };
 </script>

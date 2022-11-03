@@ -3,7 +3,7 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(:list-data="priorityList" :option-data="basicInfo.priority" placeholder="Приоритет клиента" :for-networks="false" :style-border="true" :choose-option="choosePriority" :size-input="22" disabled)
+        base-select(:items="priorityList" placeholder="Приоритет клиента" v-model="basicInfo.priority")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
           span.obligatory *
@@ -30,15 +30,15 @@
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
-import BaseSelect from "@/components/base/OldBaseSelect";
 import { column } from "@/pages/clients/utils/tableConfig";
+import BaseSelect from "@/components/base/BaseSelect";
 export default {
   name: "FormCreateBasicInfo",
   components: {
     BaseInput,
     BaseAddingNetwork,
-    BaseSelect,
     BaseButton,
+    BaseSelect,
   },
   props: {
     choosePriority: Function,

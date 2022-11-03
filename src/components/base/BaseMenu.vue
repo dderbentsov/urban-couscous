@@ -21,11 +21,9 @@ export default {
       return {
         left: this.parentSize.left + "px",
         top: this.parentSize.top + this.parentSize.height + "px",
+        minWidth: this.parentSize.width + "px",
       };
     },
-  },
-  mounted() {
-    console.log(this.parentSize);
   },
 };
 </script>
