@@ -7,7 +7,7 @@
     //-   header-active-client-panel(:info="chargePersonInfo")
     .flex.ml-auto
       base-button.mr-9(left-icon="icon-plus", :icon-left-size="10", :size="40", right-icon="icon-person", :icon-right-size="18")
-      button.header-buttons.flex.justify-center.items-center.mr-8.p-0
+      button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
         base-avatar.mr-2(:size="32")
@@ -33,6 +33,12 @@ export default {
         name: "Гордеев Николай Степанович",
       },
     };
+  },
+  methods: {
+    logout() {
+      localStorage.clear();
+      this.$router.push("/login");
+    },
   },
 };
 </script>
