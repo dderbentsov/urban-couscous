@@ -12,19 +12,19 @@
           .flex.flex-col.gap-y-6px
             .flex.non-italic.font-semibold.text-xss Логин
             base-input.h-12.font-medium(
-            :style="{borderColor: !this.authorized ? this.redColor : ''}"
+            :style="{borderColor: !this.authorized ? this.borderColor : ''}"
             v-model:value="user.username"
             type="text"
             placeholder="Введите ваш логин")
           .flex.flex-col.gap-y-6px.relative
             .flex.non-italic.font-semibold.text-xss Пароль
             base-input.h-12(
-            :style="{borderColor: this.authorized ? '' : this.redColor}"
+            :style="{borderColor: this.authorized ? '' : this.borderColor}"
             v-model:value="user.password"
             :type="changeType"
             placeholder="Введите ваш пароль")
             img.absolute.z-10.right-4.bottom-14px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
-          span.font-medium(:style="{color: this.redColor}", v-show="!authorized") Неверный логин или пароль
+          span.font-medium(:style="{color: this.borderColor}", v-show="!authorized") Неверный логин или пароль
           .flex.items-center.gap-x-11px
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")
             .flex.non-italic.font-medium.base Запомнить меня
@@ -54,7 +54,7 @@ export default {
       logoMark,
       authorized: true,
       user: { username: "", password: "" },
-      redColor: "var(--border-red-color)",
+      borderColor: "var(--border-red-color)",
     };
   },
   computed: {
@@ -84,18 +84,13 @@ export default {
         body: JSON.stringify(this.user),
       };
       fetch("http://45.84.227.122:8080/auth/jwt/create/", requestOptions)
-        .then((result) => {
-          if (result.status === 200) {
-            return result.json();
-          } else {
-            return (this.authorized = false);
-          }
-        })
+        .then((result) => result.json())
         .then((token) => {
           if (token) {
             localStorage.setItem("tokenAccess", token.access);
             this.$router.push("/");
           } else {
+            this.authorized = false;
             this.$router.push("/login");
           }
         });
