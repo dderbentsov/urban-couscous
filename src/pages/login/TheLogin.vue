@@ -20,7 +20,7 @@
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")
             .flex.non-italic.font-medium.base Запомнить меня
         base-button.font-semibold(:disabled="disabledButton", :size="48", @click="login") Войти в аккаунт
-      .absolute.left-12.bottom-12 2022 © Астра 
+      .absolute.left-12.bottom-12 2022 © Астра
     .right-col.flex.items-center.justify-center.relative
       img.absolute.z-10(src="@/assets/images/bigLogo.svg" alt="bigLogo")
       img.absolute.z-10.absolute.left-0.bottom-0(src="@/assets/images/ellipseBottom.svg" alt="ellipseBottom")
@@ -74,7 +74,6 @@ export default {
         .then((result) => result.json())
         .then((token) => {
           localStorage.setItem("tokenAccess", token.access);
-          token.cookie("tokenRefresh", token.refresh, { httpOnly: true });
         });
     },
   },

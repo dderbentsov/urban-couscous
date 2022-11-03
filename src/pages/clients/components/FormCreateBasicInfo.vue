@@ -3,7 +3,7 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(:items="priorityList" placeholder="Приоритет клиента" v-model="basicInfo.priority")
+        base-select(:items="priorityList", placeholder="Приоритет клиента", v-model="basicInfo.priority")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
           span.obligatory *

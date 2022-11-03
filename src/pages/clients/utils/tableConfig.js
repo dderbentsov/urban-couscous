@@ -137,7 +137,7 @@ export const detail = {
   addresses: {
     title: "Адреса",
     options: {
-      join_address: "Полный адрес",
+      join_adress: "Полный адрес",
     },
     width: 292,
   },

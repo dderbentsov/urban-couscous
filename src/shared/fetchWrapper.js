@@ -1,6 +1,6 @@
 function prepareUrl(url) {
   if (url.startsWith("http")) return url;
-  return `http://45.84.227.122:8080/${url}`;
+  return `http://45.84.227.122:8080/api/${url}`;
 }
 
 function handleRequest(method, url, headers, attempts, body) {
@@ -63,7 +63,7 @@ function del(url, headers, attempts = 3) {
 }
 
 function post(url, body, headers, attempts = 3) {
-  return handleRequest("POST", url, headers, attempts, null, body);
+  return handleRequest("POST", url, headers, attempts, body);
 }
 
 function put(url, headers, body, attempts = 3) {

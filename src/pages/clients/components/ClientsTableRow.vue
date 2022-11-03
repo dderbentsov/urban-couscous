@@ -14,7 +14,7 @@
           .icon-ok.text-xsm(class="pt-[3px]")
         .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-show="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
-    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-address="dataAddress" :data-detail="dataDetail" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
+    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-address="dataAddress" :data-detail="dataDetail" :data-attachments="dataAttachments" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
 </template>
 
 <script>
@@ -30,6 +30,7 @@ import ClientsActionPopup from "@/pages/clients/components/ClientsActionPopup";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import ClientDetailInfoWrapper from "@/pages/clients/components/ClientDetailInfoWrapper";
 import BaseButton from "@/components/base/BaseButton";
+import { fetchWrapper } from "@/shared/fetchWrapper";
 import { column } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "ClientsTableRow",
@@ -51,10 +52,12 @@ export default {
     return {
       dataIdentityDocument: {},
       dataAddress: {},
+      dataAttachments: [],
       dataDetail: {},
       isOpenDetailInfo: false,
       isOpenPopup: false,
       columnBody: column,
+      prioritySettings: column.find((el) => el.name === "priority"),
       isOpenChange: false,
       dataClient: {},
     };
@@ -73,7 +76,9 @@ export default {
         this.client.first_name || ""
       } ${this.client.patronymic || ""}`,
       age: this.client.birth_date || "",
-      priority: this.client.priority,
+      priority: this.prioritySettings.settings.find(
+        (el) => el.priority === this.client.priority
+      ).text,
       phone: {
         id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
         kind: "PHONE",
@@ -95,21 +100,11 @@ export default {
   },
   methods: {
     postUpdateClient() {
-      fetch(
-        `http://45.84.227.122:8080/general/person/${this.client.id}/update/`,
-        {
-          method: "POST",
-          headers: {
-            Accept: "*/*",
-            "Content-Type": "application/json;charset=utf-8",
-          },
-          body: JSON.stringify({
-            full_name: this.dataClient.fullName,
-            birth_date: this.dataClient.age,
-            priority: this.dataClient.priority,
-          }),
-        }
-      );
+      fetchWrapper.post(`general/person/${this.client.id}/update/`, {
+        full_name: this.dataClient.fullName,
+        birth_date: this.dataClient.age,
+        priority: this.dataClient.priority,
+      });
     },
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
@@ -154,37 +149,21 @@ export default {
     },
 
     postCreateContact(contact) {
-      fetch("http://45.84.227.122:8080/general/contact/create/", {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-          kind: contact.kind,
-          username: contact.username,
-          person_id: this.client.id,
-        }),
+      fetchWrapper.post("general/contact/create/", {
+        kind: contact.kind,
+        username: contact.username,
+        person_id: this.client.id,
       });
     },
     postUpdateContact(contact) {
-      fetch(`http://45.84.227.122:8080/general/contact/${contact.id}/update/`, {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
-          kind: contact.kind,
-          username: contact.username,
-          person_id: this.client.id,
-        }),
+      fetchWrapper.post(`general/contact/${contact.id}/update/`, {
+        kind: contact.kind,
+        username: contact.username,
+        person_id: this.client.id,
       });
     },
     postDeleteContact(contact) {
-      fetch(`http://45.84.227.122:8080/general/contact/${contact.id}/delete/`, {
-        method: "DELETE",
-      });
+      fetchWrapper.del(`general/contact/${contact.id}/delete/`);
     },
     addNetwork(network) {
       this.dataClient.contacts.push(network);
@@ -208,14 +187,16 @@ export default {
       this.isOpenChange = true;
     },
     fetchClientDetail(id) {
-      // eslint-disable-next-line
-      fetch(`http://45.84.227.122:8080/general/person/${id}/detail`).then((res) => res.json()).then((data) => this.saveClientDetail(data))
+      fetchWrapper
+        .get(`general/person/${id}/detail/`)
+        .then((data) => this.saveClientDetail(data));
     },
     saveClientDetail(data) {
       this.saveIdentityDocument(
         data.identity_documents.find((el) => el.kind === "Паспорт")
       );
       this.saveAddress(data.address[0]);
+      this.saveAttachments([...data.attachments]);
     },
     saveIdentityDocument(data) {
       this.dataIdentityDocument = {
@@ -227,8 +208,11 @@ export default {
     },
     saveAddress(data) {
       this.dataAddress = {
-        join_address: data?.join_address || "-",
+        join_adress: data?.join_adress || "-",
       };
+    },
+    saveAttachments(data) {
+      this.dataAttachments = [...data];
     },
     openPopup(e) {
       e.target.focus();
@@ -241,19 +225,12 @@ export default {
     handleUnFocusPopup() {
       this.isOpenPopup = false;
     },
-    saveNewDoc(section, data) {
-      this.dataDetail[section] = [...this.dataDetail[section], ...data];
+    saveNewDoc(data) {
+      this.dataAttachments = [...this.dataDetail, ...data];
     },
-    deleteDoc(e, section) {
-      if (section === "additional") {
-        this.dataDetail[section].forEach((el, index) => {
-          if (el.name === e.target.id) {
-            delete this.dataDetail[section][index].name;
-          }
-        });
-      }
-      this.dataDetail[section] = this.dataDetail[section].filter(
-        (el) => el.name !== e.target.id
+    deleteDoc(e) {
+      this.dataAttachments = this.dataAttachments.filter(
+        (el) => el.id !== e.target.id
       );
     },
   },
