@@ -1,10 +1,10 @@
 <template lang="pug">
   .base-select(@click="open = !open", :class="{'open': open }")
-    .placeholder.text-base {{ itemsMap[value] || placeholder }}
+    .placeholder.text-base {{ value || placeholder }}
     span.icon-down-arrow.open-icon(:class="{'open': open }")
     base-menu(v-if="open")
-      .items-container(@click="open = false", @mouseleave="fasdfasd")
-        .item(v-for="item in items", :key="item.id" @click="clickItem(item.id)") {{ item.label }}
+      .items-container(@click="open = false", @mouseleave="leaveSelect")
+        .item(v-for="item in items", :key="item.id" @click="clickItem(item.label)") {{ item.label }}
 </template>
 
 <script>
@@ -35,26 +35,14 @@ export default {
         this.$emit("update:modelValue", value);
       },
     },
-    itemsMap() {
-      return this.items.reduce(
-        (acc, item) => ({
-          ...acc,
-          [item.id]: item.label,
-        }),
-        {}
-      );
-    },
   },
   methods: {
     clickItem(id) {
       this.value = id;
     },
-    fasdfasd() {
+    leaveSelect() {
       this.open = false;
     },
-  },
-  mounted() {
-    console.log(this.$.appContext.app._container);
   },
 };
 </script>

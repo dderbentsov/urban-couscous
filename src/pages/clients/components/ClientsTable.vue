@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
-    clients-form-create(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
+    base-client-form-create.right-0(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
     clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreateClient")
     .flex.flex-col.h-full.gap-y-2.table-container
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
@@ -22,7 +22,8 @@ import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
-import ClientsFormCreate from "@/pages/clients/components/ClientsFormCreate";
+import { fetchWrapper } from "@/shared/fetchWrapper";
+import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "ClientsTable",
   components: {
@@ -30,7 +31,7 @@ export default {
     ClientsTableRow,
     ClientsTableHat,
     ClientsTableHeader,
-    ClientsFormCreate,
+    BaseClientFormCreate,
   },
   data() {
     return {
@@ -52,8 +53,9 @@ export default {
       this.dataClients = data.results;
     },
     fetchDataClients() {
-      // eslint-disable-next-line
-      fetchWrapper.get("general/person/").then((data) => this.saveDataClients(data))
+      fetchWrapper
+        .get("general/person/")
+        .then((data) => this.saveDataClients(data));
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {

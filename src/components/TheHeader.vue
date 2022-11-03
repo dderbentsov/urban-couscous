@@ -1,13 +1,21 @@
 <template lang="pug">
-  .header-wrapper.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
+  .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
+    base-client-form-create.right-6(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
     //- .charge-person-container
     //-   header-active-client-panel(:info="chargePersonInfo")
     .flex.ml-auto
-      base-button.mr-9(left-icon="icon-plus", :icon-left-size="10", :size="40", right-icon="icon-person", :icon-right-size="18")
-      button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
+      base-button.mr-9(
+        left-icon="icon-plus",
+        :icon-left-size="10",
+        :size="40",
+        right-icon="icon-person",
+        :icon-right-size="18",
+        @click="isOpenCreate=true"
+        )
+      button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
         base-avatar.mr-2(:size="32")
@@ -22,9 +30,10 @@ import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
 import BaseAvatar from "@/components/base/BaseAvatar";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
-  components: { HeaderInputs, BaseAvatar, BaseButton },
+  components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
   data() {
     return {
       avatarSrc: img,
@@ -32,9 +41,12 @@ export default {
         avatarSrc: chargePersonAvatar,
         name: "Гордеев Николай Степанович",
       },
+      isOpenCreate: false,
     };
   },
   methods: {
+    closeFormCreate() {
+      this.isOpenCreate = false;
     logout() {
       localStorage.clear();
       this.$router.push("/login");

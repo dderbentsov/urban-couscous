@@ -29,7 +29,7 @@
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")
             .flex.non-italic.font-medium.base Запомнить меня
         base-button.font-semibold(:disabled="disabledButton", :size="48", @click="login") Войти в аккаунт
-      .absolute.left-12.bottom-12 2022 © Астра 
+      .absolute.left-12.bottom-12 2022 © Астра
     .right-col.flex.items-center.justify-center.relative
 </template>
 

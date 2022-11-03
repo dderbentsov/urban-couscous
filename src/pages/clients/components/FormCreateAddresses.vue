@@ -25,7 +25,7 @@
           base-input.input-info(v-model:value="addresses.apartment_number" placeholder="Номер квартиры")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Индекс
-          base-input.input-info(v-model:value="addresses.index_of_address" placeholder="000000")
+          base-input.input-info(v-model:value="addresses.zip_code" placeholder="000000")
     .px-4
       base-button(@click="saveClient" :size="40")
         span.font-semibold Создать клиента

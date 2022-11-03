@@ -22,21 +22,25 @@ export const column = [
     settings: [
       {
         priority: 1,
+        id: "1",
         text: "Высокий",
         color: "#FF6F6F",
       },
       {
         priority: 2,
+        id: "2",
         text: "Средний",
         color: "#FFC75B",
       },
       {
         priority: 3,
+        id: "3",
         text: "Низкий",
         color: "#81ACFF",
       },
       {
         priority: null,
+        id: "4",
         text: "-",
         color: "#9294A7",
       },
@@ -133,7 +137,7 @@ export const detail = {
   addresses: {
     title: "Адреса",
     options: {
-      join_address: "Полный адрес",
+      join_adress: "Полный адрес",
     },
     width: 292,
   },

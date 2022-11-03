@@ -62,8 +62,8 @@ function del(url, headers, attempts = 3) {
   return handleRequest("DELETE", url, headers, attempts, null);
 }
 
-function post(url, headers, body, attempts = 3) {
-  return handleRequest("POST", url, headers, attempts, null, body);
+function post(url, body, headers, attempts = 3) {
+  return handleRequest("POST", url, headers, attempts, body);
 }
 
 function put(url, headers, body, attempts = 3) {

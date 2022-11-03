@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper-create.flex.flex-col.absolute.top-28.right-0.px-4.py-7.gap-y-8
+  .wrapper-create.flex.flex-col.absolute.top-28.px-4.py-7.gap-y-8
     .icon-cancel.close.absolute.top-5.right-5.cursor-pointer(@click="closeForm")
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
@@ -20,7 +20,7 @@
           :save-client="saveClient"
           :choose-option="chooseOptionNetworks"
           :choose-priority="choosePriority"
-          :priority-list="priorityList"
+          :priority-list="getPriorityList"
           )
       .flex(:style="{display :'none'}" ref="doc")
         form-create-identity-documents(:identity-document="infoClient.identity_document" :save-client="saveClient")
@@ -32,6 +32,7 @@
 
 <script>
 import { column } from "@/pages/clients/utils/tableConfig";
+import { fetchWrapper } from "@/shared/fetchWrapper";
 import FormCreateBasicInfo from "@/pages/clients/components/FormCreateBasicInfo";
 import FormCreateIdentityDocuments from "@/pages/clients/components/FormCreateIdentityDocuments";
 import FormCreateAddresses from "@/pages/clients/components/FormCreateAddresses";
@@ -40,7 +41,7 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseSelect from "@/components/base/OldBaseSelect";
 import BaseButton from "@/components/base/BaseButton";
 export default {
-  name: "ClientsFormCreate",
+  name: "BaseClientFormClient",
   components: {
     BaseInput,
     BaseSelect,
@@ -82,7 +83,6 @@ export default {
         },
         identity_document: {
           pass: {
-            kind: "Паспорт",
             series_number: "",
             issued_by_org: "",
             issued_by_date: "",
@@ -104,7 +104,7 @@ export default {
           street: "",
           house_number: "",
           apartment_number: "",
-          index_of_address: "",
+          zip_code: "",
         },
         additional: [
           {
@@ -132,55 +132,63 @@ export default {
           active: false,
         },
       ],
-      priorityOption: "Приоритет",
-      priorityList: ["Высокий", "Средний", "Низкий", "-"],
+      priorityList: [
+        {
+          id: "1",
+          label: "Высокий",
+        },
+        {
+          id: "2",
+          label: "Средний",
+        },
+        {
+          id: "3",
+          label: "Низкий",
+        },
+        {
+          id: "4",
+          label: "-",
+        },
+      ],
     };
+  },
+  computed: {
+    getPriorityList() {
+      return this.prioritySettings.settings.map((el) => {
+        return { label: el.text, id: el.id };
+      });
+    },
   },
   methods: {
     createIdentityDocument(id) {
-      fetch("http://45.84.227.122:8080/general/identity_document/create/", {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
+      Object.keys(
+        this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
+      ).length > 0 &&
+        fetchWrapper.post("general/identity_document/create/", {
           ...this.filterDataEmptyProperty(
             this.infoClient.identity_document.pass
           ),
           person_id: id,
-        }),
-      });
+          kind: "Паспорт",
+        });
     },
     createAddress(id) {
-      fetch("http://45.84.227.122:8080/general/address/create/", {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
+      Object.keys(this.filterDataEmptyProperty(this.infoClient.addresses))
+        .length > 0 &&
+        fetchWrapper.post("general/address/create/", {
           ...this.filterDataEmptyProperty(this.infoClient.addresses),
           person_id: id,
-        }),
-      });
+        });
     },
     postNewClient() {
-      fetch("http://45.84.227.122:8080/general/person/create/", {
-        method: "POST",
-        headers: {
-          Accept: "*/*",
-          "Content-Type": "application/json;charset=utf-8",
-        },
-        body: JSON.stringify({
+      fetchWrapper
+        .post("general/person/create/", {
           full_name: this.infoClient.basic.full_name,
           birth_date: this.infoClient.basic.birth_date,
           priority: this.prioritySettings.settings.find(
             (el) => el.text === this.infoClient.basic.priority
           ).priority,
-        }),
-      })
-        .then((res) => res.json())
+        })
         .then((result) => {
           this.createIdentityDocument(result.id);
           this.createAddress(result.id);

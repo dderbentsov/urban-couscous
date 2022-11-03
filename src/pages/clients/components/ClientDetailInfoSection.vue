@@ -15,17 +15,16 @@
       .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
         span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
         span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-        client-detail-input.text-sm.text-sm.w-max-fit(v-if="isChange" :style="{fontWeight:key === 'numba'&&600}" v-model:value="sectionInfo[key]" :width="settings[section].width")
+        client-detail-input.text-sm.text-sm.w-max-fit(v-if="section!=='docs' && isChange" :style="{fontWeight:key === 'numba'&&600}" v-model:value="sectionInfo[key]" :width="settings[section].width")
           .copy.icon-copy.cursor-pointer(v-if="item.copy" @click="() => copyValue(item)")
         .flex(v-if="settings[section].options && !isChange")
           span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
           .copy.icon-copy.cursor-pointer.pl-4(v-if="key === 'numba'" @click="() => copyValue(item)")
-        .flex(v-if="item.value && !isChange")
-          span.text-sm.w-fit {{item.value}}
-        .flex.items-center(v-if="item.name")
-          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(v-if="isChange" :id="item.name" @click="(e) => deleteDoc(e, section)")
-          .icon-files.cursor-pointer.pr-3.text-xl(:style="{color:settings.docsColor[item.type]}")
-          span.text-sm {{item.name}}
+        .flex(v-if="item.name && !isChange")
+          span.text-sm.w-fit {{item.title}}
+        .flex.items-center(v-if="item.title")
+          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(v-if="isChange" :id="item.id" @click="(e) => deleteDoc(e)")
+          span.text-sm {{item.title}}
 </template>
 
 <script>

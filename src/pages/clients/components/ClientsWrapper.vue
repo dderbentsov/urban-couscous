@@ -4,11 +4,10 @@
 </template>
 
 <script>
-import ClientsFormCreate from "@/pages/clients/components/ClientsFormCreate";
 import ClientsTable from "@/pages/clients/components/ClientsTable";
 export default {
   name: "ClientsWrapper",
-  components: { ClientsTable, ClientsFormCreate },
+  components: { ClientsTable },
   data() {
     return {
       isOpenForm: false,
