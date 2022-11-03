@@ -47,6 +47,7 @@ export default {
   methods: {
     closeFormCreate() {
       this.isOpenCreate = false;
+    },
     logout() {
       localStorage.clear();
       this.$router.push("/login");
