@@ -1,6 +1,6 @@
 function prepareUrl(url) {
   if (url.startsWith("http")) return url;
-  return `http://45.84.227.122:8080/${url}`;
+  return `http://45.84.227.122:8080/api/${url}`;
 }
 
 function handleRequest(method, url, headers, attempts, body) {

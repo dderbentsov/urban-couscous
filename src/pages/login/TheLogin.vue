@@ -2,7 +2,7 @@
   .login-wrapper.flex
     .left-col.flex.flex-col.items-center
       .logo-wrapper.absolute.left-12.top-12
-        img(src="@/assets/images/logoText.svg" alt="logoText")
+        img(:src="logoMark")
       .login-panel.flex.flex-col.justify-center.gap-y-10
         .flex.flex-col.gap-y-2
           .text-welcome.flex.not-italic.font-bold.text-5xl Добро пожаловать!
@@ -22,10 +22,6 @@
         base-button.font-semibold(:disabled="disabledButton", :size="48", @click="login") Войти в аккаунт
       .absolute.left-12.bottom-12 2022 © Астра 
     .right-col.flex.items-center.justify-center.relative
-      img.absolute.z-10(src="@/assets/images/bigLogo.svg" alt="bigLogo")
-      img.absolute.z-10.absolute.left-0.bottom-0(src="@/assets/images/ellipseBottom.svg" alt="ellipseBottom")
-      img.absolute.z-10.absolute.right-0.top-0(src="@/assets/images/ellipseTop.svg" alt="ellipseTop")
-      img.opacity-10(src="@/assets/images/dots.svg" alt="Logo")
 </template>
 
 <script>
@@ -33,6 +29,9 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseButton from "@/components/base/BaseButton";
 import viewPasswordIcon from "@/assets/icons/eye.svg";
 import hidePasswordIcon from "@/assets/icons/openEye.svg";
+import loginBackground from "@/assets/images/loginBG.svg";
+
+import logoMark from "@/assets/images/logoMark.svg";
 export default {
   name: "TheLogin",
   components: { BaseInput, BaseButton },
@@ -42,6 +41,8 @@ export default {
       isView: false,
       viewPassword: viewPasswordIcon,
       hidePassword: hidePasswordIcon,
+      loginBackground,
+      logoMark,
       user: { username: "", password: "" },
     };
   },
@@ -74,7 +75,7 @@ export default {
         .then((result) => result.json())
         .then((token) => {
           localStorage.setItem("tokenAccess", token.access);
-          token.cookie("tokenRefresh", token.refresh, { httpOnly: true });
+          this.$router.push("/");
         });
     },
   },
@@ -97,8 +98,7 @@ export default {
   justify-content: center
   background-color: var(--default-white)
   height: 100%
-  width: 812px
-  flex: 1 1 auto
+  width: 40%
 .logo-wrapper
   width: 89.28px
   height: 74.64px
@@ -112,7 +112,10 @@ export default {
   border-width: 1.5px
 .right-col
   height: 100%
-  width: 1105px
   background-color: var(--font-dark-blue-color)
-  flex: 1 1 auto
+  width: 60%
+  background-image: url("@/assets/images/loginBG.svg")
+  background-size: cover
+  background-repeat: no-repeat
+  background-position: center
 </style>
