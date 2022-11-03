@@ -11,11 +11,20 @@
         .flex.flex-col.gap-y-5
           .flex.flex-col.gap-y-6px
             .flex.non-italic.font-semibold.text-xss Логин
-            base-input.h-12.font-medium(v-model:value="user.username", type="text", placeholder="Введите ваш логин")
+            base-input.h-12.font-medium(
+            :style="{borderColor: !this.authorized ? this.redColor : ''}"
+            v-model:value="user.username"
+            type="text"
+            placeholder="Введите ваш логин")
           .flex.flex-col.gap-y-6px.relative
             .flex.non-italic.font-semibold.text-xss Пароль
-            base-input.h-12(v-model:value="user.password", :type="changeType", placeholder="Введите ваш пароль")
+            base-input.h-12(
+            :style="{borderColor: this.authorized ? '' : this.redColor}"
+            v-model:value="user.password"
+            :type="changeType"
+            placeholder="Введите ваш пароль")
             img.absolute.z-10.right-4.bottom-14px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
+          span.font-medium(:style="{color: this.redColor}", v-show="!authorized") Неверный логин или пароль
           .flex.items-center.gap-x-11px
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")
             .flex.non-italic.font-medium.base Запомнить меня
@@ -43,7 +52,9 @@ export default {
       hidePassword: hidePasswordIcon,
       loginBackground,
       logoMark,
+      authorized: true,
       user: { username: "", password: "" },
+      redColor: "var(--border-red-color)",
     };
   },
   computed: {
@@ -61,6 +72,7 @@ export default {
     changeView() {
       this.isView = !this.isView;
     },
+
     persist() {
       localStorage.username = this.user.username;
       localStorage.password = this.user.password;
@@ -72,10 +84,20 @@ export default {
         body: JSON.stringify(this.user),
       };
       fetch("http://45.84.227.122:8080/auth/jwt/create/", requestOptions)
-        .then((result) => result.json())
+        .then((result) => {
+          if (result.status === 200) {
+            return result.json();
+          } else {
+            return (this.authorized = false);
+          }
+        })
         .then((token) => {
-          localStorage.setItem("tokenAccess", token.access);
-          this.$router.push("/");
+          if (token) {
+            localStorage.setItem("tokenAccess", token.access);
+            this.$router.push("/");
+          } else {
+            this.$router.push("/login");
+          }
         });
     },
   },
