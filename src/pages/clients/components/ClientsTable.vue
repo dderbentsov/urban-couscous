@@ -17,6 +17,7 @@
 </template>
 
 <script>
+import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
@@ -52,7 +53,7 @@ export default {
     },
     fetchDataClients() {
       // eslint-disable-next-line
-      fetch("http://45.84.227.122:8080/general/person/").then((res) => res.json()).then((data) => this.saveDataClients(data))
+      fetchWrapper.get("general/person/").then((data) => this.saveDataClients(data))
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {

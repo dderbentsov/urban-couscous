@@ -72,7 +72,7 @@ export default {
           }
           return elem.match(reg);
         });
-        filteredList.length === 0 ? this.closeSelect() : this.openSelect();
+        if (filteredList.length === 0) this.closeSelect();
         return filteredList;
       }
       return this.listData;
@@ -100,7 +100,7 @@ export default {
   border-radius: 4px
   width: fit-content
   color: var(--font-dark-blue-color)
-  background-color: var(--bg-ligth-blue-color)
+  background-color: var(--default-white)
   &.border
     background-color: var(--default-white)
     border: 2px solid var(--border-light-grey-color)

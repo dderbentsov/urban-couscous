@@ -17,32 +17,19 @@
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Основная информация
       .flex.gap-x-4.items-center
-        .icon-time.text-xl.icon
         .flex.gap-x-2.items-center
-          .time-input.flex.px-4.py-2.items-center
-            input.item-input.text-base.cursor-text(
-              v-model="startTime"
-              placeholder ="11:00"
-            )
-          span —
-          .time-input.flex.px-4.py-2.items-center
-            input.item-input.text-base.cursor-text(
-              v-model="endTime"
-              placeholder ="12:30"
-            )
-      .flex.items-center.ml-10
+          base-input-date(v-model:value="eventDate")
+      .flex.items-center
         .flex.gap-x-2.items-center
-          .date-input.flex.px-4.py-2.items-center
-            input.item-input.text-base.cursor-text(
-              v-model="startDate"
-              placeholder ="2022-10-01"
-            )
+          base-input-time.item-input.text-base.cursor-text(
+            v-model:value="startTime",
+            :width-input="72"
+          )
           span —
-          .date-input.flex.px-4.py-2.items-center
-            input.item-input.text-base.cursor-text(
-              v-model="endDate"
-              placeholder ="2022-10-01"
-            )
+          base-input-time.item-input.text-base.cursor-text(
+            v-model:value="endTime",
+            :width-input="72"
+          )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
         base-select(
@@ -71,22 +58,24 @@
       .flex.gap-x-4.items-center
         span.text-xs.opacity-40.font-bold.leading-3 Контакты
         base-button(
-        left-icon="icon-plus"
-        rounded secondary
-        :size="24"
-        :icon-left-size="10"
-        id="addContact"
-        @click="(e)=>addContact(e)")
+          left-icon="icon-plus"
+          rounded secondary
+          :size="24"
+          :icon-left-size="10"
+          id="addContact"
+          @click="(e)=>addContact(e)"
+        )
       .flex.gap-x-4.items-center(
         v-for="(contact, index) in listContacts"
         :key="index"
       )
         .icon-mail.text-xl.icon
-        .form-item.cursor-pointer.flex.gap-x-2.px-4.py-2.items-center
-          input.item-input.cursor-text.text-base(
+        .form-item.flex.gap-x-2.items-center
+          base-input(
+            border-none
             v-model="contacts"
-            type="text"
             placeholder="E-mail"
+            :width-input="72"
           )
     base-button.styled-button.text-base.font-semibold(
       :size="40"
@@ -97,10 +86,20 @@
 
 <script>
 import BaseSelect from "@/components/base/OldBaseSelect";
+import BaseInputTime from "@/components/base/BaseInputTime.vue";
+import BaseInput from "@/components/base/BaseInput.vue";
+import BaseInputDate from "@/components/base/BaseInputDate.vue";
 import BaseButton from "@/components/base/BaseButton";
+import * as moment from "moment/moment";
 export default {
   name: "FormChangeEvent",
-  components: { BaseSelect, BaseButton },
+  components: {
+    BaseSelect,
+    BaseButton,
+    BaseInput,
+    BaseInputDate,
+    BaseInputTime,
+  },
   props: {
     closeForm: Function,
     ownersData: {
@@ -127,22 +126,17 @@ export default {
       listContacts: [1],
       memberSelectSize: 29,
       kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
+      EMPLOYEE_TYPE: "owner",
       eventData: {},
-      members: {
-        member: null,
-        role: null,
-      },
       contacts: [],
       startTime: "",
       endTime: "",
-      employees: {
-        employee: null,
-        role: "owner",
-      },
-      startDate: "",
-      endDate: "",
+      members: {},
+      employees: {},
+      eventDate: "",
       kind: "",
       id: null,
+      ifClearedForm: true,
     };
   },
   computed: {
@@ -180,30 +174,17 @@ export default {
       return "";
     },
     memberName() {
-      if (this.members.member) {
-        return this.trimMemberName(this.members.member);
-      }
-      return "";
-    },
-    eventStartTime() {
-      if (this.startTime && this.startDate) {
-        return this.addDate(this.startDate, this.startTime);
-      }
-      return "";
-    },
-    eventEndTime() {
-      if (this.endTime && this.endDate) {
-        return this.addDate(this.endDate, this.endTime);
+      if (this.members.person) {
+        return this.trimMemberName(this.members.person);
       }
       return "";
     },
     disabledButton() {
       if (
-        this.eventStartTime &&
-        this.eventEndTime &&
-        this.employees.employee &&
-        this.members.member &&
-        this.kind
+        (this.eventDate,
+        this.startTime,
+        this.endTime,
+        this.employees.employee && this.members.person && this.kind)
       ) {
         return false;
       }
@@ -220,6 +201,16 @@ export default {
         return this.kind.split(" ").join("").length;
       }
       return 10;
+    },
+    startDate() {
+      return this.selectedEventData.start
+        ? moment.parseZone(this.selectedEventData.start)
+        : moment();
+    },
+    endDate() {
+      return this.selectedEventData.end
+        ? moment.parseZone(this.selectedEventData.end)
+        : moment();
     },
   },
   methods: {
@@ -241,7 +232,7 @@ export default {
       let foundMember = this.membersData.find(
         (elem) => elem.id === e.target.id
       );
-      this.members.member = {
+      this.members.person = {
         id: foundMember.id,
         last_name: foundMember.last_name,
         first_name: foundMember.first_name,
@@ -264,7 +255,7 @@ export default {
     addMember(memberName) {
       let memberData = memberName.split(" ");
       if (memberData.length === 3) {
-        this.members.member = {
+        this.members.person = {
           id: null,
           last_name: memberData[0],
           first_name: memberData[1],
@@ -275,39 +266,56 @@ export default {
     sendEventData() {
       this.eventData = {
         id: this.id,
-        start: this.addDate(this.startTime, this.startDate),
-        end: this.addDate(this.endTime, this.endDate),
+        start: this.mergeDate(this.eventDate, this.startTime),
+        end: this.mergeDate(this.eventDate, this.endTime),
         kind: this.kind,
         employees: [this.employees],
         members: [this.members],
       };
       this.closeForm();
+      this.eventData = {};
     },
-    addDate(time, data) {
-      return `${data}T${time}:00Z`;
-    },
-    trimTime(str) {
-      return str.slice(11, -4);
-    },
-    trimDate(str) {
-      return str.slice(0, 12);
+    mergeDate(eventDate, time) {
+      return moment(`${eventDate} ${time}`).format();
     },
   },
-  mounted() {
-    this.id = this.selectedEventData.id || null;
-    this.startTime = this.trimTime(this.selectedEventData.start) || "";
-    this.endTime = this.trimTime(this.selectedEventData.end) || "";
-    this.kind = this.selectedEventData.kind || "";
-    this.employees = this.selectedEventData.employees[0] || {
-      employee: null,
-      role: "owner",
-    };
-    this.members = this.selectedEventData.members[0] || {
-      member: null,
-      role: null,
-    };
-    this.startDate = this.trimDate(this.selectedEventData.start);
-    this.endDate = this.trimDate(this.selectedEventData.end);
+  watch: {
+    startDate: {
+      immediate: true,
+      handler(newDate) {
+        if (newDate) {
+          this.eventDate = newDate.format("YYYY-MM-DD");
+          this.startTime = newDate.format("HH:mm");
+        }
+      },
+    },
+    endDate: {
+      immediate: true,
+      handler(newDate) {
+        if (newDate) {
+          this.endTime = newDate.format("HH:mm");
+        }
+      },
+    },
+    selectedEventData: {
+      immediate: true,
+      handler(newDate) {
+        if (newDate) {
+          this.id = this.selectedEventData.id || null;
+          this.kind = this.selectedEventData.kind || "";
+          this.employees = this.selectedEventData.employees[0] || {
+            id: null,
+            employee: null,
+            role: this.EMPLOYEE_TYPE,
+          };
+          this.members = this.selectedEventData.members[0] || {
+            id: null,
+            person: null,
+            role: this.EMPLOYEE_TYPE,
+          };
+        }
+      },
+    },
   },
 };
 </script>
@@ -316,7 +324,7 @@ export default {
 .event-form
   height: fit-content
   min-width: 448px
-  background-color: var(--default-white)
+  background-color: var(--bg-ligth-blue-color)
   box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
   border-radius: 4px
   z-index: 5
@@ -324,14 +332,13 @@ export default {
 .form-item
   border-radius: 4px
   width: 344px
-  background-color: var(--bg-ligth-blue-color)
+  background-color: var(--default-white)
 
 .item-input
   appearance: none
   border: none
   outline: none
-  color: var(--font-black-color)
-  background-color: var(--font-black-color-0)
+  height: 40px
   &::-webkit-calendar-picker-indicator
     display: none
     -webkit-appearance: none
@@ -341,12 +348,12 @@ export default {
 .time-input
   width: 72px
   border-radius: 4px
-  background-color: var(--bg-ligth-blue-color)
+  background-color: var(--default-white)
 
 .date-input
-  width: 120px
+  width: 174px
   border-radius: 4px
-  background-color: var(--bg-ligth-blue-color)
+  background-color: var(--default-white)
 
 .icon
   width: 24px
