@@ -120,10 +120,12 @@ export default {
         employees: {
           employee: null,
           role: "owner",
+          id: null,
         },
         members: {
-          member: null,
+          person: null,
           role: null,
+          id: null,
         },
       },
     };
