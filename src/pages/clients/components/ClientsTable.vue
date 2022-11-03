@@ -22,7 +22,6 @@ import ClientsTableHeader from "@/pages/clients/components/ClientsTableHeader";
 import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
-import { fetchWrapper } from "@/shared/fetchWrapper";
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "ClientsTable",
