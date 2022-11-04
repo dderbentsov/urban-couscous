@@ -3,7 +3,7 @@
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.text-xs.opacity-40.font-bold.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
+        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="clearForm")
       base-select(
         id="owners"
         :size-input="ownerSelectSize"
@@ -272,8 +272,12 @@ export default {
         employees: [this.employees],
         members: [this.members],
       };
-      this.closeForm();
+      this.clearForm();
       this.eventData = {};
+    },
+    clearForm() {
+      this.$emit("clear-selected-event-data");
+      this.closeForm();
     },
     mergeDate(eventDate, time) {
       return moment(`${eventDate} ${time}`).format();

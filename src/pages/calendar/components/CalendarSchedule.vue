@@ -48,6 +48,7 @@
         :owners-data="ownersData"
         :members-data="membersData"
         :selected-event-data="selectedEvent"
+        @clear-selected-event-data="clearSelectedEvent"
       )
 </template>
 
@@ -321,6 +322,24 @@ export default {
     writeEventData(eventData) {
       this.selectedEvent = eventData;
       this.$emit("open-change-form");
+    },
+    clearSelectedEvent() {
+      this.selectedEvent = {
+        id: null,
+        start: "",
+        end: "",
+        kind: "",
+        employees: {
+          employee: null,
+          role: "owner",
+          id: null,
+        },
+        members: {
+          person: null,
+          role: null,
+          id: null,
+        },
+      };
     },
   },
   watch: {
