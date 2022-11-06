@@ -10,6 +10,7 @@
       @input="$emit('update:value', $event.target.value)"
       :placeholder="placeholder"
       :maxlength="maxLength"
+      :disabled="disabled"
     )
     .slot(v-if="withIcon", :class="iconPosition")
       slot.cursor-pointer
@@ -35,6 +36,7 @@ export default {
     },
     widthInput: Number,
     borderNone: Boolean,
+    disabled: Boolean,
   },
 };
 </script>
@@ -55,4 +57,6 @@ export default {
     opacity: 0
 .border-none
   border: none
+.input
+  background-color: inherit
 </style>
