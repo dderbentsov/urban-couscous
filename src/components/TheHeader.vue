@@ -15,7 +15,7 @@
         :icon-right-size="18",
         @click="isOpenCreate=true"
         )
-      button.header-buttons.flex.justify-center.items-center.mr-8.p-0
+      button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
         base-avatar.mr-2(:size="32")

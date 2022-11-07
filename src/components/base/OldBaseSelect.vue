@@ -38,7 +38,7 @@
 
 <script>
 export default {
-  name: "BaseSelect",
+  name: "OldBaseSelect",
   props: {
     id: String,
     styleBorder: {

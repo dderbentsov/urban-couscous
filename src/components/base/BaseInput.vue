@@ -10,6 +10,7 @@
       @input="$emit('update:value', $event.target.value)"
       :placeholder="placeholder"
       :maxlength="maxLength"
+      :disabled="disabled"
     )
     .slot(v-if="withIcon", :class="iconPosition")
       slot.cursor-pointer
@@ -35,6 +36,7 @@ export default {
     },
     widthInput: Number,
     borderNone: Boolean,
+    disabled: Boolean,
   },
 };
 </script>
@@ -48,11 +50,13 @@ export default {
   border: 2px solid var(--border-light-grey-color)
   border-radius: 4px
   background-color: var(--default-white)
-  color: var(--font-dark-blue-color)
+  color: var(--font-black-color)
 .date
   background: url("../../assets/icons/calendar-input.svg") no-repeat 100% 50%
   &::-webkit-calendar-picker-indicator
     opacity: 0
 .border-none
   border: none
+.input
+  background-color: inherit
 </style>

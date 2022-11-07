@@ -3,16 +3,21 @@
     .flex.flex-col.gap-y-2
       .flex.justify-between.pt-2
         span.text-xs.opacity-40.font-bold.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="closeForm")
-      base-select(
-        id="owners"
-        :size-input="ownerSelectSize"
-        :option-data="ownerName"
-        :list-data="ownersList"
-        :choose-option="chooseOptionOwner"
-        placeholder="Выберите ответственного"
+        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="clearForm")
+      base-select.select(
+        v-if="!selectedEventData.employees",
+        :items="ownersList",
+        v-model="employees.employee",
+        placeholder="Выберите ответственного",
         separator
-        disabled
+        border-none
+      )  
+      base-input(
+        v-else,
+        v-model:value="employeeName",
+        :width-input="72",
+        disabled,
+        border-none
       )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Основная информация
@@ -32,27 +37,30 @@
           )
       .flex.gap-x-4.items-center
         .icon-person.text-xl.icon
-        base-select(
-          id="members"
-          :size-input="memberSelectSize"
-          :list-data="membersList"
-          :optionData="memberName"
-          :choose-option="chooseOptionMember"
-          @changeInput="addMember"
-          placeholder="Выберите участника"
+        base-select.select(
+          v-if="!selectedEventData.members",
+          :items="membersList",
+          v-model="members.person",
+          placeholder="Выберите ответственного",
           separator
+          border-none
         )
+        base-input(
+          v-else,
+          v-model:value="memberName",
+          disabled,
+          :width-input="346"
+          border-none
+       )
     .flex.flex-col.gap-y-2
       span.text-xs.opacity-40.font-bold.leading-3 Вид события
-      base-select(
-        id="kind"
-        :size-input="kindEventSelectSize"
-        :option-data="kind"
-        :list-data="kindEvents"
-        :choose-option="chooseOptionTypeEvent"
+      base-select.select(
+        v-model="kind"
+        :items="kindEvents"
         placeholder="Вид события"
         separator
-        disabled
+        border-none
+        :style="kindSelectWidth"
       )
     .flex.flex-col.gap-y-2
       .flex.gap-x-4.items-center
@@ -77,18 +85,26 @@
             placeholder="E-mail"
             :width-input="72"
           )
-    base-button.styled-button.text-base.font-semibold(
-      :size="40"
-      :disabled="disabledButton"
+    base-button.create-button.text-base.font-semibold(
+      v-if="!selectedEventData.id",
+      :size="40",
+      :disabled="disabledCreateButton",
       @click="sendEventData"
     ) Создать событие
+    base-button.update-button.text-base.font-semibold(
+      v-else,
+      :size="40",
+      :disabled="disabledUpdateButton",
+      @click="updateEventData",
+    ) Сохранить
 </template>
 
 <script>
-import BaseSelect from "@/components/base/OldBaseSelect";
+import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import BaseInputTime from "@/components/base/BaseInputTime.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseInputDate from "@/components/base/BaseInputDate.vue";
+import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseButton from "@/components/base/BaseButton";
 import * as moment from "moment/moment";
 export default {
@@ -124,9 +140,26 @@ export default {
   data() {
     return {
       listContacts: [1],
-      memberSelectSize: 29,
-      kindEvents: ["Встреча", "Планерка", "Интервью", "Важная работа"],
+      kindEvents: [
+        {
+          id: 1,
+          label: "Встреча",
+        },
+        {
+          id: 2,
+          label: "Планерка",
+        },
+        {
+          id: 3,
+          label: "Интервью",
+        },
+        {
+          id: 4,
+          label: "Важная работа",
+        },
+      ],
       EMPLOYEE_TYPE: "owner",
+      MEMBER_TYPE: "primary",
       eventData: {},
       contacts: [],
       startTime: "",
@@ -146,7 +179,11 @@ export default {
         this.ownersData.forEach((elem) => {
           filteredArray.push({
             id: elem.id,
-            name: this.trimOwnerName(elem),
+            label: this.trimOwnerName(
+              elem.last_name,
+              elem.first_name,
+              elem.patronymic
+            ),
           });
         });
         return filteredArray;
@@ -159,7 +196,11 @@ export default {
         this.membersData.forEach((elem) => {
           filteredArray.push({
             id: elem.id,
-            name: this.trimMemberName(elem),
+            label: this.trimMemberName(
+              elem.last_name,
+              elem.first_name,
+              elem.patronymic
+            ),
             contacts: elem.contacts,
           });
         });
@@ -167,40 +208,58 @@ export default {
       }
       return [];
     },
-    ownerName() {
-      if (this.employees.employee) {
-        return this.trimOwnerName(this.employees.employee);
-      }
-      return "";
-    },
     memberName() {
-      if (this.members.person) {
-        return this.trimMemberName(this.members.person);
+      if (this.selectedEventData.members) {
+        let foundMember = {};
+        if (this.selectedEventData.members.length > 1) {
+          foundMember = this.selectedEventData.members.find(
+            ({ role }) => role === this.MEMBER_TYPE
+          );
+        } else foundMember = this.selectedEventData.members[0];
+        let {
+          person: { last_name, first_name, patronymic },
+        } = foundMember;
+        return this.trimMemberName(last_name, first_name, patronymic);
       }
       return "";
     },
-    disabledButton() {
+    employeeName() {
+      if (this.selectedEventData.employees) {
+        let foundEmployee = this.selectedEventData.employees.find(
+          ({ role }) => role === this.EMPLOYEE_TYPE
+        );
+        let {
+          employee: { last_name, first_name, patronymic },
+        } = foundEmployee;
+        return this.trimOwnerName(last_name, first_name, patronymic);
+      }
+      return "";
+    },
+    disabledCreateButton() {
       if (
-        (this.eventDate,
-        this.startTime,
-        this.endTime,
-        this.employees.employee && this.members.person && this.kind)
+        this.eventDate &&
+        this.startTime &&
+        this.endTime &&
+        this.members.person &&
+        this.employees.employee &&
+        this.kind
       ) {
         return false;
       }
       return true;
     },
-    ownerSelectSize() {
-      if (this.ownerName) {
-        return this.ownerName.split(" ").join("").length;
+    disabledUpdateButton() {
+      let start = moment.parseZone(this.selectedEventData.start);
+      let end = moment.parseZone(this.selectedEventData.end);
+      if (
+        this.eventDate === start.format("YYYY-MM-DD") &&
+        this.startTime === start.format("HH:mm") &&
+        this.endTime === end.format("HH:mm") &&
+        this.kind === this.selectedEventData.kind
+      ) {
+        return true;
       }
-      return 22;
-    },
-    kindEventSelectSize() {
-      if (this.kind) {
-        return this.kind.split(" ").join("").length;
-      }
-      return 10;
+      return false;
     },
     startDate() {
       return this.selectedEventData.start
@@ -212,33 +271,36 @@ export default {
         ? moment.parseZone(this.selectedEventData.end)
         : moment();
     },
+    eventEmployee() {
+      if (this.selectedEventData.employees) {
+        return this.selectedEventData.employees;
+      }
+      return {
+        employee: null,
+        role: this.EMPLOYEE_TYPE,
+      };
+    },
+    eventMember() {
+      return this.selectedEventData.members
+        ? this.selectedEventData.members
+        : {
+            person: null,
+            role: this.MEMBER_TYPE,
+          };
+    },
+    eventKind() {
+      return this.selectedEventData.kind ? this.selectedEventData.kind : "";
+    },
+    eventId() {
+      return this.selectedEventData.id ? this.selectedEventData.id : "";
+    },
+    kindSelectWidth() {
+      return {
+        width: this.kind ? `${this.kind.length * 9 + 86}px` : "180px",
+      };
+    },
   },
   methods: {
-    chooseOptionOwner(e) {
-      let foundEmployee = this.ownersData.find(
-        (elem) => elem.id === e.target.id
-      );
-      this.employees.employee = {
-        id: foundEmployee.id,
-        last_name: foundEmployee.last_name,
-        first_name: foundEmployee.first_name,
-        patronymic: foundEmployee.patronymic,
-      };
-    },
-    chooseOptionTypeEvent(e) {
-      this.kind = e.target.id;
-    },
-    chooseOptionMember(e) {
-      let foundMember = this.membersData.find(
-        (elem) => elem.id === e.target.id
-      );
-      this.members.person = {
-        id: foundMember.id,
-        last_name: foundMember.last_name,
-        first_name: foundMember.first_name,
-        patronymic: foundMember.patronymic,
-      };
-    },
     addContact(e) {
       if (e.currentTarget.id === "addContact") {
         this.listContacts.push(
@@ -246,37 +308,74 @@ export default {
         );
       }
     },
-    trimOwnerName(obj) {
-      return `${obj.last_name} ${obj.first_name[0]}.${obj.patronymic[0]}.`;
+    trimOwnerName(lastName, firsName, patronymic) {
+      return `${lastName} ${firsName[0]}.${patronymic[0]}.`;
     },
-    trimMemberName(obj) {
-      return `${obj.last_name} ${obj.first_name} ${obj.patronymic}`;
-    },
-    addMember(memberName) {
-      let memberData = memberName.split(" ");
-      if (memberData.length === 3) {
-        this.members.person = {
-          id: null,
-          last_name: memberData[0],
-          first_name: memberData[1],
-          patronymic: memberData[2],
-        };
-      }
+    trimMemberName(lastName, firsName, patronymic) {
+      return `${lastName} ${firsName} ${patronymic}`;
     },
     sendEventData() {
       this.eventData = {
-        id: this.id,
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
         kind: this.kind,
-        employees: [this.employees],
-        members: [this.members],
+        employees: this.findPerson(
+          this.ownersData,
+          this.ownersList,
+          this.employees,
+          "employee"
+        ),
+        members: this.findPerson(
+          this.membersData,
+          this.membersList,
+          this.members,
+          "person"
+        ),
       };
-      this.closeForm();
+      this.postCreateEvent(this.eventData);
+      this.clearForm();
       this.eventData = {};
     },
+    updateEventData() {
+      this.eventData = {
+        start: this.mergeDate(this.eventDate, this.startTime),
+        end: this.mergeDate(this.eventDate, this.endTime),
+        kind: this.kind,
+      };
+      this.postUpdateEvent(this.id, this.eventData);
+      this.clearForm();
+      this.eventData = {};
+    },
+    clearForm() {
+      this.$emit("clear-selected-event-data");
+      this.closeForm();
+    },
     mergeDate(eventDate, time) {
-      return moment(`${eventDate} ${time}`).format();
+      return moment(`${eventDate} ${time}`).format("YYYY-MM-DDTHH:mm:ss");
+    },
+    findPerson(requestedList, serializedList, object, field) {
+      let foundId = serializedList.find(
+        ({ label }) => label === object[field]
+      ).id;
+      let foundPerson = requestedList.find(({ id }) => id === foundId);
+      return {
+        [field]: {
+          id: foundPerson.id,
+          last_name: foundPerson.last_name,
+          first_name: foundPerson.first_name,
+          patronymic: foundPerson.patronymic,
+          color: foundPerson.color,
+        },
+        role: object.role,
+      };
+    },
+    postCreateEvent(event) {
+      fetchWrapper.post("registry/event/create/", event);
+    },
+    postUpdateEvent(id, event) {
+      fetchWrapper
+        .post(`registry/event/${id}/update/`, event)
+        .then(this.$emit("update-events"));
     },
   },
   watch: {
@@ -301,18 +400,10 @@ export default {
       immediate: true,
       handler(newDate) {
         if (newDate) {
-          this.id = this.selectedEventData.id || null;
-          this.kind = this.selectedEventData.kind || "";
-          this.employees = this.selectedEventData.employees[0] || {
-            id: null,
-            employee: null,
-            role: this.EMPLOYEE_TYPE,
-          };
-          this.members = this.selectedEventData.members[0] || {
-            id: null,
-            person: null,
-            role: this.EMPLOYEE_TYPE,
-          };
+          this.id = this.eventId;
+          this.kind = this.eventKind;
+          this.employees = this.eventEmployee;
+          this.members = this.eventMember;
         }
       },
     },
@@ -364,6 +455,10 @@ export default {
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)
-.styled-button
+.create-button
   width: 183px
+.select
+  height: 40px
+.update-button
+  width: 132px
 </style>

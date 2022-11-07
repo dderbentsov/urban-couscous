@@ -48,6 +48,8 @@
         :owners-data="ownersData"
         :members-data="membersData"
         :selected-event-data="selectedEvent"
+        @clear-selected-event-data="clearSelectedEvent"
+        @update-events="transmitUpdateEvents"
       )
 </template>
 
@@ -112,22 +114,7 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
-      selectedEvent: {
-        id: null,
-        start: "",
-        end: "",
-        kind: "",
-        employees: {
-          employee: null,
-          role: "owner",
-          id: null,
-        },
-        members: {
-          person: null,
-          role: null,
-          id: null,
-        },
-      },
+      selectedEvent: {},
     };
   },
   computed: {
@@ -321,6 +308,12 @@ export default {
     writeEventData(eventData) {
       this.selectedEvent = eventData;
       this.$emit("open-change-form");
+    },
+    clearSelectedEvent() {
+      this.selectedEvent = {};
+    },
+    transmitUpdateEvents() {
+      this.$emit("update-events");
     },
   },
   watch: {

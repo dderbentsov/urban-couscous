@@ -1,7 +1,9 @@
 <template lang="pug">
-  .base-select(@click="open = !open", :class="{'open': open }")
-    .placeholder.text-base {{ value || placeholder }}
-    span.icon-down-arrow.open-icon(:class="{'open': open }")
+  .base-select(@click="open = !open", :class="{'open': open, 'border-none': borderNone}")
+    .placeholder.text-base(:class="{'value-color': value}") {{ value || placeholder }}
+    .flex.items-center
+      .select-form-separator.cursor-pointer.mr-4(v-if="separator")
+      span.icon-down-arrow.open-icon(:class="{'open': open }")
     base-menu(v-if="open")
       .items-container(@click="open = false", @mouseleave="leaveSelect")
         .item(v-for="item in items", :key="item.id" @click="clickItem(item.label)") {{ item.label }}
@@ -19,6 +21,8 @@ export default {
       type: Array,
       default: () => [],
     },
+    borderNone: Boolean,
+    separator: Boolean,
   },
   emits: ["update:modelValue"],
   data() {
@@ -86,4 +90,18 @@ export default {
   display: flex
   &.open
     transform: rotate(180deg)
+.separator
+  background-color: var(--btn-blue-color-3)
+  height: 24px
+  width: 1px
+  border-radius: 1px
+.border-none
+  border: none
+.value-color
+  opacity: 1
+.select-form-separator
+  background-color: var(--btn-blue-color-3)
+  height: 24px
+  width: 1px
+  border-radius: 1px
 </style>

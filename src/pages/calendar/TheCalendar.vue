@@ -18,6 +18,7 @@
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
       @open-change-form="openFormCreateEvent"
+      @update-events="fetchEventsData"
     )
 </template>
 
@@ -68,16 +69,18 @@ export default {
     saveMembersData(res) {
       this.membersData = res.results;
     },
-    fetchEventsData() {
-      fetchWrapper
-        .get("registry/event/")
-        .then((res) => this.saveEventsData(res));
+    fetchPersonsData() {
       fetchWrapper
         .get("general/employee/")
         .then((res) => this.saveEmployeesData(res));
       fetchWrapper
         .get("general/person/")
         .then((res) => this.saveMembersData(res));
+    },
+    fetchEventsData() {
+      fetchWrapper
+        .get("registry/event/")
+        .then((res) => this.saveEventsData(res));
     },
     changeWidth(value) {
       this.sidebarWidth = value;
@@ -90,6 +93,7 @@ export default {
     },
   },
   mounted() {
+    this.fetchPersonsData();
     this.fetchEventsData();
   },
 };
