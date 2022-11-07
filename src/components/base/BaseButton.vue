@@ -15,7 +15,7 @@
       span.icon-container(
         :class="rightIcon",
         v-if="rightIcon"
-        :style="{fontSize: iconRightSize + 'px'}"
+        :style="{fontSize: iconRightSize + 'px', marginLeft: marginLeftIcon + 'px'}"
         )
 </template>
 
@@ -49,6 +49,10 @@ export default {
     size: {
       type: Number,
       default: 24,
+    },
+    marginLeftIcon: {
+      type: Number,
+      default: 0,
     },
   },
 };

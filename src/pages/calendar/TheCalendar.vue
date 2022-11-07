@@ -4,6 +4,7 @@
       @width="changeWidth"
       :team-data="employeesData"
       :open-form-create="openFormCreateEvent"
+      :event-type="eventType"
     )
     calendar-schedule(
       :owners-data="employeesData"
@@ -48,6 +49,12 @@ export default {
       employeesData: [],
       isOpenForm: false,
       membersData: [],
+      eventType: [
+        { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
+        { id: 2, label: "Планерка", color: "var(--bg-event-red-color)" },
+        { id: 3, label: "Интервью", color: "var(--bg-event-yellow-color)" },
+        { id: 4, label: "Важная работа", color: "var(--bg-event-blue-color)" },
+      ],
     };
   },
   methods: {
