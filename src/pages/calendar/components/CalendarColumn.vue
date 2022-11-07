@@ -17,6 +17,7 @@
         v-for="event in dayEvents"
         :key="event.id"
         :ownerEvent="event"
+        :event-types="eventTypes"
         :style="eventCardPosition(event.start, event.end)"
         @selected-event="transmitEventData"
       )
@@ -38,6 +39,7 @@ export default {
     dayEvents: Array,
     dayEndTime: Number,
     dayStartTime: Number,
+    eventTypes: Array,
   },
   data() {
     return {

@@ -4,7 +4,7 @@
       @width="changeWidth"
       :team-data="employeesData"
       :open-form-create="openFormCreateEvent"
-      :event-type="eventType"
+      :event-types="eventTypes"
     )
     calendar-schedule(
       :owners-data="employeesData"
@@ -15,6 +15,7 @@
       :sidebar-width="sidebarWidth"
       :close-form-create-event="closeFormCreateEvent"
       :is-open-form="isOpenForm"
+      :event-types="eventTypes"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -55,7 +56,7 @@ export default {
       employeesData: [],
       isOpenForm: false,
       membersData: [],
-      eventType: [
+      eventTypes: [
         { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
         { id: 2, label: "Планерка", color: "var(--bg-event-red-color)" },
         { id: 3, label: "Интервью", color: "var(--bg-event-yellow-color)" },

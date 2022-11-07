@@ -114,6 +114,12 @@ export default {
         return {};
       },
     },
+    eventTypes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
