@@ -1,9 +1,9 @@
 <template lang="pug">
-  .flex.box-border.container.items-center.cursor-pointer.relative.py-10px.px-4.justify-between(
+  .flex.box-border.container.items-center.cursor-pointer.relative(
     @click="changeSelect"
-    :class="{border: styleBorder }"
+    :class="{border: styleBorder, 'py-2.5 px-4':!forNetworks, 'justify-center':forNetworks, 'justify-between':!forNetworks}"
     )
-    .flex.mr-2
+    .flex.mr-2(v-if="!forNetworks")
       input.text-base.select.cursor-pointer(
           :size="sizeInput"
           v-model="optionData"
@@ -20,9 +20,20 @@
           @click="(e) => chooseOption(e)"
           :key="data.id || data"
           :id="data.id || data"
-          ) {{data.label || data}}
+          ) {{data.name || data}}
+    .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData, 'px-2.5'")
+      .absolute.options.top-11.left-0(
+        v-show="isSelectOpen"
+        :id="id")
+        .flex.option.justify-center.py-1.text-xl(
+          v-for="data in listData"
+          @click="(e) => chooseOption(e)"
+          :key="data.network"
+          :id="data.network"
+          :class="data.icon"
+          )
     .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
-    .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(:class="{ open: isSelectOpen}")
+    .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(v-if="!forNetworks" :class="{ open: isSelectOpen}")
 </template>
 
 <script>
@@ -37,6 +48,7 @@ export default {
     optionData: String,
     listData: Array,
     chooseOption: Function,
+    forNetworks: Boolean,
     placeholder: {
       type: String,
       default: "",
@@ -55,8 +67,8 @@ export default {
         let filteredList = [];
         filteredList = this.listData.filter((elem) => {
           let reg = new RegExp(`${this.optionData}`, "img");
-          if (elem.label) {
-            return elem.lebel.match(reg);
+          if (elem.name) {
+            return elem.name.match(reg);
           }
           return elem.match(reg);
         });
