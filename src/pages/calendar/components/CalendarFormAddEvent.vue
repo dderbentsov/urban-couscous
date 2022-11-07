@@ -13,7 +13,7 @@
         border-none
       )  
       base-input(
-        v-if="selectedEventData.employees",
+        v-else,
         v-model:value="employeeName",
         :width-input="72",
         disabled,
@@ -46,7 +46,7 @@
           border-none
         )
         base-input(
-          v-if="selectedEventData.members",
+          v-else,
           v-model:value="memberName",
           disabled,
           :width-input="346"
@@ -85,14 +85,22 @@
             placeholder="E-mail"
             :width-input="72"
           )
-    base-button.styled-button.text-base.font-semibold(
-      :size="40"
-      :disabled="disabledButton"
+    base-button.create-button.text-base.font-semibold(
+      v-if="!selectedEventData.id",
+      :size="40",
+      :disabled="disabledCreateButton",
       @click="sendEventData"
     ) Создать событие
+    base-button.update-button.text-base.font-semibold(
+      v-else,
+      :size="40",
+      :disabled="disabledUpdateButton",
+      @click="updateEventData",
+    ) Сохранить
 </template>
 
 <script>
+import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import BaseInputTime from "@/components/base/BaseInputTime.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseInputDate from "@/components/base/BaseInputDate.vue";
@@ -196,7 +204,6 @@ export default {
             contacts: elem.contacts,
           });
         });
-        console.log(filteredArray);
         return filteredArray;
       }
       return [];
@@ -228,18 +235,31 @@ export default {
       }
       return "";
     },
-    disabledButton() {
+    disabledCreateButton() {
       if (
         this.eventDate &&
         this.startTime &&
         this.endTime &&
-        this.members &&
-        this.employees &&
+        this.members.person &&
+        this.employees.employee &&
         this.kind
       ) {
         return false;
       }
       return true;
+    },
+    disabledUpdateButton() {
+      let start = moment.parseZone(this.selectedEventData.start);
+      let end = moment.parseZone(this.selectedEventData.end);
+      if (
+        this.eventDate === start.format("YYYY-MM-DD") &&
+        this.startTime === start.format("HH:mm") &&
+        this.endTime === end.format("HH:mm") &&
+        this.kind === this.selectedEventData.kind
+      ) {
+        return true;
+      }
+      return false;
     },
     startDate() {
       return this.selectedEventData.start
@@ -256,10 +276,17 @@ export default {
         return this.selectedEventData.employees;
       }
       return {
-        id: null,
         employee: null,
         role: this.EMPLOYEE_TYPE,
       };
+    },
+    eventMember() {
+      return this.selectedEventData.members
+        ? this.selectedEventData.members
+        : {
+            person: null,
+            role: this.MEMBER_TYPE,
+          };
     },
     eventKind() {
       return this.selectedEventData.kind ? this.selectedEventData.kind : "";
@@ -267,18 +294,9 @@ export default {
     eventId() {
       return this.selectedEventData.id ? this.selectedEventData.id : "";
     },
-    eventMember() {
-      return this.selectedEventData.members
-        ? this.selectedEventData.members
-        : {
-            id: null,
-            person: null,
-            role: this.MEMBER_TYPE,
-          };
-    },
     kindSelectWidth() {
       return {
-        width: this.kind ? `${this.kind.length * 9 + 65}px` : "164px",
+        width: this.kind ? `${this.kind.length * 9 + 86}px` : "180px",
       };
     },
   },
@@ -298,25 +316,33 @@ export default {
     },
     sendEventData() {
       this.eventData = {
-        id: this.id,
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
         kind: this.kind,
-        employees: this.selectedEventData.employees
-          ? this.employees
-          : this.findEmployee(
-              this.ownersData,
-              this.ownersList,
-              this.employees.employee
-            ),
-        members: this.selectedEventData.members
-          ? this.members
-          : this.findMember(
-              this.membersData,
-              this.membersList,
-              this.members.person
-            ),
+        employees: this.findPerson(
+          this.ownersData,
+          this.ownersList,
+          this.employees,
+          "employee"
+        ),
+        members: this.findPerson(
+          this.membersData,
+          this.membersList,
+          this.members,
+          "person"
+        ),
       };
+      this.postCreateEvent(this.eventData);
+      this.clearForm();
+      this.eventData = {};
+    },
+    updateEventData() {
+      this.eventData = {
+        start: this.mergeDate(this.eventDate, this.startTime),
+        end: this.mergeDate(this.eventDate, this.endTime),
+        kind: this.kind,
+      };
+      this.postUpdateEvent(this.id, this.eventData);
       this.clearForm();
       this.eventData = {};
     },
@@ -325,37 +351,31 @@ export default {
       this.closeForm();
     },
     mergeDate(eventDate, time) {
-      return moment(`${eventDate} ${time}`).format();
+      return moment(`${eventDate} ${time}`).format("YYYY-MM-DDTHH:mm:ss");
     },
-    findEmployee(requestedList, serializedList, employee) {
-      let foundId = serializedList.find(({ label }) => label === employee).id;
+    findPerson(requestedList, serializedList, object, field) {
+      let foundId = serializedList.find(
+        ({ label }) => label === object[field]
+      ).id;
       let foundPerson = requestedList.find(({ id }) => id === foundId);
       return {
-        id: this.employees.id,
-        employee: {
+        [field]: {
           id: foundPerson.id,
           last_name: foundPerson.last_name,
           first_name: foundPerson.first_name,
           patronymic: foundPerson.patronymic,
           color: foundPerson.color,
         },
-        role: this.employees.role,
+        role: object.role,
       };
     },
-    findMember(requestedList, serializedList, member) {
-      let foundId = serializedList.find(({ label }) => label === member).id;
-      let foundPerson = requestedList.find(({ id }) => id === foundId);
-      return {
-        id: this.members.id,
-        person: {
-          id: foundPerson.id,
-          last_name: foundPerson.last_name,
-          first_name: foundPerson.first_name,
-          patronymic: foundPerson.patronymic,
-          color: foundPerson.color,
-        },
-        role: this.members.role,
-      };
+    postCreateEvent(event) {
+      fetchWrapper.post("registry/event/create/", event);
+    },
+    postUpdateEvent(id, event) {
+      fetchWrapper
+        .post(`registry/event/${id}/update/`, event)
+        .then(this.$emit("update-events"));
     },
   },
   watch: {
@@ -435,8 +455,10 @@ export default {
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)
-.styled-button
+.create-button
   width: 183px
 .select
   height: 40px
+.update-button
+  width: 132px
 </style>

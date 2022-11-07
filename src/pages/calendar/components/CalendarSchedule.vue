@@ -49,6 +49,7 @@
         :members-data="membersData"
         :selected-event-data="selectedEvent"
         @clear-selected-event-data="clearSelectedEvent"
+        @update-events="transmitUpdateEvents"
       )
 </template>
 
@@ -310,6 +311,9 @@ export default {
     },
     clearSelectedEvent() {
       this.selectedEvent = {};
+    },
+    transmitUpdateEvents() {
+      this.$emit("update-events");
     },
   },
   watch: {

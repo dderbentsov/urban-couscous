@@ -42,5 +42,5 @@ export default {
 .input-wrapper
   border-radius: 4px
   background-color: var(--default-white)
-  color: var(--font-dark-blue-color)
+  color: var(--font-black-color)
 </style>
