@@ -6,15 +6,12 @@
         base-select(:items="priorityList", placeholder="Приоритет клиента", v-model="basicInfo.priority")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
-          span.obligatory *
         base-input.input-info(v-model:value="basicInfo.birth_date" type="date" placeholder="00.00.0000" :width-input="277")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Номер телефона
-          span.obligatory *
         base-input.input-info(v-model:value="phone.username" placeholder="+7 (915) 644–92–23" :width-input="277")
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Email
-          span.obligatory *
         base-input.input-info(v-model:value="email.username" placeholder="user@yandex.ru" :width-input="277")
       .flex.flex-col.col-start-1.col-end-3.w-100(class="gap-y-1.5")
         span.text-sm Ссылки на соцсети
