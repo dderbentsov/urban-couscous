@@ -1,102 +1,75 @@
 <template lang="pug">
   .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
-    .flex.flex-col.gap-y-2
-      .flex.justify-between.pt-2
-        span.text-xs.opacity-40.font-bold.leading-3 Ответственный
-        .icon-cancel.close-icon.text-xs.cursor-pointer(@click="clearForm")
-      base-select.select(
-        v-if="!selectedEventData.employees",
-        :items="ownersList",
-        v-model="employees.employee",
-        placeholder="Выберите ответственного",
-        separator
-        border-none
-      )  
-      base-input(
-        v-else,
-        v-model:value="employeeName",
-        :width-input="72",
-        disabled,
-        border-none
-      )
-    .flex.flex-col.gap-y-2
-      span.text-xs.opacity-40.font-bold.leading-3 Основная информация
-      .flex.gap-x-4.items-center
-        .flex.gap-x-2.items-center
-          base-input-date(v-model:value="eventDate")
-      .flex.items-center
-        .flex.gap-x-2.items-center
-          base-input-time.item-input.text-base.cursor-text(
-            v-model:value="startTime",
-            :width-input="72"
-          )
-          span —
-          base-input-time.item-input.text-base.cursor-text(
-            v-model:value="endTime",
-            :width-input="72"
-          )
-      .flex.gap-x-4.items-center
-        .icon-person.text-xl.icon
+    .flex.justify-between
+      span.title.text-xl.font-bold Назначение события
+      .flex.pt-2
+        .icon-cancel.close-icon.tesxt-xs.cursor-pointer(@click="clearForm")
+    .flex.flex-col.gap-y-8
+      .flex.flex-col.gap-y-2
+        span.text-xs.opacity-40.font-bold.leading-3 Вид события
+        base-select.select(
+          v-model="kind"
+          :items="kindEvents"
+          placeholder="Вид события"
+          :style="{width: '570px'}"
+        )
+      .flex.flex-col(class="gap-y-1.5")
+        span.text-sm Сотрудник
+        base-select.select(
+          v-if="!selectedEventData.employees",
+          :items="ownersList",
+          v-model="employees.employee",
+          placeholder="Выберите сотрудника",
+          border-none
+        )  
+        base-input(
+          v-else,
+          v-model:value="employeeName",
+          :width-input="570",
+          disabled,
+          border-none
+        )
+      .flex.flex-col(class="gap-y-1.5")
+        span.text-sm Клиент
         base-select.select(
           v-if="!selectedEventData.members",
           :items="membersList",
           v-model="members.person",
-          placeholder="Выберите ответственного",
-          separator
-          border-none
-        )
+          placeholder="Выберите клиента",
+        )  
         base-input(
           v-else,
           v-model:value="memberName",
           disabled,
           :width-input="346"
           border-none
-       )
-    .flex.flex-col.gap-y-2
-      span.text-xs.opacity-40.font-bold.leading-3 Вид события
-      base-select.select(
-        v-model="kind"
-        :items="kindEvents"
-        placeholder="Вид события"
-        separator
-        border-none
-        :style="kindSelectWidth"
-      )
-    .flex.flex-col.gap-y-2
-      .flex.gap-x-4.items-center
-        span.text-xs.opacity-40.font-bold.leading-3 Контакты
-        base-button(
-          left-icon="icon-plus"
-          rounded secondary
-          :size="24"
-          :icon-left-size="10"
-          id="addContact"
-          @click="(e)=>addContact(e)"
         )
-      .flex.gap-x-4.items-center(
-        v-for="(contact, index) in listContacts"
-        :key="index"
-      )
-        .icon-mail.text-xl.icon
-        .form-item.flex.gap-x-2.items-center
-          base-input(
-            border-none
-            v-model="contacts"
-            placeholder="E-mail"
-            :width-input="72"
-          )
+    .flex.flex-col.gap-y-8
+      .flex.gap-x-4
+        .flex.gap-x-2
+          .flex.flex-col(class="gap-y-1.5")
+            span.text-xs.opacity-40.font-bold.leading-3 Дата
+            base-input-date.select(v-model:value="eventDate")
+        .flex.gap-x-2.items-center
+          .flex.flex-col(class="gap-y-1.5")
+            span.text-xs.opacity-40.font-bold.leading-3 Начало
+            base-input-time.item-input.text-base.cursor-text.select(
+              v-model:value="startTime",
+              :width-input="72"
+            )
+          span.mt-4 —
+          .flex.flex-col(class="gap-y-1.5")
+            span.text-xs.opacity-40.font-bold.leading-3 Конец
+            base-input-time.item-input.text-base.cursor-text.select(
+              v-model:value="endTime",
+              :width-input="72"
+            )
     base-button.create-button.text-base.font-semibold(
       v-if="!selectedEventData.id",
       :size="40",
       :disabled="disabledCreateButton",
       @click="sendEventData"
     ) Создать событие
-    base-button.update-button.text-base.font-semibold(
-      v-else,
-      :size="40",
-      :disabled="disabledUpdateButton",
-      @click="updateEventData",
-    ) Сохранить
 </template>
 
 <script>
@@ -139,7 +112,6 @@ export default {
   },
   data() {
     return {
-      listContacts: [1],
       kindEvents: [
         {
           id: 1,
@@ -161,7 +133,6 @@ export default {
       EMPLOYEE_TYPE: "owner",
       MEMBER_TYPE: "primary",
       eventData: {},
-      contacts: [],
       startTime: "",
       endTime: "",
       members: {},
@@ -201,7 +172,6 @@ export default {
               elem.first_name,
               elem.patronymic
             ),
-            contacts: elem.contacts,
           });
         });
         return filteredArray;
@@ -294,20 +264,8 @@ export default {
     eventId() {
       return this.selectedEventData.id ? this.selectedEventData.id : "";
     },
-    kindSelectWidth() {
-      return {
-        width: this.kind ? `${this.kind.length * 9 + 86}px` : "180px",
-      };
-    },
   },
   methods: {
-    addContact(e) {
-      if (e.currentTarget.id === "addContact") {
-        this.listContacts.push(
-          this.listContacts[this.listContacts.length - 1] + 1
-        );
-      }
-    },
     trimOwnerName(lastName, firsName, patronymic) {
       return `${lastName} ${firsName[0]}.${patronymic[0]}.`;
     },
@@ -418,9 +376,9 @@ export default {
 <style lang="sass" scoped>
 .event-form
   height: fit-content
-  min-width: 448px
-  background-color: var(--bg-ligth-blue-color)
-  box-shadow: -4px -4px 16px rgba(9, 10, 21, 0.25), 4px 4px 16px rgba(9, 10, 21, 0.25)
+  width: 634px
+  background-color: var(--default-white)
+  box-shadow: var(--default-shadow)
   border-radius: 4px
   z-index: 5
 
@@ -459,10 +417,15 @@ export default {
   color: var(--font-dark-blue-color)
   &:hover
     color: var(--btn-blue-color)
+
 .create-button
   width: 183px
+
 .select
   height: 40px
+  border: 2px solid var(--border-light-grey-color)
+  border-radius: 4px
+
 .update-button
   width: 132px
 </style>
