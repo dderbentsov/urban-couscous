@@ -72,7 +72,6 @@ export default {
     changeView() {
       this.isView = !this.isView;
     },
-
     persist() {
       localStorage.username = this.user.username;
       localStorage.password = this.user.password;
@@ -88,7 +87,11 @@ export default {
           if (result.status === 200) {
             return result.json();
           } else {
-            return (this.authorized = false);
+            this.authorized = false;
+            if (!this.authorized) {
+              this.user.username = "";
+              this.user.password = "";
+            }
           }
         })
         .then((token) => {
@@ -101,7 +104,6 @@ export default {
         });
     },
   },
-
   mounted() {
     if (localStorage.username) this.user.username = localStorage.username;
     if (localStorage.password) this.user.password = localStorage.password;
