@@ -12,19 +12,19 @@
           .flex.flex-col.gap-y-6px
             .flex.non-italic.font-semibold.text-xss Логин
             base-input.h-12.font-medium(
-            :style="{borderColor: !this.authorized ? this.redColor : ''}"
+            :style="{borderColor: wrongData ? this.redColor : ''}"
             v-model:value="user.username"
             type="text"
             placeholder="Введите ваш логин")
           .flex.flex-col.gap-y-6px.relative
             .flex.non-italic.font-semibold.text-xss Пароль
             base-input.h-12(
-            :style="{borderColor: this.authorized ? '' : this.redColor}"
+            :style="{borderColor: wrongData ? this.redColor : ''}"
             v-model:value="user.password"
             :type="changeType"
             placeholder="Введите ваш пароль")
             img.absolute.z-10.right-4.bottom-14px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
-          span.font-medium(:style="{color: this.redColor}", v-show="!authorized") Неверный логин или пароль
+          span.font-medium(:style="{color: this.redColor}", v-show="wrongData") Неверный логин или пароль
           .flex.items-center.gap-x-11px
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")
             .flex.non-italic.font-medium.base Запомнить меня
@@ -38,7 +38,6 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseButton from "@/components/base/BaseButton";
 import viewPasswordIcon from "@/assets/icons/eye.svg";
 import hidePasswordIcon from "@/assets/icons/openEye.svg";
-import loginBackground from "@/assets/images/loginBG.svg";
 
 import logoMark from "@/assets/images/logoMark.svg";
 export default {
@@ -50,7 +49,6 @@ export default {
       isView: false,
       viewPassword: viewPasswordIcon,
       hidePassword: hidePasswordIcon,
-      loginBackground,
       logoMark,
       authorized: true,
       user: { username: "", password: "" },
@@ -58,6 +56,9 @@ export default {
     };
   },
   computed: {
+    wrongData() {
+      return !this.authorized && !this.user.username && !this.user.password;
+    },
     changeIcon() {
       return !this.isView ? this.viewPassword : this.hidePassword;
     },
@@ -66,6 +67,11 @@ export default {
     },
     disabledButton() {
       return this.user.username && this.user.password ? false : true;
+    },
+    showBorder() {
+      return !this.authorized && !this.user.username && !this.user.password
+        ? true
+        : false;
     },
   },
   methods: {
@@ -88,10 +94,8 @@ export default {
             return result.json();
           } else {
             this.authorized = false;
-            if (!this.authorized) {
-              this.user.username = "";
-              this.user.password = "";
-            }
+            this.user.username = "";
+            this.user.password = "";
           }
         })
         .then((token) => {
