@@ -181,18 +181,19 @@ export default {
         });
     },
     postNewClient() {
-      fetchWrapper
-        .post("general/person/create/", {
-          full_name: this.infoClient.basic.full_name,
-          birth_date: this.infoClient.basic.birth_date,
-          priority: this.prioritySettings.settings.find(
-            (el) => el.text === this.infoClient.basic.priority
-          ).priority,
-        })
-        .then((result) => {
-          this.createIdentityDocument(result.id);
-          this.createAddress(result.id);
-        });
+      let sentData = {
+        full_name: this.infoClient.basic.full_name,
+      };
+      if (this.infoClient.basic.birth_date)
+        sentData.birth_date = this.infoClient.basic.birth_date;
+      let foundElement = this.prioritySettings.settings.find(
+        (el) => el.text === this.infoClient.basic.priority
+      );
+      if (foundElement) sentData.priority = foundElement.priority;
+      fetchWrapper.post("general/person/create/", sentData).then((result) => {
+        this.createIdentityDocument(result.id);
+        this.createAddress(result.id);
+      });
     },
     filterDataEmptyProperty(data) {
       let postData = data;
@@ -221,8 +222,10 @@ export default {
       this.infoClient.basic.contacts[index].icon = icon;
     },
     saveClient() {
-      this.postNewClient();
-      this.closeForm();
+      if (this.checkFormFullness()) {
+        this.postNewClient();
+        this.closeForm();
+      }
     },
     saveDocFile(e) {
       this.infoClient.doc = e.target.files;
@@ -260,6 +263,16 @@ export default {
           this.$refs[el.key].style.display = "none";
         }
       });
+    },
+    checkFormFullness() {
+      if (!this.infoClient.basic.full_name) {
+        alert("Не заполнено ФИО клиента");
+        return false;
+      }
+      return true;
+    },
+    output() {
+      console.log(this.checkFormFullness());
     },
   },
 };
