@@ -319,18 +319,22 @@ export default {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
         kind: this.kind,
-        employees: this.findPerson(
-          this.ownersData,
-          this.ownersList,
-          this.employees,
-          "employee"
-        ),
-        members: this.findPerson(
-          this.membersData,
-          this.membersList,
-          this.members,
-          "person"
-        ),
+        employees: [
+          this.findPerson(
+            this.ownersData,
+            this.ownersList,
+            this.employees,
+            "employee"
+          ),
+        ],
+        members: [
+          this.findPerson(
+            this.membersData,
+            this.membersList,
+            this.members,
+            "person"
+          ),
+        ],
       };
       this.postCreateEvent(this.eventData);
       this.clearForm();
