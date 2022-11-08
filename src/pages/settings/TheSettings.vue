@@ -1,13 +1,17 @@
 <template lang="pug">
   div
     v-select(:items="items", placeholder="Выберите значение", v-model="value" )
+    BaseButton(@click="showModal = true") Открыть модалку
+    base-modal(v-model="showModal", title="Тестовый заголовок окна" )
 </template>
 
 <script>
 import VSelect from "@/components/base/BaseSelect";
+import BaseModal from "@/components/base/BaseModal";
+import BaseButton from "@/components/base/BaseButton";
 export default {
   name: "TheSettings",
-  components: { VSelect },
+  components: { BaseButton, BaseModal, VSelect },
   data() {
     return {
       items: [
@@ -25,6 +29,7 @@ export default {
         },
       ],
       value: "",
+      showModal: false,
     };
   },
 };

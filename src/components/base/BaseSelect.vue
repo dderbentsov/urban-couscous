@@ -5,7 +5,7 @@
       .select-form-separator.cursor-pointer.mr-4(v-if="separator")
       span.icon-down-arrow.open-icon(:class="{'open': open }")
     base-menu(v-if="open")
-      .items-container(@click="open = false", @mouseleave="leaveSelect")
+      .items-container(@click="open = false", v-click-outside="leaveSelect")
         .item(v-for="item in items", :key="item.id" @click="clickItem(item.label)") {{ item.label }}
 </template>
 
