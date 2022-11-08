@@ -271,9 +271,6 @@ export default {
       }
       return true;
     },
-    output() {
-      console.log(this.checkFormFullness());
-    },
   },
 };
 </script>
