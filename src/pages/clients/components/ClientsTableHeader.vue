@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.row.text-base.font-semibold.min-w-fit
+  .flex.row.text-base.font-semibold
     clients-table-cell-header(v-for="cell in columnHead" :title="cell.title" :width="cell.width" :class="!cell.title && 'px-3'")
       .icon-down-arrow.icon.text-xsm.cursor-pointer(v-if="cell.iconHead && cell.name !== 'fullName'" )
       .icon-sort-number.cursor-pointer.text-xs.icon(v-if="cell.iconHead && cell.name === 'fullName'")
@@ -30,6 +30,7 @@ export default {
   min-height: 36px
   color: var(--font-grey-color)
   border-bottom: 1px solid var(--border-light-grey-color)
+  min-width: 1556px
 .icon
   color: var(--font-dark-blue-color)
 </style>
