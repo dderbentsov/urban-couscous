@@ -36,6 +36,12 @@ export default {
     CalendarSidebar,
     CalendarFormAddEvent,
   },
+  props: {
+    isOpenHeaderForm: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       sidebarWidth: "72px",
@@ -93,15 +99,20 @@ export default {
       this.sidebarWidth = value;
     },
     openFormCreateEvent() {
-      this.isOpenForm = true;
+      this.isOpenForm = !this.isOpenHeaderForm;
+      this.$emit("is-open-page-form", this.isOpenForm);
     },
     closeFormCreateEvent() {
       this.isOpenForm = false;
+      this.$emit("is-open-page-form", this.isOpenForm);
     },
   },
   mounted() {
     this.fetchPersonsData();
     this.fetchEventsData();
+  },
+  beforeUnmount() {
+    this.closeFormCreateEvent();
   },
 };
 </script>
