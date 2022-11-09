@@ -1,7 +1,7 @@
 <template lang="pug">
   .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
     .flex.justify-between
-      span.title.text-xl.font-bold Назначение события
+      span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2
         .icon-cancel.close-icon.tesxt-xs.cursor-pointer(@click="clearForm")
     .flex.flex-col.gap-y-8
@@ -337,7 +337,9 @@ export default {
       };
     },
     postCreateEvent(event) {
-      fetchWrapper.post("registry/event/create/", event);
+      fetchWrapper
+        .post("registry/event/create/", event)
+        .then(this.$emit("update-events"));
     },
     postUpdateEvent(id, event) {
       fetchWrapper

@@ -14,7 +14,15 @@
           .icon-ok.text-xsm(class="pt-[3px]")
         .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-show="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
           clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
-    client-detail-info-wrapper(v-if="isOpenDetailInfo" :data-address="dataAddress" :data-detail="dataDetail" :data-attachments="dataAttachments" :data-document="dataIdentityDocument" :save-new-doc="saveNewDoc" :delete-doc="deleteDoc")
+    client-detail-info-wrapper(
+      v-if="isOpenDetailInfo"
+      :data-address="dataAddress"
+      :data-detail="dataDetail"
+      :data-attachments="dataAttachments"
+      :data-document="dataIdentityDocument"
+      :save-new-doc="saveNewDoc"
+      :delete-doc="deleteDoc"
+    )
 </template>
 
 <script>
@@ -165,6 +173,14 @@ export default {
     postDeleteContact(contact) {
       fetchWrapper.del(`general/contact/${contact.id}/delete/`);
     },
+    postUpdateIdentityDocument() {
+      fetchWrapper.post(
+        `general/identity_document/${this.identity_document}/update/`,
+        {
+          series_number: this.dataIdentityDocument.numba,
+        }
+      );
+    },
     addNetwork(network) {
       this.dataClient.contacts.push(network);
     },
@@ -200,15 +216,15 @@ export default {
     },
     saveIdentityDocument(data) {
       this.dataIdentityDocument = {
-        numba: data?.numba || "-",
-        issued_by_org: data?.issued_by_org || "-",
-        issued_by_org_code: data?.issued_by_org_code || "-",
-        issued_by_date: data?.issued_by_date || "-",
+        numba: data?.numba || "",
+        issued_by_org: data?.issued_by_org || "",
+        issued_by_org_code: data?.issued_by_org_code || "",
+        issued_by_date: data?.issued_by_date || "",
       };
     },
     saveAddress(data) {
       this.dataAddress = {
-        join_adress: data?.join_adress || "-",
+        join_adress: data?.join_adress || "",
       };
     },
     saveAttachments(data) {

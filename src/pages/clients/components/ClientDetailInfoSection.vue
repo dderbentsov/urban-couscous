@@ -46,6 +46,7 @@ export default {
     sectionInfo: Object,
     section: String,
     deleteDoc: Function,
+    updateDocument: Function,
   },
   data() {
     return {
@@ -75,6 +76,7 @@ export default {
     saveChange() {
       this.isOpenChange = false;
       this.isChange = false;
+      this.updateDocument();
     },
     openAddingWrap() {
       this.isOpenAddingWrap = true;
