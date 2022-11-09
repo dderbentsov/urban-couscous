@@ -11,7 +11,7 @@
               span  или перетащите их сюда
         .flex.flex-col
           span.name-doc.py-2.px-3(v-for="doc in newDocs") {{doc.name}}
-      base-button(@click="saveDocs" :size="40")
+      base-button(@click="" :size="40")
         span.font-semibold Добавить
 </template>
 

@@ -1,6 +1,6 @@
 <template lang="pug">
   .row-wrapper.flex.flex-col.w-full
-    .row-body.flex.w-full.cursor-pointer(:id="id" @dblclick="(e) => openDetailInfo(e)")
+    .row-body.flex.w-full.cursor-pointer(:id="id" @click="(e) => openDetailInfo(e)")
       .check-box.flex.justify-center.items-center
         clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
       table-cell-body-name(:value="dataClient" :avatar="dataClient.avatar" :avatar-color="dataClient.color" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'fullName').width")
@@ -178,7 +178,8 @@ export default {
         .find((el) => el.name === "priority")
         ["settings"].find((el) => el.text === e.target.id).priority;
     },
-    closeChangeData() {
+    closeChangeData(e) {
+      e.stopPropagation();
       this.isOpenChange = false;
       this.postUpdateClient();
       this.postContactsClient();
@@ -229,6 +230,7 @@ export default {
       this.dataAttachments = [...this.dataDetail, ...data];
     },
     deleteDoc(e) {
+      e.stopPropagation();
       this.dataAttachments = this.dataAttachments.filter(
         (el) => el.id !== e.target.id
       );
