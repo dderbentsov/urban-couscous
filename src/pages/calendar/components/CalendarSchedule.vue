@@ -9,7 +9,8 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
     )
-    .schedule-body
+    .schedule-body(@scroll="changeScrollingState")
+      .hiding-container.fixed(v-if="isScrolling")
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
           v-for="(owner, index) in filteredOwners"
@@ -115,6 +116,7 @@ export default {
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
       selectedEvent: {},
+      isScrolling: false,
     };
   },
   computed: {
@@ -315,6 +317,9 @@ export default {
     transmitUpdateEvents() {
       this.$emit("update-events");
     },
+    changeScrollingState(e) {
+      this.isScrolling = e.target.scrollTop !== 0;
+    },
   },
   watch: {
     currentTime() {
@@ -389,4 +394,11 @@ export default {
   height: calc(100vh - 56px - 8px - 56px)
   overflow-y: auto
   overflow-x: auto
+
+.hiding-container
+  width: 80px
+  height: 48px
+  top: calc(56px * 2 + 8px)
+  background-color: var(--default-white)
+  z-index: 6
 </style>
