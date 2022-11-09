@@ -1,6 +1,6 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create.right-6(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
+    base-client-form-create.right-0.top-16(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
