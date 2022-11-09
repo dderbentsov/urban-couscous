@@ -13,7 +13,7 @@
         :size="40",
         right-icon="icon-person",
         :icon-right-size="18",
-        @click="isOpenCreate=true"
+        @click="changeFormState"
         )
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
@@ -34,6 +34,12 @@ import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
   components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
+  props: {
+    isOpenPageForm: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       avatarSrc: img,
@@ -47,10 +53,15 @@ export default {
   methods: {
     closeFormCreate() {
       this.isOpenCreate = false;
+      this.$emit("is-open-header-form", this.isOpenCreate);
     },
     logout() {
       localStorage.clear();
       this.$router.push("/login");
+    },
+    changeFormState() {
+      this.isOpenCreate = !this.isOpenPageForm;
+      this.$emit("is-open-header-form", this.isOpenCreate);
     },
   },
 };

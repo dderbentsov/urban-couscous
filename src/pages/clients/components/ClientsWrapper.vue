@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper.flex.w-full.relative.mx-6
-    clients-table(:open-form-create="openFormCreateClient")
+    clients-table(@is-open-client-add-form="transmitPageFormState")
 </template>
 
 <script>
@@ -14,11 +14,8 @@ export default {
     };
   },
   methods: {
-    openFormCreateClient() {
-      this.isOpenForm = true;
-    },
-    closeFormCreateClient() {
-      this.isOpenForm = false;
+    transmitPageFormState(value) {
+      this.$emit("is-open-client-add-form", value);
     },
   },
 };

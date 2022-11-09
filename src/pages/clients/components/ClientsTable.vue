@@ -43,9 +43,11 @@ export default {
   methods: {
     openFormCreateClient() {
       this.isOpenFormCreate = true;
+      this.$emit("is-open-client-add-form", this.isOpenFormCreate);
     },
     closeFormCreateClient() {
       this.isOpenFormCreate = false;
+      this.$emit("is-open-client-add-form", this.isOpenFormCreate);
       this.fetchDataClients();
     },
     saveDataClients(data) {
@@ -78,6 +80,9 @@ export default {
   },
   mounted() {
     this.fetchDataClients();
+  },
+  beforeUnmount() {
+    this.closeFormCreateClient();
   },
 };
 </script>
