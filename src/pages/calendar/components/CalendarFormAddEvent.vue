@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.left-0.top-14
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-0.bottom-14
     .flex.justify-between
       span.title.text-xl.font-bold Назначение события
       .flex.pt-2
