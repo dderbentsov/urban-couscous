@@ -1,6 +1,6 @@
 <template lang="pug">
   .base-select(@click="open = !open", :class="{'open': open, 'border-none': borderNone}")
-    .placeholder.text-base(:class="{'value-color': value}") {{ value || placeholder }}
+    .placeholder.text-base(:class="{'value-color': value || placeholderOpacity}") {{ value || placeholder }}
     .flex.items-center
       .select-form-separator.cursor-pointer.mr-4(v-if="separator")
       span.icon-down-arrow.open-icon(:class="{'open': open }")
@@ -23,6 +23,7 @@ export default {
     },
     borderNone: Boolean,
     separator: Boolean,
+    placeholderOpacity: Boolean,
   },
   emits: ["update:modelValue"],
   data() {

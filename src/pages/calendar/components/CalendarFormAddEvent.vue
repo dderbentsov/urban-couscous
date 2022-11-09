@@ -19,15 +19,14 @@
           v-if="!selectedEventData.employees",
           :items="ownersList",
           v-model="employees.employee",
-          placeholder="Выберите сотрудника",
-          border-none
+          placeholder="Выберите сотрудника"
         )  
-        base-input(
+        base-select.select(
           v-else,
-          v-model:value="employeeName",
-          :width-input="570",
-          disabled,
-          border-none
+          v-model="employees.employee",
+          :items="ownersList",
+          :placeholder="employeeName"
+          placeholderOpacity
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Клиент
@@ -36,13 +35,13 @@
           :items="membersList",
           v-model="members.person",
           placeholder="Выберите клиента",
-        )  
-        base-input(
+        )
+        base-select.select(
           v-else,
-          v-model:value="memberName",
-          disabled,
-          :width-input="346"
-          border-none
+          v-model="members.person",
+          :items="membersList",
+          :placeholder="memberName",
+          placeholderOpacity
         )
     .flex.flex-col.gap-y-8
       .flex.gap-x-4
@@ -70,6 +69,12 @@
       :disabled="disabledCreateButton",
       @click="sendEventData"
     ) Создать событие
+    base-button.update-button.text-base.font-semibold(
+    v-else,
+    :size="40",
+    :disabled="disabledUpdateButton",
+    @click="updateEventData",
+    ) Сохранить
 </template>
 
 <script>
