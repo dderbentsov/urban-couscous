@@ -49,6 +49,7 @@
           :style="{fontWeight:key === 'numba'&&600}",
           v-model:value="sectionInfo[key]",
           :width="settings[section].width"
+          :sharp="settings[section].sharps[key]"
         )
           .copy.icon-copy.cursor-pointer(
             v-if="item.copy",
@@ -91,7 +92,9 @@ export default {
     section: String,
     deleteDoc: Function,
     updateDocument: Function,
+    updateAddress: Function,
   },
+
   data() {
     return {
       additionalData: {
@@ -119,7 +122,11 @@ export default {
     saveChange() {
       this.isOpenChange = false;
       this.isChange = false;
-      this.updateDocument();
+      if (this.section === "pass") {
+        this.updateDocument();
+      } else if (this.section === "addresses") {
+        this.updateAddress();
+      }
     },
     openAddingWrap() {
       if (!this.isChange) {
