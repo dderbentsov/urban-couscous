@@ -404,6 +404,15 @@ export default {
   height: calc(100vh - 56px - 8px - 56px)
   overflow-y: auto
   overflow-x: auto
+  &::-webkit-scrollbar
+    width: 8px
+    height: 8px
+  &::-webkit-scrollbar-track
+    background-color: var(--bg-ligth-blue-color)
+    border-radius: 4px
+  &::-webkit-scrollbar-thumb
+    border-radius: 4px
+    background-color: var(--btn-blue-color-2)
 
 .hiding-container
   width: 80px
