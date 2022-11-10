@@ -1,10 +1,10 @@
 <template lang="pug">
-  .wrapper.cursor-pointer.my-1(
+  .wrapper.cursor-pointer.my-1.relative(
     @click="transmitEventData",
     :style="themeColors",
     :class="cardTheme"
   )
-    .card.flex.items-start.px-2(
+    .card.flex.px-2(
       :class="{'py-6px flex-col': longCard}",
       :style="cardHeight"
     )
@@ -20,11 +20,19 @@
         .col
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
+      calendar-event-description-card.right-0(
+        v-if="isActive"
+        :style="descriptionCardPosition"
+        :owner-event="this.ownerEvent"
+        :event-types="this.eventTypes"
+      )
   </template>
 
 <script>
+import CalendarEventDescriptionCard from "./CalendarEventDescriptionCard.vue";
 export default {
   name: "CalendarEventCard",
+  components: { CalendarEventDescriptionCard },
   props: {
     ownerEvent: Object,
     eventTypes: {
@@ -136,7 +144,9 @@ export default {
       }
     },
     description() {
-      return this.ownerEvent.description.split(", ");
+      return this.ownerEvent.description
+        ? this.ownerEvent.description.split(", ")
+        : [];
     },
     descriptionColumns() {
       let leftCol = [],
@@ -166,6 +176,11 @@ export default {
         remainingDetails = this.description.length - columnsLength;
       if (!remainingDetails) this.changeDetailsShown();
       return remainingDetails;
+    },
+    descriptionCardPosition() {
+      return {
+        top: `calc(${this.cardHeight.height} + 8px)`,
+      };
     },
   },
   methods: {

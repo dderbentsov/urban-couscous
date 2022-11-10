@@ -34,8 +34,8 @@
 
 <script>
 import BaseButton from "@/components/base/BaseButton";
-import CalendarSidebarEvent from "./cells/CalendarSidebarEvent.vue";
-import CalendarSidebarTeammate from "./cells/CalendarSidebarTeammate.vue";
+import CalendarSidebarEvent from "./CalendarSidebarEvent.vue";
+import CalendarSidebarTeammate from "./CalendarSidebarTeammate.vue";
 
 export default {
   name: "CalendarSidebar",
