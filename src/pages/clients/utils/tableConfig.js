@@ -113,6 +113,12 @@ export const detail = {
       issued_by_org_code: "Код подразделения",
       issued_by_date: "Дата выдачи",
     },
+    sharps: {
+      numba: "#### ######",
+      issued_by_org: "XXXXXX",
+      issued_by_org_code: "###-###",
+      issued_by_date: "##.##.####",
+    },
     width: 280,
   },
   snils: {

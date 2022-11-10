@@ -3,9 +3,14 @@
     client-detail-info-section(
       v-model:section-info="dataDocument"
       section="pass"
+      :update-document="updateDocument"
     )
     .flex.flex-col
-      client-detail-info-section(:section-info="dataAddress" section="addresses")
+      client-detail-info-section(
+        :section-info="dataAddress"
+        section="addresses"
+        :update-address="updateAddress"
+      )
     .flex.flex-col
       client-detail-info-section(
         :section-info="dataAttachments"
@@ -27,6 +32,8 @@ export default {
     saveNewDoc: Function,
     deleteDoc: Function,
     dataDocument: Object,
+    updateDocument: Function,
+    updateAddress: Function,
   },
 };
 </script>

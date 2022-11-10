@@ -22,6 +22,8 @@
       :data-document="dataIdentityDocument"
       :save-new-doc="saveNewDoc"
       :delete-doc="deleteDoc"
+      :update-document="postUpdateIdentityDocument"
+      :update-address="postUpdateAddress"
     )
 </template>
 
@@ -40,6 +42,7 @@ import ClientDetailInfoWrapper from "@/pages/clients/components/ClientDetailInfo
 import BaseButton from "@/components/base/BaseButton";
 import { fetchWrapper } from "@/shared/fetchWrapper";
 import { column } from "@/pages/clients/utils/tableConfig";
+
 export default {
   name: "ClientsTableRow",
   components: {
@@ -68,6 +71,8 @@ export default {
       prioritySettings: column.find((el) => el.name === "priority"),
       isOpenChange: false,
       dataClient: {},
+      docId: "",
+      addressId: "",
     };
   },
   props: {
@@ -114,6 +119,7 @@ export default {
         priority: this.dataClient.priority,
       });
     },
+
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
       if (
@@ -155,7 +161,6 @@ export default {
       // deleteContacts.forEach((el) => this.postDeleteContact(el));
       updateContacts.forEach((el) => this.postUpdateContact(el));
     },
-
     postCreateContact(contact) {
       fetchWrapper.post("general/contact/create/", {
         kind: contact.kind,
@@ -173,14 +178,7 @@ export default {
     postDeleteContact(contact) {
       fetchWrapper.del(`general/contact/${contact.id}/delete/`);
     },
-    postUpdateIdentityDocument() {
-      fetchWrapper.post(
-        `general/identity_document/${this.identity_document}/update/`,
-        {
-          series_number: this.dataIdentityDocument.numba,
-        }
-      );
-    },
+
     addNetwork(network) {
       this.dataClient.contacts.push(network);
     },
@@ -209,23 +207,52 @@ export default {
     },
     saveClientDetail(data) {
       this.saveIdentityDocument(
-        data.identity_documents.find((el) => el.kind === "Паспорт")
+        data.identity_documents.find(
+          (el) => el.kind === "Паспорт" || el.kind === "PASSPORT"
+        )
       );
       this.saveAddress(data.address[0]);
       this.saveAttachments([...data.attachments]);
     },
     saveIdentityDocument(data) {
       this.dataIdentityDocument = {
-        numba: data?.numba || "",
+        numba:
+          data?.series && data?.numba
+            ? data?.series + " " + data?.numba || ""
+            : "",
         issued_by_org: data?.issued_by_org || "",
         issued_by_org_code: data?.issued_by_org_code || "",
-        issued_by_date: data?.issued_by_date || "",
+        issued_by_date:
+          data?.issued_by_date.split("-").reverse().join(".") || "",
       };
+      this.docId = data?.id;
+    },
+    postUpdateIdentityDocument() {
+      console.log(this.dataIdentityDocument);
+      fetchWrapper
+        .post(`general/identity_document/${this.docId}/update/`, {
+          series_number: this.dataIdentityDocument.numba,
+          issued_by_org: this.dataIdentityDocument.issued_by_org,
+          issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
+          issued_by_date: this.dataIdentityDocument.issued_by_date
+            .split(".")
+            .reverse()
+            .join("-"),
+        })
+        .then(() => this.fetchClientDetail(this.id));
     },
     saveAddress(data) {
       this.dataAddress = {
         join_adress: data?.join_adress || "",
       };
+      this.addressId = data?.id;
+    },
+    postUpdateAddress() {
+      fetchWrapper
+        .post(`general/address/${this.addressId}/update/`, {
+          full_address: this.dataAddress.join_adress,
+        })
+        .then(() => this.fetchClientDetail(this.id));
     },
     saveAttachments(data) {
       this.dataAttachments = [...data];
