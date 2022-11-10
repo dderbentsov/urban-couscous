@@ -9,7 +9,7 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
     )
-    .schedule-body(@scroll="changeScrollingState")
+    .schedule-body(@scroll="changeScrollingState", ref="scheduleBody")
       .hiding-container.fixed(v-if="isScrolling")
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
@@ -320,6 +320,14 @@ export default {
     changeScrollingState(e) {
       this.isScrolling = e.target.scrollTop !== 0;
     },
+    showCuttentTime() {
+      this.$nextTick(() =>
+        this.$refs["scheduleBody"].scrollTo({
+          top: `${this.lineIndicatorLocation.top.slice(0, -2) - 240}`,
+          behavior: "smooth",
+        })
+      );
+    },
   },
   watch: {
     currentTime() {
@@ -344,6 +352,7 @@ export default {
         this.changeCurrentTime();
         this.timeCoilInitialization();
         this.startTimer();
+        this.showCuttentTime();
       }
     },
   },
@@ -351,6 +360,7 @@ export default {
     this.changeCurrentTime();
     this.timeCoilInitialization();
     this.startTimer();
+    this.showCuttentTime();
   },
   beforeUnmount() {
     this.stopTimer();
