@@ -20,6 +20,7 @@
           :day-start-time="validateStartTime"
           :day-end-time="validateEndTime"
           :style="columnSize"
+          :event-types="eventTypes"
           @selected-event="writeEventData"
         )
       .flex.w-full.relative
@@ -49,6 +50,7 @@
         :owners-data="ownersData"
         :members-data="membersData"
         :selected-event-data="selectedEvent"
+        :event-types="eventTypes"
         @clear-selected-event-data="clearSelectedEvent"
         @update-events="transmitUpdateEvents"
       )
@@ -104,6 +106,12 @@ export default {
     },
     closeFormCreateEvent: Function,
     isOpenForm: Boolean,
+    eventTypes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -370,6 +378,7 @@ export default {
 
 <style lang="sass" scoped>
 .schedule
+  border-top-left-radius: 4px
   position: relative
   border-top-left-radius: 4px
   background-color: var(--default-white)
