@@ -1,35 +1,74 @@
 <template lang="pug">
-  .section-wrapper.flex.flex-col.h-fit.cursor-pointer(@dblclick="openInterfaceChange" :class="{click:isOpenChange}" :style="{ flexDirection:settings[section].rowFlex&&'row', width : settings[section].width + 'px', height : settings[section].height+'px'}")
+  .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
+    :style="{ flexDirection:settings[section].rowFlex&&'row', width : settings[section].width + 'px', height : settings[section].height+'px'}"
+  )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
-      .flex.items-center.gap-x-8(v-if="isOpenChange")
-        base-button(v-if="isChange" @click="saveChange" :confirm="true" :rounded="true" :outlined="true" :size="20")
+      .flex.items-center.gap-x-8
+        base-button(
+          v-if="isChange",
+          @click="saveChange",
+          confirm,
+          rounded,
+          outlined,
+          :size="20"
+        )
           .icon-ok.text-xsm(class="pt-[3px]")
-        .edit.icon-edit.cursor-pointer.text-sm(v-if="!isChange" @click="changeClientData")
+        .edit.icon-edit.cursor-pointer.text-sm(
+          v-if="!isChange",
+          @click="changeClientData"
+        )
         .flex.relative
-          base-button(v-if="settings[section].addFile" @click="openAddingWrap" :rounded="true" :outlined="true" :added="true" :size="24")
+          base-button(
+            v-if="settings[section].addFile",
+            @click="openAddingWrap",
+            :rounded="true",
+            :outlined="true",
+            :added="true",
+            :size="24"
+          )
             .icon-plus(class="pt-[2px]")
-          table-adding-new-doc(v-if="section === 'docs' && isOpenAddingWrap" :add-new-doc="addNewDoc" :save-docs="saveDocs" :new-docs="docData")
-          table-adding-new-additional(v-if="section === 'additional' && isOpenAddingWrap" :new-additional-data="additionalData" :add-new-additional="addDocAdditional" :save-additional="saveDocs" )
+          table-adding-new-doc(
+            v-if="section === 'docs' && isOpenAddingWrap",
+            :add-new-doc="addNewDoc",
+            :save-docs="saveDocs",
+            :new-docs="docData"
+          )
+          table-adding-new-additional(
+            v-if="section === 'additional' && isOpenAddingWrap"
+            :new-additional-data="additionalData",
+            :add-new-additional="addDocAdditional",
+            :save-additional="saveDocs"
+          )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
       .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
         span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
         span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
         client-detail-input.text-sm.text-sm.w-max-fit(
-          :sharp="settings[section].sharps[key]"
-          v-if="section!=='docs' && isChange"
-          :style="{fontWeight:key === 'numba'&&600}"
-          v-model:value="sectionInfo[key]"
+          v-if="section!=='docs' && isChange",
+          :style="{fontWeight:key === 'numba'&&600}",
+          v-model:value="sectionInfo[key]",
           :width="settings[section].width"
+          :sharp="settings[section].sharps[key]"
         )
-          .copy.icon-copy.cursor-pointer(v-if="item.copy" @click="() => copyValue(item)")
+          .copy.icon-copy.cursor-pointer(
+            v-if="item.copy",
+            @click="() => copyValue(item)"
+          )
         .flex(v-if="settings[section].options && !isChange")
           span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
-          .copy.icon-copy.cursor-pointer.pl-4(v-if="key === 'numba'" @click="() => copyValue(item)")
+          .copy.icon-copy.cursor-pointer.pl-4(
+            v-if="key === 'numba'",
+            @click="() => copyValue(item)"
+          )
         .flex(v-if="item.name && !isChange")
           span.text-sm.w-fit {{item.title}}
         .flex.items-center(v-if="item.title")
-          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(v-if="isChange" :id="item.id" @click="(e) => deleteDoc(e)")
+          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
+            v-if="isChange",
+            :id="item.id",
+            @click="(e) => deleteDoc(e)"
+          )
           span.text-sm {{item.title}}
 </template>
 
@@ -75,11 +114,10 @@ export default {
     copyValue(text) {
       navigator.clipboard.writeText(text);
     },
-    openInterfaceChange() {
-      this.isOpenChange = !this.isOpenChange;
-    },
     changeClientData() {
-      this.isChange = true;
+      if (!this.isOpenAddingWrap) {
+        this.isChange = true;
+      }
     },
     saveChange() {
       this.isOpenChange = false;
@@ -91,7 +129,9 @@ export default {
       }
     },
     openAddingWrap() {
-      this.isOpenAddingWrap = true;
+      if (!this.isChange) {
+        this.isOpenAddingWrap = !this.isOpenAddingWrap;
+      }
     },
     addNewDoc(e) {
       this.docData = [...this.docData, ...e.target.files];

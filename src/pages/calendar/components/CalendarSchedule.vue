@@ -9,7 +9,8 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
     )
-    .schedule-body
+    .schedule-body(@scroll="changeScrollingState", ref="scheduleBody")
+      .hiding-container.fixed(v-if="isScrolling")
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
           v-for="(owner, index) in filteredOwners"
@@ -19,6 +20,7 @@
           :day-start-time="validateStartTime"
           :day-end-time="validateEndTime"
           :style="columnSize"
+          :event-types="eventTypes"
           @selected-event="writeEventData"
         )
       .flex.w-full.relative
@@ -48,6 +50,7 @@
         :owners-data="ownersData"
         :members-data="membersData"
         :selected-event-data="selectedEvent"
+        :event-types="eventTypes"
         @clear-selected-event-data="clearSelectedEvent"
         @update-events="transmitUpdateEvents"
       )
@@ -103,6 +106,12 @@ export default {
     },
     closeFormCreateEvent: Function,
     isOpenForm: Boolean,
+    eventTypes: {
+      type: Array,
+      default() {
+        return [];
+      },
+    },
   },
   data() {
     return {
@@ -115,6 +124,7 @@ export default {
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
       selectedEvent: {},
+      isScrolling: false,
     };
   },
   computed: {
@@ -315,6 +325,17 @@ export default {
     transmitUpdateEvents() {
       this.$emit("update-events");
     },
+    changeScrollingState(e) {
+      this.isScrolling = e.target.scrollTop !== 0;
+    },
+    showCuttentTime() {
+      this.$nextTick(() =>
+        this.$refs["scheduleBody"].scrollTo({
+          top: `${this.lineIndicatorLocation.top.slice(0, -2) - 240}`,
+          behavior: "smooth",
+        })
+      );
+    },
   },
   watch: {
     currentTime() {
@@ -339,6 +360,7 @@ export default {
         this.changeCurrentTime();
         this.timeCoilInitialization();
         this.startTimer();
+        this.showCuttentTime();
       }
     },
   },
@@ -346,6 +368,7 @@ export default {
     this.changeCurrentTime();
     this.timeCoilInitialization();
     this.startTimer();
+    this.showCuttentTime();
   },
   beforeUnmount() {
     this.stopTimer();
@@ -355,6 +378,7 @@ export default {
 
 <style lang="sass" scoped>
 .schedule
+  border-top-left-radius: 4px
   position: relative
   border-top-left-radius: 4px
   background-color: var(--default-white)
@@ -389,4 +413,20 @@ export default {
   height: calc(100vh - 56px - 8px - 56px)
   overflow-y: auto
   overflow-x: auto
+  &::-webkit-scrollbar
+    width: 8px
+    height: 8px
+  &::-webkit-scrollbar-track
+    background-color: var(--bg-ligth-blue-color)
+    border-radius: 4px
+  &::-webkit-scrollbar-thumb
+    border-radius: 4px
+    background-color: var(--btn-blue-color-2)
+
+.hiding-container
+  width: 80px
+  height: 48px
+  top: calc(56px * 2 + 8px)
+  background-color: var(--default-white)
+  z-index: 6
 </style>

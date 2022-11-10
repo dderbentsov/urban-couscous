@@ -4,7 +4,7 @@
       @width="changeWidth"
       :team-data="employeesData"
       :open-form-create="openFormCreateEvent"
-      :event-type="eventType"
+      :event-types="eventTypes"
     )
     calendar-schedule(
       :owners-data="employeesData"
@@ -15,6 +15,7 @@
       :sidebar-width="sidebarWidth"
       :close-form-create-event="closeFormCreateEvent"
       :is-open-form="isOpenForm"
+      :event-types="eventTypes"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
@@ -36,6 +37,12 @@ export default {
     CalendarSidebar,
     CalendarFormAddEvent,
   },
+  props: {
+    isOpenHeaderForm: {
+      type: Boolean,
+      default: false,
+    },
+  },
   data() {
     return {
       sidebarWidth: "72px",
@@ -49,7 +56,7 @@ export default {
       employeesData: [],
       isOpenForm: false,
       membersData: [],
-      eventType: [
+      eventTypes: [
         { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
         { id: 2, label: "Планерка", color: "var(--bg-event-red-color)" },
         { id: 3, label: "Интервью", color: "var(--bg-event-yellow-color)" },
@@ -93,15 +100,20 @@ export default {
       this.sidebarWidth = value;
     },
     openFormCreateEvent() {
-      this.isOpenForm = true;
+      this.isOpenForm = !this.isOpenHeaderForm;
+      this.$emit("is-open-page-form", this.isOpenForm);
     },
     closeFormCreateEvent() {
       this.isOpenForm = false;
+      this.$emit("is-open-page-form", this.isOpenForm);
     },
   },
   mounted() {
     this.fetchPersonsData();
     this.fetchEventsData();
+  },
+  beforeUnmount() {
+    this.closeFormCreateEvent();
   },
 };
 </script>

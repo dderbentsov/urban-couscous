@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-2.bottom-14
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.absolute.right-0.bottom-14
     .flex.justify-between
       span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2
@@ -112,6 +112,12 @@ export default {
       type: Object,
       default() {
         return {};
+      },
+    },
+    eventTypes: {
+      type: Array,
+      default() {
+        return [];
       },
     },
   },
