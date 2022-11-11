@@ -3,21 +3,47 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(:items="priorityList", placeholder="Приоритет клиента", v-model="basicInfo.priority")
+        base-select(
+          :items="priorityList",
+          placeholder="Приоритет клиента",
+          v-model="basicInfo.priority"
+        )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
-        base-input.input-info(v-model:value="basicInfo.birth_date" type="date" placeholder="00.00.0000" :width-input="277")
+        base-input.input-info(
+          v-model:value="basicInfo.birth_date",
+          type="date",
+          placeholder="00.00.0000",
+          :width-input="277"
+        )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Номер телефона
-        base-input.input-info(v-model:value="phone.username" placeholder="+7 (915) 644–92–23" :width-input="277")
+        base-input.input-info(
+          v-model:value="phone.username",
+          placeholder="+7 (915) 644–92–23",
+          :width-input="277"
+        )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Email
-        base-input.input-info(v-model:value="email.username" placeholder="user@yandex.ru" :width-input="277")
+        base-input.input-info(
+          v-model:value="email.username",
+          placeholder="user@yandex.ru",
+          :width-input="277"
+        )
       .flex.flex-col.col-start-1.col-end-3.w-100(class="gap-y-1.5")
         span.text-sm Ссылки на соцсети
         .flex(class="gap-x-1.5" v-for="network in basicInfo.contacts" :key="network.id")
-          base-adding-network(:list-adding-networks="networks.settings" :selected-option="network.icon" :value="network" :choose-network="chooseOption" :save-network-id="saveNetworkId")
-        span.add-network.cursor-pointer(v-show="networks.settings.length !== basicInfo.contacts.length" @click="addNetwork") Добавить соцсеть
+          base-adding-network(
+            :list-adding-networks="networks.settings",
+            :selected-option="network.icon",
+            :value="network",
+            :choose-network="chooseOption",
+            :save-network-id="saveNetworkId"
+          )
+        span.add-network.cursor-pointer(
+          v-show="networks.settings.length !== basicInfo.contacts.length",
+          @click="addNetwork"
+        ) Добавить соцсеть
     .px-4
       base-button(@click="saveClient" :size="40")
         span.font-semibold Создать клиента

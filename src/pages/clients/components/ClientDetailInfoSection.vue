@@ -4,7 +4,7 @@
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
-      .flex.items-center.gap-x-8
+      .flex.items-center.gap-x-8(v-if="lackPass || lackAddress")
         base-button(
           v-if="isChange",
           @click="saveChange",
@@ -40,49 +40,83 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
-      .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
-        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
-        span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-        client-detail-input.text-sm.text-sm.w-max-fit(
-          v-if="section!=='docs' && isChange",
-          :style="{fontWeight:key === 'numba'&&600}",
-          v-model:value="sectionInfo[key]",
-          :width="settings[section].width"
-          :sharp="settings[section].sharps[key]"
-        )
-          .copy.icon-copy.cursor-pointer(
-            v-if="item.copy",
-            @click="() => copyValue(item)"
+    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="lackPass || lackAddress")
+      .flex.flex-col(class="gap-y-1.5")
+        .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
+          span.title-section.font-semibold.text-xs(
+            v-if="settings[section].options") {{settings[section].options[key]}}
+          span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
+          client-detail-input.text-sm.text-sm.w-max-fit(
+            v-if="section!=='docs' && isChange",
+            :style="{fontWeight:key === 'numba'&&600}",
+            v-model:value="sectionInfo[key]",
+            :width="settings[section].width"
           )
-        .flex(v-if="settings[section].options && !isChange")
-          span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
-          .copy.icon-copy.cursor-pointer.pl-4(
-            v-if="key === 'numba'",
-            @click="() => copyValue(item)"
+            .copy.icon-copy.cursor-pointer(
+              v-if="item.copy",
+              @click="() => copyValue(item)"
+            )
+          .flex(v-if="settings[section].options && !isChange")
+            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
+            .copy.icon-copy.cursor-pointer.pl-4(
+              v-if="key === 'numba'",
+              @click="() => copyValue(item)"
+            )
+          .separation.flex.items-center.justify-center.relative.mt-10px.mb(
+            v-if="section === 'addresses' && isChange",
+            class="gap-y-1.5"
           )
-        .flex(v-if="item.name && !isChange")
-          span.text-sm.w-fit {{item.title}}
-        .flex.items-center(v-if="item.title")
-          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
-            v-if="isChange",
-            :id="item.id",
-            @click="(e) => deleteDoc(e)"
-          )
-          span.text-sm {{item.title}}
+            .line.absolute
+            .text-separation.span.text-sm.separator.px-2 или
+          .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
+            .flex.flex-col(class="gap-y-1.5")
+              .text-info.text-xxs.font-semibold Город
+              base-select(placeholder="Выберите город")
+            .flex.flex-col(class="gap-y-1.5")
+              .text-info.text-xxs.font-semibold Область
+              base-input.input-info(placeholder="Введите область")
+            .flex.flex-col(class="gap-y-1.5")
+              .text-info.text-xxs.font-semibold Улица
+              base-input.input-info(placeholder="Введите улицу")
+            .flex.gap-x-4
+              .flex.flex-col(class="gap-y-1.5")
+                .text-info.text-xxs.font-semibold Дом
+                base-input.input-info(placeholder="Дом")
+              .flex.flex-col(class="gap-y-1.5")
+                .text-info.text-xxs.font-semibold Квартира
+                base-input.input-info(placeholder="Квартира")
+            .flex.flex-col(class="gap-y-1.5")
+              .text-info.text-xxs.font-semibold Индекс
+              base-input.input-info(v-mask="'######'", placeholder="000000")
+          .flex(v-if="item.name && !isChange")
+            span.text-sm.w-fit {{item.title}}
+          .flex.items-center(v-if="item.title")
+            .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
+              v-if="isChange",
+              :id="item.id",
+              @click="(e) => deleteDoc(e)"
+            )
+            span.text-sm {{item.title}}
+    .section-add-doc.flex.justify-center.items-center.cursor-pointer(v-else)
+      span Добавить данные
 </template>
 
 <script>
 import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
 import BaseButton from "@/components/base/BaseButton";
+import BaseInput from "@/components/base/BaseInput";
+import BaseSelect from "@/components/base/BaseSelect";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import { detail } from "@/pages/clients/utils/tableConfig";
+import { mask } from "vue-the-mask";
 export default {
   name: "ClientDetailInfoSection",
   components: {
     TableAddingNewAdditional,
     BaseButton,
+    BaseInput,
+    BaseSelect,
     ClientDetailInput,
     TableAddingNewDoc,
   },
@@ -93,7 +127,10 @@ export default {
     deleteDoc: Function,
     updateDocument: Function,
     updateAddress: Function,
+    lackPass: Boolean,
+    lackAddress: Boolean,
   },
+  directives: { mask },
 
   data() {
     return {
@@ -108,6 +145,9 @@ export default {
       isOpenChange: false,
       isChange: false,
       settings: detail,
+      customTokens: {
+        Y: { pattern: /[0-9a-zA-Zа-яёА-ЯЁ ]/u },
+      },
     };
   },
   methods: {
@@ -197,4 +237,23 @@ export default {
   color: var(--font-grey-color)
   &:hover
     opacity: 0.6
+.section-add-doc
+  height: 100%
+  min-height: 64px
+  color: var(--btn-blue-color)
+.line
+  width: 100%
+  height: 1px
+  background-color: var(--border-light-grey-color)
+  z-index: 0
+.separation
+  width: 100%
+.text-separation
+  width: 38px
+  z-index: 1
+  background: white
+.input-info
+  color: var(--font-dark-blue-color)
+.text-info
+  color: var(--font-grey-color)
 </style>
