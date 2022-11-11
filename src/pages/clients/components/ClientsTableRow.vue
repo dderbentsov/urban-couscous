@@ -1,19 +1,70 @@
 <template lang="pug">
   .row-wrapper.flex.flex-col.w-full
-    .row-body.flex.w-full.cursor-pointer(:id="id" @click="(e) => openDetailInfo(e)")
+    .row-body.flex.w-full.cursor-pointer(
+      :id="id",
+      @click="(e) => openDetailInfo(e)"
+    )
       .check-box.flex.justify-center.items-center
-        clients-table-checkbox(:id="id" :check="check" :is-check="isCheck")
-      table-cell-body-name(:value="dataClient" :avatar="dataClient.avatar" :avatar-color="dataClient.color" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'fullName').width")
-      table-cell-body-age(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'age').width")
-      table-cell-body-priority(:value="dataClient.priority" :choose-priority="choosePriority" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'priority').width")
-      table-cell-body-phone(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'phone').width")
-      table-cell-body-email(:value="dataClient" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'email').width")
-      table-cell-body-networks(:delete-network="deleteNetwork" :add-network="addNetwork" :networks="dataClient.contacts" :is-open-change="isOpenChange" :width="columnBody.find(el => el.name === 'networks').width")
+        clients-table-checkbox(
+          :id="id",
+          :check="check",
+          :is-check="isCheck"
+        )
+      table-cell-body-name(
+        :value="dataClient",
+        :avatar="dataClient.avatar",
+        :avatar-color="dataClient.color",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'fullName').width"
+      )
+      table-cell-body-age(
+        :value="dataClient",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'age').width"
+      )
+      table-cell-body-priority(
+        :value="dataClient.priority",
+        :choose-priority="choosePriority",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'priority').width"
+      )
+      table-cell-body-phone(
+        :value="dataClient",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'phone').width"
+      )
+      table-cell-body-email(
+        :value="dataClient",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'email').width"
+      )
+      table-cell-body-networks(
+        :delete-network="deleteNetwork",
+        :add-network="addNetwork",
+        :networks="dataClient.contacts",
+        :is-open-change="isOpenChange",
+        :width="columnBody.find(el => el.name === 'networks').width"
+      )
       .dots.flex.justify-center.items-center
-        base-button(v-if="isOpenChange" @click="closeChangeData" :confirm="true" :rounded="true" :outlined="true" :size="20")
+        base-button(
+          v-if="isOpenChange",
+          @click="closeChangeData",
+          confirm,
+          rounded,
+          outlined,
+          :size="20"
+        )
           .icon-ok.text-xsm(class="pt-[3px]")
-        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(v-show="!isOpenChange" :tabindex="1" @click="(e) => openPopup(e)" @blur="handleUnFocusPopup")
-          clients-action-popup(v-if="isOpenPopup" :open-change-data="openChangeData")
+        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(
+          v-show="!isOpenChange",
+          :tabindex="1",
+          @click="(e) => openPopup(e)",
+          @blur="handleUnFocusPopup"
+        )
+          clients-action-popup(
+            v-if="isOpenPopup",
+            :open-change-data="openChangeData"
+          )
     client-detail-info-wrapper(
       v-if="isOpenDetailInfo"
       :data-address="dataAddress"
@@ -284,6 +335,7 @@ export default {
     },
     openPopup(e) {
       e.target.focus();
+      e.stopPropagation();
       this.isOpenPopup = !this.isOpenPopup;
     },
     openDetailInfo(e) {
