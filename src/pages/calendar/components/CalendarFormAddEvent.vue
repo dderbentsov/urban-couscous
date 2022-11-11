@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-3
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4
     .flex.justify-between
       span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2

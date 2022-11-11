@@ -196,8 +196,11 @@ export default {
     composeFullName(object) {
       return `${object.last_name} ${object.first_name} ${object.patronymic}`;
     },
-    changeTheme() {
-      this.isActive = !this.isActive;
+    setActiveTheme() {
+      this.isActive = true;
+    },
+    setDefaultTheme() {
+      this.isActive = false;
     },
     changeDetailsShown() {
       this.someDetailsShown = false;
@@ -212,12 +215,12 @@ export default {
     openDescriptionCard() {
       if (!this.isOpenDescriptionCard && !this.isActive) {
         this.isOpenDescriptionCard = true;
-        this.changeTheme();
+        this.setActiveTheme();
       }
     },
     closeDescriptionCard() {
       this.hideDescriptionCard();
-      this.changeTheme();
+      this.setDefaultTheme();
     },
   },
 };
