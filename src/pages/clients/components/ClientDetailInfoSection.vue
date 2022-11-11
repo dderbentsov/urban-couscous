@@ -41,35 +41,37 @@
             :save-additional="saveDocs"
           )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4
-      .flex.flex-col(v-for="(item, key) in sectionInfo" class="gap-y-1.5")
-        span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
-        span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-        client-detail-input.text-sm.text-sm.w-max-fit(
-          v-if="section!=='docs' && isChange",
-          :style="{fontWeight:key === 'numba'&&600}",
-          v-model:value="sectionInfo[key]",
-          :width="settings[section].width"
-          :sharp="settings[section].sharps[key]"
-        )
-          .copy.icon-copy.cursor-pointer(
-            v-if="item.copy",
-            @click="() => copyValue(item)"
+      .flex.flex-col(class="gap-y-1.5")
+        .flex.flex-col(v-for="(item, key) in sectionInfo" v-if="lackPass || lackAddress" class="gap-y-1.5")
+          span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
+          span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
+          client-detail-input.text-sm.text-sm.w-max-fit(
+            v-if="section!=='docs' && isChange",
+            :style="{fontWeight:key === 'numba'&&600}",
+            v-model:value="sectionInfo[key]",
+            :width="settings[section].width"
           )
-        .flex(v-if="settings[section].options && !isChange")
-          span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
-          .copy.icon-copy.cursor-pointer.pl-4(
-            v-if="key === 'numba'",
-            @click="() => copyValue(item)"
-          )
-        .flex(v-if="item.name && !isChange")
-          span.text-sm.w-fit {{item.title}}
-        .flex.items-center(v-if="item.title")
-          .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
-            v-if="isChange",
-            :id="item.id",
-            @click="(e) => deleteDoc(e)"
-          )
-          span.text-sm {{item.title}}
+            .copy.icon-copy.cursor-pointer(
+              v-if="item.copy",
+              @click="() => copyValue(item)"
+            )
+          .flex(v-if="settings[section].options && !isChange")
+            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
+            .copy.icon-copy.cursor-pointer.pl-4(
+              v-if="key === 'numba'",
+              @click="() => copyValue(item)"
+            )
+          .flex(v-if="item.name && !isChange")
+            span.text-sm.w-fit {{item.title}}
+          .flex.items-center(v-if="item.title")
+            .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
+              v-if="isChange",
+              :id="item.id",
+              @click="(e) => deleteDoc(e)"
+            )
+            span.text-sm {{item.title}}
+        .flex.justify-center.items.center(v-else)
+          .flex(@click="!lackPass") Добавить данные
 </template>
 
 <script>
@@ -93,6 +95,8 @@ export default {
     deleteDoc: Function,
     updateDocument: Function,
     updateAddress: Function,
+    lackPass: Boolean,
+    lackAddress: Boolean,
   },
 
   data() {

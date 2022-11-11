@@ -24,6 +24,8 @@
       :delete-doc="deleteDoc"
       :update-document="postUpdateIdentityDocument"
       :update-address="postUpdateAddress"
+      :lack-pass="lackPass"
+      :lack-address="lackAddress"
     )
 </template>
 
@@ -73,6 +75,8 @@ export default {
       dataClient: {},
       docId: "",
       addressId: "",
+      lackPass: true,
+      lackAddress: true,
     };
   },
   props: {
@@ -215,17 +219,32 @@ export default {
       this.saveAddress(data.address[0]);
       this.saveAttachments([...data.attachments]);
     },
+    addDoc() {
+      this.lackPass = false;
+    },
+
     saveIdentityDocument(data) {
-      this.dataIdentityDocument = {
-        numba:
-          data?.series && data?.numba
-            ? data?.series + " " + data?.numba || ""
+      if (
+        data?.series ||
+        data?.numba ||
+        data?.issued_by_org ||
+        data?.issued_by_org_code ||
+        data?.issued_by_date
+      ) {
+        this.dataIdentityDocument = {
+          numba:
+            data.series && data.numba ? data?.series + " " + data?.numba : "",
+          issued_by_org: data.issued_by_org ? data?.issued_by_org : "",
+          issued_by_org_code: data.issued_by_org_code
+            ? data?.issued_by_org_code
             : "",
-        issued_by_org: data?.issued_by_org || "",
-        issued_by_org_code: data?.issued_by_org_code || "",
-        issued_by_date:
-          data?.issued_by_date.split("-").reverse().join(".") || "",
-      };
+          issued_by_date: data.issued_by_date
+            ? data?.issued_by_date.split("-").reverse().join(".")
+            : "",
+        };
+      } else {
+        this.lackPass = false;
+      }
       this.docId = data?.id;
     },
     postUpdateIdentityDocument() {
@@ -243,9 +262,16 @@ export default {
         .then(() => this.fetchClientDetail(this.id));
     },
     saveAddress(data) {
-      this.dataAddress = {
-        join_adress: data?.join_adress || "",
-      };
+      if (data?.join_adress) {
+        this.dataAddress = {
+          join_adress: data?.join_adress
+            ? data?.join_adress
+            : (this.lackAddress = false),
+        };
+      } else {
+        this.lackAddress = false;
+      }
+
       this.addressId = data?.id;
     },
     postUpdateAddress() {

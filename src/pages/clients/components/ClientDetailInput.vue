@@ -1,10 +1,10 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-3.box-border.w-max-fit(class="py-2.5")
-    input.place-input.w-full.outline-0.text-sm.not-italic.resize-none(
+    textarea.place-input.w-full.outline-0.text-sm.not-italic.resize-none(
       :rows="Math.ceil(value.length/heightInput)"
       :value="value"
       @input="$emit('update:value', $event.target.value)"
-      v-mask="sharp"
+
     )
     slot
 </template>
