@@ -1,12 +1,12 @@
 <template lang="pug">
   .wrapper.cursor-pointer.my-1.relative(
-    @click="transmitEventData",
     :style="themeColors",
     :class="cardTheme"
   )
     .card.flex.px-2(
       :class="{'py-6px flex-col': longCard}",
-      :style="cardHeight"
+      :style="cardHeight",
+      @click="openDescriptionCard"
     )
       .header.flex.justify-between.items-center(:class="{'items-start': longCard}")
         .header-text
@@ -20,12 +20,17 @@
         .col
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
-      calendar-event-description-card.right-0(
-        v-if="isActive"
-        :style="descriptionCardPosition"
-        :owner-event="this.ownerEvent"
-        :event-types="this.eventTypes"
-      )
+    calendar-event-description-card.right-0(
+      v-if="isOpenDescriptionCard"
+      :style="descriptionCardPosition"
+      :owner-event="this.ownerEvent"
+      :event-types="this.eventTypes"
+      :event-time="this.eventTime"
+      :event-member="eventMember"
+      :description="description"
+      @selected-event="transmitEventData"
+      @close-description-card="closeDescriptionCard"
+    )
   </template>
 
 <script>
@@ -47,6 +52,7 @@ export default {
       pixelsPerHour: 62,
       isActive: false,
       someDetailsShown: true,
+      isOpenDescriptionCard: false,
     };
   },
   computed: {
@@ -190,15 +196,31 @@ export default {
     composeFullName(object) {
       return `${object.last_name} ${object.first_name} ${object.patronymic}`;
     },
-    transmitEventData() {
-      this.changeTheme();
-      this.$emit("selected-event", this.ownerEvent);
+    setActiveTheme() {
+      this.isActive = true;
     },
-    changeTheme() {
-      this.isActive = !this.isActive;
+    setDefaultTheme() {
+      this.isActive = false;
     },
     changeDetailsShown() {
       this.someDetailsShown = false;
+    },
+    transmitEventData() {
+      this.$emit("selected-event", this.ownerEvent);
+      this.hideDescriptionCard();
+    },
+    hideDescriptionCard() {
+      this.isOpenDescriptionCard = false;
+    },
+    openDescriptionCard() {
+      if (!this.isOpenDescriptionCard && !this.isActive) {
+        this.isOpenDescriptionCard = true;
+        this.setActiveTheme();
+      }
+    },
+    closeDescriptionCard() {
+      this.hideDescriptionCard();
+      this.setDefaultTheme();
     },
   },
 };
@@ -216,6 +238,8 @@ export default {
     background-color: var(--bg-color)
     border: 2px solid var(--border-color)
     border-left: 4px solid var(--bg-active)
+  .card:hover
+      background-color: var(--bg-hover)
   .header-text, .body
     color: var(--font-color)
   .details-count
@@ -240,19 +264,6 @@ export default {
 .card
   border-radius: 4px
   min-height: 23px
-  &:hover
-    background-color: var(--bg-hover)
-    border: 2px solid var(--border-color)
-    border-left: 4px solid var(--bg-active)
-  &:hover .header-text
-    color: var(--font-color)
-  &:hover .details-count
-    background-color: var(--bg-active)
-    color: var(--font-active-color)
-  &:hover .body
-    color: var(--font-color)
-  &:hover li:before
-    background-color: var(--font-color)
 
 .header
   width: 100%

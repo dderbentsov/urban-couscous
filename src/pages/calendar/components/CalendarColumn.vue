@@ -16,6 +16,7 @@
       calendar-event-card(
         v-for="event in dayEvents"
         :key="event.id"
+        :id="event.id"
         :ownerEvent="event"
         :event-types="eventTypes"
         :style="eventCardPosition(event.start, event.end)"
