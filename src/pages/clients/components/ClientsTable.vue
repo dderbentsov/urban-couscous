@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
-    base-client-form-create.right-0(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
+    base-client-form-create(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
     clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreateClient")
     .flex.flex-col.h-full.gap-y-2.table-container.w-full
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
@@ -43,11 +43,9 @@ export default {
   methods: {
     openFormCreateClient() {
       this.isOpenFormCreate = true;
-      this.$emit("is-open-client-add-form", this.isOpenFormCreate);
     },
     closeFormCreateClient() {
       this.isOpenFormCreate = false;
-      this.$emit("is-open-client-add-form", this.isOpenFormCreate);
       this.fetchDataClients();
     },
     saveDataClients(data) {
@@ -80,9 +78,6 @@ export default {
   },
   mounted() {
     this.fetchDataClients();
-  },
-  beforeUnmount() {
-    this.closeFormCreateClient();
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create.right-0.top-16(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
+    base-client-form-create(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
@@ -13,8 +13,8 @@
         :size="40",
         right-icon="icon-person",
         :icon-right-size="18",
-        @click="changeFormState"
-        )
+        @click="isOpenCreate=true"
+      )
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center
@@ -34,12 +34,6 @@ import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
   components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
-  props: {
-    isOpenPageForm: {
-      type: Boolean,
-      default: false,
-    },
-  },
   data() {
     return {
       avatarSrc: img,
@@ -53,15 +47,10 @@ export default {
   methods: {
     closeFormCreate() {
       this.isOpenCreate = false;
-      this.$emit("is-open-header-form", this.isOpenCreate);
     },
     logout() {
       localStorage.clear();
       this.$router.push("/login");
-    },
-    changeFormState() {
-      this.isOpenCreate = !this.isOpenPageForm;
-      this.$emit("is-open-header-form", this.isOpenCreate);
     },
   },
 };
