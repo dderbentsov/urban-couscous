@@ -264,9 +264,7 @@ export default {
     saveAddress(data) {
       if (data?.join_adress) {
         this.dataAddress = {
-          join_adress: data?.join_adress
-            ? data?.join_adress
-            : (this.lackAddress = false),
+          join_adress: data?.join_adress,
         };
       } else {
         this.lackAddress = false;

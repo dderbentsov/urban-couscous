@@ -4,13 +4,11 @@
       :rows="Math.ceil(value.length/heightInput)"
       :value="value"
       @input="$emit('update:value', $event.target.value)"
-
     )
     slot
 </template>
 
 <script>
-import { mask } from "vue-the-mask";
 export default {
   name: "ClientDetailInput",
   props: {
@@ -18,7 +16,6 @@ export default {
     width: Number,
     sharp: String,
   },
-  directives: { mask },
 
   computed: {
     heightInput() {

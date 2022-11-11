@@ -3,29 +3,32 @@
     .flex.flex-col.gap-y-6.px-4
       .flex.flex-col.col-start-1.col-end-3(class="gap-y-1.5")
         span.text-sm.font-semibold Полный адрес
-        base-input.input-info(v-model:value="addresses.full_address" placeholder="Введите адрес целиком")
+        base-input.input-info(
+          v-model:value="addresses.full_address",
+          placeholder="Введите адрес целиком"
+        )
       .flex.items-center.justify-center.relative
         .line.absolute
         span.text-sm.separator.px-2 или
       .grid.grid-cols-2.gap-y-6.gap-x-4
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Город
-          base-input.input-info(v-model:value="addresses.city" placeholder="Ввыберите город")
+          base-input.input-info(placeholder="Выберите город")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Область
-          base-input.input-info(v-model:value="addresses.region" placeholder="Введите область")
+          base-input.input-info(placeholder="Введите область")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Улица
-          base-input.input-info(v-model:value="addresses.street" placeholder="Введите улицу")
+          base-input.input-info(placeholder="Введите улицу")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Дом
-          base-input.input-info(v-model:value="addresses.house_number" placeholder="Номер дома")
+          base-input.input-info(placeholder="Номер дома")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Квартира
-          base-input.input-info(v-model:value="addresses.apartment_number" placeholder="Номер квартиры")
+          base-input.input-info(placeholder="Номер квартиры")
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Индекс
-          base-input.input-info(v-model:value="addresses.zip_code" placeholder="000000")
+          base-input.input-info(placeholder="000000", v-mask="'######'")
     .px-4
       base-button(@click="saveClient" :size="40")
         span.font-semibold Создать клиента
@@ -34,6 +37,7 @@
 <script>
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
+import { mask } from "vue-the-mask";
 export default {
   name: "FormCreateAddresses",
   components: { BaseInput, BaseButton },
@@ -42,6 +46,7 @@ export default {
     saveClient: Function,
     saveFile: Function,
   },
+  directives: { mask },
 };
 </script>
 
