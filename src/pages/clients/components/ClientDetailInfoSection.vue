@@ -50,8 +50,7 @@
             v-if="section!=='docs' && isChange",
             :style="{fontWeight:key === 'numba'&&600}",
             v-model:value="sectionInfo[key]",
-            :width="settings[section].width",
-            :tokens="customTokens"
+            :width="settings[section].width"
           )
             .copy.icon-copy.cursor-pointer(
               v-if="item.copy",
