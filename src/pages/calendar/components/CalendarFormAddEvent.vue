@@ -7,41 +7,24 @@
     .flex.flex-col.gap-y-8
       .flex.flex-col.gap-y-2
         span.text-xs.opacity-40.font-bold.leading-3 Вид события
-        base-select.select(
+        base-custom-select.select(
           v-model="kind"
           :items="kindEvents"
           placeholder="Вид события"
-          :style="{width: '570px'}"
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Сотрудник
-        base-select.select(
-          v-if="!selectedEventData.employees",
+        base-custom-select.select(
           :items="ownersList",
           v-model="employees.employee",
           placeholder="Выберите сотрудника"
-        )  
-        base-select.select(
-          v-else,
-          v-model="employees.employee",
-          :items="ownersList",
-          :placeholder="employeeName"
-          placeholderOpacity
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Клиент
-        base-select.select(
-          v-if="!selectedEventData.members",
+        base-custom-select.select(
           :items="membersList",
           v-model="members.person",
           placeholder="Выберите клиента",
-        )
-        base-select.select(
-          v-else,
-          v-model="members.person",
-          :items="membersList",
-          :placeholder="memberName",
-          placeholderOpacity
         )
     .flex.flex-col.gap-y-8
       .flex.gap-x-4
@@ -70,10 +53,10 @@
       @click="sendEventData"
     ) Создать событие
     base-button.update-button.text-base.font-semibold(
-    v-else,
-    :size="40",
-    :disabled="disabledUpdateButton",
-    @click="updateEventData",
+      v-else,
+      :size="40",
+      :disabled="disabledUpdateButton",
+      @click="updateEventData",
     ) Сохранить
 </template>
 
@@ -83,6 +66,7 @@ import BaseInputTime from "@/components/base/BaseInputTime.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
 import BaseInputDate from "@/components/base/BaseInputDate.vue";
 import BaseSelect from "@/components/base/BaseSelect.vue";
+import BaseCustomSelect from "@/components/base/BaseCustomSelect.vue";
 import BaseButton from "@/components/base/BaseButton";
 import * as moment from "moment/moment";
 export default {
@@ -93,6 +77,7 @@ export default {
     BaseInput,
     BaseInputDate,
     BaseInputTime,
+    BaseCustomSelect,
   },
   props: {
     closeForm: Function,
@@ -189,41 +174,14 @@ export default {
       }
       return [];
     },
-    memberName() {
-      if (this.selectedEventData.members) {
-        let foundMember = {};
-        if (this.selectedEventData.members.length > 1) {
-          foundMember = this.selectedEventData.members.find(
-            ({ role }) => role === this.MEMBER_TYPE
-          );
-        } else foundMember = this.selectedEventData.members[0];
-        let {
-          person: { last_name, first_name, patronymic },
-        } = foundMember;
-        return this.trimMemberName(last_name, first_name, patronymic);
-      }
-      return "";
-    },
-    employeeName() {
-      if (this.selectedEventData.employees) {
-        let foundEmployee = this.selectedEventData.employees.find(
-          ({ role }) => role === this.EMPLOYEE_TYPE
-        );
-        let {
-          employee: { last_name, first_name, patronymic },
-        } = foundEmployee;
-        return this.trimOwnerName(last_name, first_name, patronymic);
-      }
-      return "";
-    },
     disabledCreateButton() {
       if (
         this.eventDate &&
         this.startTime &&
         this.endTime &&
-        this.members.person &&
-        this.employees.employee &&
-        this.kind
+        this.members.person.label &&
+        this.employees.employee.label &&
+        this.kind.label
       ) {
         return false;
       }
@@ -236,7 +194,7 @@ export default {
         this.eventDate === start.format("YYYY-MM-DD") &&
         this.startTime === start.format("HH:mm") &&
         this.endTime === end.format("HH:mm") &&
-        this.kind === this.selectedEventData.kind
+        this.kind.label === this.selectedEventData.kind
       ) {
         return true;
       }
@@ -254,23 +212,69 @@ export default {
     },
     eventEmployee() {
       if (this.selectedEventData.employees) {
-        return this.selectedEventData.employees;
+        let foundEmployee = this.selectedEventData.employees.find(
+          ({ role }) => role === this.EMPLOYEE_TYPE
+        );
+        let {
+          employee: { id, last_name, first_name, patronymic },
+          ...rest
+        } = foundEmployee;
+        return {
+          employee: {
+            id: id,
+            label: this.trimOwnerName(last_name, first_name, patronymic),
+          },
+          id: rest.id,
+          role: rest.role,
+        };
       }
       return {
-        employee: null,
+        employee: {
+          id: null,
+          label: "",
+        },
         role: this.EMPLOYEE_TYPE,
       };
     },
     eventMember() {
-      return this.selectedEventData.members
-        ? this.selectedEventData.members
-        : {
-            person: null,
-            role: this.MEMBER_TYPE,
-          };
+      if (this.selectedEventData.members) {
+        let foundMember = {};
+        if (this.selectedEventData.members.length > 1) {
+          foundMember = this.selectedEventData.members.find(
+            ({ role }) => role === this.MEMBER_TYPE
+          );
+        } else foundMember = this.selectedEventData.members[0];
+        let {
+          person: { id, last_name, first_name, patronymic },
+          ...rest
+        } = foundMember;
+        return {
+          person: {
+            id: id,
+            label: this.trimMemberName(last_name, first_name, patronymic),
+          },
+          id: rest.id,
+          role: rest.role,
+        };
+      }
+      return {
+        person: {
+          id: null,
+          label: "",
+        },
+        role: this.MEMBER_TYPE,
+      };
     },
     eventKind() {
-      return this.selectedEventData.kind ? this.selectedEventData.kind : "";
+      return this.selectedEventData.kind
+        ? {
+            label: this.selectedEventData.kind,
+            id: null,
+          }
+        : {
+            label: "",
+            id: null,
+          };
     },
     eventId() {
       return this.selectedEventData.id ? this.selectedEventData.id : "";
@@ -287,23 +291,11 @@ export default {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
-        kind: this.kind,
+        kind: this.kind.label,
         employees: [
-          this.findPerson(
-            this.ownersData,
-            this.ownersList,
-            this.employees,
-            "employee"
-          ),
+          this.findPerson(this.ownersData, this.employees, "employee"),
         ],
-        members: [
-          this.findPerson(
-            this.membersData,
-            this.membersList,
-            this.members,
-            "person"
-          ),
-        ],
+        members: [this.findPerson(this.membersData, this.members, "person")],
       };
       this.postCreateEvent(this.eventData);
       this.clearForm();
@@ -313,7 +305,11 @@ export default {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
-        kind: this.kind,
+        kind: this.kind.label,
+        employees: [
+          this.findPerson(this.ownersData, this.employees, "employee"),
+        ],
+        members: [this.findPerson(this.membersData, this.members, "person")],
       };
       this.postUpdateEvent(this.id, this.eventData);
       this.clearForm();
@@ -327,12 +323,9 @@ export default {
     mergeDate(eventDate, time) {
       return moment(`${eventDate} ${time}`).format("YYYY-MM-DDTHH:mm:ss");
     },
-    findPerson(requestedList, serializedList, object, field) {
-      let foundId = serializedList.find(
-        ({ label }) => label === object[field]
-      ).id;
-      let foundPerson = requestedList.find(({ id }) => id === foundId);
-      return {
+    findPerson(requestedList, object, field) {
+      let foundPerson = requestedList.find(({ id }) => id === object[field].id);
+      let returnedData = {
         [field]: {
           id: foundPerson.id,
           last_name: foundPerson.last_name,
@@ -342,6 +335,8 @@ export default {
         },
         role: object.role,
       };
+      if (object.id) returnedData.id = object.id;
+      return returnedData;
     },
     postCreateEvent(event) {
       fetchWrapper

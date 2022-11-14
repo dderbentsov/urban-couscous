@@ -32,13 +32,11 @@ import { fetchWrapper } from "../../shared/fetchWrapper.js";
 import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
-import CalendarFormAddEvent from "./components/CalendarFormAddEvent.vue";
 export default {
   name: "TheCalendar",
   components: {
     CalendarSchedule,
     CalendarSidebar,
-    CalendarFormAddEvent,
   },
   data() {
     return {
