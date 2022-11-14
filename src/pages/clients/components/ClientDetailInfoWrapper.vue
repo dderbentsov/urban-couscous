@@ -4,14 +4,16 @@
       v-model:section-info="dataDocument"
       section="pass"
       :update-document="updateDocument"
-      :lack-pass="lackPass"
+      :lack-data="lackData"
     )
     .flex.flex-col
       client-detail-info-section(
         :section-info="dataAddress"
         section="addresses"
         :update-address="updateAddress"
-        :lack-address="lackAddress"
+        :lack-data="lackData"
+        :dope-address="dopeAddress"
+        :create-address="createAddress"
       )
     .flex.flex-col
       client-detail-info-section(
@@ -19,6 +21,7 @@
         section="docs"
         :save-new-doc="saveNewDoc"
         :delete-doc="deleteDoc"
+        :lack-data="lackData"
       )
 </template>
 
@@ -36,8 +39,9 @@ export default {
     dataDocument: Object,
     updateDocument: Function,
     updateAddress: Function,
-    lackPass: Boolean,
-    lackAddress: Boolean,
+    lackData: Boolean,
+    dopeAddress: Object,
+    createAddress: Function,
   },
 };
 </script>

@@ -75,8 +75,9 @@
       :delete-doc="deleteDoc"
       :update-document="postUpdateIdentityDocument"
       :update-address="postUpdateAddress"
-      :lack-pass="lackPass"
-      :lack-address="lackAddress"
+      :lack-data="lackData"
+      :dope-address="dopeAddress"
+      :create-address="postCreateAddress"
     )
 </template>
 
@@ -126,8 +127,15 @@ export default {
       dataClient: {},
       docId: "",
       addressId: "",
-      lackPass: true,
-      lackAddress: true,
+      lackData: true,
+      dopeAddress: {
+        city: "",
+        region: "",
+        street: "",
+        house: "",
+        flat: "",
+        index: "",
+      },
     };
   },
   props: {
@@ -174,7 +182,6 @@ export default {
         priority: this.dataClient.priority,
       });
     },
-
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
       if (
@@ -233,7 +240,6 @@ export default {
     postDeleteContact(contact) {
       fetchWrapper.del(`general/contact/${contact.id}/delete/`);
     },
-
     addNetwork(network) {
       this.dataClient.contacts.push(network);
     },
@@ -270,10 +276,6 @@ export default {
       this.saveAddress(data.address[0]);
       this.saveAttachments([...data.attachments]);
     },
-    addDoc() {
-      this.lackPass = false;
-    },
-
     saveIdentityDocument(data) {
       if (
         data?.series ||
@@ -294,12 +296,17 @@ export default {
             : "",
         };
       } else {
-        this.lackPass = false;
+        this.lackData = false;
+        this.dataIdentityDocument = {
+          numba: "",
+          issued_by_org: "",
+          issued_by_org_code: "",
+          issued_by_date: "",
+        };
       }
       this.docId = data?.id;
     },
     postUpdateIdentityDocument() {
-      console.log(this.dataIdentityDocument);
       fetchWrapper
         .post(`general/identity_document/${this.docId}/update/`, {
           series_number: this.dataIdentityDocument.numba,
@@ -313,22 +320,41 @@ export default {
         .then(() => this.fetchClientDetail(this.id));
     },
     saveAddress(data) {
+      this.addressId = data?.id;
       if (data?.join_adress) {
         this.dataAddress = {
           join_adress: data?.join_adress,
         };
       } else {
-        this.lackAddress = false;
+        this.lackData = false;
+        this.dataAddress = {
+          join_adress: "",
+        };
       }
-
-      this.addressId = data?.id;
+    },
+    clearAddress() {
+      this.dopeAddress = {
+        city: "",
+        region: "",
+        street: "",
+        flat: "",
+        house: "",
+        index: "",
+      };
     },
     postUpdateAddress() {
       fetchWrapper
         .post(`general/address/${this.addressId}/update/`, {
-          full_address: this.dataAddress.join_adress,
+          full_address:
+            this.dopeAddress.city +
+              this.dopeAddress.region +
+              this.dopeAddress.street +
+              this.dopeAddress.house +
+              this.dopeAddress.flat +
+              this.dopeAddress.index || this.dataAddress.join_adress,
         })
         .then(() => this.fetchClientDetail(this.id));
+      this.clearAddress();
     },
     saveAttachments(data) {
       this.dataAttachments = [...data];
@@ -353,6 +379,13 @@ export default {
       this.dataAttachments = this.dataAttachments.filter(
         (el) => el.id !== e.target.id
       );
+    },
+    postCreateAddress() {
+      fetchWrapper
+        .post("general/address/create/", {
+          person_id: this.id,
+        })
+        .then(() => this.fetchClientDetail(this.id));
     },
   },
 };
