@@ -4,10 +4,18 @@
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
-      .flex.items-center.gap-x-8(v-if="lackPass || lackAddress")
+      .flex.items-center.gap-x-8(v-if="this.isData")
         base-button(
-          v-if="isChange",
+          v-if="isChange && !this.isData",
           @click="saveChange",
+          confirm,
+          rounded,
+          outlined,
+          :size="20"
+        )
+        base-button(
+          v-if="isChange && this.isData",
+          @click="createNewAddress",
           confirm,
           rounded,
           outlined,
@@ -40,7 +48,7 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="lackPass || lackAddress")
+    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData")
       .flex.flex-col(class="gap-y-1.5")
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
           span.title-section.font-semibold.text-xs(
@@ -71,23 +79,27 @@
           .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
             .flex.flex-col(class="gap-y-1.5")
               .text-info.text-xxs.font-semibold Город
-              base-select(placeholder="Выберите город")
+              base-select(
+                placeholder="Выберите город",
+                :items="cities",
+                v-model="dopeAddress.city"
+              )
             .flex.flex-col(class="gap-y-1.5")
               .text-info.text-xxs.font-semibold Область
-              base-input.input-info(placeholder="Введите область")
+              base-input.input-info(placeholder="Введите область", v-model:value="dopeAddress.region")
             .flex.flex-col(class="gap-y-1.5")
               .text-info.text-xxs.font-semibold Улица
-              base-input.input-info(placeholder="Введите улицу")
+              base-input.input-info(placeholder="Введите улицу", v-model:value="dopeAddress.street")
             .flex.gap-x-4
               .flex.flex-col(class="gap-y-1.5")
                 .text-info.text-xxs.font-semibold Дом
-                base-input.input-info(placeholder="Дом")
+                base-input.input-info(placeholder="Дом", v-model:value="dopeAddress.house")
               .flex.flex-col(class="gap-y-1.5")
                 .text-info.text-xxs.font-semibold Квартира
-                base-input.input-info(placeholder="Квартира")
+                base-input.input-info(placeholder="Квартира", v-model:value="dopeAddress.flat")
             .flex.flex-col(class="gap-y-1.5")
               .text-info.text-xxs.font-semibold Индекс
-              base-input.input-info(v-mask="'######'", placeholder="000000")
+              base-input.input-info(v-mask="'######'", placeholder="000000", v-model:value="dopeAddress.index")
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
           .flex.items-center(v-if="item.title")
@@ -97,7 +109,10 @@
               @click="(e) => deleteDoc(e)"
             )
             span.text-sm {{item.title}}
-    .section-add-doc.flex.justify-center.items-center.cursor-pointer(v-else)
+    .section-add-doc.flex.justify-center.items-center.cursor-pointer(
+      v-else,
+      @click="changeData"
+    )
       span Добавить данные
 </template>
 
@@ -127,8 +142,9 @@ export default {
     deleteDoc: Function,
     updateDocument: Function,
     updateAddress: Function,
-    lackPass: Boolean,
-    lackAddress: Boolean,
+    lackData: Boolean,
+    dopeAddress: Object,
+    createAddress: Function,
   },
   directives: { mask },
 
@@ -145,12 +161,19 @@ export default {
       isOpenChange: false,
       isChange: false,
       settings: detail,
-      customTokens: {
-        Y: { pattern: /[0-9a-zA-Zа-яёА-ЯЁ ]/u },
-      },
+      cities: [
+        { id: 1, label: "Рязань" },
+        { id: 1, label: "Москва" },
+        { id: 1, label: "Луховицы" },
+      ],
+      isData: true,
     };
   },
   methods: {
+    changeData() {
+      this.isData = true;
+      this.isChange = true;
+    },
     copyValue(text) {
       navigator.clipboard.writeText(text);
     },
@@ -167,6 +190,12 @@ export default {
       } else if (this.section === "addresses") {
         this.updateAddress();
       }
+    },
+    createNewAddress() {
+      this.isOpenChange = false;
+      this.isChange = false;
+      this.createAddress();
+      this.updateAddress();
     },
     openAddingWrap() {
       if (!this.isChange) {
@@ -195,6 +224,14 @@ export default {
         name: "",
         type: "",
       };
+    },
+  },
+  watch: {
+    lackData: {
+      immediate: true,
+      handler(newValue) {
+        this.isData = newValue;
+      },
     },
   },
 };
