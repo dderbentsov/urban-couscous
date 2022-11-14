@@ -320,6 +320,7 @@ export default {
       this.eventData = {};
     },
     clearForm() {
+      if (this.selectedEventData.id) this.$emit("close-change-form");
       this.$emit("clear-selected-event-data");
       this.closeForm();
     },

@@ -39,6 +39,7 @@ export default {
   name: "CalendarEventCard",
   components: { CalendarEventDescriptionCard },
   props: {
+    changeFormWasClosed: Boolean,
     ownerEvent: Object,
     eventTypes: {
       type: Array,
@@ -221,6 +222,17 @@ export default {
     closeDescriptionCard() {
       this.hideDescriptionCard();
       this.setDefaultTheme();
+    },
+  },
+  watch: {
+    changeFormWasClosed: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue === true) {
+          this.setDefaultTheme();
+          this.$emit("reset-change-form");
+        }
+      },
     },
   },
 };

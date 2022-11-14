@@ -16,11 +16,14 @@
       :close-form-create-event="closeFormCreateEvent"
       :is-open-form="isOpenForm"
       :event-types="eventTypes"
+      :change-form-was-closed="changeFormWasClosed"
       @previous-date="switchPreviousDate"
       @next-date="switchNextDate"
       @selected-layout="changeCalendarLayout"
       @open-change-form="openFormCreateEvent"
       @update-events="fetchEventsData"
+      @close-change-form="setChangeFormState"
+      @reset-change-form="resetChangeFormState"
     )
 </template>
 
@@ -49,6 +52,7 @@ export default {
       eventsData: [],
       employeesData: [],
       isOpenForm: false,
+      changeFormWasClosed: false,
       membersData: [],
       eventTypes: [
         { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
@@ -98,6 +102,12 @@ export default {
     },
     closeFormCreateEvent() {
       this.isOpenForm = false;
+    },
+    setChangeFormState() {
+      this.changeFormWasClosed = true;
+    },
+    resetChangeFormState() {
+      this.changeFormWasClosed = false;
     },
   },
   mounted() {
