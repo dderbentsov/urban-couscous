@@ -20,7 +20,9 @@
         :ownerEvent="event"
         :event-types="eventTypes"
         :style="eventCardPosition(event.start, event.end)"
+        :change-form-was-closed="changeFormWasClosed"
         @selected-event="transmitEventData"
+        @reset-change-form="transmitResetChangeForm"
       )
 </template>
 
@@ -41,6 +43,7 @@ export default {
     dayEndTime: Number,
     dayStartTime: Number,
     eventTypes: Array,
+    changeFormWasClosed: Boolean,
   },
   data() {
     return {
@@ -89,6 +92,9 @@ export default {
     },
     transmitEventData(eventData) {
       this.$emit("selected-event", eventData);
+    },
+    transmitResetChangeForm() {
+      this.$emit("reset-change-form");
     },
   },
 };

@@ -21,7 +21,9 @@
           :day-end-time="validateEndTime"
           :style="columnSize"
           :event-types="eventTypes"
+          :change-form-was-closed="changeFormWasClosed"
           @selected-event="writeEventData"
+          @reset-change-form="transmitResetChangeForm"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9
@@ -53,6 +55,7 @@
         :event-types="eventTypes"
         @clear-selected-event-data="clearSelectedEvent"
         @update-events="transmitUpdateEvents"
+        @close-change-form="transmitCloseChangeForm"
       )
 </template>
 
@@ -73,6 +76,7 @@ export default {
     CalendarFormAddEvent,
   },
   props: {
+    changeFormWasClosed: Boolean,
     currentDate: {
       type: Object,
       default() {
@@ -325,6 +329,9 @@ export default {
     transmitUpdateEvents() {
       this.$emit("update-events");
     },
+    transmitCloseChangeForm() {
+      this.$emit("close-change-form");
+    },
     changeScrollingState(e) {
       this.isScrolling = e.target.scrollTop !== 0;
     },
@@ -335,6 +342,9 @@ export default {
           behavior: "smooth",
         })
       );
+    },
+    transmitResetChangeForm() {
+      this.$emit("reset-change-form");
     },
   },
   watch: {
