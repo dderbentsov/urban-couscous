@@ -1,27 +1,9 @@
 <template lang="pug">
-  .flex.box-border.container.items-center.cursor-pointer.relative(
+  .flex.box-border.container.items-center.cursor-pointer.justify-center.relative(
     @click="changeSelect"
-    :class="{border: styleBorder, 'py-2.5 px-4':!forNetworks, 'justify-center':forNetworks, 'justify-between':!forNetworks}"
+    :class="{border: styleBorder}"
     )
-    .flex.mr-2(v-if="!forNetworks")
-      input.text-base.select.cursor-pointer(
-          :size="sizeInput"
-          v-model="optionData"
-          :placeholder="placeholder"
-          :disabled="disabled"
-          @input="sendData"
-        )
-      .absolute.options.top-12.left-0(
-        v-show="isSelectOpen"
-        :id="id"
-        )
-        .option.px-4.py-1(
-          v-for="data in filteredListData"
-          @click="(e) => chooseOption(e)"
-          :key="data.id || data"
-          :id="data.id || data"
-          ) {{data.name || data}}
-    .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(v-if="forNetworks" :class="optionData, 'px-2.5'")
+    .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(:class="optionData, 'px-2.5'")
       .absolute.options.top-11.left-0(
         v-show="isSelectOpen"
         :id="id")
@@ -33,12 +15,11 @@
           :class="data.icon"
           )
     .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
-    .text-xsm.ml-2.pt-1.icon-down-arrow.icon.text-center(v-if="!forNetworks" :class="{ open: isSelectOpen}")
 </template>
 
 <script>
 export default {
-  name: "OldBaseSelect",
+  name: "BaseSelectNetworks",
   props: {
     id: String,
     styleBorder: {
@@ -48,7 +29,6 @@ export default {
     optionData: String,
     listData: Array,
     chooseOption: Function,
-    forNetworks: Boolean,
     placeholder: {
       type: String,
       default: "",
@@ -61,35 +41,9 @@ export default {
       isSelectOpen: false,
     };
   },
-  computed: {
-    filteredListData() {
-      if (!this.disabled && this.optionData) {
-        let filteredList = [];
-        filteredList = this.listData.filter((elem) => {
-          let reg = new RegExp(`${this.optionData}`, "img");
-          if (elem.name) {
-            return elem.name.match(reg);
-          }
-          return elem.match(reg);
-        });
-        if (filteredList.length === 0) this.closeSelect();
-        return filteredList;
-      }
-      return this.listData;
-    },
-  },
   methods: {
     changeSelect() {
       this.isSelectOpen = !this.isSelectOpen;
-    },
-    openSelect() {
-      this.isSelectOpen = true;
-    },
-    closeSelect() {
-      this.isSelectOpen = false;
-    },
-    sendData(e) {
-      this.$emit("changeInput", e.target.value);
     },
   },
 };

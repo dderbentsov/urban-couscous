@@ -23,9 +23,9 @@
     calendar-event-description-card.right-0(
       v-if="isOpenDescriptionCard"
       :style="descriptionCardPosition"
-      :owner-event="this.ownerEvent"
-      :event-types="this.eventTypes"
-      :event-time="this.eventTime"
+      :owner-event="ownerEvent"
+      :event-types="eventTypes"
+      :event-time="eventTime"
       :event-member="eventMember"
       :description="description"
       @selected-event="transmitEventData"
