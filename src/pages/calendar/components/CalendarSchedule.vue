@@ -22,7 +22,7 @@
           :style="columnSize"
           :event-types="eventTypes"
           :change-form-was-closed="changeFormWasClosed"
-          @selected-event="writeEventData"
+          @selected-event="transmitEventData"
           @reset-change-form="transmitResetChangeForm"
         )
       .flex.w-full.relative
@@ -46,17 +46,6 @@
             :time-coil="timeCoil"
             :owners-count="ownersCount"
           )
-      calendar-form-add-event(
-        v-if="isOpenForm"
-        :close-form="closeFormCreateEvent"
-        :owners-data="ownersData"
-        :members-data="membersData"
-        :selected-event-data="selectedEvent"
-        :event-types="eventTypes"
-        @clear-selected-event-data="clearSelectedEvent"
-        @update-events="transmitUpdateEvents"
-        @close-change-form="transmitCloseChangeForm"
-      )
 </template>
 
 <script>
@@ -65,7 +54,6 @@ import CalendarHeader from "./CalendarHeader.vue";
 import CalendarBackground from "./CalendarBackground.vue";
 import CalendarClockColumn from "./CalendarClockColumn.vue";
 import CalendarColumn from "./CalendarColumn.vue";
-import CalendarFormAddEvent from "./CalendarFormAddEvent.vue";
 export default {
   name: "CalendarSchedule",
   components: {
@@ -73,7 +61,6 @@ export default {
     CalendarBackground,
     CalendarClockColumn,
     CalendarColumn,
-    CalendarFormAddEvent,
   },
   props: {
     changeFormWasClosed: Boolean,
@@ -108,8 +95,6 @@ export default {
         return [];
       },
     },
-    closeFormCreateEvent: Function,
-    isOpenForm: Boolean,
     eventTypes: {
       type: Array,
       default() {
@@ -127,7 +112,6 @@ export default {
       pixelsPerHour: 62,
       columnHeaderHeight: 48,
       defaultColumnWidth: 470,
-      selectedEvent: {},
       isScrolling: false,
     };
   },
@@ -319,19 +303,6 @@ export default {
       });
       return filteredArray;
     },
-    writeEventData(eventData) {
-      this.selectedEvent = eventData;
-      this.$emit("open-change-form");
-    },
-    clearSelectedEvent() {
-      this.selectedEvent = {};
-    },
-    transmitUpdateEvents() {
-      this.$emit("update-events");
-    },
-    transmitCloseChangeForm() {
-      this.$emit("close-change-form");
-    },
     changeScrollingState(e) {
       this.isScrolling = e.target.scrollTop !== 0;
     },
@@ -345,6 +316,9 @@ export default {
     },
     transmitResetChangeForm() {
       this.$emit("reset-change-form");
+    },
+    transmitEventData(eventData) {
+      this.$emit("selected-event", eventData);
     },
   },
   watch: {
