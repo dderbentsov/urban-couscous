@@ -7,7 +7,7 @@
       .flex.items-center.gap-x-8
         base-button(
           v-if="isChange",
-          @click="saveChange",
+          @click="changeDoc",
           confirm,
           rounded,
           outlined,
@@ -69,29 +69,10 @@
             .line.absolute
             .text-separation.span.text-sm.separator.px-2 или
           .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Город
-              base-select(
-                placeholder="Выберите город",
-                :items="cities",
-                v-model="dopeAddress.city"
-              )
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Область
-              base-input.input-info(placeholder="Введите область", v-model:value="dopeAddress.region")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Улица
-              base-input.input-info(placeholder="Введите улицу", v-model:value="dopeAddress.street")
-            .flex.gap-x-4
-              .flex.flex-col(class="gap-y-1.5")
-                .text-info.text-xxs.font-semibold Дом
-                base-input.input-info(placeholder="Дом", v-model:value="dopeAddress.house")
-              .flex.flex-col(class="gap-y-1.5")
-                .text-info.text-xxs.font-semibold Квартира
-                base-input.input-info(placeholder="Квартира", v-model:value="dopeAddress.flat")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Индекс
-              base-input.input-info(v-mask="'######'", placeholder="000000", v-model:value="dopeAddress.index")
+            client-detail-section-address(
+              :dope-address="dopeAddress"
+              :cities="cities"
+            )
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
           .flex.items-center(v-if="item.title")
@@ -103,7 +84,7 @@
             span.text-sm {{item.title}}
     .section-add-doc.flex.justify-center.items-center.cursor-pointer(
       v-else,
-      @click="changeData"
+      @click="openAddDoc"
     )
       span Добавить данные
 </template>
@@ -111,21 +92,18 @@
 <script>
 import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
 import BaseButton from "@/components/base/BaseButton";
-import BaseInput from "@/components/base/BaseInput";
-import BaseSelect from "@/components/base/BaseSelect";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
+import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import { detail } from "@/pages/clients/utils/tableConfig";
-import { mask } from "vue-the-mask";
 export default {
   name: "ClientDetailInfoSection",
   components: {
     TableAddingNewAdditional,
     BaseButton,
-    BaseInput,
-    BaseSelect,
     ClientDetailInput,
     TableAddingNewDoc,
+    ClientDetailSectionAddress,
   },
   props: {
     saveNewDoc: Function,
@@ -139,9 +117,9 @@ export default {
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
+    addressId: String,
+    docId: String,
   },
-  directives: { mask },
-
   data() {
     return {
       additionalData: {
@@ -164,14 +142,21 @@ export default {
     };
   },
   methods: {
-    changeData() {
+    openAddDoc() {
       this.isChange = true;
       if (this.section === "pass") {
         this.isData = true;
-        this.createDocument();
       } else if (this.section === "addresses") {
         this.isAddress = true;
-        this.createAddress();
+      }
+    },
+    changeDoc() {
+      this.isChange = false;
+      if (this.section === "pass") {
+        this.docId ? this.updateDocument() : this.createDocument();
+      }
+      if (this.section === "addresses") {
+        this.addressId ? this.updateAddress() : this.createAddress();
       }
     },
     copyValue(text) {
@@ -287,8 +272,4 @@ export default {
   width: 38px
   z-index: 1
   background: white
-.input-info
-  color: var(--font-dark-blue-color)
-.text-info
-  color: var(--font-grey-color)
 </style>

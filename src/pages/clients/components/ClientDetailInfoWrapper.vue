@@ -6,6 +6,7 @@
       :update-document="updateDocument"
       :lack-data="lackData"
       :create-document="createDocument"
+      :doc-id="docId"
     )
     .flex.flex-col
       client-detail-info-section(
@@ -15,6 +16,7 @@
         :lack-address="lackAddress"
         :dope-address="dopeAddress"
         :create-address="createAddress"
+        :address-id="addressId"
       )
     .flex.flex-col
       client-detail-info-section(
@@ -44,6 +46,8 @@ export default {
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
+    addressId: String,
+    docId: String,
   },
 };
 </script>
