@@ -78,6 +78,7 @@
       :lack-data="lackData"
       :dope-address="dopeAddress"
       :create-address="postCreateAddress"
+      :create-document="postCreateIdentityDocument"
     )
 </template>
 
@@ -128,6 +129,7 @@ export default {
       docId: "",
       addressId: "",
       lackData: true,
+      lackAddress: true,
       dopeAddress: {
         city: "",
         region: "",
@@ -321,10 +323,11 @@ export default {
     },
     saveAddress(data) {
       this.addressId = data?.id;
-      if (data?.join_adress) {
+      if (data?.join_adress && data?.join_adress.substr(0, 4) !== "None") {
         this.dataAddress = {
           join_adress: data?.join_adress,
         };
+        this.lackData = true;
       } else {
         this.lackData = false;
         this.dataAddress = {
@@ -383,6 +386,13 @@ export default {
     postCreateAddress() {
       fetchWrapper
         .post("general/address/create/", {
+          person_id: this.id,
+        })
+        .then(() => this.fetchClientDetail(this.id));
+    },
+    postCreateIdentityDocument() {
+      fetchWrapper
+        .post("general/identity_document/create/", {
           person_id: this.id,
         })
         .then(() => this.fetchClientDetail(this.id));

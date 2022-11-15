@@ -5,6 +5,7 @@
       section="pass"
       :update-document="updateDocument"
       :lack-data="lackData"
+      :create-document="createDocument"
     )
     .flex.flex-col
       client-detail-info-section(
@@ -42,6 +43,7 @@ export default {
     lackData: Boolean,
     dopeAddress: Object,
     createAddress: Function,
+    createDocument: Function,
   },
 };
 </script>

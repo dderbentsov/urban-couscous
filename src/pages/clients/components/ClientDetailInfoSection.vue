@@ -4,23 +4,24 @@
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
-      .flex.items-center.gap-x-8(v-if="this.isData")
+      .flex.items-center.gap-x-8
         base-button(
-          v-if="isChange && !this.isData",
+          v-if="isChange",
           @click="saveChange",
           confirm,
           rounded,
           outlined,
           :size="20"
         )
-        base-button(
-          v-if="isChange && this.isData",
-          @click="createNewAddress",
-          confirm,
-          rounded,
-          outlined,
-          :size="20"
-        )
+          .icon-ok.text-xsm(class="pt-[3px]")
+        //- base-button(
+        //-   v-if="isChange && this.isData",
+        //-   @click="createNewAddress",
+        //-   confirm,
+        //-   rounded,
+        //-   outlined,
+        //-   :size="20"
+        //- )
           .icon-ok.text-xsm(class="pt-[3px]")
         .edit.icon-edit.cursor-pointer.text-sm(
           v-if="!isChange",
@@ -145,6 +146,7 @@ export default {
     lackData: Boolean,
     dopeAddress: Object,
     createAddress: Function,
+    createDocument: Function,
   },
   directives: { mask },
 
@@ -173,6 +175,11 @@ export default {
     changeData() {
       this.isData = true;
       this.isChange = true;
+      if (this.section === "pass") {
+        this.createDocument();
+      } else if (this.section === "addresses") {
+        this.createAddress();
+      }
     },
     copyValue(text) {
       navigator.clipboard.writeText(text);
@@ -190,12 +197,6 @@ export default {
       } else if (this.section === "addresses") {
         this.updateAddress();
       }
-    },
-    createNewAddress() {
-      this.isOpenChange = false;
-      this.isChange = false;
-      this.createAddress();
-      this.updateAddress();
     },
     openAddingWrap() {
       if (!this.isChange) {
