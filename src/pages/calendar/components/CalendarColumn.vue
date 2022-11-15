@@ -23,6 +23,7 @@
         :change-form-was-closed="changeFormWasClosed"
         @selected-event="transmitEventData"
         @reset-change-form="transmitResetChangeForm"
+        @delete-event="transmitDeleteEvent"
       )
 </template>
 
@@ -95,6 +96,9 @@ export default {
     },
     transmitResetChangeForm() {
       this.$emit("reset-change-form");
+    },
+    transmitDeleteEvent(eventData) {
+      this.$emit("delete-event", eventData);
     },
   },
 };

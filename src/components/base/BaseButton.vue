@@ -1,7 +1,7 @@
 <template lang="pug">
   button.base-button.text-base(
     :disabled="disabled",
-    :class="{'rounded': rounded, 'outlined': outlined, 'secondary': secondary, 'confirm': confirm, 'added': added}"
+    :class="{'rounded': rounded, 'outlined': outlined, 'outlined-red': outlinedRed, 'secondary': secondary, 'confirm': confirm, 'added': added}"
     :style="{height: size + 'px', minWidth: size + 'px'}"
     )
     .button-container
@@ -25,6 +25,7 @@ export default {
   props: {
     confirm: Boolean,
     outlined: Boolean,
+    outlinedRed: Boolean,
     added: Boolean,
     rounded: Boolean,
     disabled: Boolean,
@@ -84,20 +85,37 @@ export default {
 
 .outlined
   background-color: var(--default-white)
-  border: 1px solid var(--btn-blue-color)
+  border: 1.5px solid var(--btn-blue-color)
   color: var(--btn-blue-color)
   &:active
     background-color: var(--default-white)
-    border: 1px solid var(--font-dark-blue-color)
+    border: 1.5px solid var(--font-dark-blue-color)
     color: var(--font-dark-blue-color)
   &:hover
     background-color: var(--default-white)
-    border: 1px solid var(--btn-blue-color-hover)
+    border: 1.5px solid var(--btn-blue-color-hover)
     color: var(--btn-blue-color-hover)
   &:disabled, &[disabled]
     background-color: var(--default-white)
-    border: 1px solid var(--btn-blue-color-1)
+    border: 1.5px solid var(--btn-blue-color-1)
     color: var(--btn-blue-color-1)
+
+.outlined-red
+  background-color: var(--default-white)
+  border: 1.5px solid var(--border-red-color)
+  color: var(--border-red-color)
+  &:active
+    background-color: var(--default-white)
+    border: 1.5px solid var(--bg-event-red-color)
+    color: var(--bg-event-red-color)
+  &:hover
+    background-color: var(--default-white)
+    border: 1.5px solid var(--bg-event-red-color-1)
+    color: var(--bg-event-red-color-1)
+  &:disabled, &[disabled]
+    background-color: var(--default-white)
+    border: 1.5px solid var(--bg-event-red-color-0)
+    color: var(--bg-event-red-color-0)
 
 .added
   border: 2px solid var(--btn-blue-color)

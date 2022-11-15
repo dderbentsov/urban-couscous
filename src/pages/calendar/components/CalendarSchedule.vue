@@ -24,6 +24,7 @@
           :change-form-was-closed="changeFormWasClosed"
           @selected-event="transmitEventData"
           @reset-change-form="transmitResetChangeForm"
+          @delete-event="transmitDeleteEvent"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9
@@ -319,6 +320,9 @@ export default {
     },
     transmitEventData(eventData) {
       this.$emit("selected-event", eventData);
+    },
+    transmitDeleteEvent(eventData) {
+      this.$emit("delete-event", eventData);
     },
   },
   watch: {

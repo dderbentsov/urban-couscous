@@ -21,17 +21,27 @@
       @open-change-form="openFormCreateEvent"
       @reset-change-form="resetChangeFormState"
       @selected-event="writeEventData"
+      @delete-event="openModal"
     )
     calendar-form-add-event(
-        v-if="isOpenForm"
-        :close-form="closeFormCreateEvent"
-        :owners-data="employeesData"
-        :members-data="membersData"
-        :selected-event-data="selectedEvent"
+      v-if="isOpenForm"
+      :close-form="closeFormCreateEvent"
+      :owners-data="employeesData"
+      :members-data="membersData"
+      :selected-event-data="selectedEvent"
+      :event-types="eventTypes"
+      @clear-selected-event-data="clearSelectedEvent"
+      @update-events="fetchEventsData"
+      @close-change-form="setChangeFormState"
+    )
+    base-modal(
+      v-model="showModal"
+      title="Удаление события"
+    ) 
+      calendar-delete-modal(
         :event-types="eventTypes"
-        @clear-selected-event-data="clearSelectedEvent"
-        @update-events="fetchEventsData"
-        @close-change-form="setChangeFormState"
+        :owner-event="selectedEvent"
+        :close-modal="changeShowModal"
       )
 </template>
 
@@ -41,12 +51,16 @@ import * as moment from "moment/moment";
 import CalendarSchedule from "./components/CalendarSchedule.vue";
 import CalendarSidebar from "./components/CalendarSidebar.vue";
 import CalendarFormAddEvent from "./components/CalendarFormAddEvent.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
+import CalendarDeleteModal from "./components/CalendarDeleteModal.vue";
 export default {
   name: "TheCalendar",
   components: {
     CalendarSchedule,
     CalendarSidebar,
     CalendarFormAddEvent,
+    BaseModal,
+    CalendarDeleteModal,
   },
   data() {
     return {
@@ -54,6 +68,7 @@ export default {
       calendarLayout: "",
       currentDate: moment(),
       selectedEvent: {},
+      showModal: false,
       timeInformation: {
         dayStartTime: "08:00",
         dayEndTime: "20:00",
@@ -100,7 +115,7 @@ export default {
     },
     fetchEventsData() {
       fetchWrapper
-        .get("registry/event/")
+        .get("registry/event/?limit=20")
         .then((res) => this.saveEventsData(res));
     },
     changeWidth(value) {
@@ -124,6 +139,21 @@ export default {
     },
     clearSelectedEvent() {
       this.selectedEvent = {};
+    },
+    openModal(eventData) {
+      this.selectedEvent = eventData;
+      this.showModal = true;
+    },
+    changeShowModal() {
+      this.showModal = false;
+    },
+  },
+  watch: {
+    showModal: function () {
+      if (this.showModal === false) {
+        this.setChangeFormState();
+        this.clearSelectedEvent();
+      }
     },
   },
   mounted() {

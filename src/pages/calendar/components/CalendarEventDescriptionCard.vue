@@ -1,20 +1,21 @@
 <template lang="pug">
   .wrapper.px-4.pt-14px.pb-4.font-medium.cursor-auto(
     :style="typeColor",
-    v-click-outside="close"
+    v-click-outside="close",
+    :class="{'shadow': !disabled}"
   )
     .flex.justify-between.items-center.mb-2
       .flex
         span.inline-block.font-bold.text-base.mr-3.mt-2px {{ eventTime }}
         .type.text-xxs.px-14px.py-1(v-if="isCertainType")
           span.type-text {{ ownerEvent.kind }}
-      .right-side.flex.gap-x-4.text-sm
-        .icon-basket.flex.items-center.cursor-pointer
+      .right-side.flex.gap-x-4.text-sm(v-if="!disabled")
+        .icon-basket.flex.items-center.cursor-pointer(@click="transmitDeleteEvent")
         .icon-edit.flex.items-center.cursor-pointer(@click="transmitEventData")
         .icon-cancel.text-xxs.flex.items-center.cursor-pointer(@click="close")
     .body.mr-6
       span.text-base  {{ eventMember }}
-      .flex.text-xxs.mt-4.justify-between
+      .flex.text-xxs.mt-4.justify-between(v-if="!disabled")
         .column
           ul
             li(v-for="elem in description" :key="elem") {{ elem }}
@@ -31,15 +32,10 @@ export default {
         return [];
       },
     },
-    eventTime: {
-      type: String,
-      default: "",
+    disabled: {
+      type: Boolean,
+      default: false,
     },
-    eventMember: {
-      type: String,
-      default: "",
-    },
-    description: Array,
   },
   data() {
     return {
@@ -74,6 +70,26 @@ export default {
           return {};
       }
     },
+    eventTime() {
+      return `${this.trimTime(this.ownerEvent.start)} - ${this.trimTime(
+        this.ownerEvent.end
+      )}`;
+    },
+    eventMember() {
+      let membersArray = this.ownerEvent.members;
+      if (membersArray.length > 1) {
+        let primaryMember = membersArray.find(
+          (elem) => elem.role === "primary"
+        );
+        return this.composeFullName(primaryMember.person);
+      }
+      return this.composeFullName(membersArray[0].person);
+    },
+    description() {
+      return this.ownerEvent.description
+        ? this.ownerEvent.description.split(", ")
+        : [];
+    },
   },
   methods: {
     changeType() {
@@ -82,8 +98,17 @@ export default {
     transmitEventData() {
       this.$emit("selected-event");
     },
+    transmitDeleteEvent() {
+      this.$emit("delete-event");
+    },
     close() {
-      this.$emit("close-description-card");
+      if (!this.disabled) this.$emit("close-description-card");
+    },
+    trimTime(time) {
+      return time.slice(11, -4);
+    },
+    composeFullName(object) {
+      return `${object.last_name} ${object.first_name} ${object.patronymic}`;
     },
   },
 };
@@ -93,8 +118,10 @@ export default {
 .wrapper
   height: auto !important
   background-color: var(--default-white)
+  color: var(--font-dark-blue-color)
+
+.shadow
   border-radius: 4px
-  color: var(--font-black-color)
   box-shadow: var(--default-shadow)
 
 .type

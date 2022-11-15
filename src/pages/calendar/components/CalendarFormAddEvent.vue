@@ -225,7 +225,7 @@ export default {
             label: this.trimOwnerName(last_name, first_name, patronymic),
           },
           id: rest.id,
-          role: rest.role,
+          role: rest?.role || this.EMPLOYEE_TYPE,
         };
       }
       return {
@@ -254,7 +254,7 @@ export default {
             label: this.trimMemberName(last_name, first_name, patronymic),
           },
           id: rest.id,
-          role: rest.role,
+          role: rest?.role || this.MEMBER_TYPE,
         };
       }
       return {

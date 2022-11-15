@@ -4,7 +4,7 @@
       .base-content(v-click-outside="clickOutside")
         .base-header
           .header-title.text {{ title }}
-          .icon-cancel(@click="value = false")
+          .icon-cancel.text-sm(@click="value = false")
         slot
 
 </template>
@@ -56,7 +56,7 @@ export default {
   width: 100vw
   height: 100vh
 .base-content
-  padding: 32px
+  padding: 32px 40px
   background-color: var(--default-white)
   box-shadow: 4px 4px 8px rgba(9, 10, 21, 0.1), -4px -4px 8px rgba(9, 10, 21, 0.1)
   border-radius: 4px
@@ -65,7 +65,7 @@ export default {
   font-weight: 700
   font-size: 20px
   line-height: 23px
-
+  color: var(--font-dark-blue-color)
 .base-header
   display: flex
   justify-content: space-between
