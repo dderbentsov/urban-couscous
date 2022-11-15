@@ -76,6 +76,7 @@
       :update-document="postUpdateIdentityDocument"
       :update-address="postUpdateAddress"
       :lack-data="lackData"
+      :lack-address="lackAddress"
       :dope-address="dopeAddress"
       :create-address="postCreateAddress"
       :create-document="postCreateIdentityDocument"
@@ -297,6 +298,7 @@ export default {
             ? data?.issued_by_date.split("-").reverse().join(".")
             : "",
         };
+        this.lackData = true;
       } else {
         this.lackData = false;
         this.dataIdentityDocument = {
@@ -327,9 +329,9 @@ export default {
         this.dataAddress = {
           join_adress: data?.join_adress,
         };
-        this.lackData = true;
+        this.lackAddress = true;
       } else {
-        this.lackData = false;
+        this.lackAddress = false;
         this.dataAddress = {
           join_adress: "",
         };
@@ -394,6 +396,14 @@ export default {
       fetchWrapper
         .post("general/identity_document/create/", {
           person_id: this.id,
+          kind: "ПАСПОРТ",
+          series_number: this.dataIdentityDocument.numba,
+          issued_by_org: this.dataIdentityDocument.issued_by_org,
+          issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
+          issued_by_date: this.dataIdentityDocument.issued_by_date
+            .split(".")
+            .reverse()
+            .join("-"),
         })
         .then(() => this.fetchClientDetail(this.id));
     },

@@ -14,15 +14,6 @@
           :size="20"
         )
           .icon-ok.text-xsm(class="pt-[3px]")
-        //- base-button(
-        //-   v-if="isChange && this.isData",
-        //-   @click="createNewAddress",
-        //-   confirm,
-        //-   rounded,
-        //-   outlined,
-        //-   :size="20"
-        //- )
-          .icon-ok.text-xsm(class="pt-[3px]")
         .edit.icon-edit.cursor-pointer.text-sm(
           v-if="!isChange",
           @click="changeClientData"
@@ -49,7 +40,7 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData")
+    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData || this.isAddress")
       .flex.flex-col(class="gap-y-1.5")
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
           span.title-section.font-semibold.text-xs(
@@ -144,6 +135,7 @@ export default {
     updateDocument: Function,
     updateAddress: Function,
     lackData: Boolean,
+    lackAddress: Boolean,
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
@@ -160,7 +152,6 @@ export default {
       },
       docData: [],
       isOpenAddingWrap: false,
-      isOpenChange: false,
       isChange: false,
       settings: detail,
       cities: [
@@ -169,15 +160,17 @@ export default {
         { id: 1, label: "Луховицы" },
       ],
       isData: true,
+      isAddress: true,
     };
   },
   methods: {
     changeData() {
-      this.isData = true;
       this.isChange = true;
       if (this.section === "pass") {
+        this.isData = true;
         this.createDocument();
       } else if (this.section === "addresses") {
+        this.isAddress = true;
         this.createAddress();
       }
     },
@@ -190,7 +183,6 @@ export default {
       }
     },
     saveChange() {
-      this.isOpenChange = false;
       this.isChange = false;
       if (this.section === "pass") {
         this.updateDocument();
@@ -217,7 +209,6 @@ export default {
         this.saveNewDoc(this.section, this.docData);
       }
       this.isOpenAddingWrap = false;
-      this.isOpenChange = false;
       this.docData = [];
       this.additionalData = {
         header: "",
@@ -232,6 +223,12 @@ export default {
       immediate: true,
       handler(newValue) {
         this.isData = newValue;
+      },
+    },
+    lackAddress: {
+      immediate: true,
+      handler(newValue) {
+        this.isAddress = newValue;
       },
     },
   },

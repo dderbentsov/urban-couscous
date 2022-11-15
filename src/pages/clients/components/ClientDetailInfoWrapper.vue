@@ -12,7 +12,7 @@
         :section-info="dataAddress"
         section="addresses"
         :update-address="updateAddress"
-        :lack-data="lackData"
+        :lack-address="lackAddress"
         :dope-address="dopeAddress"
         :create-address="createAddress"
       )
@@ -22,7 +22,6 @@
         section="docs"
         :save-new-doc="saveNewDoc"
         :delete-doc="deleteDoc"
-        :lack-data="lackData"
       )
 </template>
 
@@ -41,6 +40,7 @@ export default {
     updateDocument: Function,
     updateAddress: Function,
     lackData: Boolean,
+    lackAddress: Boolean,
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
