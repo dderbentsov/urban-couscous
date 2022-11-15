@@ -4,18 +4,10 @@
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
-      .flex.items-center.gap-x-8(v-if="this.isData")
+      .flex.items-center.gap-x-8
         base-button(
-          v-if="isChange && !this.isData",
-          @click="saveChange",
-          confirm,
-          rounded,
-          outlined,
-          :size="20"
-        )
-        base-button(
-          v-if="isChange && this.isData",
-          @click="createNewAddress",
+          v-if="isChange",
+          @click="changeDoc",
           confirm,
           rounded,
           outlined,
@@ -48,7 +40,7 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData")
+    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData || this.isAddress")
       .flex.flex-col(class="gap-y-1.5")
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
           span.title-section.font-semibold.text-xs(
@@ -77,29 +69,10 @@
             .line.absolute
             .text-separation.span.text-sm.separator.px-2 или
           .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Город
-              base-select(
-                placeholder="Выберите город",
-                :items="cities",
-                v-model="dopeAddress.city"
-              )
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Область
-              base-input.input-info(placeholder="Введите область", v-model:value="dopeAddress.region")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Улица
-              base-input.input-info(placeholder="Введите улицу", v-model:value="dopeAddress.street")
-            .flex.gap-x-4
-              .flex.flex-col(class="gap-y-1.5")
-                .text-info.text-xxs.font-semibold Дом
-                base-input.input-info(placeholder="Дом", v-model:value="dopeAddress.house")
-              .flex.flex-col(class="gap-y-1.5")
-                .text-info.text-xxs.font-semibold Квартира
-                base-input.input-info(placeholder="Квартира", v-model:value="dopeAddress.flat")
-            .flex.flex-col(class="gap-y-1.5")
-              .text-info.text-xxs.font-semibold Индекс
-              base-input.input-info(v-mask="'######'", placeholder="000000", v-model:value="dopeAddress.index")
+            client-detail-section-address(
+              :dope-address="dopeAddress"
+              :cities="cities"
+            )
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
           .flex.items-center(v-if="item.title")
@@ -111,7 +84,7 @@
             span.text-sm {{item.title}}
     .section-add-doc.flex.justify-center.items-center.cursor-pointer(
       v-else,
-      @click="changeData"
+      @click="openAddDoc"
     )
       span Добавить данные
 </template>
@@ -119,21 +92,18 @@
 <script>
 import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
 import BaseButton from "@/components/base/BaseButton";
-import BaseInput from "@/components/base/BaseInput";
-import BaseSelect from "@/components/base/BaseSelect";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
+import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import { detail } from "@/pages/clients/utils/tableConfig";
-import { mask } from "vue-the-mask";
 export default {
   name: "ClientDetailInfoSection",
   components: {
     TableAddingNewAdditional,
     BaseButton,
-    BaseInput,
-    BaseSelect,
     ClientDetailInput,
     TableAddingNewDoc,
+    ClientDetailSectionAddress,
   },
   props: {
     saveNewDoc: Function,
@@ -143,11 +113,13 @@ export default {
     updateDocument: Function,
     updateAddress: Function,
     lackData: Boolean,
+    lackAddress: Boolean,
     dopeAddress: Object,
     createAddress: Function,
+    createDocument: Function,
+    addressId: String,
+    docId: String,
   },
-  directives: { mask },
-
   data() {
     return {
       additionalData: {
@@ -158,7 +130,6 @@ export default {
       },
       docData: [],
       isOpenAddingWrap: false,
-      isOpenChange: false,
       isChange: false,
       settings: detail,
       cities: [
@@ -167,12 +138,26 @@ export default {
         { id: 1, label: "Луховицы" },
       ],
       isData: true,
+      isAddress: true,
     };
   },
   methods: {
-    changeData() {
-      this.isData = true;
+    openAddDoc() {
       this.isChange = true;
+      if (this.section === "pass") {
+        this.isData = true;
+      } else if (this.section === "addresses") {
+        this.isAddress = true;
+      }
+    },
+    changeDoc() {
+      this.isChange = false;
+      if (this.section === "pass") {
+        this.docId ? this.updateDocument() : this.createDocument();
+      }
+      if (this.section === "addresses") {
+        this.addressId ? this.updateAddress() : this.createAddress();
+      }
     },
     copyValue(text) {
       navigator.clipboard.writeText(text);
@@ -183,19 +168,12 @@ export default {
       }
     },
     saveChange() {
-      this.isOpenChange = false;
       this.isChange = false;
       if (this.section === "pass") {
         this.updateDocument();
       } else if (this.section === "addresses") {
         this.updateAddress();
       }
-    },
-    createNewAddress() {
-      this.isOpenChange = false;
-      this.isChange = false;
-      this.createAddress();
-      this.updateAddress();
     },
     openAddingWrap() {
       if (!this.isChange) {
@@ -216,7 +194,6 @@ export default {
         this.saveNewDoc(this.section, this.docData);
       }
       this.isOpenAddingWrap = false;
-      this.isOpenChange = false;
       this.docData = [];
       this.additionalData = {
         header: "",
@@ -231,6 +208,12 @@ export default {
       immediate: true,
       handler(newValue) {
         this.isData = newValue;
+      },
+    },
+    lackAddress: {
+      immediate: true,
+      handler(newValue) {
+        this.isAddress = newValue;
       },
     },
   },
@@ -289,8 +272,4 @@ export default {
   width: 38px
   z-index: 1
   background: white
-.input-info
-  color: var(--font-dark-blue-color)
-.text-info
-  color: var(--font-grey-color)
 </style>

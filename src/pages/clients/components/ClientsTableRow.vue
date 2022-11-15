@@ -76,8 +76,12 @@
       :update-document="postUpdateIdentityDocument"
       :update-address="postUpdateAddress"
       :lack-data="lackData"
+      :lack-address="lackAddress"
       :dope-address="dopeAddress"
       :create-address="postCreateAddress"
+      :create-document="postCreateIdentityDocument"
+      :address-id="addressId"
+      :doc-id="docId"
     )
 </template>
 
@@ -128,6 +132,7 @@ export default {
       docId: "",
       addressId: "",
       lackData: true,
+      lackAddress: true,
       dopeAddress: {
         city: "",
         region: "",
@@ -277,13 +282,8 @@ export default {
       this.saveAttachments([...data.attachments]);
     },
     saveIdentityDocument(data) {
-      if (
-        data?.series ||
-        data?.numba ||
-        data?.issued_by_org ||
-        data?.issued_by_org_code ||
-        data?.issued_by_date
-      ) {
+      if (data?.id) {
+        this.docId = data.id;
         this.dataIdentityDocument = {
           numba:
             data.series && data.numba ? data?.series + " " + data?.numba : "",
@@ -295,6 +295,7 @@ export default {
             ? data?.issued_by_date.split("-").reverse().join(".")
             : "",
         };
+        this.lackData = true;
       } else {
         this.lackData = false;
         this.dataIdentityDocument = {
@@ -304,7 +305,6 @@ export default {
           issued_by_date: "",
         };
       }
-      this.docId = data?.id;
     },
     postUpdateIdentityDocument() {
       fetchWrapper
@@ -321,15 +321,26 @@ export default {
     },
     saveAddress(data) {
       this.addressId = data?.id;
-      if (data?.join_adress) {
+      if (data?.join_adress && data?.join_adress.substr(0, 4) !== "None") {
         this.dataAddress = {
           join_adress: data?.join_adress,
         };
+        this.lackAddress = true;
       } else {
-        this.lackData = false;
+        this.lackAddress = false;
         this.dataAddress = {
           join_adress: "",
         };
+      }
+    },
+    mergeFullAddress() {
+      if (
+        this.dopeAddress.region &&
+        this.dopeAddress.city &&
+        this.dopeAddress.street &&
+        this.dopeAddress.house
+      ) {
+        return `${this.dopeAddress.region}.обл, г.${this.dopeAddress.city}, ул.${this.dopeAddress.street}, ${this.dopeAddress.house}, ${this.dopeAddress.flat}, ${this.dopeAddress.index}`;
       }
     },
     clearAddress() {
@@ -345,13 +356,7 @@ export default {
     postUpdateAddress() {
       fetchWrapper
         .post(`general/address/${this.addressId}/update/`, {
-          full_address:
-            this.dopeAddress.city +
-              this.dopeAddress.region +
-              this.dopeAddress.street +
-              this.dopeAddress.house +
-              this.dopeAddress.flat +
-              this.dopeAddress.index || this.dataAddress.join_adress,
+          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
         })
         .then(() => this.fetchClientDetail(this.id));
       this.clearAddress();
@@ -384,6 +389,22 @@ export default {
       fetchWrapper
         .post("general/address/create/", {
           person_id: this.id,
+          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
+        })
+        .then(() => this.fetchClientDetail(this.id));
+    },
+    postCreateIdentityDocument() {
+      fetchWrapper
+        .post("general/identity_document/create/", {
+          person_id: this.id,
+          kind: "PASSPORT",
+          series_number: this.dataIdentityDocument.numba,
+          issued_by_org: this.dataIdentityDocument.issued_by_org,
+          issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
+          issued_by_date: this.dataIdentityDocument.issued_by_date
+            .split(".")
+            .reverse()
+            .join("-"),
         })
         .then(() => this.fetchClientDetail(this.id));
     },

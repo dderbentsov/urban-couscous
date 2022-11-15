@@ -5,15 +5,18 @@
       section="pass"
       :update-document="updateDocument"
       :lack-data="lackData"
+      :create-document="createDocument"
+      :doc-id="docId"
     )
     .flex.flex-col
       client-detail-info-section(
         :section-info="dataAddress"
         section="addresses"
         :update-address="updateAddress"
-        :lack-data="lackData"
+        :lack-address="lackAddress"
         :dope-address="dopeAddress"
         :create-address="createAddress"
+        :address-id="addressId"
       )
     .flex.flex-col
       client-detail-info-section(
@@ -21,7 +24,6 @@
         section="docs"
         :save-new-doc="saveNewDoc"
         :delete-doc="deleteDoc"
-        :lack-data="lackData"
       )
 </template>
 
@@ -40,8 +42,12 @@ export default {
     updateDocument: Function,
     updateAddress: Function,
     lackData: Boolean,
+    lackAddress: Boolean,
     dopeAddress: Object,
     createAddress: Function,
+    createDocument: Function,
+    addressId: String,
+    docId: String,
   },
 };
 </script>
