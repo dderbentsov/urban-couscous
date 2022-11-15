@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4(v-click-outside="clearForm")
     .flex.justify-between
       span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2
@@ -225,7 +225,7 @@ export default {
             label: this.trimOwnerName(last_name, first_name, patronymic),
           },
           id: rest.id,
-          role: rest.role,
+          role: rest?.role || this.EMPLOYEE_TYPE,
         };
       }
       return {
@@ -254,7 +254,7 @@ export default {
             label: this.trimMemberName(last_name, first_name, patronymic),
           },
           id: rest.id,
-          role: rest.role,
+          role: rest?.role || this.MEMBER_TYPE,
         };
       }
       return {

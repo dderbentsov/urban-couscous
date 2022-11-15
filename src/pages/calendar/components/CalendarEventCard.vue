@@ -25,11 +25,9 @@
       :style="descriptionCardPosition"
       :owner-event="ownerEvent"
       :event-types="eventTypes"
-      :event-time="eventTime"
-      :event-member="eventMember"
-      :description="description"
       @selected-event="transmitEventData"
       @close-description-card="closeDescriptionCard"
+      @delete-event="transmitDeleteEvent"
     )
   </template>
 
@@ -209,6 +207,9 @@ export default {
     transmitEventData() {
       this.$emit("selected-event", this.ownerEvent);
       this.hideDescriptionCard();
+    },
+    transmitDeleteEvent() {
+      this.$emit("delete-event", this.ownerEvent);
     },
     hideDescriptionCard() {
       this.isOpenDescriptionCard = false;
