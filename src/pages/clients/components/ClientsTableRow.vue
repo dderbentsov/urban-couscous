@@ -333,6 +333,16 @@ export default {
         };
       }
     },
+    mergeFullAddress() {
+      if (
+        this.dopeAddress.region &&
+        this.dopeAddress.city &&
+        this.dopeAddress.street &&
+        this.dopeAddress.house
+      ) {
+        return `${this.dopeAddress.region}.обл, г.${this.dopeAddress.city}, ул.${this.dopeAddress.street}, ${this.dopeAddress.house}, ${this.dopeAddress.flat}, ${this.dopeAddress.index}`;
+      }
+    },
     clearAddress() {
       this.dopeAddress = {
         city: "",
@@ -346,13 +356,7 @@ export default {
     postUpdateAddress() {
       fetchWrapper
         .post(`general/address/${this.addressId}/update/`, {
-          full_address:
-            this.dopeAddress.city +
-              this.dopeAddress.region +
-              this.dopeAddress.street +
-              this.dopeAddress.house +
-              this.dopeAddress.flat +
-              this.dopeAddress.index || this.dataAddress.join_adress,
+          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
         })
         .then(() => this.fetchClientDetail(this.id));
       this.clearAddress();
@@ -385,13 +389,7 @@ export default {
       fetchWrapper
         .post("general/address/create/", {
           person_id: this.id,
-          full_address:
-            this.dopeAddress.city +
-              this.dopeAddress.region +
-              this.dopeAddress.street +
-              this.dopeAddress.house +
-              this.dopeAddress.flat +
-              this.dopeAddress.index || this.dataAddress.join_adress,
+          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
         })
         .then(() => this.fetchClientDetail(this.id));
     },
