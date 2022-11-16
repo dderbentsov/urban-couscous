@@ -13,7 +13,14 @@
       .grid.grid-cols-2.gap-y-6.gap-x-4
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Город
-          base-input.input-info(placeholder="Выберите город")
+          base-input.input-info(placeholder="Выберите город", :items="cities")
+        .flex.flex-col(class="gap-y-1.5")
+          .text-info.text-xxs.font-semibold Город
+          base-select(
+            placeholder="Выберите город",
+            :items="cities",
+            v-model="currentCity"
+          )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Область
           base-input.input-info(placeholder="Введите область")
@@ -37,16 +44,27 @@
 <script>
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
+import BaseSelect from "@/components/base/BaseSelect";
 import { mask } from "vue-the-mask";
 export default {
   name: "FormCreateAddresses",
-  components: { BaseInput, BaseButton },
+  components: { BaseInput, BaseButton, BaseSelect },
   props: {
     addresses: Object,
     saveClient: Function,
     saveFile: Function,
   },
   directives: { mask },
+  data() {
+    return {
+      currentCity: "",
+      cities: [
+        { id: 1, label: "Владивосток" },
+        { id: 2, label: "Москва" },
+        { id: 3, label: "Тула" },
+      ],
+    };
+  },
 };
 </script>
 

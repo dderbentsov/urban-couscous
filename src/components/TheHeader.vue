@@ -1,6 +1,6 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
+    base-client-form-create(v-if="this.isOpenCreateClient || this.isOpenFormCreate", :close-form="closeFormCreate")
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
@@ -13,7 +13,7 @@
         :size="40",
         right-icon="icon-person",
         :icon-right-size="18",
-        @click="isOpenCreate=true"
+        @click="openFormCreate"
       )
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
@@ -34,6 +34,9 @@ import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
   components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
+  props: {
+    isOpenCreateClient: Boolean,
+  },
   data() {
     return {
       avatarSrc: img,
@@ -41,12 +44,17 @@ export default {
         avatarSrc: chargePersonAvatar,
         name: "Гордеев Николай Степанович",
       },
-      isOpenCreate: false,
+      isOpenFormCreate: false,
     };
   },
   methods: {
     closeFormCreate() {
-      this.isOpenCreate = false;
+      this.isOpenFormCreate = false;
+      this.$emit("is-close-header-form", this.isOpenFormCreate);
+    },
+    openFormCreate() {
+      this.isOpenFormCreate = true;
+      this.$emit("is-close-header-from", this.isOpenFormCreate);
     },
     logout() {
       localStorage.clear();
