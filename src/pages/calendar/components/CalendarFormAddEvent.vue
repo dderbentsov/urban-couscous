@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4(v-click-outside="clearForm")
     .flex.justify-between
       span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2
@@ -195,7 +195,9 @@ export default {
         this.eventDate === start.format("YYYY-MM-DD") &&
         this.startTime === start.format("HH:mm") &&
         this.endTime === end.format("HH:mm") &&
-        this.kind.label === this.selectedEventData.kind
+        this.kind.label === this.selectedEventData.kind &&
+        this.employees.employee.id === this.eventEmployee.employee.id &&
+        this.members.person.id === this.eventMember.person.id
       ) {
         return true;
       }
