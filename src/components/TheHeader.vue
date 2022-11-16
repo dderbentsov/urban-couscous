@@ -1,6 +1,6 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create(v-if="isOpenCreate", @blure="isOpenCreate=false", :close-form="closeFormCreate")
+    base-client-form-create(v-if="isOpenForm", :close-form="closeForm")
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
@@ -13,7 +13,7 @@
         :size="40",
         right-icon="icon-person",
         :icon-right-size="18",
-        @click="isOpenCreate=true"
+        @click="openForm"
       )
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
         .icon-bell.text-xxl
@@ -34,6 +34,11 @@ import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
   components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
+  props: {
+    openForm: Function,
+    closeForm: Function,
+    isOpenForm: Boolean,
+  },
   data() {
     return {
       avatarSrc: img,
@@ -41,13 +46,9 @@ export default {
         avatarSrc: chargePersonAvatar,
         name: "Гордеев Николай Степанович",
       },
-      isOpenCreate: false,
     };
   },
   methods: {
-    closeFormCreate() {
-      this.isOpenCreate = false;
-    },
     logout() {
       localStorage.clear();
       this.$router.push("/login");
