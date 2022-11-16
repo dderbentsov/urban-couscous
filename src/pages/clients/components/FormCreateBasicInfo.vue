@@ -14,7 +14,8 @@
           v-model:value="basicInfo.birth_date",
           type="date",
           placeholder="00.00.0000",
-          :width-input="277"
+          :width-input="277",
+          :max-date="`${ currentYear }-12-31`"
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Номер телефона
@@ -73,6 +74,7 @@ export default {
     basicInfo: Object,
     saveClient: Function,
     addNetwork: Function,
+    currentYear: Number,
   },
   data() {
     return {

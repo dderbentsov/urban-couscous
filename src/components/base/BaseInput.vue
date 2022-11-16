@@ -1,15 +1,16 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border.py-10px(
-    :class="{'border-none': borderNone}"
+    :class="{'border-none': borderNone}",
     :style="{ minWidth: widthInput + 'px' }"
   )
     input.input.w-full.outline-0.not-italic(
-      :class="{date:type === 'date'}"
-      :value="value"
-      :type="type"
-      @input="$emit('update:value', $event.target.value)"
-      :placeholder="placeholder"
-      :maxlength="maxLength"
+      :class="{date:type === 'date'}",
+      :value="value",
+      :type="type",
+      @input="$emit('update:value', $event.target.value)",
+      :placeholder="placeholder",
+      :maxlength="maxLength",
+      :max="maxDate",
       :disabled="disabled"
     )
     .slot(v-if="withIcon", :class="iconPosition")
@@ -37,6 +38,7 @@ export default {
     widthInput: Number,
     borderNone: Boolean,
     disabled: Boolean,
+    maxDate: String,
   },
 };
 </script>
