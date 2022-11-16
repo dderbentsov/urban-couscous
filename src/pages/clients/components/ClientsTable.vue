@@ -1,7 +1,6 @@
 <template lang="pug">
   .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
-    //- base-client-form-create(v-if="isOpenFormCreate" :close-form="closeFormCreateClient")
-    clients-table-hat(:is-open-actions="marked.length" :open-form-create="openFormCreateClient")
+    clients-table-hat(:is-open-actions="marked.length" :open-form="openForm")
     .flex.flex-col.h-full.gap-y-2.table-container.w-full
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
@@ -33,7 +32,7 @@ export default {
     BaseClientFormCreate,
   },
   props: {
-    isCloseHeaderForm: Boolean,
+    openForm: Function,
   },
 
   data() {
@@ -42,19 +41,9 @@ export default {
       selectAll: false,
       marked: [],
       dataClients: [],
-      isOpen: false,
     };
   },
   methods: {
-    openFormCreateClient() {
-      this.isOpenFormCreate = true;
-      this.$emit("create-client", this.isOpenFormCreate);
-    },
-    closeFormCreateClient() {
-      this.isOpenFormCreate = false;
-      this.$emit("create-client", this.isOpenFormCreate);
-      this.fetchDataClients();
-    },
     saveDataClients(data) {
       this.dataClients = data.results;
     },
@@ -85,16 +74,6 @@ export default {
   },
   mounted() {
     this.fetchDataClients();
-  },
-  watch: {
-    isCloseHeaderForm: {
-      immediate: true,
-      handler(newValue) {
-        if (newValue === false) {
-          this.closeFormCreateClient();
-        }
-      },
-    },
   },
 };
 </script>

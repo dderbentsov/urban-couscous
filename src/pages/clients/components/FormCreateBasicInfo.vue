@@ -3,7 +3,7 @@
     .grid.grid-cols-2.gap-x-4.gap-y-6.px-4
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Приоритет
-        base-select(
+        base-custom-select(
           :items="priorityList",
           placeholder="Приоритет клиента",
           v-model="basicInfo.priority"
@@ -55,14 +55,14 @@ import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
 import { column } from "@/pages/clients/utils/tableConfig";
-import BaseSelect from "@/components/base/BaseSelect";
+import BaseCustomSelect from "@/components/base/BaseCustomSelect";
 export default {
   name: "FormCreateBasicInfo",
   components: {
     BaseInput,
     BaseAddingNetwork,
     BaseButton,
-    BaseSelect,
+    BaseCustomSelect,
   },
   props: {
     choosePriority: Function,

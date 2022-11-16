@@ -9,7 +9,7 @@
     clients-table-header-actions(v-if="!!isOpenActions" :is-selected-one="isOpenActions===1")
     .flex.w-fit.h-fit.gap-x-2
       base-button(left-icon="icon-download" :icon-left-size="16" :size="40" :outlined="true")
-      base-button(left-icon="icon-plus" :icon-left-size="13" :size="40" @click="openFormCreate")
+      base-button(left-icon="icon-plus" :icon-left-size="13" :size="40" @click="openForm")
         span.font-semibold Создать
 </template>
 
@@ -25,7 +25,7 @@ export default {
     BaseButton,
   },
   props: {
-    openFormCreate: Function,
+    openForm: Function,
     isOpenActions: Number,
   },
 };

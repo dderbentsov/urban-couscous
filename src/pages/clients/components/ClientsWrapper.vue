@@ -1,10 +1,6 @@
 <template lang="pug">
   .wrapper.flex.w-full.relative.mx-6
-    clients-table(
-      :open-form-create="openFormCreateClient",
-      @create-client="transmitOpenCreateForm",
-      :is-close-header-form="isCloseHeaderForm"
-    )
+    clients-table(:open-form="openForm")
 </template>
 
 <script>
@@ -13,23 +9,7 @@ export default {
   name: "ClientsWrapper",
   components: { ClientsTable },
   props: {
-    isCloseHeaderForm: Boolean,
-  },
-  data() {
-    return {
-      isOpenForm: true,
-    };
-  },
-  methods: {
-    openFormCreateClient() {
-      this.isOpenForm = true;
-    },
-    closeFormCreateClient() {
-      this.isOpenForm = false;
-    },
-    transmitOpenCreateForm(value) {
-      this.$emit("create-client", value);
-    },
+    openForm: Function,
   },
 };
 </script>

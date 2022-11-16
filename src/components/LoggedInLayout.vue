@@ -1,9 +1,9 @@
 <template lang="pug">
 .flex.flex-col.w-full.h-full.gap-y-2
-    the-header(:is-open-create-client="isOpenCreateClient", @is-close-header-form="changeCloseHeaderForm")
+    the-header(:is-open-form="isOpenForm", :close-form="closeForm", :open-form="openForm")
     .flex.flex-auto
       the-sidebar
-      router-view(@create-client="transmitOpenCreateClient", :is-close-header-form="isCloseHeaderForm")
+      router-view(:open-form="openForm")
 </template>
 
 <script>
@@ -15,16 +15,15 @@ export default {
   components: { TheHeader, TheSidebar },
   data() {
     return {
-      isOpenCreateClient: false,
-      isCloseHeaderForm: true,
+      isOpenForm: false,
     };
   },
   methods: {
-    transmitOpenCreateClient(value) {
-      this.isOpenCreateClient = value;
+    openForm() {
+      this.isOpenForm = true;
     },
-    changeCloseHeaderForm(value) {
-      this.isCloseHeaderForm = value;
+    closeForm() {
+      this.isOpenForm = false;
     },
   },
 };

@@ -20,7 +20,7 @@
           :save-client="saveClient"
           :choose-option="chooseOptionNetworks"
           :choose-priority="choosePriority"
-          :priority-list="getPriorityList"
+          :priority-list="priorityList"
           :current-year="currentYear"
           )
       .flex(:style="{display :'none'}" ref="doc")
@@ -75,7 +75,10 @@ export default {
         basic: {
           full_name: "",
           birth_date: "",
-          priority: "",
+          priority: {
+            id: null,
+            label: "",
+          },
           contacts: [
             {
               id: "network",
@@ -146,19 +149,19 @@ export default {
       ],
       priorityList: [
         {
-          id: "1",
+          id: 1,
           label: "Высокий",
         },
         {
-          id: "2",
+          id: 2,
           label: "Средний",
         },
         {
-          id: "3",
+          id: 3,
           label: "Низкий",
         },
         {
-          id: "4",
+          id: 4,
           label: "-",
         },
       ],

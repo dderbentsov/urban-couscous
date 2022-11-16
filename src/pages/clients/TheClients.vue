@@ -1,5 +1,5 @@
 <template lang="pug">
-  clients-wrapper(@create-client="transmitOpenCreateForm", :is-close-header-form="isCloseHeaderForm")
+  clients-wrapper(:open-form="openForm")
 </template>
 
 <script>
@@ -8,12 +8,7 @@ export default {
   name: "TheClients",
   components: { ClientsWrapper },
   props: {
-    isCloseHeaderForm: Boolean,
-  },
-  methods: {
-    transmitOpenCreateForm(value) {
-      this.$emit("create-client", value);
-    },
+    openForm: Function,
   },
 };
 </script>
