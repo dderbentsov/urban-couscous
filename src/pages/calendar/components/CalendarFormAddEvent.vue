@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4(v-click-outside="clearForm")
+  .flex.flex-col.gap-y-6.pt-6.pb-7.px-8.event-form.fixed.right-0.bottom-4
     .flex.justify-between
       span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
       .flex.pt-2
@@ -79,6 +79,7 @@ export default {
     BaseInputTime,
     BaseCustomSelect,
   },
+  emits: ["clear-selected-event-data", "close-change-form"],
   props: {
     closeForm: Function,
     ownersData: {
@@ -287,7 +288,7 @@ export default {
     trimMemberName(lastName, firsName, patronymic) {
       return `${lastName} ${firsName} ${patronymic}`;
     },
-    sendEventData() {
+    async sendEventData() {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
@@ -297,11 +298,11 @@ export default {
         ],
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
-      this.postCreateEvent(this.eventData);
+      await this.postCreateEvent(this.eventData);
       this.clearForm();
       this.eventData = {};
     },
-    updateEventData() {
+    async updateEventData() {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
@@ -311,7 +312,7 @@ export default {
         ],
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
-      this.postUpdateEvent(this.id, this.eventData);
+      await this.postUpdateEvent(this.id, this.eventData);
       this.clearForm();
       this.eventData = {};
     },
@@ -338,15 +339,11 @@ export default {
       if (object.id) returnedData.id = object.id;
       return returnedData;
     },
-    postCreateEvent(event) {
-      fetchWrapper
-        .post("registry/event/create/", event)
-        .then(this.$emit("update-events"));
+    async postCreateEvent(event) {
+      await fetchWrapper.post("registry/event/create/", event);
     },
-    postUpdateEvent(id, event) {
-      fetchWrapper
-        .post(`registry/event/${id}/update/`, event)
-        .then(this.$emit("update-events"));
+    async postUpdateEvent(id, event) {
+      await fetchWrapper.post(`registry/event/${id}/update/`, event);
     },
   },
   watch: {
