@@ -21,13 +21,27 @@
           :choose-option="chooseOptionNetworks"
           :choose-priority="choosePriority"
           :priority-list="getPriorityList"
+          :current-year="currentYear"
           )
       .flex(:style="{display :'none'}" ref="doc")
-        form-create-identity-documents(:identity-document="infoClient.identity_document" :save-client="saveClient")
+        form-create-identity-documents(
+          :identity-document="infoClient.identity_document",
+          :save-client="saveClient",
+          :current-year="currentYear"
+        )
       .flex(:style="{display :'none'}" ref="address")
-        form-create-addresses(:addresses="infoClient.addresses" :save-file="saveDocFile" :save-client="saveClient")
+        form-create-addresses(
+          :addresses="infoClient.addresses",
+          :save-file="saveDocFile",
+          :save-client="saveClient"
+        )
       .flex(:style="{display :'none'}" ref="additional")
-        form-create-additional(:additional-info="infoClient.additional" :add-new-additional="addNewAdditionalInfo" :save-file="saveAdditionalFiles" :save-client="saveClient")
+        form-create-additional(
+          :additional-info="infoClient.additional",
+          :add-new-additional="addNewAdditionalInfo",
+          :save-file="saveAdditionalFiles",
+          :save-client="saveClient"
+        )
 </template>
 
 <script>
@@ -148,6 +162,7 @@ export default {
           label: "-",
         },
       ],
+      currentYear: 2022,
     };
   },
   computed: {
@@ -269,6 +284,12 @@ export default {
       }
       return true;
     },
+    printCurrentYear() {
+      return new Date().getFullYear();
+    },
+  },
+  mounted: function () {
+    this.currentYear = this.printCurrentYear();
   },
 };
 </script>
