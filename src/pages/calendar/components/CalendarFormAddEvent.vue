@@ -196,8 +196,10 @@ export default {
         this.startTime === start.format("HH:mm") &&
         this.endTime === end.format("HH:mm") &&
         this.kind.label === this.selectedEventData.kind &&
-        this.employees.employee.id === this.eventEmployee.employee.id &&
-        this.members.person.id === this.eventMember.person.id
+        this.employees.employee.id ===
+          this.personId(this.selectedEventData.employees, "employee") &&
+        this.members.person.id ===
+          this.personId(this.selectedEventData.members, "person")
       ) {
         return true;
       }
@@ -346,6 +348,24 @@ export default {
     },
     async postUpdateEvent(id, event) {
       await fetchWrapper.post(`registry/event/${id}/update/`, event);
+    },
+    personId(object, field) {
+      if (object) {
+        let foundPerson = {};
+        if (field === "employee") {
+          foundPerson = object.find(({ role }) => role === this.EMPLOYEE_TYPE);
+        }
+        if (field === "person") {
+          if (object.length > 1) {
+            foundPerson = object.find(({ role }) => role === this.MEMBER_TYPE);
+          }
+          foundPerson = object[0];
+        }
+        let {
+          [field]: { id },
+        } = foundPerson;
+        return id;
+      }
     },
   },
   watch: {
