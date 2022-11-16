@@ -153,6 +153,7 @@ export default {
       if (this.showModal === false) {
         this.setChangeFormState();
         this.clearSelectedEvent();
+        this.fetchEventsData();
       }
     },
   },
