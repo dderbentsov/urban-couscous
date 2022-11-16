@@ -31,7 +31,6 @@
       :selected-event-data="selectedEvent"
       :event-types="eventTypes"
       @clear-selected-event-data="clearSelectedEvent"
-      @update-events="fetchEventsData"
       @close-change-form="setChangeFormState"
     )
     base-modal(
@@ -71,7 +70,7 @@ export default {
       showModal: false,
       timeInformation: {
         dayStartTime: "08:00",
-        dayEndTime: "20:00",
+        dayEndTime: "24:00",
       },
       eventsData: [],
       employeesData: [],
@@ -126,6 +125,7 @@ export default {
     },
     closeFormCreateEvent() {
       this.isOpenForm = false;
+      this.fetchEventsData();
     },
     setChangeFormState() {
       this.changeFormWasClosed = true;
@@ -153,6 +153,7 @@ export default {
       if (this.showModal === false) {
         this.setChangeFormState();
         this.clearSelectedEvent();
+        this.fetchEventsData();
       }
     },
   },

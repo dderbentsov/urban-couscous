@@ -38,8 +38,8 @@ export default {
     closeModal: Function,
   },
   methods: {
-    deleteEvent() {
-      fetchWrapper.del(`registry/event/${this.ownerEvent.id}/delete/`);
+    async deleteEvent() {
+      await fetchWrapper.del(`registry/event/${this.ownerEvent.id}/delete/`);
       this.closeModal();
     },
   },

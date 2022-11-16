@@ -79,6 +79,7 @@ export default {
     BaseInputTime,
     BaseCustomSelect,
   },
+  emits: ["clear-selected-event-data", "close-change-form"],
   props: {
     closeForm: Function,
     ownersData: {
@@ -194,7 +195,11 @@ export default {
         this.eventDate === start.format("YYYY-MM-DD") &&
         this.startTime === start.format("HH:mm") &&
         this.endTime === end.format("HH:mm") &&
-        this.kind.label === this.selectedEventData.kind
+        this.kind.label === this.selectedEventData.kind &&
+        this.employees.employee.id ===
+          this.personId(this.selectedEventData.employees, "employee") &&
+        this.members.person.id ===
+          this.personId(this.selectedEventData.members, "person")
       ) {
         return true;
       }
@@ -287,7 +292,7 @@ export default {
     trimMemberName(lastName, firsName, patronymic) {
       return `${lastName} ${firsName} ${patronymic}`;
     },
-    sendEventData() {
+    async sendEventData() {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
@@ -297,11 +302,11 @@ export default {
         ],
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
-      this.postCreateEvent(this.eventData);
+      await this.postCreateEvent(this.eventData);
       this.clearForm();
       this.eventData = {};
     },
-    updateEventData() {
+    async updateEventData() {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
@@ -311,7 +316,7 @@ export default {
         ],
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
-      this.postUpdateEvent(this.id, this.eventData);
+      await this.postUpdateEvent(this.id, this.eventData);
       this.clearForm();
       this.eventData = {};
     },
@@ -338,15 +343,29 @@ export default {
       if (object.id) returnedData.id = object.id;
       return returnedData;
     },
-    postCreateEvent(event) {
-      fetchWrapper
-        .post("registry/event/create/", event)
-        .then(this.$emit("update-events"));
+    async postCreateEvent(event) {
+      await fetchWrapper.post("registry/event/create/", event);
     },
-    postUpdateEvent(id, event) {
-      fetchWrapper
-        .post(`registry/event/${id}/update/`, event)
-        .then(this.$emit("update-events"));
+    async postUpdateEvent(id, event) {
+      await fetchWrapper.post(`registry/event/${id}/update/`, event);
+    },
+    personId(object, field) {
+      if (object) {
+        let foundPerson = {};
+        if (field === "employee") {
+          foundPerson = object.find(({ role }) => role === this.EMPLOYEE_TYPE);
+        }
+        if (field === "person") {
+          if (object.length > 1) {
+            foundPerson = object.find(({ role }) => role === this.MEMBER_TYPE);
+          }
+          foundPerson = object[0];
+        }
+        let {
+          [field]: { id },
+        } = foundPerson;
+        return id;
+      }
     },
   },
   watch: {
