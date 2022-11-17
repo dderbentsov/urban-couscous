@@ -398,18 +398,30 @@ export default {
 
 .schedule-body
   width: 100%
-  height: calc(100vh - 56px - 8px - 56px)
+  height: calc(100vh - 56px - 8px - 56px - 2px)
   overflow-y: auto
   overflow-x: auto
   &::-webkit-scrollbar
-    width: 8px
-    height: 8px
-  &::-webkit-scrollbar-track
+    width: 52px
+    height: 30px
+  &::-webkit-scrollbar-track:horizontal
+    margin: 0 24px 0 104px
     background-color: var(--bg-ligth-blue-color)
     border-radius: 4px
-  &::-webkit-scrollbar-thumb
-    border-radius: 4px
+    border-bottom: 22px solid var(--default-white)
+  &::-webkit-scrollbar-thumb:horizontal
     background-color: var(--btn-blue-color-2)
+    border-radius: 4px
+    border-bottom: 22px solid var(--default-white)
+  &::-webkit-scrollbar-track:vertical
+    margin: 72px 0 24px 0
+    background-color: var(--bg-ligth-blue-color)
+    border-left: 22px solid var(--default-white)
+    border-right: 22px solid var(--default-white)
+  &::-webkit-scrollbar-thumb:vertical
+    background-color: var(--btn-blue-color-2)
+    border-left: 22px solid var(--default-white)
+    border-right: 22px solid var(--default-white)
 
 .hiding-container
   width: 80px
