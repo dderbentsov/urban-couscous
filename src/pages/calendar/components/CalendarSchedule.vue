@@ -1,5 +1,6 @@
 <template lang="pug">
-  .schedule.ml-2(
+  .schedule.mx-2.pb-22px(
+    ref="schedule"
     :style="scheduleWidth"
   )
     calendar-header(
@@ -9,7 +10,10 @@
       @next-date="nextDate"
       @selected-layout="selectedLayout"
     )
-    .schedule-body(@scroll="changeScrollingState", ref="scheduleBody")
+    .schedule-body(
+      @scroll="changeScrollingState"
+      ref="scheduleBody"
+    )
       .hiding-container.fixed(v-if="isScrolling")
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
@@ -324,6 +328,17 @@ export default {
     transmitDeleteEvent(eventData) {
       this.$emit("delete-event", eventData);
     },
+    bodyScroll() {
+      this.$nextTick(() => {
+        let presenceScroll =
+          this.$refs["scheduleBody"].scrollHeight !==
+          this.$refs["scheduleBody"].clientHeight;
+        if (presenceScroll) {
+          this.$refs["scheduleBody"].classList.add("pr-10px");
+          this.$refs["schedule"].classList.add("pr-10px");
+        }
+      });
+    },
   },
   watch: {
     currentTime() {
@@ -357,6 +372,7 @@ export default {
     this.timeCoilInitialization();
     this.startTimer();
     this.showCuttentTime();
+    this.bodyScroll();
   },
   beforeUnmount() {
     this.stopTimer();
@@ -370,7 +386,7 @@ export default {
   position: relative
   border-top-left-radius: 4px
   background-color: var(--default-white)
-  width: calc(100% - (var(--sidebar-width) + 8px))
+  width: calc(100% - (var(--sidebar-width) + 16px))
   height: calc(100vh - 56px - 8px)
 
 .time-line-indicator
@@ -398,30 +414,27 @@ export default {
 
 .schedule-body
   width: 100%
-  height: calc(100vh - 56px - 8px - 56px - 2px)
+  height: calc(100vh - 56px * 2 - 8px - 22px)
   overflow-y: auto
   overflow-x: auto
   &::-webkit-scrollbar
-    width: 52px
-    height: 30px
+    width: 8px
+    height: 8px
   &::-webkit-scrollbar-track:horizontal
     margin: 0 24px 0 104px
-    background-color: var(--bg-ligth-blue-color)
+    pddding-bottom: 22px
     border-radius: 4px
-    border-bottom: 22px solid var(--default-white)
+    background-color: var(--bg-ligth-blue-color)
   &::-webkit-scrollbar-thumb:horizontal
     background-color: var(--btn-blue-color-2)
     border-radius: 4px
-    border-bottom: 22px solid var(--default-white)
   &::-webkit-scrollbar-track:vertical
-    margin: 72px 0 24px 0
+    margin: 56px 0 24px 0
+    border-radius: 4px
     background-color: var(--bg-ligth-blue-color)
-    border-left: 22px solid var(--default-white)
-    border-right: 22px solid var(--default-white)
   &::-webkit-scrollbar-thumb:vertical
+    border-radius: 4px
     background-color: var(--btn-blue-color-2)
-    border-left: 22px solid var(--default-white)
-    border-right: 22px solid var(--default-white)
 
 .hiding-container
   width: 80px
