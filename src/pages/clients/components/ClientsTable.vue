@@ -5,13 +5,14 @@
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
         clients-table-row(
-          v-for="client in dataClients"
-          :key="client.id"
-          :id="client.id"
-          :is-check="marked.includes(client.id)"
-          :check="selectedCheck"
-          :client="client"
-          :fetch-data-clients="fetchDataClients"
+          v-for="client in dataClients",
+          :key="client.id",
+          :id="client.id",
+          :is-check="marked.includes(client.id)",
+          :check="selectedCheck",
+          :client="client",
+          :fetch-data-clients="fetchDataClients",
+          :current-year="currentYear"
           )
 </template>
 
@@ -33,6 +34,7 @@ export default {
   },
   props: {
     openForm: Function,
+    currentYear: Number,
   },
 
   data() {

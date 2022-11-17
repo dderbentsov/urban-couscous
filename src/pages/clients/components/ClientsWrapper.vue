@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper.flex.w-full.relative.mx-6
-    clients-table(:open-form="openForm")
+    clients-table(:open-form="openForm", :current-year="currentYear")
 </template>
 
 <script>
@@ -10,6 +10,7 @@ export default {
   components: { ClientsTable },
   props: {
     openForm: Function,
+    currentYear: Number,
   },
 };
 </script>
@@ -17,4 +18,5 @@ export default {
 <style lang="sass" scoped>
 .wrapper
   overflow: auto
+  border-top-left-radius: 4px
 </style>

@@ -1,28 +1,29 @@
 <template lang="pug">
   .w-full.h-fit.pt-4.flex.gap-x-4(class="px-[52px] pb-[30px]")
     client-detail-info-section(
-      v-model:section-info="dataDocument"
-      section="pass"
-      :update-document="updateDocument"
-      :lack-data="lackData"
-      :create-document="createDocument"
-      :doc-id="docId"
+      v-model:section-info="dataDocument",
+      section="pass",
+      :update-document="updateDocument",
+      :lack-data="lackData",
+      :create-document="createDocument",
+      :doc-id="docId",
+      :current-year="currentYear"
     )
     .flex.flex-col
       client-detail-info-section(
-        :section-info="dataAddress"
-        section="addresses"
-        :update-address="updateAddress"
-        :lack-address="lackAddress"
-        :dope-address="dopeAddress"
-        :create-address="createAddress"
+        :section-info="dataAddress",
+        section="addresses",
+        :update-address="updateAddress",
+        :lack-address="lackAddress",
+        :dope-address="dopeAddress",
+        :create-address="createAddress",
         :address-id="addressId"
       )
     .flex.flex-col
       client-detail-info-section(
-        :section-info="dataAttachments"
-        section="docs"
-        :save-new-doc="saveNewDoc"
+        :section-info="dataAttachments",
+        section="docs",
+        :save-new-doc="saveNewDoc",
         :delete-doc="deleteDoc"
       )
 </template>
@@ -48,6 +49,7 @@ export default {
     createDocument: Function,
     addressId: String,
     docId: String,
+    currentYear: Number,
   },
 };
 </script>

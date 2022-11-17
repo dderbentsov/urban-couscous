@@ -1,10 +1,23 @@
 <template lang="pug">
-  .sidebar.flex.flex-col.justify-between.flex-auto.py-6.box-border
+  .sidebar.flex.flex-col.justify-between.flex-auto.py-6.box-border(
+    :style="{borderTopRightRadius: this.currenPageBorder ? '0px' : '4px'}"
+  )
     .flex.flex-col.gap-y-6
-      the-button-sidebar( v-for="button in pageSettings.filter((el) => el.id !== 'settings')" :path="button.path" :id="button.id" :active="button.active" :change-style-page="changeStylePage")
+      the-button-sidebar(
+        v-for="button in pageSettings.filter((el) => el.id !== 'settings')",
+        :path="button.path",
+        :id="button.id",
+        :active="button.active",
+        :change-style-page="changeStylePage"
+      )
         .icon(:class="button.icon")
     .flex.text-4xl.flex-col.gap-y-6
-      the-button-sidebar(:path="getSettings.path" :id="getSettings.id" :active="getSettings.active" :change-style-page="changeStylePage")
+      the-button-sidebar(
+        :path="getSettings.path",
+        :id="getSettings.id",
+        :active="getSettings.active",
+        :change-style-page="changeStylePage"
+      )
         .icon(:class="getSettings.icon")
 </template>
 
@@ -36,6 +49,7 @@ export default {
           active: false,
         },
       ],
+      currenPageBorder: true,
     };
   },
   methods: {
@@ -45,6 +59,9 @@ export default {
           ? (this.pageSettings[index].active = true)
           : (this.pageSettings[index].active = false);
       });
+    },
+    changePage() {
+      console.log(this.$router.currentRoute._value.fullPath);
     },
   },
   computed: {
@@ -60,6 +77,13 @@ export default {
         : (this.pageSettings[index].active = false);
     });
   },
+  watch: {
+    "$route.path"() {
+      if (this.$router.currentRoute._value.fullPath === "/calendar") {
+        this.currenPageBorder = true;
+      } else this.currenPageBorder = false;
+    },
+  },
 };
 </script>
 
@@ -68,7 +92,6 @@ export default {
   max-width: 80px
   min-width: 80px
   background-color: var(--default-white)
-  border-top-right-radius: 4px
 .icon
   min-width: 44px
 </style>

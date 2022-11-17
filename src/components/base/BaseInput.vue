@@ -1,6 +1,6 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border.py-10px(
-    :class="{'border-none': borderNone}",
+    :class="{'border-none': borderNone, 'date-input': dateInput}",
     :style="{ minWidth: widthInput + 'px' }"
   )
     input.input.w-full.outline-0.not-italic(
@@ -39,6 +39,7 @@ export default {
     borderNone: Boolean,
     disabled: Boolean,
     maxDate: String,
+    dateInput: Boolean,
   },
 };
 </script>
@@ -61,4 +62,7 @@ export default {
   border: none
 .input
   background-color: inherit
+.date-input
+  // padding: 8px 12px
+  // max-height: 40px
 </style>
