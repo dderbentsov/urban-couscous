@@ -24,6 +24,7 @@
         @selected-event="transmitEventData"
         @reset-change-form="transmitResetChangeForm"
         @delete-event="transmitDeleteEvent"
+        :schedule-body-ref="scheduleBodyRef"
       )
 </template>
 
@@ -45,6 +46,7 @@ export default {
     dayStartTime: Number,
     eventTypes: Array,
     changeFormWasClosed: Boolean,
+    scheduleBodyRef: Node,
   },
   data() {
     return {
