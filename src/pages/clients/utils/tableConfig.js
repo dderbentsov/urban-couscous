@@ -119,6 +119,12 @@ export const detail = {
       issued_by_org_code: "###-###",
       issued_by_date: "##.##.####",
     },
+    placeholder: {
+      numba: "0000 000000",
+      issued_by_org: "Точно как в паспорте",
+      issued_by_org_code: "000-000",
+      issued_by_date: "Дата",
+    },
     width: 280,
   },
   snils: {
@@ -126,12 +132,18 @@ export const detail = {
     options: {
       numba: "Номер",
     },
+    placeholder: {
+      numba: "000-000-000 00",
+    },
     width: 180,
   },
   inn: {
     title: "ИНН",
     options: {
       numba: "Номер",
+    },
+    placeholder: {
+      numba: "000000000000",
     },
     width: 180,
   },
@@ -144,6 +156,9 @@ export const detail = {
     title: "Адреса",
     options: {
       join_adress: "Полный адрес",
+    },
+    placeholder: {
+      join_adress: "Введите адрес целиком",
     },
     width: 292,
   },

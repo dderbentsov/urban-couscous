@@ -1,5 +1,5 @@
 <template lang="pug">
-  clients-wrapper(:open-form="openForm")
+  clients-wrapper(:open-form="openForm", :current-year="currentYear")
 </template>
 
 <script>
@@ -9,6 +9,7 @@ export default {
   components: { ClientsWrapper },
   props: {
     openForm: Function,
+    currentYear: Number,
   },
 };
 </script>

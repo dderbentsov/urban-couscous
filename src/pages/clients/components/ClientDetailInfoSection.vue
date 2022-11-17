@@ -1,6 +1,6 @@
 <template lang="pug">
   .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
-    :style="{ flexDirection:settings[section].rowFlex&&'row', width : settings[section].width + 'px', height : settings[section].height+'px'}"
+    :style="{flexDirection:settings[section].rowFlex && 'row', width : settings[section].width + 'px', height : settings[section].height + 'px', background: changeBackground}"
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
@@ -41,16 +41,24 @@
             :save-additional="saveDocs"
           )
     .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData || this.isAddress")
-      .flex.flex-col(class="gap-y-1.5")
+      .flex.flex-col.gap-y-4
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
           span.title-section.font-semibold.text-xs(
             v-if="settings[section].options") {{settings[section].options[key]}}
           span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
           client-detail-input.text-sm.text-sm.w-max-fit(
-            v-if="section!=='docs' && isChange",
-            :style="{fontWeight:key === 'numba'&&600}",
+            v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
+            :style="{fontWeight:key === 'numba'&&600, maxHeight: settings[section].options[key] !== 'Выдан' ? '40px' : ''}",
             v-model:value="sectionInfo[key]",
-            :width="settings[section].width"
+            :width="settings[section].width",
+            :placeholder="settings[section].placeholder[key]"
+          )
+          base-input.max-h-10.py-2.pl-3(
+            v-if="settings[section].options[key] === 'Дата выдачи' && isChange",
+            type="date",
+            v-model:value="sectionInfo.issued_by_date"
+            :max-date="`${currentYear}-12-31`",
+            dateInput
           )
             .copy.icon-copy.cursor-pointer(
               v-if="item.copy",
@@ -95,12 +103,14 @@ import BaseButton from "@/components/base/BaseButton";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
+import BaseInput from "@/components/base/BaseInput";
 import { detail } from "@/pages/clients/utils/tableConfig";
 export default {
   name: "ClientDetailInfoSection",
   components: {
     TableAddingNewAdditional,
     BaseButton,
+    BaseInput,
     ClientDetailInput,
     TableAddingNewDoc,
     ClientDetailSectionAddress,
@@ -119,9 +129,11 @@ export default {
     createDocument: Function,
     addressId: String,
     docId: String,
+    currentYear: Number,
   },
   data() {
     return {
+      tip: "text",
       additionalData: {
         header: "",
         value: "",
@@ -140,6 +152,13 @@ export default {
       isData: true,
       isAddress: true,
     };
+  },
+  computed: {
+    changeBackground() {
+      return this.isChange
+        ? "var(--light-grey-bg-color)"
+        : "var(--default-white)";
+    },
   },
   methods: {
     openAddDoc() {
@@ -271,5 +290,5 @@ export default {
 .text-separation
   width: 38px
   z-index: 1
-  background: white
+  background: var(--light-grey-bg-color)
 </style>

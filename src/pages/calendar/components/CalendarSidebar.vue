@@ -21,15 +21,15 @@
         ) Создать событие
         calendar-sidebar-event(:is-open="isOpen", :event-type="eventTypes")
         calendar-sidebar-teammate(:team-data="teamData", :is-open="isOpen")
-      .button-wrapper.flex.justify-center.mb-23px
-        base-button(
-          left-icon="icon-long-arrow",
-          rounded, :size="40",
-          :icon-left-size="18",
-          secondary,
-          :style="{ transform: `rotate(${turnButton})`}",
-          @click="changeSize"
-        )
+      //- .button-wrapper.flex.justify-center.mb-23px
+      //-   base-button(
+      //-     left-icon="icon-long-arrow",
+      //-     rounded, :size="40",
+      //-     :icon-left-size="18",
+      //-     secondary,
+      //-     :style="{ transform: `rotate(${turnButton})`}",
+      //-     @click="changeSize"
+      //-   )
 </template>
 
 <script>
@@ -88,6 +88,9 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.sidebar
+  border-top-right-radius: 4px
+
 .sidebar-wrapper
   border-left: 2px solid var(--btn-blue-color-3)
 

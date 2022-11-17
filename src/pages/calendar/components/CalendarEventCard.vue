@@ -247,6 +247,7 @@ export default {
   height: 23px
 
 .default-theme
+  z-index: 0
   .card
     background-color: var(--bg-color)
     border: 2px solid var(--border-color)

@@ -1,9 +1,14 @@
 <template lang="pug">
 .flex.flex-col.w-full.h-full.gap-y-2
-    the-header(:is-open-form="isOpenForm", :close-form="closeForm", :open-form="openForm")
+    the-header(
+      :is-open-form="isOpenForm",
+      :close-form="closeForm",
+      :open-form="openForm",
+      :current-year="currentYear"
+    )
     .flex.flex-auto
       the-sidebar
-      router-view(:open-form="openForm")
+      router-view(:open-form="openForm", :current-year="currentYear")
 </template>
 
 <script>
@@ -16,6 +21,7 @@ export default {
   data() {
     return {
       isOpenForm: false,
+      currentYear: null,
     };
   },
   methods: {
@@ -25,6 +31,12 @@ export default {
     closeForm() {
       this.isOpenForm = false;
     },
+    printCurrentYear() {
+      return new Date().getFullYear();
+    },
+  },
+  mounted: function () {
+    this.currentYear = this.printCurrentYear();
   },
 };
 </script>

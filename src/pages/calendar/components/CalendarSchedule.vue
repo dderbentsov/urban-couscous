@@ -383,8 +383,8 @@ export default {
 <style lang="sass" scoped>
 .schedule
   border-top-left-radius: 4px
+  border-top-right-radius: 4px
   position: relative
-  border-top-left-radius: 4px
   background-color: var(--default-white)
   width: calc(100% - (var(--sidebar-width) + 16px))
   height: calc(100vh - 56px - 8px)

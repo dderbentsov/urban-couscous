@@ -1,6 +1,10 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create(v-if="isOpenForm", :close-form="closeForm")
+    base-client-form-create(
+      v-if="isOpenForm",
+      :close-form="closeForm",
+      :current-year="currentYear"
+    )
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
@@ -38,6 +42,7 @@ export default {
     openForm: Function,
     closeForm: Function,
     isOpenForm: Boolean,
+    currentYear: Number,
   },
   data() {
     return {
