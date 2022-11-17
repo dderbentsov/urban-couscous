@@ -1,7 +1,8 @@
 <template lang="pug">
   .wrapper.cursor-pointer.my-1.relative(
     :style="themeColors",
-    :class="cardTheme"
+    :class="cardTheme",
+    ref="eventCard"
   )
     .card.flex.px-2(
       :class="{'py-6px flex-col': longCard}",
@@ -20,14 +21,15 @@
         .col
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
-    calendar-event-description-card.right-0(
+    calendar-event-description-card(
       v-if="isOpenDescriptionCard"
-      :style="descriptionCardPosition"
       :owner-event="ownerEvent"
       :event-types="eventTypes"
       @selected-event="transmitEventData"
       @close-description-card="closeDescriptionCard"
       @delete-event="transmitDeleteEvent"
+      :schedule-body-ref="scheduleBodyRef"
+      :event-card-size="cardSize"
     )
   </template>
 
@@ -45,6 +47,7 @@ export default {
         return [];
       },
     },
+    scheduleBodyRef: Node,
   },
   data() {
     return {
@@ -52,6 +55,7 @@ export default {
       isActive: false,
       someDetailsShown: true,
       isOpenDescriptionCard: false,
+      cardSize: {},
     };
   },
   computed: {
@@ -182,11 +186,6 @@ export default {
       if (!remainingDetails) this.changeDetailsShown();
       return remainingDetails;
     },
-    descriptionCardPosition() {
-      return {
-        top: `calc(${this.cardHeight.height} + 8px)`,
-      };
-    },
   },
   methods: {
     trimTime(time) {
@@ -224,6 +223,12 @@ export default {
       this.hideDescriptionCard();
       this.setDefaultTheme();
     },
+    writeCardSize() {
+      this.cardSize = {
+        width: this.$refs["eventCard"].getBoundingClientRect().width,
+        height: this.calculateCardHeight - 8,
+      };
+    },
   },
   watch: {
     changeFormWasClosed: {
@@ -235,6 +240,9 @@ export default {
         }
       },
     },
+  },
+  mounted() {
+    this.writeCardSize();
   },
 };
 </script>

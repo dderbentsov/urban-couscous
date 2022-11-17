@@ -1,8 +1,9 @@
 <template lang="pug">
   .wrapper.px-4.pt-14px.pb-4.font-medium.cursor-auto(
-    :style="typeColor",
+    :style="{...typeColor, ...position}",
     v-click-outside="close",
     :class="{'shadow': !disabled}"
+    ref="descriptionCard"
   )
     .flex.justify-between.items-center.mb-2
       .flex
@@ -36,10 +37,13 @@ export default {
       type: Boolean,
       default: false,
     },
+    scheduleBodyRef: Node,
+    eventCardSize: Object,
   },
   data() {
     return {
       isCertainType: true,
+      position: {},
     };
   },
   computed: {
@@ -111,11 +115,30 @@ export default {
       return `${object.last_name} ${object.first_name} ${object.patronymic}`;
     },
   },
+  mounted() {
+    if (!this.$refs.descriptionCard || !this.scheduleBodyRef) return;
+    const cardRect = this.$refs.descriptionCard.getBoundingClientRect();
+    const bodyRect = this.scheduleBodyRef.getBoundingClientRect();
+    //const bodyHeight = this.scheduleBodyRef.clientHeight + bodyRect.y - 20;
+    const bodyWidth = this.scheduleBodyRef.clientWidth + bodyRect.x - 20;
+    if (cardRect.x + cardRect.width > bodyWidth) {
+      this.position = {
+        top: `-${this.eventCardSize.height + 8}px`,
+        left: `-${cardRect.width + 8}px`,
+      };
+    } else {
+      this.position = {
+        top: `-${this.eventCardSize.height + 8}px`,
+        right: `-${this.eventCardSize.width + 8}px`,
+      };
+    }
+  },
 };
 </script>
 
 <style lang="sass" scoped>
 .wrapper
+  width: 100% !important
   height: auto !important
   background-color: var(--default-white)
   color: var(--font-dark-blue-color)
