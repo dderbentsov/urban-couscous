@@ -122,25 +122,13 @@ export default {
     const cardRect = this.$refs.descriptionCard.getBoundingClientRect();
     const bodyRect = this.scheduleBodyRef.getBoundingClientRect();
     const bodyHeight = this.scheduleBodyRef.clientHeight + bodyRect.y - 20;
-    const bodyWidth = this.scheduleBodyRef.clientWidth;
-    console.log(cardRect.x, cardRect.width, bodyWidth);
-    if (cardRect.x + 2 * cardRect.width < bodyWidth) {
+    if (cardRect.y + cardRect.height > bodyHeight) {
       this.position = {
-        top: 0,
-        right: `-${cardRect.width + 8}px`,
-      };
-    } else if (cardRect.x - 84 > bodyRect.x) {
-      this.position = {
-        top: 0,
-        left: `-${cardRect.width + 8}px`,
-      };
-    } else if (cardRect.y + cardRect.height < bodyHeight) {
-      this.position = {
-        "margin-top": "8px",
+        top: `-${cardRect.height + 8}px`,
       };
     } else
       this.position = {
-        top: `-${cardRect.height + 8}px`,
+        "margin-top": "8px",
       };
   },
 };
@@ -148,7 +136,7 @@ export default {
 
 <style lang="sass" scoped>
 .wrapper
-  width: 100% !important
+  width: 426px !important
   height: auto !important
   background-color: var(--default-white)
   color: var(--font-dark-blue-color)

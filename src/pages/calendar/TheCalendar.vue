@@ -69,7 +69,7 @@ export default {
       selectedEvent: {},
       showModal: false,
       timeInformation: {
-        dayStartTime: "00:00",
+        dayStartTime: "08:00",
         dayEndTime: "20:00",
       },
       eventsData: [],
