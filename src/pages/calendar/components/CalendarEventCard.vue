@@ -29,7 +29,6 @@
       @close-description-card="closeDescriptionCard"
       @delete-event="transmitDeleteEvent"
       :schedule-body-ref="scheduleBodyRef"
-      :event-card-size="cardSize"
     )
   </template>
 
@@ -223,12 +222,6 @@ export default {
       this.hideDescriptionCard();
       this.setDefaultTheme();
     },
-    writeCardSize() {
-      this.cardSize = {
-        width: this.$refs["eventCard"].getBoundingClientRect().width,
-        height: this.calculateCardHeight - 8,
-      };
-    },
   },
   watch: {
     changeFormWasClosed: {
@@ -241,21 +234,16 @@ export default {
       },
     },
   },
-  mounted() {
-    this.writeCardSize();
-  },
 };
 </script>
 
 <style lang="sass" scoped>
 .wrapper
   position: absolute
-  z-index: 3
   width: calc(100% - 8px)
-  height: 23px
 
 .default-theme
-  z-index: 0
+  z-index: 2
   .card
     background-color: var(--bg-color)
     border: 2px solid var(--border-color)
@@ -271,6 +259,7 @@ export default {
     background-color: var(--font-color)
 
 .active-theme
+  z-index: 3
   .card
     background-color: var(--bg-active)
     border: 2px solid var(--border-active-color)

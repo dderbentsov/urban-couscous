@@ -16,7 +16,10 @@
         .icon-cancel.text-xxs.flex.items-center.cursor-pointer(@click="close")
     .body.mr-6
       span.text-base  {{ eventMember }}
-      .flex.text-xxs.mt-4.justify-between(v-if="!disabled")
+      .flex.text-xxs.justify-between(
+        v-if="!disabled",
+        :class="{'mt-4': description.length > 0}"
+        )
         .column
           ul
             li(v-for="elem in description" :key="elem") {{ elem }}
@@ -38,7 +41,6 @@ export default {
       default: false,
     },
     scheduleBodyRef: Node,
-    eventCardSize: Object,
   },
   data() {
     return {
@@ -119,19 +121,27 @@ export default {
     if (!this.$refs.descriptionCard || !this.scheduleBodyRef) return;
     const cardRect = this.$refs.descriptionCard.getBoundingClientRect();
     const bodyRect = this.scheduleBodyRef.getBoundingClientRect();
-    //const bodyHeight = this.scheduleBodyRef.clientHeight + bodyRect.y - 20;
-    const bodyWidth = this.scheduleBodyRef.clientWidth + bodyRect.x - 20;
-    if (cardRect.x + cardRect.width > bodyWidth) {
+    const bodyHeight = this.scheduleBodyRef.clientHeight + bodyRect.y - 20;
+    const bodyWidth = this.scheduleBodyRef.clientWidth;
+    console.log(cardRect.x, cardRect.width, bodyWidth);
+    if (cardRect.x + 2 * cardRect.width < bodyWidth) {
       this.position = {
-        top: `-${this.eventCardSize.height + 8}px`,
+        top: 0,
+        right: `-${cardRect.width + 8}px`,
+      };
+    } else if (cardRect.x - 84 > bodyRect.x) {
+      this.position = {
+        top: 0,
         left: `-${cardRect.width + 8}px`,
       };
-    } else {
+    } else if (cardRect.y + cardRect.height < bodyHeight) {
       this.position = {
-        top: `-${this.eventCardSize.height + 8}px`,
-        right: `-${this.eventCardSize.width + 8}px`,
+        "margin-top": "8px",
       };
-    }
+    } else
+      this.position = {
+        top: `-${cardRect.height + 8}px`,
+      };
   },
 };
 </script>
