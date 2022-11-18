@@ -13,7 +13,7 @@
           :client="client",
           :fetch-data-clients="fetchDataClients",
           :current-year="currentYear"
-          )
+        )
 </template>
 
 <script>
@@ -35,6 +35,7 @@ export default {
   props: {
     openForm: Function,
     currentYear: Number,
+    isOpenForm: Boolean,
   },
 
   data() {
@@ -72,6 +73,17 @@ export default {
           this.selectAll = true;
         }
       }
+    },
+  },
+  watch: {
+    isOpenForm: {
+      immediate: true,
+      handler(newValue) {
+        if (newValue === false) {
+          console.log("work");
+          this.fetchDataClients();
+        }
+      },
     },
   },
   mounted() {

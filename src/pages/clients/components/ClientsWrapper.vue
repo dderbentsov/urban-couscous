@@ -1,6 +1,10 @@
 <template lang="pug">
   .wrapper.flex.w-full.relative.mx-2
-    clients-table(:open-form="openForm", :current-year="currentYear")
+    clients-table(
+      :open-form="openForm",
+      :is-open-form="isOpenForm"
+      :current-year="currentYear"
+    )
 </template>
 
 <script>
@@ -11,6 +15,7 @@ export default {
   props: {
     openForm: Function,
     currentYear: Number,
+    isOpenForm: Boolean,
   },
 };
 </script>
