@@ -80,7 +80,6 @@ export default {
       immediate: true,
       handler(newValue) {
         if (newValue === false) {
-          console.log("work");
           this.fetchDataClients();
         }
       },

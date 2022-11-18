@@ -60,9 +60,6 @@ export default {
           : (this.pageSettings[index].active = false);
       });
     },
-    changePage() {
-      console.log(this.$router.currentRoute._value.fullPath);
-    },
   },
   computed: {
     getSettings() {

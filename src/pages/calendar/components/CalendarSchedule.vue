@@ -418,24 +418,10 @@ export default {
   height: calc(100vh - 56px * 2 - 8px - 22px)
   overflow-y: auto
   overflow-x: auto
-  &::-webkit-scrollbar
-    width: 8px
-    height: 8px
   &::-webkit-scrollbar-track:horizontal
     margin: 0 24px 0 104px
-    pddding-bottom: 22px
-    border-radius: 4px
-    background-color: var(--bg-ligth-blue-color)
-  &::-webkit-scrollbar-thumb:horizontal
-    background-color: var(--btn-blue-color-2)
-    border-radius: 4px
   &::-webkit-scrollbar-track:vertical
-    margin: 56px 0 24px 0
-    border-radius: 4px
-    background-color: var(--bg-ligth-blue-color)
-  &::-webkit-scrollbar-thumb:vertical
-    border-radius: 4px
-    background-color: var(--btn-blue-color-2)
+    margin: 48px 0 24px 0
 
 .hiding-container
   width: 80px

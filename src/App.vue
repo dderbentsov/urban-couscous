@@ -9,6 +9,16 @@ export default {
 </script>
 
 <style lang="sass">
+html
+  ::-webkit-scrollbar
+    width: 8px
+    height: 8px
+  ::-webkit-scrollbar-track
+    border-radius: 4px
+    background-color: var(--bg-ligth-blue-color)
+  ::-webkit-scrollbar-thumb
+    background-color: var(--btn-blue-color-2)
+    border-radius: 4px
 #app
   font-feature-settings: 'pnum' on, 'lnum' on
   -webkit-font-smoothing: antialiased
