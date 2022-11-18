@@ -342,7 +342,7 @@ export default {
         this.dopeAddress.street &&
         this.dopeAddress.house
       ) {
-        return `${this.dopeAddress.region}.обл, г.${this.dopeAddress.city}, ул.${this.dopeAddress.street}, ${this.dopeAddress.house}, ${this.dopeAddress.flat}, ${this.dopeAddress.index}`;
+        return `${this.dopeAddress.index}, ${this.dopeAddress.region} обл., г.${this.dopeAddress.city}, ул.${this.dopeAddress.street}, д.${this.dopeAddress.house}, кв.${this.dopeAddress.flat}`;
       }
     },
     clearAddress() {
