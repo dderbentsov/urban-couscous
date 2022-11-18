@@ -21,7 +21,7 @@
         ) Создать событие
         calendar-sidebar-event(:is-open="isOpen", :event-type="eventTypes")
         calendar-sidebar-teammate(:team-data="teamData", :is-open="isOpen")
-        .button-wrapper.flex.justify-center.mb-23px
+    //-    .button-wrapper.flex.justify-center.mb-23px
           base-button(
             left-icon="icon-long-arrow",
             rounded, :size="40",

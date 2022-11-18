@@ -54,7 +54,6 @@ export default {
       isActive: false,
       someDetailsShown: true,
       isOpenDescriptionCard: false,
-      cardSize: {},
     };
   },
   computed: {
@@ -222,12 +221,6 @@ export default {
       this.hideDescriptionCard();
       this.setDefaultTheme();
     },
-    writeCardSize() {
-      this.cardSize = {
-        width: this.$refs["eventCard"].getBoundingClientRect().width,
-        height: this.calculateCardHeight - 8,
-      };
-    },
   },
   watch: {
     changeFormWasClosed: {
@@ -239,9 +232,6 @@ export default {
         }
       },
     },
-  },
-  mounted() {
-    this.writeCardSize();
   },
 };
 </script>
