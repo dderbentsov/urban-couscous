@@ -13,26 +13,41 @@
       .grid.grid-cols-2.gap-y-6.gap-x-4
         .flex.flex-col(class="gap-y-1.5")
           .text-info.text-xxs.font-semibold Город
-          base-custom-select(
+          base-input.input-info(
             placeholder="Выберите город",
-            :items="cities",
-            v-model="currentCity"
+            v-model:value="addresses.city"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Область
-          base-input.input-info(placeholder="Введите область")
+          base-input.input-info(
+            placeholder="Введите область",
+            v-model:value="addresses.region"
+          )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Улица
-          base-input.input-info(placeholder="Введите улицу")
+          base-input.input-info(
+            placeholder="Введите улицу",
+            v-model:value="addresses.street"
+          )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Дом
-          base-input.input-info(placeholder="Номер дома")
+          base-input.input-info(
+            placeholder="Номер дома",
+            v-model:value="addresses.house_number"
+          )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Квартира
-          base-input.input-info(placeholder="Номер квартиры")
+          base-input.input-info(
+            placeholder="Номер квартиры",
+            v-model:value="addresses.apartment_number"
+          )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Индекс
-          base-input.input-info(placeholder="000000", v-mask="'######'")
+          base-input.input-info(
+            placeholder="000000",
+            v-mask="'######'",
+            v-model:value="addresses.zip_code"
+          )
     .px-4
       base-button(@click="saveClient" :size="40")
         span.font-semibold Создать клиента
@@ -52,16 +67,6 @@ export default {
     saveFile: Function,
   },
   directives: { mask },
-  data() {
-    return {
-      currentCity: { id: null, label: "" },
-      cities: [
-        { id: 1, label: "Владивосток" },
-        { id: 2, label: "Москва" },
-        { id: 3, label: "Тула" },
-      ],
-    };
-  },
 };
 </script>
 

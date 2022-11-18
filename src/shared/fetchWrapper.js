@@ -12,7 +12,7 @@ function handleRequest(method, url, headers, attempts, body) {
     })();
   })
     .then((res) => {
-      if (res._bodyText) return res.json();
+      if (res) return res.json();
     })
     .catch((err) => {
       console.log(err);

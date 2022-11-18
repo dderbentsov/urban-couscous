@@ -62,7 +62,4 @@ export default {
   border: none
 .input
   background-color: inherit
-.date-input
-  // padding: 8px 12px
-  // max-height: 40px
 </style>
