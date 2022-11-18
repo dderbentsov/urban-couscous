@@ -8,7 +8,11 @@
     )
     .flex.flex-auto
       the-sidebar
-      router-view(:open-form="openForm", :current-year="currentYear")
+      router-view(
+        :open-form="openForm",
+        :is-open-form="isOpenForm",
+        :current-year="currentYear"
+      )
 </template>
 
 <script>
