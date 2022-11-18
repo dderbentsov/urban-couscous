@@ -1,6 +1,6 @@
 <template lang="pug">
   .wrapper.px-4.pt-14px.pb-4.font-medium.cursor-auto(
-    :style="{...typeColor, ...position}",
+    :style="{...typeColor, ...position, ...constantWidth}",
     v-click-outside="close",
     :class="{'shadow': !disabled}"
     ref="descriptionCard"
@@ -96,6 +96,14 @@ export default {
         ? this.ownerEvent.description.split(", ")
         : [];
     },
+    constantWidth() {
+      if (!this.disabled) {
+        return {
+          width: "426px !important",
+        };
+      }
+      return "";
+    },
   },
   methods: {
     changeType() {
@@ -136,7 +144,6 @@ export default {
 
 <style lang="sass" scoped>
 .wrapper
-  width: 426px !important
   height: auto !important
   background-color: var(--default-white)
   color: var(--font-dark-blue-color)
