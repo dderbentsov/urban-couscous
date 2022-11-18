@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper.flex.w-full.relative.mx-6
+  .wrapper.flex.w-full.relative.mx-2
     clients-table(
       :open-form="openForm",
       :is-open-form="isOpenForm"

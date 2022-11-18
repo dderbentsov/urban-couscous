@@ -1,7 +1,8 @@
 <template lang="pug">
   .wrapper.cursor-pointer.my-1.relative(
     :style="themeColors",
-    :class="cardTheme"
+    :class="cardTheme",
+    ref="eventCard"
   )
     .card.flex.px-2(
       :class="{'py-6px flex-col': longCard}",
@@ -20,14 +21,14 @@
         .col
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
-    calendar-event-description-card.right-0(
+    calendar-event-description-card(
       v-if="isOpenDescriptionCard"
-      :style="descriptionCardPosition"
       :owner-event="ownerEvent"
       :event-types="eventTypes"
       @selected-event="transmitEventData"
       @close-description-card="closeDescriptionCard"
       @delete-event="transmitDeleteEvent"
+      :schedule-body-ref="scheduleBodyRef"
     )
   </template>
 
@@ -45,6 +46,7 @@ export default {
         return [];
       },
     },
+    scheduleBodyRef: Node,
   },
   data() {
     return {
@@ -182,11 +184,6 @@ export default {
       if (!remainingDetails) this.changeDetailsShown();
       return remainingDetails;
     },
-    descriptionCardPosition() {
-      return {
-        top: `calc(${this.cardHeight.height} + 8px)`,
-      };
-    },
   },
   methods: {
     trimTime(time) {
@@ -242,12 +239,10 @@ export default {
 <style lang="sass" scoped>
 .wrapper
   position: absolute
-  z-index: 3
   width: calc(100% - 8px)
-  height: 23px
 
 .default-theme
-  z-index: 0
+  z-index: 2
   .card
     background-color: var(--bg-color)
     border: 2px solid var(--border-color)
@@ -263,6 +258,7 @@ export default {
     background-color: var(--font-color)
 
 .active-theme
+  z-index: 3
   .card
     background-color: var(--bg-active)
     border: 2px solid var(--border-active-color)
