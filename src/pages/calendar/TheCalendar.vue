@@ -114,7 +114,7 @@ export default {
     },
     fetchEventsData() {
       fetchWrapper
-        .get("registry/event/?limit=20")
+        .get("registry/event/?limit=100")
         .then((res) => this.saveEventsData(res));
     },
     changeWidth(value) {
