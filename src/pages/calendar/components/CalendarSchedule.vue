@@ -29,6 +29,7 @@
           @selected-event="transmitEventData"
           @reset-change-form="transmitResetChangeForm"
           @delete-event="transmitDeleteEvent"
+          :schedule-body-ref="$refs.scheduleBody"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9

@@ -1,8 +1,9 @@
 <template lang="pug">
   .wrapper.px-4.pt-14px.pb-4.font-medium.cursor-auto(
-    :style="typeColor",
+    :style="{...typeColor, ...position}",
     v-click-outside="close",
     :class="{'shadow': !disabled}"
+    ref="descriptionCard"
   )
     .flex.justify-between.items-center.mb-2
       .flex
@@ -15,7 +16,10 @@
         .icon-cancel.text-xxs.flex.items-center.cursor-pointer(@click="close")
     .body.mr-6
       span.text-base  {{ eventMember }}
-      .flex.text-xxs.mt-4.justify-between(v-if="!disabled")
+      .flex.text-xxs.justify-between(
+        v-if="!disabled",
+        :class="{'mt-4': description.length > 0}"
+        )
         .column
           ul
             li(v-for="elem in description" :key="elem") {{ elem }}
@@ -36,10 +40,12 @@ export default {
       type: Boolean,
       default: false,
     },
+    scheduleBodyRef: Node,
   },
   data() {
     return {
       isCertainType: true,
+      position: {},
     };
   },
   computed: {
@@ -111,11 +117,26 @@ export default {
       return `${object.last_name} ${object.first_name} ${object.patronymic}`;
     },
   },
+  mounted() {
+    if (!this.$refs.descriptionCard || !this.scheduleBodyRef) return;
+    const cardRect = this.$refs.descriptionCard.getBoundingClientRect();
+    const bodyRect = this.scheduleBodyRef.getBoundingClientRect();
+    const bodyHeight = this.scheduleBodyRef.clientHeight + bodyRect.y - 20;
+    if (cardRect.y + cardRect.height > bodyHeight) {
+      this.position = {
+        top: `-${cardRect.height + 8}px`,
+      };
+    } else
+      this.position = {
+        "margin-top": "8px",
+      };
+  },
 };
 </script>
 
 <style lang="sass" scoped>
 .wrapper
+  width: 426px !important
   height: auto !important
   background-color: var(--default-white)
   color: var(--font-dark-blue-color)
