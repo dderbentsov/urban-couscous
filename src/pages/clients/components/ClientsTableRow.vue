@@ -78,9 +78,11 @@
       :lack-data="lackData"
       :lack-address="lackAddress"
       :dope-address="dopeAddress"
+      :lack-attachments="lackAttachments"
       :create-address="postCreateAddress"
       :create-document="postCreateIdentityDocument"
       :address-id="addressId"
+      :attachment-id="attachmentId"
       :doc-id="docId"
       :current-year="currentYear"
     )
@@ -132,8 +134,10 @@ export default {
       dataClient: {},
       docId: "",
       addressId: "",
+      attachmentId: "",
       lackData: true,
       lackAddress: true,
+      lackAttachments: true,
       dopeAddress: {
         city: "",
         region: "",
@@ -364,7 +368,14 @@ export default {
       this.clearAddress();
     },
     saveAttachments(data) {
-      this.dataAttachments = [...data];
+      this.dataAttachments = [""];
+      if (data.find((e) => e.id)) {
+        this.dataAttachments = [...data];
+        this.lackAttachments = true;
+        this.attachmentId = this.dataAttachments[0].id;
+      } else {
+        this.lackAttachments = false;
+      }
     },
     openPopup(e) {
       e.target.focus();
@@ -381,11 +392,10 @@ export default {
     saveNewDoc(data) {
       this.dataAttachments = [...this.dataDetail, ...data];
     },
-    deleteDoc(e) {
-      e.stopPropagation();
-      this.dataAttachments = this.dataAttachments.filter(
-        (el) => el.id !== e.target.id
-      );
+    deleteDoc(id) {
+      fetchWrapper
+        .del(`general/attachment/${id}/delete/`)
+        .then(() => this.fetchClientDetail(this.id));
     },
     postCreateAddress() {
       fetchWrapper
@@ -416,7 +426,7 @@ export default {
 
 <style lang="sass" scoped>
 .row-wrapper
-  border-bottom: 1px solid #D3D4DC
+  border-bottom: 1px solid var(--border-light-grey-color)
   min-width: 1556px
 .row-body
   color: var(--font-dark-blue-color)

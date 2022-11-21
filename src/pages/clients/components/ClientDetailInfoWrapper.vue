@@ -25,6 +25,8 @@
         section="docs",
         :save-new-doc="saveNewDoc",
         :delete-doc="deleteDoc"
+        :lack-attachments="lackAttachments"
+        :attachment-id="attachmentId"
       )
 </template>
 
@@ -44,10 +46,12 @@ export default {
     updateAddress: Function,
     lackData: Boolean,
     lackAddress: Boolean,
+    lackAttachments: Boolean,
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
     addressId: String,
+    attachmentId: String,
     docId: String,
     currentYear: Number,
   },

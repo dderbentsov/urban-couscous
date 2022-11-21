@@ -40,7 +40,9 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(v-if="this.isData || this.isAddress")
+    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(
+      v-if="this.isData || this.isAddress || this.isAttachments"
+    )
       .flex.flex-col.gap-y-4
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
           span.title-section.font-semibold.text-xs(
@@ -54,7 +56,7 @@
             :placeholder="settings[section].placeholder[key]"
           )
           base-input.max-h-10.py-2.pl-3(
-            v-if="settings[section].options[key] === 'Дата выдачи' && isChange",
+            v-else-if="isChange && section !== 'docs'",
             type="date",
             v-model:value="sectionInfo.issued_by_date"
             :max-date="`${currentYear}-12-31`",
@@ -83,13 +85,15 @@
             )
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
-          .flex.items-center(v-if="item.title")
+          .flex.items-center
             .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
               v-if="isChange",
               :id="item.id",
-              @click="(e) => deleteDoc(e)"
+              @click="deleteDoc(item.id)"
             )
+            img(:src="iconDictionary[item?.document?.split('.')[1]]")
             span.text-sm {{item.title}}
+            span.text-sm(v-if="item.document") {{`. ${item?.document?.split(".")[1]}`}}
     .section-add-doc.flex.justify-center.items-center.cursor-pointer(
       v-else,
       @click="openAddDoc"
@@ -105,6 +109,9 @@ import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewA
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import BaseInput from "@/components/base/BaseInput";
 import { detail } from "@/pages/clients/utils/tableConfig";
+import pdfIcon from "@/assets/icons/pdf.svg";
+import wordIcon from "@/assets/icons/word.svg";
+import exelIcon from "@/assets/icons/exel.svg";
 export default {
   name: "ClientDetailInfoSection",
   components: {
@@ -124,16 +131,17 @@ export default {
     updateAddress: Function,
     lackData: Boolean,
     lackAddress: Boolean,
+    lackAttachments: Boolean,
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
     addressId: String,
+    attachmentId: String,
     docId: String,
     currentYear: Number,
   },
   data() {
     return {
-      tip: "text",
       additionalData: {
         header: "",
         value: "",
@@ -151,6 +159,8 @@ export default {
       ],
       isData: true,
       isAddress: true,
+      isAttachments: true,
+      iconDictionary: { doc: wordIcon, pdf: pdfIcon, xls: exelIcon },
     };
   },
   computed: {
@@ -167,6 +177,8 @@ export default {
         this.isData = true;
       } else if (this.section === "addresses") {
         this.isAddress = true;
+      } else if (this.section === "docs") {
+        this.isAttachments = true;
       }
     },
     changeDoc() {
@@ -233,6 +245,12 @@ export default {
       immediate: true,
       handler(newValue) {
         this.isAddress = newValue;
+      },
+    },
+    lackAttachments: {
+      immediate: true,
+      handler(newValue) {
+        this.isAttachments = newValue;
       },
     },
   },
