@@ -40,6 +40,7 @@ export default {
   methods: {
     async deleteEvent() {
       await fetchWrapper.del(`registry/event/${this.ownerEvent.id}/delete/`);
+      this.$emit("update-events");
       this.closeModal();
     },
   },
