@@ -22,12 +22,12 @@
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
     calendar-event-description-card(
-      v-if="isOpenDescriptionCard"
-      :owner-event="ownerEvent"
-      :event-types="eventTypes"
-      @selected-event="transmitEventData"
-      @close-description-card="closeDescriptionCard"
-      @delete-event="transmitDeleteEvent"
+      v-if="isOpenDescriptionCard",
+      :owner-event="ownerEvent",
+      :event-types="eventTypes",
+      @selected-event="transmitEventData",
+      @close-description-card="closeDescriptionCard",
+      @delete-event="transmitDeleteEvent",
       :schedule-body-ref="scheduleBodyRef"
     )
   </template>

@@ -3,20 +3,20 @@
     :disabled="disabled",
     :class="{'rounded': rounded, 'outlined': outlined, 'outlined-red': outlinedRed, 'secondary': secondary, 'confirm': confirm, 'added': added}"
     :style="{height: size + 'px', minWidth: size + 'px'}"
-    )
+  )
     .button-container
       span.icon-container(
         :class="leftIcon",
         v-if="leftIcon",
         :style="{fontSize: iconLeftSize + 'px'}"
-        )
+      )
       slot
       .split(v-if="split")
       span.icon-container(
         :class="rightIcon",
-        v-if="rightIcon"
+        v-if="rightIcon",
         :style="{fontSize: iconRightSize + 'px', marginLeft: marginLeftIcon + 'px'}"
-        )
+      )
 </template>
 
 <script>

@@ -50,10 +50,11 @@ export default {
 .right
   order: 1
 .input-wrapper
-  border: 2px solid var(--border-light-grey-color)
+  border: 1.5px solid var(--border-light-grey-color)
   border-radius: 4px
   background-color: var(--default-white)
   color: var(--font-black-color)
+  height: 40px
 .date
   background: url("../../assets/icons/calendar-input.svg") no-repeat 100% 50%
   &::-webkit-calendar-picker-indicator
