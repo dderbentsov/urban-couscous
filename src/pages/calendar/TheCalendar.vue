@@ -1,46 +1,46 @@
 <template lang="pug">
   .calendar-container.flex
     calendar-sidebar(
-      @width="changeWidth"
-      :team-data="employeesData"
-      :open-form-create="openFormCreateEvent"
+      @width="changeWidth",
+      :team-data="employeesData",
+      :open-form-create="openFormCreateEvent",
       :event-types="eventTypes"
     )
     calendar-schedule(
-      :owners-data="employeesData"
-      :current-date="currentDate"
-      :time-information="timeInformation"
-      :events-data="eventsData"
-      :members-data="membersData"
-      :sidebar-width="sidebarWidth"
-      :event-types="eventTypes"
-      :change-form-was-closed="changeFormWasClosed"
-      @previous-date="switchPreviousDate"
-      @next-date="switchNextDate"
-      @selected-layout="changeCalendarLayout"
-      @open-change-form="openFormCreateEvent"
-      @reset-change-form="resetChangeFormState"
-      @selected-event="writeEventData"
+      :owners-data="employeesData",
+      :current-date="currentDate",
+      :time-information="timeInformation",
+      :events-data="eventsData",
+      :members-data="membersData",
+      :sidebar-width="sidebarWidth",
+      :event-types="eventTypes",
+      :change-form-was-closed="changeFormWasClosed",
+      @previous-date="switchPreviousDate",
+      @next-date="switchNextDate",
+      @selected-layout="changeCalendarLayout",
+      @open-change-form="openFormCreateEvent",
+      @reset-change-form="resetChangeFormState",
+      @selected-event="writeEventData",
       @delete-event="openModal"
     )
     calendar-form-add-event(
-      v-if="isOpenForm"
-      :close-form="closeFormCreateEvent"
-      :owners-data="employeesData"
-      :members-data="membersData"
-      :selected-event-data="selectedEvent"
-      :event-types="eventTypes"
-      @clear-selected-event-data="clearSelectedEvent"
+      v-if="isOpenForm",
+      :close-form="closeFormCreateEvent",
+      :owners-data="employeesData",
+      :members-data="membersData",
+      :selected-event-data="selectedEvent",
+      :event-types="eventTypes",
+      @clear-selected-event-data="clearSelectedEvent",
       @close-change-form="setChangeFormState"
     )
     base-modal(
-      v-model="showModal"
+      v-model="showModal",
       title="Удаление события"
     ) 
       calendar-delete-modal(
-        :event-types="eventTypes"
-        :owner-event="selectedEvent"
-        :close-modal="changeShowModal"
+        :event-types="eventTypes",
+        :owner-event="selectedEvent",
+        :close-modal="changeShowModal",
         @update-events="fetchEventsData"
       )
 </template>

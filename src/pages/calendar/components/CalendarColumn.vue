@@ -4,8 +4,8 @@
       .flex.items-center
         base-avatar.mr-2(:size="32", :color="ownerData.color")
           img(
-            :src="ownerData.avatar"
-            alt="Team member"
+            :src="ownerData.avatar",
+            alt="Team member",
             v-if="ownerData.avatar"
           )
           span(v-if="!ownerData.avatar") {{ defaultAvatar }}
@@ -14,16 +14,16 @@
       column-header-checkbox
     .body.pl-1
       calendar-event-card(
-        v-for="event in dayEvents"
-        :key="event.id"
-        :id="event.id"
-        :ownerEvent="event"
-        :event-types="eventTypes"
-        :style="eventCardPosition(event.start, event.end)"
-        :change-form-was-closed="changeFormWasClosed"
-        @selected-event="transmitEventData"
-        @reset-change-form="transmitResetChangeForm"
-        @delete-event="transmitDeleteEvent"
+        v-for="event in dayEvents",
+        :key="event.id",
+        :id="event.id",
+        :ownerEvent="event",
+        :event-types="eventTypes",
+        :style="eventCardPosition(event.start, event.end)",
+        :change-form-was-closed="changeFormWasClosed",
+        @selected-event="transmitEventData",
+        @reset-change-form="transmitResetChangeForm",
+        @delete-event="transmitDeleteEvent",
         :schedule-body-ref="scheduleBodyRef"
       )
 </template>

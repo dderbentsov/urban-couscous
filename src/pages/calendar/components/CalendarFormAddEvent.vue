@@ -10,8 +10,8 @@
       .flex.flex-col.gap-y-2
         span.text-xs.opacity-40.font-bold.leading-3 Вид события
         base-custom-select.select(
-          v-model="kind"
-          :items="kindEvents"
+          v-model="kind",
+          :items="kindEvents",
           placeholder="Вид события"
         )
       .flex.flex-col(class="gap-y-1.5")
@@ -52,7 +52,7 @@
       v-if="!selectedEventData.id",
       :size="40",
       :disabled="disabledCreateButton",
-      @click="sendEventData"
+      @click="sendEventData",
     ) Создать событие
     base-button.update-button.text-base.font-semibold(
       v-else,

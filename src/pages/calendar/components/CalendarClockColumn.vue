@@ -1,8 +1,8 @@
 <template lang="pug">
   .calendar-clock-column.flex.flex-col.items-end.gap-y-43.pb-5.px-3
     span.text-base(
-      v-for="hour in timeCoil"
-      :key="hour"
+      v-for="hour in timeCoil",
+      :key="hour",
       :class="currentHourStyle(hour)"
     ) {{ hour }}
 </template>

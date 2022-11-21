@@ -1,55 +1,55 @@
 <template lang="pug">
   .schedule.mx-2.pb-22px(
-    ref="schedule"
+    ref="schedule",
     :style="scheduleWidth"
   )
     calendar-header(
-      :current-date="currentDate"
-      :is-current-date="isCurrentDate"
-      @previous-date="previousDate"
-      @next-date="nextDate"
+      :current-date="currentDate",
+      :is-current-date="isCurrentDate",
+      @previous-date="previousDate",
+      @next-date="nextDate",
       @selected-layout="selectedLayout"
     )
     .schedule-body(
-      @scroll="changeScrollingState"
+      @scroll="changeScrollingState",
       ref="scheduleBody"
     )
       .hiding-container.fixed(v-if="isScrolling")
       .column-wrapper.flex.ml-20(:style="columnWrapperWidth")
         calendar-column(
-          v-for="(owner, index) in filteredOwners"
-          :key="owner.id"
-          :owner-data="owner"
-          :day-events="filterEventsByOwner(owner)"
-          :day-start-time="validateStartTime"
-          :day-end-time="validateEndTime"
-          :style="columnSize"
-          :event-types="eventTypes"
-          :change-form-was-closed="changeFormWasClosed"
-          @selected-event="transmitEventData"
-          @reset-change-form="transmitResetChangeForm"
-          @delete-event="transmitDeleteEvent"
+          v-for="(owner, index) in filteredOwners",
+          :key="owner.id",
+          :owner-data="owner",
+          :day-events="filterEventsByOwner(owner)",
+          :day-start-time="validateStartTime",
+          :day-end-time="validateEndTime",
+          :style="columnSize",
+          :event-types="eventTypes",
+          :change-form-was-closed="changeFormWasClosed",
+          @selected-event="transmitEventData",
+          @reset-change-form="transmitResetChangeForm",
+          @delete-event="transmitDeleteEvent",
           :schedule-body-ref="$refs.scheduleBody"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9
           calendar-clock-column(
-            :timeCoil="timeCoil"
-            :current-time="currentTime"
-            :is-current-date="isCurrentDate"
+            :timeCoil="timeCoil",
+            :current-time="currentTime",
+            :is-current-date="isCurrentDate",
             :day-end-time="validateEndTime"
           )
           .time-circle-indicator.left-74px(
-            v-if="isShownIndicator"
+            v-if="isShownIndicator",
             :style="circleIndicatorLocation"
           )  
         span.time-line-indicator.block.left-20(
-          v-if="isShownIndicator"
+          v-if="isShownIndicator",
           :style="lineIndicatorLocation"
         )
         .flex(:class="calendarBackgroundWidth")
           calendar-background(
-            :time-coil="timeCoil"
+            :time-coil="timeCoil",
             :owners-count="ownersCount"
           )
 </template>

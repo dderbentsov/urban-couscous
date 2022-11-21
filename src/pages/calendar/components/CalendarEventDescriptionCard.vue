@@ -2,7 +2,7 @@
   .wrapper.px-4.pt-14px.pb-4.font-medium.cursor-auto(
     :style="{...typeColor, ...position, ...constantWidth}",
     v-click-outside="close",
-    :class="{'shadow': !disabled}"
+    :class="{'shadow': !disabled}",
     ref="descriptionCard"
   )
     .flex.justify-between.items-center.mb-2
