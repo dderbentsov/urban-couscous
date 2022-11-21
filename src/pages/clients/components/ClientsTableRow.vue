@@ -149,7 +149,6 @@ export default {
     check: Function,
     isCheck: Boolean,
     client: Object,
-    fetchDataClients: Function,
     currentYear: Number,
   },
   created() {
