@@ -1,6 +1,11 @@
 <template lang="pug">
   .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
-    clients-table-hat(:is-open-actions="marked.length" :open-form="openForm")
+    clients-table-hat(
+      :is-open-actions="marked.length",
+      :open-form="openForm",
+      @search="filterDataClients",
+      @reset-search="fetchDataClients"
+    )
     .flex.flex-col.h-full.gap-y-2.table-container.w-full
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
@@ -40,7 +45,6 @@ export default {
 
   data() {
     return {
-      isOpenFormCreate: false,
       selectAll: false,
       marked: [],
       dataClients: [],
@@ -49,6 +53,11 @@ export default {
   methods: {
     saveDataClients(data) {
       this.dataClients = data.results;
+    },
+    filterDataClients(text) {
+      fetchWrapper
+        .get(`general/person/?last_name=${text}`)
+        .then((data) => this.saveDataClients(data));
     },
     fetchDataClients() {
       fetchWrapper
