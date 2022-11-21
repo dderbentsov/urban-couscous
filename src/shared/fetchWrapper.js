@@ -15,7 +15,6 @@ function handleRequest(method, url, headers, attempts, body) {
       if (res) return res.json();
     })
     .catch((err) => {
-      // console.log(err);
       return err;
     });
 }
