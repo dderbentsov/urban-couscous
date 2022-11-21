@@ -41,6 +41,7 @@
         :event-types="eventTypes"
         :owner-event="selectedEvent"
         :close-modal="changeShowModal"
+        @update-events="fetchEventsData"
       )
 </template>
 
@@ -153,7 +154,6 @@ export default {
       if (this.showModal === false) {
         this.setChangeFormState();
         this.clearSelectedEvent();
-        this.fetchEventsData();
       }
     },
   },

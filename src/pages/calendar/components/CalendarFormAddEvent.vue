@@ -305,7 +305,6 @@ export default {
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
       await this.postCreateEvent(this.eventData);
-      this.clearForm();
       this.eventData = {};
     },
     async updateEventData() {
@@ -319,7 +318,6 @@ export default {
         members: [this.findPerson(this.membersData, this.members, "person")],
       };
       await this.postUpdateEvent(this.id, this.eventData);
-      this.clearForm();
       this.eventData = {};
     },
     clearForm() {
@@ -346,10 +344,19 @@ export default {
       return returnedData;
     },
     async postCreateEvent(event) {
-      await fetchWrapper.post("registry/event/create/", event);
+      const response = await fetchWrapper.post("registry/event/create/", event);
+      if (response.type && response.type === "validation_error") {
+        this.outputErrorMessage(response);
+      } else this.clearForm();
     },
     async postUpdateEvent(id, event) {
-      await fetchWrapper.post(`registry/event/${id}/update/`, event);
+      const response = await fetchWrapper.post(
+        `registry/event/${id}/update/`,
+        event
+      );
+      if (response.type && response.type === "validation_error") {
+        this.outputErrorMessage(response);
+      } else this.clearForm();
     },
     personId(object, field) {
       if (object) {
@@ -368,6 +375,11 @@ export default {
         } = foundPerson;
         return id;
       }
+    },
+    outputErrorMessage(error) {
+      alert(
+        `error type: ${error.type}\nerror code: ${error.errors[0].code}\nerror detail: ${error.errors[0].detail}`
+      );
     },
   },
   watch: {
