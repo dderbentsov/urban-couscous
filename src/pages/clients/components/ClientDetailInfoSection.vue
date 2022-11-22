@@ -28,8 +28,14 @@
             :size="24"
           )
             .icon-plus(class="pt-[2px]")
+          base-popup.right-3.top-5(v-if="section === 'docs' && isOpenAddingWrap", :width="244")
+            table-choice-adding-doc(
+              :add-new-doc="addNewDoc",
+              :save-docs="saveDocs",
+              :new-docs="docData"
+            )  
           table-adding-new-doc(
-            v-if="section === 'docs' && isOpenAddingWrap",
+            v-if="section !== 'docs' && isOpenAddingWrap",
             :add-new-doc="addNewDoc",
             :save-docs="saveDocs",
             :new-docs="docData"
@@ -108,7 +114,9 @@ import BaseButton from "@/components/base/BaseButton";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
+import TableChoiceAddingDoc from "@/pages/clients/components/TableChoiceAddingDoc";
 import BaseInput from "@/components/base/BaseInput";
+import BasePopup from "@/components/base/BasePopup";
 import { detail } from "@/pages/clients/utils/tableConfig";
 import pdfIcon from "@/assets/icons/pdf.svg";
 import wordIcon from "@/assets/icons/word.svg";
@@ -119,9 +127,11 @@ export default {
     TableAddingNewAdditional,
     BaseButton,
     BaseInput,
+    BasePopup,
     ClientDetailInput,
     TableAddingNewDoc,
     ClientDetailSectionAddress,
+    TableChoiceAddingDoc,
   },
   props: {
     saveNewDoc: Function,
