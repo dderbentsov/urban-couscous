@@ -276,6 +276,7 @@ export default {
       fetchWrapper
         .get(`general/person/${id}/detail/`)
         .then((data) => this.saveClientDetail(data));
+      this.fetchAttachment();
     },
     saveClientDetail(data) {
       this.saveIdentityDocument(
@@ -284,7 +285,20 @@ export default {
         )
       );
       this.saveAddress(data.address[0]);
-      this.saveAttachments([...data.attachments]);
+    },
+    fetchAttachment() {
+      fetchWrapper
+        .get("general/attachment/")
+        .then((data) => this.saveAttachment(data.results));
+    },
+    saveAttachment(data) {
+      this.dataAttachments = data.filter((e) => e.person_id.id === this.id);
+      if (this.dataAttachments[0]?.id) {
+        this.lackAttachments = true;
+        this.attachmentId = this.dataAttachments.id;
+      } else {
+        this.lackAttachments = false;
+      }
     },
     saveIdentityDocument(data) {
       if (data?.id) {
@@ -366,16 +380,6 @@ export default {
         .then(() => this.fetchClientDetail(this.id));
       this.clearAddress();
     },
-    saveAttachments(data) {
-      this.dataAttachments = [""];
-      if (data.find((e) => e.id)) {
-        this.dataAttachments = [...data];
-        this.lackAttachments = true;
-        this.attachmentId = this.dataAttachments[0].id;
-      } else {
-        this.lackAttachments = false;
-      }
-    },
     openPopup(e) {
       e.target.focus();
       e.stopPropagation();
@@ -391,9 +395,9 @@ export default {
     saveNewDoc(data) {
       this.dataAttachments = [...this.dataDetail, ...data];
     },
-    deleteDoc(id) {
+    deleteDoc(attachmentId) {
       fetchWrapper
-        .del(`general/attachment/${id}/delete/`)
+        .del(`general/attachment/${attachmentId}/delete/`)
         .then(() => this.fetchClientDetail(this.id));
     },
     postCreateAddress() {
