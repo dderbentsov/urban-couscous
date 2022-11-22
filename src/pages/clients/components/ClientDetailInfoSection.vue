@@ -85,15 +85,16 @@
             )
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
-          .flex.items-center
+          .flex.items-center(v-if="item.title")
             .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
               v-if="isChange",
               :id="item.id",
               @click="deleteDoc(item.id)"
             )
-            img(:src="iconDictionary[item?.document?.split('.')[1]]")
-            span.text-sm {{item.title}}
-            span.text-sm(v-if="item.document") {{`. ${item?.document?.split(".")[1]}`}}
+            .flex.gap-x-2.items-center
+              img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
+              span.text-sm {{item.title}}
+            span.text-sm(v-if="item.document") {{`. ${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
     .section-add-doc.flex.justify-center.items-center.cursor-pointer(
       v-else,
       @click="openAddDoc"
