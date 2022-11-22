@@ -11,7 +11,6 @@
       :current-date="currentDate",
       :time-information="timeInformation",
       :events-data="eventsData",
-      :members-data="membersData",
       :sidebar-width="sidebarWidth",
       :event-types="eventTypes",
       :change-form-was-closed="changeFormWasClosed",
@@ -27,7 +26,6 @@
       v-if="isOpenForm",
       :close-form="closeFormCreateEvent",
       :owners-data="employeesData",
-      :members-data="membersData",
       :selected-event-data="selectedEvent",
       :event-types="eventTypes",
       @clear-selected-event-data="clearSelectedEvent",
@@ -77,7 +75,6 @@ export default {
       employeesData: [],
       isOpenForm: false,
       changeFormWasClosed: false,
-      membersData: [],
       eventTypes: [
         { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
         { id: 2, label: "Планерка", color: "var(--bg-event-red-color)" },
@@ -102,16 +99,10 @@ export default {
     saveEmployeesData(res) {
       this.employeesData = res.results;
     },
-    saveMembersData(res) {
-      this.membersData = res.results;
-    },
-    fetchPersonsData() {
+    fetchEmployeesData() {
       fetchWrapper
         .get("general/employee/")
         .then((res) => this.saveEmployeesData(res));
-      fetchWrapper
-        .get("general/person/")
-        .then((res) => this.saveMembersData(res));
     },
     fetchEventsData() {
       fetchWrapper
@@ -158,7 +149,7 @@ export default {
     },
   },
   mounted() {
-    this.fetchPersonsData();
+    this.fetchEmployeesData();
     this.fetchEventsData();
   },
 };

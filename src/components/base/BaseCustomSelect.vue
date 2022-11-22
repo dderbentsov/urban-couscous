@@ -86,6 +86,8 @@ export default {
   box-shadow: 1px 1px 8px rgba(37, 40, 80, 0.15)
   border-radius: 4px
   background-color: white
+  overflow-y: auto
+  height: 140px
 .placeholder
   color: #090A15
   opacity: 0.5

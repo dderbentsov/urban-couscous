@@ -95,12 +95,6 @@ export default {
         return [];
       },
     },
-    membersData: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
     eventTypes: {
       type: Array,
       default() {

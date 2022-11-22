@@ -11,7 +11,7 @@
         span.text-xs.opacity-40.font-bold.leading-3 Вид события
         base-custom-select.select(
           v-model="kind",
-          :items="kindEvents",
+          :items="eventTypes",
           placeholder="Вид события"
         )
       .flex.flex-col(class="gap-y-1.5")
@@ -90,12 +90,6 @@ export default {
         return [];
       },
     },
-    membersData: {
-      type: Array,
-      default() {
-        return [];
-      },
-    },
     selectedEventData: {
       type: Object,
       default() {
@@ -111,24 +105,6 @@ export default {
   },
   data() {
     return {
-      kindEvents: [
-        {
-          id: 1,
-          label: "Встреча",
-        },
-        {
-          id: 2,
-          label: "Планерка",
-        },
-        {
-          id: 3,
-          label: "Интервью",
-        },
-        {
-          id: 4,
-          label: "Важная работа",
-        },
-      ],
       EMPLOYEE_TYPE: "owner",
       MEMBER_TYPE: "primary",
       eventData: {},
@@ -140,6 +116,7 @@ export default {
       kind: "",
       id: null,
       ifClearedForm: true,
+      membersData: [],
     };
   },
   computed: {
@@ -381,6 +358,14 @@ export default {
         `error type: ${error.type}\nerror code: ${error.errors[0].code}\nerror detail: ${error.errors[0].detail}`
       );
     },
+    fetchMembersData() {
+      fetchWrapper
+        .get("general/person/")
+        .then((res) => this.saveMembersData(res));
+    },
+    saveMembersData(res) {
+      this.membersData = res.results;
+    },
   },
   watch: {
     startDate: {
@@ -411,6 +396,9 @@ export default {
         }
       },
     },
+  },
+  mounted() {
+    this.fetchMembersData();
   },
 };
 </script>
