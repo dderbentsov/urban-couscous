@@ -32,14 +32,22 @@
             table-choice-adding-doc(
               :add-new-doc="addNewDoc",
               :save-docs="saveDocs",
-              :new-docs="docData"
-            )  
-          table-adding-new-doc(
-            v-if="section !== 'docs' && isOpenAddingWrap",
-            :add-new-doc="addNewDoc",
-            :save-docs="saveDocs",
-            :new-docs="docData"
+              :new-docs="docData",
+              :change-open-add-doc="changeOpenAddDoc",
+              :change-open-create-doc="changeOpenCreateDoc",
+            )
+          base-modal(
+            v-model="showModal",
+            :style-content="{padding: isOpenAddDoc ? '16px' : '28px 32px'}",
+            :showIcon="isOpenAddDoc"
           )
+            table-adding-new-doc(
+              v-if="isOpenAddDoc",
+              :add-new-doc="addNewDoc",
+              :new-docs="docData",
+              :close-modal="changeShowModal",
+            )
+            table-create-package-doc(v-if="isOpenCreateDoc")
           table-adding-new-additional(
             v-if="section === 'additional' && isOpenAddingWrap"
             :new-additional-data="additionalData",
@@ -100,7 +108,7 @@
             .flex.gap-x-2.items-center
               img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
               span.text-sm {{item.title}}
-            span.text-sm(v-if="item.document") {{`. ${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
+            span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
     .section-add-doc.flex.justify-center.items-center.cursor-pointer(
       v-else,
       @click="openAddDoc"
@@ -113,10 +121,12 @@ import ClientDetailInput from "@/pages/clients/components/ClientDetailInput";
 import BaseButton from "@/components/base/BaseButton";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
+import TableCreatePackageDoc from "@/pages/clients/components/TableCreatePackageDoc";
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import TableChoiceAddingDoc from "@/pages/clients/components/TableChoiceAddingDoc";
 import BaseInput from "@/components/base/BaseInput";
 import BasePopup from "@/components/base/BasePopup";
+import BaseModal from "@/components/base/BaseModal";
 import { detail } from "@/pages/clients/utils/tableConfig";
 import pdfIcon from "@/assets/icons/pdf.svg";
 import wordIcon from "@/assets/icons/word.svg";
@@ -124,13 +134,15 @@ import exelIcon from "@/assets/icons/exel.svg";
 export default {
   name: "ClientDetailInfoSection",
   components: {
-    TableAddingNewAdditional,
     BaseButton,
     BaseInput,
     BasePopup,
+    BaseModal,
     ClientDetailInput,
-    TableAddingNewDoc,
     ClientDetailSectionAddress,
+    TableAddingNewAdditional,
+    TableCreatePackageDoc,
+    TableAddingNewDoc,
     TableChoiceAddingDoc,
   },
   props: {
@@ -172,6 +184,9 @@ export default {
       isAddress: true,
       isAttachments: true,
       iconDictionary: { doc: wordIcon, pdf: pdfIcon, xls: exelIcon },
+      isOpenAddDoc: false,
+      isOpenCreateDoc: false,
+      showModal: false,
     };
   },
   computed: {
@@ -191,6 +206,24 @@ export default {
       } else if (this.section === "docs") {
         this.isAttachments = true;
       }
+    },
+    changeOpenAddDoc() {
+      this.showModal = true;
+      this.isOpenAddDoc = true;
+      this.isOpenAddingWrap = false;
+    },
+    changeOpenCreateDoc() {
+      this.showModal = true;
+      this.isOpenCreateDoc = true;
+      this.isOpenAddingWrap = false;
+    },
+    clearDocs() {
+      this.isOpenAddDoc = false;
+      this.isOpenCreateDoc = false;
+    },
+    changeShowModal() {
+      this.showModal = false;
+      this.saveDocs();
     },
     changeDoc() {
       this.isChange = false;
@@ -233,7 +266,7 @@ export default {
       if (this.section === "additional") {
         this.saveNewDoc(this.section, [this.additionalData]);
       } else {
-        this.saveNewDoc(this.section, this.docData);
+        this.saveNewDoc(this.docData);
       }
       this.isOpenAddingWrap = false;
       this.docData = [];
@@ -263,6 +296,11 @@ export default {
       handler(newValue) {
         this.isAttachments = newValue;
       },
+    },
+    showModal: function () {
+      if (this.showModal === false) {
+        this.clearDocs();
+      }
     },
   },
 };

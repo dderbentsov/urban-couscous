@@ -1,10 +1,10 @@
 <template lang="pug">
   teleport(:to="appContainer", v-if="value")
     .base-overlay(:class="{'base-overlay-bg': !hideOverlay}", :style="styleOverlay")
-      .base-content(v-click-outside="clickOutside")
+      .base-content(v-click-outside="clickOutside", :style="styleContent")
         .base-header
           .header-title.text {{ title }}
-          .icon-cancel.text-sm(@click="value = false")
+          .icon-cancel.text-sm(@click="value = false", v-if="!showIcon")
         slot
 
 </template>
@@ -15,8 +15,10 @@ export default {
   props: {
     hideOverlay: Boolean,
     styleOverlay: Object,
+    styleContent: Object,
     title: String,
     modelValue: Boolean,
+    showIcon: Boolean,
   },
   emits: ["update:modelValue"],
   methods: {
