@@ -1,12 +1,12 @@
 <template lang="pug">
-  .wrapper-table.relative.flex.flex-col.gap-y-8.px-6.py-6.h-full.w-full
+  .wrapper-table.relative.flex.flex-col.px-6.py-6.h-full.w-full
     clients-table-hat(
       :is-open-actions="marked.length",
       :open-form="openForm",
       @search="filterDataClients",
       @reset-search="fetchDataClients"
     )
-    .flex.flex-col.h-full.gap-y-2.table-container.w-full
+    .flex.flex-col.h-full.gap-y-2.table-container.w-full.mt-8.mb-3
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
         clients-table-row(
@@ -19,6 +19,13 @@
           :fetch-data-clients="fetchDataClients",
           :current-year="currentYear"
         )
+    client-table-pagination(
+      :length=6,
+      :current-page="currentTablePage",
+      @previous-page="switchPreviousPage",
+      @next-page="switchNextPage",
+      @set-current-page="changeCurrentTablePage"
+    )
 </template>
 
 <script>
@@ -28,6 +35,7 @@ import ClientsTableHat from "@/pages/clients/components/ClientsTableHat";
 import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
+import ClientTablePagination from "./ClientTablePagination.vue";
 export default {
   name: "ClientsTable",
   components: {
@@ -36,6 +44,7 @@ export default {
     ClientsTableHat,
     ClientsTableHeader,
     BaseClientFormCreate,
+    ClientTablePagination,
   },
   props: {
     openForm: Function,
@@ -48,6 +57,7 @@ export default {
       selectAll: false,
       marked: [],
       dataClients: [],
+      currentTablePage: 1,
     };
   },
   methods: {
@@ -82,6 +92,15 @@ export default {
           this.selectAll = true;
         }
       }
+    },
+    switchPreviousPage() {
+      this.currentTablePage -= 1;
+    },
+    switchNextPage() {
+      this.currentTablePage += 1;
+    },
+    changeCurrentTablePage(value) {
+      this.currentTablePage = value;
     },
   },
   watch: {
