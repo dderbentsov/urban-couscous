@@ -2,10 +2,10 @@
   .flex.flex-col.gap-y-3
     .button.keep-redaction.flex.items-center.gap-x-2
       img(:src="docIcon")
-      span.text-smm Создать пакет документов
+      .text-smm(@click="changeOpenAddDoc") Создать пакет документов
     .button.keep-redaction.flex.items-center.gap-x-3
       img(:src="manyDocIcon")
-      span.text-smm Добавить документы
+      .text-smm(@click="changeOpenCreateDoc") Добавить документы
 </template>
 
 <script>
@@ -14,6 +14,7 @@ import manyDocIcon from "@/assets/icons/manyDoc.svg";
 
 export default {
   name: "TableChoiceAddingDoc",
+  props: { changeOpenAddDoc: Function, changeOpenCreateDoc: Function },
   data() {
     return {
       docIcon,

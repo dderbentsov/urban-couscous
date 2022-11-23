@@ -393,7 +393,7 @@ export default {
       this.isOpenPopup = false;
     },
     saveNewDoc(data) {
-      this.dataAttachments = [...this.dataDetail, ...data];
+      this.dataAttachments = [...data];
     },
     deleteDoc(attachmentId) {
       fetchWrapper
