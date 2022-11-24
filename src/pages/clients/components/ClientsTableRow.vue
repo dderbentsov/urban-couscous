@@ -394,6 +394,16 @@ export default {
     },
     saveNewDoc(data) {
       this.dataAttachments = [...data];
+      const formData = new FormData();
+      this.dataAttachments.forEach((e) => {
+        formData.append("person_id", this.id);
+        formData.append("document", e);
+        formData.append("title", e.name.substr(0, e.name.lastIndexOf(".")));
+        fetchWrapper
+          .post("general/attachment/create/", formData, "formData")
+          .then(() => this.fetchClientDetail(this.id));
+      });
+      this.dataAttachments = [];
     },
     deleteDoc(attachmentId) {
       fetchWrapper

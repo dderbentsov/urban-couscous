@@ -1,6 +1,8 @@
 <template lang="pug">
   .flex.flex-col.gap-y-3
-    .button.keep-redaction.flex.items-center.gap-x-2
+    .button.flex.items-center.gap-x-2(
+      :style="{color: 'var(--font-dark-blue-color)'}"
+    )
       img(:src="docIcon")
       .text-smm(@click="changeOpenAddDoc") Создать пакет документов
     .button.keep-redaction.flex.items-center.gap-x-3
@@ -25,9 +27,6 @@ export default {
 </script>
 
 <style lang="sass" scoped>
-.keep-redaction
-  color: var(--font-dark-blue-color)
-
 .button
   &:hover
     opacity: 0.7
