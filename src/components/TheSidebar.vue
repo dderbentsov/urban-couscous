@@ -32,7 +32,7 @@ export default {
       pageSettings: [
         {
           id: "calendar",
-          path: "#/calendar",
+          path: "#/",
           active: true,
           icon: "icon-calendar-2",
         },
