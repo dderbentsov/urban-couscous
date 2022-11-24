@@ -32,7 +32,7 @@ export default {
       pageSettings: [
         {
           id: "calendar",
-          path: "#/",
+          path: "#/calendar",
           active: true,
           icon: "icon-calendar-2",
         },
@@ -69,7 +69,7 @@ export default {
   mounted() {
     let href = window.location.href.slice(22);
     this.pageSettings.forEach((el, index) => {
-      el.path === href
+      el.path === href.substr(href.lastIndexOf("#"))
         ? (this.pageSettings[index].active = true)
         : (this.pageSettings[index].active = false);
     });
