@@ -3,7 +3,8 @@
     base-client-form-create(
       v-if="isOpenForm",
       :close-form="closeForm",
-      :current-year="currentYear"
+      :current-year="currentYear",
+      @update-client="transmitUpdateClient"
     )
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
@@ -57,6 +58,9 @@ export default {
     logout() {
       localStorage.clear();
       this.$router.push("/login");
+    },
+    transmitUpdateClient() {
+      this.$emit("update-client");
     },
   },
 };

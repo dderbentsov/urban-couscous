@@ -53,7 +53,7 @@ export default {
         this.$emit("search", this.searchClient);
     },
     resetLastName() {
-      this.$emit("reset-search", this.searchClient);
+      this.$emit("reset-search");
       this.searchClient = "";
     },
   },
