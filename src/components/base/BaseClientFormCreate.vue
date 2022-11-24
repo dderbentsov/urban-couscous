@@ -210,6 +210,7 @@ export default {
         this.createIdentityDocument(result.id);
         this.createAddress(result.id);
       });
+      this.$emit("update-client");
     },
     filterDataEmptyProperty(data) {
       let postData = data;

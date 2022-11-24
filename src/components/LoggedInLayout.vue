@@ -4,14 +4,17 @@
       :is-open-form="isOpenForm",
       :close-form="closeForm",
       :open-form="openForm",
-      :current-year="currentYear"
+      :current-year="currentYear",
+      @update-client="setUpdatedClients"
     )
     .flex.flex-auto
       the-sidebar
       router-view(
         :open-form="openForm",
         :is-open-form="isOpenForm",
-        :current-year="currentYear"
+        :current-year="currentYear",
+        :updated-clients="updatedClients",
+        @reset-updated-clients="resetUpdatedClients"
       )
 </template>
 
@@ -26,6 +29,7 @@ export default {
     return {
       isOpenForm: false,
       currentYear: null,
+      updatedClients: false,
     };
   },
   methods: {
@@ -37,6 +41,12 @@ export default {
     },
     printCurrentYear() {
       return new Date().getFullYear();
+    },
+    setUpdatedClients() {
+      this.updatedClients = true;
+    },
+    resetUpdatedClients() {
+      this.updatedClients = false;
     },
   },
   mounted: function () {

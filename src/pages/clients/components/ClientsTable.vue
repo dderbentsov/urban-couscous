@@ -20,7 +20,8 @@
           :current-year="currentYear"
         )
     client-table-pagination(
-      :length=6,
+      v-if="pageCount > 1"
+      :length="pageCount",
       :current-page="currentTablePage",
       @previous-page="switchPreviousPage",
       @next-page="switchNextPage",
@@ -50,6 +51,7 @@ export default {
     openForm: Function,
     currentYear: Number,
     isOpenForm: Boolean,
+    updatedClients: Boolean,
   },
 
   data() {
@@ -58,21 +60,36 @@ export default {
       marked: [],
       dataClients: [],
       currentTablePage: 1,
+      limit: 4,
+      count: 0,
     };
+  },
+  computed: {
+    pageCount() {
+      return Math.ceil(this.count / this.limit);
+    },
   },
   methods: {
     saveDataClients(data) {
       this.dataClients = data.results;
+      this.count = data.count;
     },
     filterDataClients(text) {
       fetchWrapper
-        .get(`general/person/?last_name=${text}`)
+        .get(
+          `general/person/?last_name=${text}&?limit=${this.limit}&offset=${
+            (this.currentPage - 1) * this.limit
+          }`
+        )
         .then((data) => this.saveDataClients(data));
     },
-    fetchDataClients() {
-      fetchWrapper
-        .get("general/person/")
-        .then((data) => this.saveDataClients(data));
+    async fetchDataClients(currentPage) {
+      let response = await fetchWrapper.get(
+        `general/person/?limit=${this.limit}&offset=${
+          (currentPage - 1) * this.limit
+        }`
+      );
+      this.saveDataClients(response);
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {
@@ -104,17 +121,20 @@ export default {
     },
   },
   watch: {
-    isOpenForm: {
-      immediate: true,
-      handler(newValue) {
-        if (newValue === false) {
-          this.fetchDataClients();
-        }
-      },
+    updatedClients() {
+      if (this.updatedClients === true) {
+        this.fetchDataClients(this.currentTablePage).then(
+          () => (this.currentTablePage = this.pageCount)
+        );
+        this.$emit("reset-updated-clients");
+      }
+    },
+    currentTablePage() {
+      this.fetchDataClients(this.currentTablePage);
     },
   },
   mounted() {
-    this.fetchDataClients();
+    this.fetchDataClients(this.currentTablePage);
   },
 };
 </script>
