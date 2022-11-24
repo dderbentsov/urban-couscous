@@ -1,5 +1,7 @@
 <template lang="pug">
   .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
+    @click="changeOpenCard",
+    v-click-outside="clickOutside"
     :style="{flexDirection:settings[section].rowFlex && 'row', width: settings[section].width + 'px', height: settings[section].height + 'px', background: changeBackground}"
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
@@ -7,7 +9,7 @@
       .flex.items-center.gap-x-8
         base-button(
           v-if="isChange",
-          @click="changeDoc",
+          @click.stop="changeDoc",
           confirm,
           rounded,
           outlined,
@@ -15,12 +17,12 @@
         )
           .icon-ok.text-xsm(class="pt-[3px]")
         .edit.icon-edit.cursor-pointer.text-sm(
-          v-if="!isChange",
+          v-if="openCard && !isChange",
           @click="changeClientData"
         )
         .flex.relative
           base-button(
-            v-if="settings[section].addFile",
+            v-if="settings[section].addFile && openCard",
             @click="openAddingWrap",
             :rounded="true",
             :outlined="true",
@@ -192,11 +194,12 @@ export default {
       isOpenPackage: false,
       isOpenAddDoc: false,
       showModal: false,
+      openCard: false,
     };
   },
   computed: {
     changeBackground() {
-      return this.isChange
+      return this.openCard || this.isChange
         ? "var(--light-grey-bg-color)"
         : "var(--default-white)";
     },
@@ -232,8 +235,15 @@ export default {
       this.showModal = false;
       this.saveDocs();
     },
+    changeOpenCard() {
+      this.openCard = true;
+    },
+    clickOutside() {
+      this.openCard = false;
+    },
     changeDoc() {
       this.isChange = false;
+      this.openCard = false;
       if (this.section === "pass") {
         this.docId ? this.updateDocument() : this.createDocument();
       }
@@ -247,14 +257,6 @@ export default {
     changeClientData() {
       if (!this.isOpenAddingWrap) {
         this.isChange = true;
-      }
-    },
-    saveChange() {
-      this.isChange = false;
-      if (this.section === "pass") {
-        this.updateDocument();
-      } else if (this.section === "addresses") {
-        this.updateAddress();
       }
     },
     openAddingWrap() {
