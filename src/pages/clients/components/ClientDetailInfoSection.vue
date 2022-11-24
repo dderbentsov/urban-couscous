@@ -1,6 +1,6 @@
 <template lang="pug">
   .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
-    :style="{flexDirection:settings[section].rowFlex && 'row', width : settings[section].width + 'px', height : settings[section].height + 'px', background: changeBackground}"
+    :style="{flexDirection:settings[section].rowFlex && 'row', width: settings[section].width + 'px', height: settings[section].height + 'px', background: changeBackground}"
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
@@ -47,7 +47,7 @@
               :new-docs="docData",
               :close-modal="changeShowModal",
             )
-            table-create-package-doc(v-if="isOpenCreateDoc")
+            table-create-package-doc(v-if="isOpenPackage")
           table-adding-new-additional(
             v-if="section === 'additional' && isOpenAddingWrap"
             :new-additional-data="additionalData",
@@ -109,11 +109,10 @@
               img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
               span.text-sm {{item.title}}
             span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
-    .section-add-doc.flex.justify-center.items-center.cursor-pointer(
+    .section-add.flex.justify-center.items-center.cursor-pointer(
       v-else,
       @click="openAddDoc"
-    )
-      span Добавить данные
+    ) Добавить данные
 </template>
 
 <script>
@@ -183,9 +182,15 @@ export default {
       isData: true,
       isAddress: true,
       isAttachments: true,
-      iconDictionary: { doc: wordIcon, pdf: pdfIcon, xls: exelIcon },
+      iconDictionary: {
+        doc: wordIcon,
+        docx: wordIcon,
+        odt: wordIcon,
+        pdf: pdfIcon,
+        xls: exelIcon,
+      },
+      isOpenPackage: false,
       isOpenAddDoc: false,
-      isOpenCreateDoc: false,
       showModal: false,
     };
   },
@@ -205,21 +210,23 @@ export default {
         this.isAddress = true;
       } else if (this.section === "docs") {
         this.isAttachments = true;
+        this.showModal = true;
+        this.isOpenAddDoc = true;
       }
     },
     changeOpenAddDoc() {
       this.showModal = true;
-      this.isOpenAddDoc = true;
+      this.isOpenPackage = true;
       this.isOpenAddingWrap = false;
     },
     changeOpenCreateDoc() {
       this.showModal = true;
-      this.isOpenCreateDoc = true;
+      this.isOpenAddDoc = true;
       this.isOpenAddingWrap = false;
     },
     clearDocs() {
+      this.isOpenPackage = false;
       this.isOpenAddDoc = false;
-      this.isOpenCreateDoc = false;
     },
     changeShowModal() {
       this.showModal = false;
@@ -313,18 +320,23 @@ export default {
   color: var(--font-dark-blue-color)
   &.click
     background-color: var(--light-grey-bg-color)
+
 .section-header
   min-height: 44px
   border-bottom: 1px solid var(--border-light-grey-color)
+
 .small
   border-bottom: none
   border-right: 1px solid var(--border-light-grey-color)
   min-width: 180px
+
 .title-section
   color: var(--font-grey-color)
+
 .copy
   color: var(--btn-blue-color)
   opacity: 0.6
+
 .section-body
   overflow-y: auto
   &::-webkit-scrollbar
@@ -335,25 +347,31 @@ export default {
   &::-webkit-scrollbar-thumb
     border-radius: 8px
     background-color: var(--btn-blue-color)
+
 .edit
   color: var(--btn-blue-color)
   &:hover
     opacity: 0.6
+
 .cancel
   color: var(--font-grey-color)
   &:hover
     opacity: 0.6
-.section-add-doc
+
+.section-add
   height: 100%
   min-height: 64px
   color: var(--btn-blue-color)
+
 .line
   width: 100%
   height: 1px
   background-color: var(--border-light-grey-color)
   z-index: 0
+
 .separation
   width: 100%
+
 .text-separation
   width: 38px
   z-index: 1

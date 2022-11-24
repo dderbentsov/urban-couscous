@@ -3,10 +3,10 @@ function prepareUrl(url) {
   return `http://45.84.227.122:8080/api/${url}`;
 }
 
-function handleRequest(method, url, headers, attempts, body) {
+function handleRequest(method, url, headers, attempts, body, type) {
   return new Promise((resolve, reject) => {
     (function internalRequest() {
-      return request(method, url, headers, body)
+      return request(method, url, headers, body, type)
         .then(resolve)
         .catch((err) => (--attempts > 0 ? internalRequest() : reject(err)));
     })();
@@ -25,8 +25,9 @@ function handleRequest(method, url, headers, attempts, body) {
  * @param {string} url - endpoint url.
  * @param {object} body - request body.
  * @param {object} headers - request headers
+ * @param {string} type - request type
  */
-function request(method, url, headers = {}, body) {
+function request(method, url, headers = {}, body, type = "") {
   let token = localStorage.getItem("tokenAccess");
   let requestOptions = {};
   if (method === "GET" || method === "DELETE") {
@@ -39,17 +40,29 @@ function request(method, url, headers = {}, body) {
     };
   }
   if (method === "POST" || method === "PUT") {
-    requestOptions = {
-      method: method,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        ...headers,
-      },
-      body: JSON.stringify(body),
-    };
+    if (type && type === "formData") {
+      requestOptions = {
+        method: method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          ...headers,
+        },
+        body: body,
+      };
+    } else
+      requestOptions = {
+        method: method,
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          ...headers,
+        },
+        body: JSON.stringify(body),
+      };
   }
+
   return fetch(prepareUrl(url), requestOptions);
 }
 
@@ -61,8 +74,8 @@ function del(url, headers, attempts = 3) {
   return handleRequest("DELETE", url, headers, attempts, null);
 }
 
-function post(url, body, headers, attempts = 3) {
-  return handleRequest("POST", url, headers, attempts, body);
+function post(url, body, type, headers, attempts = 3) {
+  return handleRequest("POST", url, headers, attempts, body, type);
 }
 
 function put(url, headers, body, attempts = 3) {
