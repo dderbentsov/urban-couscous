@@ -4,7 +4,6 @@
       :is-open-actions="marked.length",
       :open-form="openForm",
       @search="filterDataClients",
-      @reset-search="fetchDataClients"
     )
     .flex.flex-col.h-full.gap-y-2.table-container.w-full.mt-8.mb-3
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
@@ -62,6 +61,7 @@ export default {
       currentTablePage: 1,
       limit: 4,
       count: 0,
+      textSearch: "",
     };
   },
   computed: {
@@ -75,20 +75,29 @@ export default {
       this.count = data.count;
     },
     filterDataClients(text) {
-      fetchWrapper
-        .get(
-          `general/person/?last_name=${text}&?limit=${this.limit}&offset=${
-            (this.currentPage - 1) * this.limit
-          }`
-        )
-        .then((data) => this.saveDataClients(data));
+      if (text) this.textSearch = text;
+      else this.textSearch = "";
+      if (this.currentTablePage !== 1) this.currentTablePage = 1;
+      else {
+        this.currentTablePage = 1;
+        this.fetchDataClients();
+      }
     },
-    async fetchDataClients(currentPage) {
-      let response = await fetchWrapper.get(
-        `general/person/?limit=${this.limit}&offset=${
-          (currentPage - 1) * this.limit
-        }`
-      );
+    async fetchDataClients() {
+      let response = {};
+      if (this.textSearch) {
+        response = await fetchWrapper.get(
+          `general/person/?last_name=${this.textSearch}&limit=${
+            this.limit
+          }&offset=${(this.currentTablePage - 1) * this.limit}`
+        );
+      } else {
+        response = await fetchWrapper.get(
+          `general/person/?limit=${this.limit}&offset=${
+            (this.currentTablePage - 1) * this.limit
+          }`
+        );
+      }
       this.saveDataClients(response);
     },
     selectedCheck(e) {
@@ -123,18 +132,19 @@ export default {
   watch: {
     updatedClients() {
       if (this.updatedClients === true) {
-        this.fetchDataClients(this.currentTablePage).then(
+        this.textSearch = "";
+        this.fetchDataClients().then(
           () => (this.currentTablePage = this.pageCount)
         );
         this.$emit("reset-updated-clients");
       }
     },
     currentTablePage() {
-      this.fetchDataClients(this.currentTablePage);
+      this.fetchDataClients();
     },
   },
   mounted() {
-    this.fetchDataClients(this.currentTablePage);
+    this.fetchDataClients();
   },
 };
 </script>
