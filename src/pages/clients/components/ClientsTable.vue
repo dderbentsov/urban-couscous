@@ -142,10 +142,12 @@ export default {
 <style lang="sass" scoped>
 .wrapper-table
   background-color: var(--default-white)
+  height: calc(100vh - 64px)
 .table-container
   overflow: auto
   &::-webkit-scrollbar
-      height: 4px
+    height: 4px
+    width: 4px
   &::-webkit-scrollbar-track
     background-color: rgba(211, 212, 220, 0.5)
     border-radius: 8px

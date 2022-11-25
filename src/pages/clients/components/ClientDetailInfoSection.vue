@@ -160,7 +160,6 @@ export default {
     createAddress: Function,
     createDocument: Function,
     addressId: String,
-    attachmentId: String,
     docId: String,
     currentYear: Number,
   },

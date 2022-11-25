@@ -82,7 +82,6 @@
       :create-address="postCreateAddress"
       :create-document="postCreateIdentityDocument"
       :address-id="addressId"
-      :attachment-id="attachmentId"
       :doc-id="docId"
       :current-year="currentYear"
     )
@@ -134,7 +133,6 @@ export default {
       dataClient: {},
       docId: "",
       addressId: "",
-      attachmentId: "",
       lackData: true,
       lackAddress: true,
       lackAttachments: true,
@@ -293,12 +291,7 @@ export default {
     },
     saveAttachment(data) {
       this.dataAttachments = data.filter((e) => e.person_id.id === this.id);
-      if (this.dataAttachments[0]?.id) {
-        this.lackAttachments = true;
-        this.attachmentId = this.dataAttachments.id;
-      } else {
-        this.lackAttachments = false;
-      }
+      this.lackAttachments = this.dataAttachments[0]?.id ? true : false;
     },
     saveIdentityDocument(data) {
       if (data?.id) {
@@ -403,7 +396,6 @@ export default {
           .post("general/attachment/create/", formData, "formData")
           .then(() => this.fetchClientDetail(this.id));
       });
-      this.dataAttachments = [];
     },
     deleteDoc(attachmentId) {
       fetchWrapper
