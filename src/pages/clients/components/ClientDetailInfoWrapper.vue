@@ -26,7 +26,6 @@
         :save-new-doc="saveNewDoc",
         :delete-doc="deleteDoc"
         :lack-attachments="lackAttachments"
-        :attachment-id="attachmentId"
       )
 </template>
 
@@ -51,7 +50,6 @@ export default {
     createAddress: Function,
     createDocument: Function,
     addressId: String,
-    attachmentId: String,
     docId: String,
     currentYear: Number,
   },
