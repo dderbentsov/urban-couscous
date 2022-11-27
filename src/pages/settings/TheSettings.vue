@@ -3,15 +3,19 @@
     v-select(:items="items", placeholder="Выберите значение", v-model="value" )
     BaseButton(@click="showModal = true") Открыть модалку
     base-modal(v-model="showModal", title="Тестовый заголовок окна" )
+    base-button(@click="addNotification") Добавить уведомление
+    the-notification-provider
 </template>
 
 <script>
 import VSelect from "@/components/base/BaseSelect";
 import BaseModal from "@/components/base/BaseModal";
 import BaseButton from "@/components/base/BaseButton";
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 export default {
   name: "TheSettings",
-  components: { BaseButton, BaseModal, VSelect },
+  components: { TheNotificationProvider, BaseButton, BaseModal, VSelect },
   data() {
     return {
       items: [
@@ -31,6 +35,17 @@ export default {
       value: "",
       showModal: false,
     };
+  },
+  methods: {
+    addNotification() {
+      addNotification(
+        new Date().getTime(),
+        "test",
+        "test-text",
+        "warning",
+        3000
+      );
+    },
   },
 };
 </script>
