@@ -4,7 +4,6 @@
     BaseButton(@click="showModal = true") Открыть модалку
     base-modal(v-model="showModal", title="Тестовый заголовок окна" )
     base-button(@click="addNotification") Добавить уведомление
-    the-notification-provider
 </template>
 
 <script>
@@ -38,13 +37,7 @@ export default {
   },
   methods: {
     addNotification() {
-      addNotification(
-        new Date().getTime(),
-        "test",
-        "test-text",
-        "warning",
-        3000
-      );
+      addNotification(new Date().getTime(), "test", "test-text", "warning", 0);
     },
   },
 };

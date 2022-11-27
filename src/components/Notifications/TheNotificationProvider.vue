@@ -1,7 +1,9 @@
 <template lang="pug">
   teleport(:to="appContainer")
-    .flex.gap-2.flex-col.absolute.bottom-0.pb-2.right-2.overflow-hidden.pt-32(class="w-1/5")
-      transition-group(name="list")
+  .absolute.bottom-0.p-2.right-0.overflow-hidden.z-50(class="w-1/5")
+    .pt-32(v-if="displayPadding")
+    .flex.gap-2.flex-col.relative
+      transition-group(name="list", @before-leave="displayPadding = true", @after-leave="displayPadding = false")
         notification-item(
             v-for="[id, notification] in notificationsList",
             :id="id",
@@ -21,6 +23,12 @@ import NotificationItem from "@/components/Notifications/NotificationItem";
 export default {
   name: "TheNotificationProvider",
   components: { NotificationItem, BaseButton },
+
+  data() {
+    return {
+      displayPadding: false,
+    };
+  },
 
   computed: {
     appContainer() {

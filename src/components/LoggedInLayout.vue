@@ -16,15 +16,17 @@
         :updated-clients="updatedClients",
         @reset-updated-clients="resetUpdatedClients"
       )
+    the-notification-provider
 </template>
 
 <script>
 import TheHeader from "@/components/TheHeader";
 import TheSidebar from "@/components/TheSidebar";
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
 
 export default {
   name: "LoggedInLayout",
-  components: { TheHeader, TheSidebar },
+  components: { TheNotificationProvider, TheHeader, TheSidebar },
   data() {
     return {
       isOpenForm: false,
