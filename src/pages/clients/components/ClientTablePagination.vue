@@ -6,8 +6,8 @@
     )
       .icon-down-arrow.arrow-left
     button.item.flex.items-center.justify-center(
-      v-for="page in pageCount",
-      :key="page",
+      v-for="page, index in pageCount",
+      :key="index",
       :id="page",
       :class="currentPageStyle(page)",
       :disabled="disabledMissingPages(page)"
@@ -33,12 +33,12 @@ export default {
   },
   computed: {
     pageCount() {
-      let countArray = [],
-        incompleteCountArray = [];
+      let countArray = [];
       for (let i = 1; i <= this.length; i++) {
         countArray.push(i);
       }
       if (this.length <= this.totalVisible) return countArray;
+      let incompleteCountArray = [];
       if (
         this.currentPage <= 2 ||
         this.currentPage >= countArray[this.length - 2]

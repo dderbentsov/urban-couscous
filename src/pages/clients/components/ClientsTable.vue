@@ -79,7 +79,6 @@ export default {
       else this.textSearch = "";
       if (this.currentTablePage !== 1) this.currentTablePage = 1;
       else {
-        this.currentTablePage = 1;
         this.fetchDataClients();
       }
     },
