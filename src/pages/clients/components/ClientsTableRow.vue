@@ -286,7 +286,7 @@ export default {
     },
     fetchAttachment() {
       fetchWrapper
-        .get("general/attachment/")
+        .get("general/attachment/?limit=1000")
         .then((data) => this.saveAttachment(data.results));
     },
     saveAttachment(data) {
