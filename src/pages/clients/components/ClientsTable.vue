@@ -132,9 +132,11 @@ export default {
     updatedClients() {
       if (this.updatedClients === true) {
         this.textSearch = "";
-        this.fetchDataClients().then(
-          () => (this.currentTablePage = this.pageCount)
-        );
+        setTimeout(() => {
+          this.fetchDataClients().then(
+            () => (this.currentTablePage = this.pageCount)
+          );
+        }, 60);
         this.$emit("reset-updated-clients");
       }
     },
