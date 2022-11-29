@@ -1,7 +1,7 @@
 <template lang="pug">
   .notification-container.flex.justify-between(:style="{ backgroundColor: bgColor }")
     .notification-content.flex.mr-16
-      .grid.grid-rows-2
+      .grid(:class="{'grid-rows': message}")
         .text-white.text-xs.icon.row-span-full.flex.justify-center.items-center(:class="iconClass")
         .text-white.text-base(v-if="title") {{ title }}
         .text-white.text-base(v-if="message") {{ message }}
@@ -83,4 +83,6 @@ export default {
 .grid
   grid-template-columns: 24px 1fr
   grid-column-gap: 8px
+.grid-rows
+  grid-template-rows: repeat(2, auto)
 </style>
