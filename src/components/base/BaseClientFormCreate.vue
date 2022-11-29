@@ -4,8 +4,16 @@
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
       .flex.gap-x-3.w-full
-        base-button.relative(:rounded="true", :secondary="true", :size="40", @click="changeOpenPopup")
-          .icon-download.text-xl
+        base-button.relative(
+          :rounded="true",
+          :secondary="true",
+          :size="40",
+          @click="changeOpenPopup",
+          v-for="img in image"
+        )
+          .icon-download.text-xl(v-if="img === defaultIcon")
+          .flex.w-10.h-10(v-else)
+            img.current-avatar(:src="img")
           base-popup.right-5.top-7(v-if="showPopup", :width="230")
             .flex.items-center.gap-x-2
               img(src="@/assets/icons/computer.svg")
@@ -13,18 +21,20 @@
             .flex.items-center.gap-x-2
               img(src="@/assets/icons/camera.svg")
               span.text-smm Сделать фото
-          base-modal(v-model="showModal", title="Загрузить изображение мидла")
-            .form-avatar.flex.flex-col.items-center.justify-center
-              .avatar-block.flex.relative.flex-row
+          base-modal(v-model="showModal", title="Загрузить изображение")
+            .flex.flex-col.items-center.justify-center(
+              :style="{padding: '153px 370px'}"
+              )
+              .avatar-wrapper.flex.relative
                 input.input(
                   type="file",
                   id="image-upload",
                   accept="image/*",
                   @change="(e) => previewImages(e)"
                 )
-                .avatar.absolute(v-for="img in image")
+                .avatar.flex.absolute.items-center.gap-x-6(v-for="img in image")
                   img.avatar(for="image-upload", :src="img", v-if="img")
-                  base-button(:rounded="true", :secondary="true", :size="48", @click="closeModal")
+                  base-button(:rounded="true", :size="48", @click="closeModal")
                     .icon-ok
         base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")
     .flex.flex-col.flex-auto.l.gap-y-8
@@ -197,9 +207,11 @@ export default {
           label: "-",
         },
       ],
+      defaultIcon: addImageIcon,
       showModal: false,
       showPopup: false,
       image: [addImageIcon],
+      imageData: [],
     };
   },
   computed: {
@@ -213,7 +225,6 @@ export default {
     closeModal() {
       this.showModal = false;
       this.showPopup = false;
-      this.image = [addImageIcon];
     },
     previewImages(event) {
       this.image = [];
@@ -225,6 +236,7 @@ export default {
         };
         reader.readAsDataURL(pictures[i]);
       }
+      this.imageData = [...this.imageData, ...event.target.files];
     },
     createIdentityDocument(id) {
       Object.keys(
@@ -247,19 +259,24 @@ export default {
         });
     },
     postNewClient() {
-      let sentData = {
-        full_name: this.infoClient.basic.full_name,
-      };
+      const formData = new FormData();
+      this.imageData.forEach((e) => {
+        formData.append("photo", e);
+        formData.append("full_name", this.infoClient.basic.full_name);
+      });
       if (this.infoClient.basic.birth_date)
-        sentData.birth_date = this.infoClient.basic.birth_date;
+        formData.append("birth_date", this.infoClient.basic.birth_date);
+
       let foundElement = this.prioritySettings.settings.find(
         (el) => el.text === this.infoClient.basic.priority
       );
-      if (foundElement) sentData.priority = foundElement.priority;
-      fetchWrapper.post("general/person/create/", sentData).then((result) => {
-        this.createIdentityDocument(result.id);
-        this.createAddress(result.id);
-      });
+      if (foundElement) formData.append("priority", foundElement.priority);
+      fetchWrapper
+        .post("general/person/create/", formData, "formData")
+        .then((result) => {
+          this.createIdentityDocument(result.id);
+          this.createAddress(result.id);
+        });
       this.$emit("update-client");
     },
     filterDataEmptyProperty(data) {
@@ -297,6 +314,7 @@ export default {
     changeOpenModal() {
       this.showModal = true;
       this.showPopup = false;
+      this.image = [addImageIcon];
     },
     changeOpenPopup() {
       this.showPopup = true;
@@ -345,14 +363,13 @@ export default {
       }
       return true;
     },
-    check() {
-      this.showPopup = false;
-    },
   },
-  showModal: function () {
-    if (this.showModal === false) {
-      this.check();
-    }
+  watch: {
+    showModal: function () {
+      if (this.showModal === false) {
+        this.closeModal();
+      }
+    },
   },
 };
 </script>
@@ -365,8 +382,10 @@ export default {
   width: 634px
   min-height: 700px
   box-shadow: var(--default-shadow)
+
 .title
   color: var(--font-dark-blue-color)
+
 .export-avatar
   min-width: 40px
   height: 40px
@@ -376,6 +395,7 @@ export default {
   &:hover
     color: var(--default-white)
     background-color: var(--btn-blue-color)
+
 .title-info
   color: var(--font-grey-color)
   border-bottom: 1.5px solid var(--font-grey-color)
@@ -385,27 +405,28 @@ export default {
   &.active
     color: var(--btn-blue-color)
     border-bottom: 1.5px solid var(--btn-blue-color)
-.form-avatar
-  width: 1221px
-  height: 793px
-.avatar-block
+
+.avatar-wrapper
   width: 400px
   height: 400px
   border-radius: 50%
+
 .input
   width: 100%
   height: 100%
   border-radius: 50%
-  overflow: hidden
   z-index: 5
   opacity: 0
   cursor: pointer
+
 .avatar
-  cursor: pointer
-  width: 100%
   height: 100%
   border-radius: 50%
-  // background-image: url("../../assets/icons/photo.svg")
+
+.current-avatar
+  cursor: pointer
+  height: 100%
+  border-radius: 50%
   background-size: cover
   background-repeat: no-repeat
   background-position: center
