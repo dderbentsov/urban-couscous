@@ -16,12 +16,12 @@
           :check="selectedCheck",
           :client="client",
           :fetch-data-clients="fetchDataClients",
-          :current-year="currentYear"
+          :current-year="currentYear",
+          @update-clients="updateDataClient"
         )
     client-table-pagination(
-      v-if="pageCount > 1"
-      :length="pageCount",
-      :current-page="currentTablePage",
+      v-if="paginationInfo.length > 1"
+      :pagination-info="paginationInfo"
       @previous-page="switchPreviousPage",
       @next-page="switchNextPage",
       @set-current-page="changeCurrentTablePage"
@@ -62,6 +62,10 @@ export default {
       limit: 4,
       count: 0,
       textSearch: "",
+      paginationInfo: {
+        currentPage: 0,
+        length: 0,
+      },
     };
   },
   computed: {
@@ -70,6 +74,10 @@ export default {
     },
   },
   methods: {
+    updateDataClient() {
+      if (this.dataClients.length === 1) this.currentTablePage -= 1;
+      else this.fetchDataClients();
+    },
     saveDataClients(data) {
       this.dataClients = data.results;
       this.count = data.count;
@@ -98,6 +106,10 @@ export default {
         );
       }
       this.saveDataClients(response);
+      this.paginationInfo = {
+        currentPage: this.currentTablePage,
+        length: this.pageCount,
+      };
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {

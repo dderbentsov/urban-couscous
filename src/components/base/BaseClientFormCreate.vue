@@ -53,6 +53,8 @@ import FormCreateAddresses from "@/pages/clients/components/FormCreateAddresses"
 import FormCreateAdditional from "@/pages/clients/components/FormCreateAdditional";
 import BaseInput from "@/components/base/BaseInput";
 import BaseButton from "@/components/base/BaseButton";
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 export default {
   name: "BaseClientFormClient",
   components: {
@@ -62,6 +64,7 @@ export default {
     FormCreateAddresses,
     FormCreateAdditional,
     BaseButton,
+    TheNotificationProvider,
   },
   props: {
     closeForm: Function,
@@ -209,6 +212,7 @@ export default {
       fetchWrapper.post("general/person/create/", sentData).then((result) => {
         this.createIdentityDocument(result.id);
         this.createAddress(result.id);
+        this.addSuccessNotification();
       });
       this.$emit("update-client");
     },
@@ -283,10 +287,28 @@ export default {
     },
     checkFormFullness() {
       if (!this.infoClient.basic.full_name) {
-        alert("Не заполнено ФИО клиента");
+        this.addErrrorNotification();
         return false;
       }
       return true;
+    },
+    addErrrorNotification() {
+      addNotification(
+        new Date().getTime(),
+        "Не заполнено ФИО клиента",
+        "Пожалуйста, заполните ФИО клиента",
+        "error",
+        3000
+      );
+    },
+    addSuccessNotification() {
+      addNotification(
+        new Date().getTime(),
+        "Клиент успешно создан",
+        "",
+        "success",
+        3000
+      );
     },
   },
 };

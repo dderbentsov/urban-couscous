@@ -63,6 +63,8 @@
 </template>
 
 <script>
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import BaseInputTime from "@/components/base/BaseInputTime.vue";
 import BaseInput from "@/components/base/BaseInput.vue";
@@ -80,6 +82,7 @@ export default {
     BaseInputDate,
     BaseInputTime,
     BaseCustomSelect,
+    TheNotificationProvider,
   },
   emits: ["clear-selected-event-data", "close-change-form"],
   props: {
@@ -323,8 +326,11 @@ export default {
     async postCreateEvent(event) {
       const response = await fetchWrapper.post("registry/event/create/", event);
       if (response.type && response.type === "validation_error") {
-        this.outputErrorMessage(response);
-      } else this.clearForm();
+        this.addErrrorNotification(response);
+      } else {
+        this.addSuccessNotification("Событие успешно создано");
+        this.clearForm();
+      }
     },
     async postUpdateEvent(id, event) {
       const response = await fetchWrapper.post(
@@ -332,8 +338,11 @@ export default {
         event
       );
       if (response.type && response.type === "validation_error") {
-        this.outputErrorMessage(response);
-      } else this.clearForm();
+        this.addErrrorNotification(response);
+      } else {
+        this.addSuccessNotification("Изменения успешно сохранены");
+        this.clearForm();
+      }
     },
     personId(object, field) {
       if (object) {
@@ -353,10 +362,18 @@ export default {
         return id;
       }
     },
-    outputErrorMessage(error) {
-      alert(
-        `error type: ${error.type}\nerror code: ${error.errors[0].code}\nerror detail: ${error.errors[0].detail}`
+    addErrrorNotification(error) {
+      addNotification(
+        new Date().getTime(),
+        error.type,
+        `error code: ${error.errors[0].code}
+        error detail: ${error.errors[0].detail}`,
+        "error",
+        3000
       );
+    },
+    addSuccessNotification(message) {
+      addNotification(new Date().getTime(), message, "", "success", 3000);
     },
     fetchMembersData() {
       fetchWrapper
