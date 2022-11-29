@@ -30,18 +30,20 @@ export default {
       type: Number,
       default: 7,
     },
+    paginationInfo: Object,
   },
   computed: {
     pageCount() {
       let countArray = [];
-      for (let i = 1; i <= this.length; i++) {
+      for (let i = 1; i <= this.paginationInfo.length; i++) {
         countArray.push(i);
       }
-      if (this.length <= this.totalVisible) return countArray;
+      if (this.paginationInfo.length <= this.totalVisible) return countArray;
       let incompleteCountArray = [];
       if (
-        this.currentPage <= 2 ||
-        this.currentPage >= countArray[this.length - 2]
+        this.paginationInfo.currentPage <= 2 ||
+        this.paginationInfo.currentPage >=
+          countArray[this.paginationInfo.length - 2]
       ) {
         countArray.forEach((elem, index, arr) => {
           if (index <= 2 || index >= arr.length - 3)
@@ -51,7 +53,7 @@ export default {
         });
         return incompleteCountArray;
       }
-      if (this.currentPage <= 4) {
+      if (this.paginationInfo.currentPage <= 4) {
         countArray.forEach((elem, index, arr) => {
           if (index <= 4 || index === arr.length - 1)
             incompleteCountArray.push(elem);
@@ -60,7 +62,10 @@ export default {
         });
         return incompleteCountArray;
       }
-      if (this.currentPage >= countArray[this.length - 4]) {
+      if (
+        this.paginationInfo.currentPage >=
+        countArray[this.paginationInfo.length - 4]
+      ) {
         countArray.forEach((elem, index, arr) => {
           if (index === 0 || index >= arr.length - 5)
             incompleteCountArray.push(elem);
@@ -71,22 +76,25 @@ export default {
       }
       countArray.forEach((elem, index, arr) => {
         if (index === 0) incompleteCountArray.push(elem, "...");
-        if (index >= this.currentPage - 2 && index <= this.currentPage)
+        if (
+          index >= this.paginationInfo.currentPage - 2 &&
+          index <= this.paginationInfo.currentPage
+        )
           incompleteCountArray.push(elem);
         if (index === arr.length - 1) incompleteCountArray.push("...", elem);
       });
       return incompleteCountArray;
     },
     disabledNextButton() {
-      return this.currentPage === this.length;
+      return this.paginationInfo.currentPage === this.paginationInfo.length;
     },
     disabledPreviousButton() {
-      return this.currentPage === 1;
+      return this.paginationInfo.currentPage === 1;
     },
   },
   methods: {
     currentPageStyle(number) {
-      if (number === this.currentPage)
+      if (number === this.paginationInfo.currentPage)
         return {
           "active-theme": true,
         };
@@ -95,10 +103,11 @@ export default {
       };
     },
     previousHandler() {
-      if (this.currentPage !== 1) this.$emit("previous-page");
+      if (this.paginationInfo.currentPage !== 1) this.$emit("previous-page");
     },
     nextHandler() {
-      if (this.currentPage !== this.length) this.$emit("next-page");
+      if (this.paginationInfo.currentPage !== this.paginationInfo.length)
+        this.$emit("next-page");
     },
     changeCurrentPage(e) {
       this.$emit("set-current-page", parseInt(e.target.id));

@@ -8,7 +8,7 @@
       .button.keep-redaction.flex.gap-x-3
         .icon-star-off.icon
         span На ведение
-      .button.delete.flex.gap-x-3
+      .button.delete.flex.gap-x-3(@click="deleteClient")
         .icon-basket.icon-delete
         span Удалить
 </template>
@@ -18,6 +18,7 @@ export default {
   name: "ClientsActionPopup",
   props: {
     openChangeData: Function,
+    deleteClient: Function,
   },
 };
 </script>
