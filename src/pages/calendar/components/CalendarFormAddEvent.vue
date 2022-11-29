@@ -365,15 +365,14 @@ export default {
     addErrrorNotification(error) {
       addNotification(
         new Date().getTime(),
-        error.type,
-        `error code: ${error.errors[0].code}
-        error detail: ${error.errors[0].detail}`,
+        error.errors[0].code,
+        error.errors[0].detail,
         "error",
-        3000
+        5000
       );
     },
     addSuccessNotification(message) {
-      addNotification(new Date().getTime(), message, "", "success", 3000);
+      addNotification(new Date().getTime(), message, "", "success", 5000);
     },
     fetchMembersData() {
       fetchWrapper

@@ -3,7 +3,7 @@
     .notification-content.flex.mr-16
       .grid(:class="{'grid-rows': message}")
         .text-white.text-xs.icon.row-span-full.flex.justify-center.items-center(:class="iconClass")
-        .text-white.text-base(v-if="title") {{ title }}
+        .text-white.text-base.font-bold(v-if="title") {{ title }}
         .text-white.text-base(v-if="message") {{ message }}
     .icon-cancel.cursor-pointer.text-white.opacity-50.text-sm(class="hover:opacity-100 active:opacity-75", @click="delNotification")
 </template>
@@ -85,4 +85,5 @@ export default {
   grid-column-gap: 8px
 .grid-rows
   grid-template-rows: repeat(2, auto)
+  grid-row-gap: 8px
 </style>
