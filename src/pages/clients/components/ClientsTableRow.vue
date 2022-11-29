@@ -14,6 +14,7 @@
         :value="dataClient",
         :avatar="dataClient.avatar",
         :avatar-color="dataClient.color",
+        :photo="dataClient.photo"
         :is-open-change="isOpenChange",
         :width="columnBody.find(el => el.name === 'fullName').width"
       )
@@ -181,6 +182,7 @@ export default {
       contacts: [...this.client.contacts],
       avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
       color: this.client.color,
+      photo: this.client.photo,
     };
   },
   methods: {

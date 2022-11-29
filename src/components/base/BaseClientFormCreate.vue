@@ -4,12 +4,47 @@
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
       .flex.gap-x-3.w-full
-        base-button(:rounded="true" :secondary="true" :size="40")
-          .icon-download.text-xl
+        base-button.relative(
+          :rounded="true",
+          :secondary="true",
+          :size="40",
+          @click="changeOpenPopup",
+          v-for="img in image"
+        )
+          .icon-download.text-xl(v-if="img === defaultIcon")
+          .flex.w-10.h-10(v-else)
+            img.current-avatar(:src="img")
+          base-popup.right-5.top-7(v-if="showPopup", :width="230")
+            .flex.items-center.gap-x-2
+              img(src="@/assets/icons/computer.svg")
+              span.text-smm(@click="changeOpenModal") Загрузить с компьютера
+            .flex.items-center.gap-x-2
+              img(src="@/assets/icons/camera.svg")
+              span.text-smm Сделать фото
+          base-modal(v-model="showModal", title="Загрузить изображение")
+            .flex.flex-col.items-center.justify-center(
+              :style="{padding: '153px 370px'}"
+              )
+              .avatar-wrapper.flex.relative
+                input.input(
+                  type="file",
+                  id="image-upload",
+                  accept="image/*",
+                  @change="(e) => previewImages(e)"
+                )
+                .avatar.flex.absolute.items-center.gap-x-6(v-for="img in image")
+                  img.avatar(for="image-upload", :src="img", v-if="img")
+                  base-button(:rounded="true", :size="48", @click="closeModal")
+                    .icon-ok
         base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")
     .flex.flex-col.flex-auto.l.gap-y-8
       .flex.px-4
-        button.title-info.px-6.py-2.cursor-pointer.w-full.text-sm(v-for="info in listInfoTitle" @click="(e) => selectTab(e)" :class="{active:info.active}" :key="info.key" :id="info.key") {{info.title}}
+        button.title-info.px-6.py-2.cursor-pointer.w-full.text-sm(
+          v-for="info in listInfoTitle",
+          @click="(e) => selectTab(e)",
+          :class="{active:info.active}",
+          :key="info.key" :id="info.key"
+        ) {{info.title}}
       .flex(:style="{display :'block'}" ref="basic")
         form-create-basic-info(
           :basic-info="infoClient.basic"
@@ -53,6 +88,9 @@ import FormCreateAddresses from "@/pages/clients/components/FormCreateAddresses"
 import FormCreateAdditional from "@/pages/clients/components/FormCreateAdditional";
 import BaseInput from "@/components/base/BaseInput";
 import BaseButton from "@/components/base/BaseButton";
+import BasePopup from "@/components/base/BasePopup";
+import BaseModal from "@/components/base/BaseModal";
+import addImageIcon from "@/assets/icons/photo.svg";
 import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
 import { addNotification } from "@/components/Notifications/notificationContext";
 export default {
@@ -64,6 +102,9 @@ export default {
     FormCreateAddresses,
     FormCreateAdditional,
     BaseButton,
+    BasePopup,
+    BaseModal,
+    addImageIcon,
     TheNotificationProvider,
   },
   props: {
@@ -169,6 +210,11 @@ export default {
           label: "-",
         },
       ],
+      defaultIcon: addImageIcon,
+      showModal: false,
+      showPopup: false,
+      image: [addImageIcon],
+      imageData: [],
     };
   },
   computed: {
@@ -179,6 +225,22 @@ export default {
     },
   },
   methods: {
+    closeModal() {
+      this.showModal = false;
+      this.showPopup = false;
+    },
+    previewImages(event) {
+      this.image = [];
+      var pictures = event.target.files;
+      for (var i = 0; i < pictures.length; i++) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.image.push(e.target.result);
+        };
+        reader.readAsDataURL(pictures[i]);
+      }
+      this.imageData = [...this.imageData, ...event.target.files];
+    },
     createIdentityDocument(id) {
       Object.keys(
         this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
@@ -200,20 +262,25 @@ export default {
         });
     },
     postNewClient() {
-      let sentData = {
-        full_name: this.infoClient.basic.full_name,
-      };
+      const formData = new FormData();
+      this.imageData.forEach((e) => {
+        formData.append("photo", e);
+        formData.append("full_name", this.infoClient.basic.full_name);
+      });
       if (this.infoClient.basic.birth_date)
-        sentData.birth_date = this.infoClient.basic.birth_date;
+        formData.append("birth_date", this.infoClient.basic.birth_date);
+
       let foundElement = this.prioritySettings.settings.find(
         (el) => el.text === this.infoClient.basic.priority
       );
-      if (foundElement) sentData.priority = foundElement.priority;
-      fetchWrapper.post("general/person/create/", sentData).then((result) => {
-        this.createIdentityDocument(result.id);
-        this.createAddress(result.id);
-        this.addSuccessNotification();
-      });
+      if (foundElement) formData.append("priority", foundElement.priority);
+      fetchWrapper
+        .post("general/person/create/", formData, "formData")
+        .then((result) => {
+          this.createIdentityDocument(result.id);
+          this.createAddress(result.id);
+          this.addSuccessNotification();
+        });
       this.$emit("update-client");
     },
     filterDataEmptyProperty(data) {
@@ -247,6 +314,14 @@ export default {
         this.postNewClient();
         this.closeForm();
       }
+    },
+    changeOpenModal() {
+      this.showModal = true;
+      this.showPopup = false;
+      this.image = [addImageIcon];
+    },
+    changeOpenPopup() {
+      this.showPopup = true;
     },
     saveDocFile(e) {
       this.infoClient.doc = e.target.files;
@@ -311,6 +386,13 @@ export default {
       );
     },
   },
+  watch: {
+    showModal: function () {
+      if (this.showModal === false) {
+        this.closeModal();
+      }
+    },
+  },
 };
 </script>
 
@@ -322,8 +404,10 @@ export default {
   width: 634px
   min-height: 700px
   box-shadow: var(--default-shadow)
+
 .title
   color: var(--font-dark-blue-color)
+
 .export-avatar
   min-width: 40px
   height: 40px
@@ -333,6 +417,7 @@ export default {
   &:hover
     color: var(--default-white)
     background-color: var(--btn-blue-color)
+
 .title-info
   color: var(--font-grey-color)
   border-bottom: 1.5px solid var(--font-grey-color)
@@ -342,4 +427,29 @@ export default {
   &.active
     color: var(--btn-blue-color)
     border-bottom: 1.5px solid var(--btn-blue-color)
+
+.avatar-wrapper
+  width: 400px
+  height: 400px
+  border-radius: 50%
+
+.input
+  width: 100%
+  height: 100%
+  border-radius: 50%
+  z-index: 5
+  opacity: 0
+  cursor: pointer
+
+.avatar
+  height: 100%
+  border-radius: 50%
+
+.current-avatar
+  cursor: pointer
+  height: 100%
+  border-radius: 50%
+  background-size: cover
+  background-repeat: no-repeat
+  background-position: center
 </style>
