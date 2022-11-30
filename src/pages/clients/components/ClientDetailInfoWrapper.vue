@@ -7,7 +7,6 @@
       :lack-data="lackData",
       :create-document="createDocument",
       :doc-id="docId",
-      :current-year="currentYear"
     )
     .flex.flex-col
       client-detail-info-section(
@@ -51,7 +50,6 @@ export default {
     createDocument: Function,
     addressId: String,
     docId: String,
-    currentYear: Number,
   },
 };
 </script>

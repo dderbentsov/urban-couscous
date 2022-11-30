@@ -115,7 +115,7 @@ export const detail = {
     },
     sharps: {
       numba: "#### ######",
-      issued_by_org: "XXXXXX",
+      issued_by_org: "",
       issued_by_org_code: "###-###",
       issued_by_date: "##.##.####",
     },
@@ -157,6 +157,7 @@ export const detail = {
     options: {
       join_adress: "Полный адрес",
     },
+    sharps: { join_adress: "" },
     placeholder: {
       join_adress: "Введите адрес целиком",
     },

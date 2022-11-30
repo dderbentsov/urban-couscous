@@ -3,7 +3,6 @@
     base-client-form-create(
       v-if="isOpenForm",
       :close-form="closeForm",
-      :current-year="currentYear",
       @update-client="transmitUpdateClient"
     )
     .flex.items-center.box-border.cursor-pointer.mr-auto
@@ -43,7 +42,6 @@ export default {
     openForm: Function,
     closeForm: Function,
     isOpenForm: Boolean,
-    currentYear: Number,
   },
   data() {
     return {

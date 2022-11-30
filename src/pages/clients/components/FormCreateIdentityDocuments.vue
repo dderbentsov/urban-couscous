@@ -28,12 +28,10 @@
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Дата выдачи
-          base-input.input-info(
-            type="date",
+          base-input-date.input-date(
             v-model:value="identityDocument.pass.issued_by_date",
             placeholder="Дата",
-            :width-input="277",
-            :max-date="`${currentYear}-12-31`"
+            :width-input="277"
           )
     .flex.flex-col.gap-y-6.px-4
       span.title-info.text-base.font-bold СНИЛС и ИНН
@@ -62,14 +60,14 @@
 <script>
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
+import BaseInputDate from "@/components/base/BaseInputDate";
 import { mask } from "vue-the-mask";
 export default {
   name: "FormCreateIdentityDocuments",
-  components: { BaseInput, BaseButton },
+  components: { BaseInput, BaseInputDate, BaseButton },
   props: {
     identityDocument: Object,
     saveClient: Function,
-    currentYear: Number,
   },
   directives: { mask },
 };
@@ -93,4 +91,6 @@ export default {
   color: var(--font-dark-blue-color)
 .title-info
   color: var(--font-dark-blue-color)
+.input-date
+  border: 1.5px solid var(--border-light-grey-color)
 </style>

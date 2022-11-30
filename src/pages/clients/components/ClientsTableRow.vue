@@ -85,7 +85,6 @@
       :create-document="postCreateIdentityDocument"
       :address-id="addressId"
       :doc-id="docId"
-      :current-year="currentYear"
     )
 </template>
 
@@ -153,7 +152,6 @@ export default {
     check: Function,
     isCheck: Boolean,
     client: Object,
-    currentYear: Number,
   },
   created() {
     this.dataClient = {

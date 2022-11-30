@@ -16,7 +16,6 @@
           :check="selectedCheck",
           :client="client",
           :fetch-data-clients="fetchDataClients",
-          :current-year="currentYear",
           @update-clients="updateDataClient"
         )
     client-table-pagination(
@@ -48,7 +47,6 @@ export default {
   },
   props: {
     openForm: Function,
-    currentYear: Number,
     isOpenForm: Boolean,
     updatedClients: Boolean,
   },

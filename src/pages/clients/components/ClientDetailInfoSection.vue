@@ -68,15 +68,13 @@
             v-model:value="sectionInfo[key]",
             :width="settings[section].width",
             :placeholder="settings[section].placeholder[key]"
+            :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
           )
-          base-input.max-h-10.py-2.pl-3(
+          base-input-date.input(
             v-else-if="isChange && section !== 'docs'",
-            type="date",
             v-model:value="sectionInfo.issued_by_date"
-            :max-date="`${currentYear}-12-31`",
-            dateInput
           )
-            .copy.icon-copy.cursor-pointer(
+             .copy.icon-copy.cursor-pointer(
               v-if="item.copy",
               @click="() => copyValue(item)"
             )
@@ -123,9 +121,9 @@ import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewA
 import TableCreatePackageDoc from "@/pages/clients/components/TableCreatePackageDoc";
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import TableChoiceAddingDoc from "@/pages/clients/components/TableChoiceAddingDoc";
-import BaseInput from "@/components/base/BaseInput";
 import BasePopup from "@/components/base/BasePopup";
 import BaseModal from "@/components/base/BaseModal";
+import BaseInputDate from "@/components/base/BaseInputDate";
 import { detail } from "@/pages/clients/utils/tableConfig";
 import pdfIcon from "@/assets/icons/pdf.svg";
 import wordIcon from "@/assets/icons/word.svg";
@@ -134,7 +132,7 @@ export default {
   name: "ClientDetailInfoSection",
   components: {
     BaseButton,
-    BaseInput,
+    BaseInputDate,
     BasePopup,
     BaseModal,
     ClientDetailInput,
@@ -159,7 +157,6 @@ export default {
     createDocument: Function,
     addressId: String,
     docId: String,
-    currentYear: Number,
   },
   data() {
     return {
@@ -367,4 +364,7 @@ export default {
   width: 38px
   z-index: 1
   background: var(--light-grey-bg-color)
+
+.input
+  border: 1.5px solid var(--border-light-grey-color)
 </style>
