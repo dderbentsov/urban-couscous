@@ -15,7 +15,6 @@
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
-          :current-year="currentYear",
           :row-overlay="deletedRowId === client.id",
           @delete-client="deleteClientHandler",
           @recover-client="clearDeletedRowId",
