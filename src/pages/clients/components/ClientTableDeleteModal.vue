@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex.flex-col.mb-1.mt-4
-    span.font-medium.text-base.modal-text.mb-3 Вы действительно хотите удалить клиента?
+    span.font-medium.text-base.modal-text Вы действительно хотите удалить клиента?
     .flex.gap-x-3.mt-6.font-semibold
       base-button(
         outlined,
@@ -10,7 +10,7 @@
       base-button(
         outlined-red,
         :size=40,
-        @click="deleteEvent"
+        @click=""
       ) Удалить
 </template>
 
@@ -32,8 +32,8 @@ export default {
   color: var(--font-grey-color)
 
 .card-container
-  width: 374px
-  height: 82px
+  width: 420px
+  height: 194px
   border-radius: 4px
   border: 1px solid var(--border-light-grey-color-1)
 </style>

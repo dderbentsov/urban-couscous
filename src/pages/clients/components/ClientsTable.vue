@@ -15,8 +15,9 @@
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
-          :fetch-data-clients="fetchDataClients",
-          @update-clients="updateDataClient"
+          :current-year="currentYear",
+          :row-overlay="deletedClientId === client.id",
+          @delete-client="deleteClientHandler",
         )
     client-table-pagination(
       v-if="paginationInfo.length > 1"
@@ -29,6 +30,9 @@
       v-model="showModal",
       title="Удалить клиента"
     )
+      client-table-delete-modal(
+        :close-modal="changeShowModal"
+      )
 </template>
 
 <script>
@@ -40,6 +44,7 @@ import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbo
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 import ClientTablePagination from "./ClientTablePagination.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
+import ClientTableDeleteModal from "./ClientTableDeleteModal.vue";
 export default {
   name: "ClientsTable",
   components: {
@@ -50,6 +55,7 @@ export default {
     BaseClientFormCreate,
     ClientTablePagination,
     BaseModal,
+    ClientTableDeleteModal,
   },
   props: {
     openForm: Function,
@@ -63,14 +69,15 @@ export default {
       marked: [],
       dataClients: [],
       currentTablePage: 1,
-      limit: 4,
+      limit: 14,
       count: 0,
       textSearch: "",
       paginationInfo: {
         currentPage: 0,
         length: 0,
       },
-      showModal: true,
+      showModal: false,
+      deletedClientId: "",
     };
   },
   computed: {
@@ -144,6 +151,17 @@ export default {
     changeCurrentTablePage(value) {
       this.currentTablePage = value;
     },
+    changeShowModal() {
+      this.showModal = false;
+    },
+    openModal() {
+      this.showModal = true;
+    },
+    deleteClientHandler(id) {
+      this.deletedClientId = id;
+      console.log(this.deletedClientId);
+      this.openModal();
+    },
   },
   watch: {
     updatedClients() {
@@ -160,6 +178,9 @@ export default {
     currentTablePage() {
       this.fetchDataClients();
     },
+    /*showModal() {
+      if (!this.showModal) this.deletedClientId = "";
+    },*/
   },
   mounted() {
     this.fetchDataClients();
