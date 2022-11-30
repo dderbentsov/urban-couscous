@@ -65,6 +65,7 @@
           clients-action-popup(
             v-if="isOpenPopup",
             :open-change-data="openChangeData"
+            :delete-client="deleteClient"
           )
     client-detail-info-wrapper(
       v-if="isOpenDetailInfo"
@@ -269,6 +270,11 @@ export default {
     },
     openChangeData() {
       this.isOpenChange = true;
+    },
+    async deleteClient() {
+      await fetchWrapper.del(`general/person/${this.dataClient.id}/delete/`);
+      this.handleUnFocusPopup();
+      this.$emit("update-clients");
     },
     fetchClientDetail(id) {
       fetchWrapper

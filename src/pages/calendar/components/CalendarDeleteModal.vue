@@ -24,9 +24,15 @@
 import { fetchWrapper } from "@/shared/fetchWrapper.js";
 import BaseButton from "@/components/base/BaseButton.vue";
 import CalendarEventDescriptionCard from "./CalendarEventDescriptionCard.vue";
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 export default {
   name: "CalendarDeleteModal",
-  components: { CalendarEventDescriptionCard, BaseButton },
+  components: {
+    CalendarEventDescriptionCard,
+    BaseButton,
+    TheNotificationProvider,
+  },
   props: {
     ownerEvent: Object,
     eventTypes: {
@@ -42,6 +48,16 @@ export default {
       await fetchWrapper.del(`registry/event/${this.ownerEvent.id}/delete/`);
       this.$emit("update-events");
       this.closeModal();
+      this.addSuccessNotification();
+    },
+    addSuccessNotification() {
+      addNotification(
+        new Date().getTime(),
+        "Событие успешно удалено",
+        "",
+        "success",
+        5000
+      );
     },
   },
 };
