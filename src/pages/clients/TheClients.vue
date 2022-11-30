@@ -2,7 +2,6 @@
   clients-wrapper(
     :open-form="openForm",
     :is-open-form="isOpenForm",
-    :current-year="currentYear",
     :updated-clients="updatedClients",
     @reset-updated-clients="transmitReset"
   )
@@ -15,7 +14,6 @@ export default {
   components: { ClientsWrapper },
   props: {
     openForm: Function,
-    currentYear: Number,
     isOpenForm: Boolean,
     updatedClients: Boolean,
   },

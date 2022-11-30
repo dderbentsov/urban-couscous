@@ -10,12 +10,9 @@
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Дата рождения
-        base-input.input-info(
+        base-input-date.input-date(
           v-model:value="basicInfo.birth_date",
-          type="date",
-          placeholder="00.00.0000",
-          :width-input="277",
-          :max-date="`${ currentYear }-12-31`"
+          :width-input="277"
         )
       .flex.flex-col(class="gap-y-1.5")
         span.text-sm Номер телефона
@@ -54,6 +51,7 @@
 <script>
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
+import BaseInputDate from "@/components/base/BaseInputDate";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
 import { column } from "@/pages/clients/utils/tableConfig";
 import BaseCustomSelect from "@/components/base/BaseCustomSelect";
@@ -62,6 +60,7 @@ export default {
   name: "FormCreateBasicInfo",
   components: {
     BaseInput,
+    BaseInputDate,
     BaseAddingNetwork,
     BaseButton,
     BaseCustomSelect,
@@ -76,7 +75,6 @@ export default {
     basicInfo: Object,
     saveClient: Function,
     addNetwork: Function,
-    currentYear: Number,
   },
   directives: { mask },
   data() {
@@ -113,4 +111,6 @@ export default {
   height: 100%
   border: 2px solid var(--border-light-grey-color)
   border-radius: 4px
+.input-date
+  border: 1.5px solid var(--border-light-grey-color)
 </style>

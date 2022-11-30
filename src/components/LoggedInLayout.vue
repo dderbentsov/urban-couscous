@@ -4,7 +4,6 @@
       :is-open-form="isOpenForm",
       :close-form="closeForm",
       :open-form="openForm",
-      :current-year="currentYear",
       @update-client="setUpdatedClients"
     )
     .flex.flex-auto
@@ -12,7 +11,6 @@
       router-view(
         :open-form="openForm",
         :is-open-form="isOpenForm",
-        :current-year="currentYear",
         :updated-clients="updatedClients",
         @reset-updated-clients="resetUpdatedClients"
       )
@@ -30,7 +28,6 @@ export default {
   data() {
     return {
       isOpenForm: false,
-      currentYear: null,
       updatedClients: false,
     };
   },
@@ -41,18 +38,12 @@ export default {
     closeForm() {
       this.isOpenForm = false;
     },
-    printCurrentYear() {
-      return new Date().getFullYear();
-    },
     setUpdatedClients() {
       this.updatedClients = true;
     },
     resetUpdatedClients() {
       this.updatedClients = false;
     },
-  },
-  mounted: function () {
-    this.currentYear = this.printCurrentYear();
   },
 };
 </script>

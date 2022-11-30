@@ -157,7 +157,6 @@ export default {
     createDocument: Function,
     addressId: String,
     docId: String,
-    currentYear: Number,
   },
   data() {
     return {

@@ -1,14 +1,16 @@
 <template lang="pug">
   .input-wrapper.flex.gap-x-2.px-4.box-border(
-    class="py-2.5"
+    class="py-2.5",
     :style="{ minWidth: widthInput + 'px' }"
   )
     input.input.w-full.outline-0.not-italic.date(
-      :value="value"
-      type="date"
-      @input="$emit('update:value', $event.target.value)"
-      :placeholder="placeholder"
-      :maxlength="maxLength"
+      :value="value",
+      type="date",
+      @input="$emit('update:value', $event.target.value)",
+      :placeholder="placeholder",
+      :maxlength="maxLength",
+      max="9999-12-31",
+      min="0000-01-01"
     )
     .slot(v-if="withIcon" :class="iconPosition")
       slot.cursor-pointer

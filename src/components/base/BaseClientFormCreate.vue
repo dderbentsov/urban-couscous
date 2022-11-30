@@ -12,7 +12,7 @@
           v-for="img in image"
         )
           .icon-download.text-xl(v-if="img === defaultIcon")
-          .flex.w-10.h-10(v-else)
+          .wrapper-img.flex.w-10.h-10(v-else)
             img.current-avatar(:src="img")
           base-popup.right-5.top-7(v-if="showPopup", :width="230")
             .flex.items-center.gap-x-2
@@ -56,13 +56,11 @@
           :choose-option="chooseOptionNetworks"
           :choose-priority="choosePriority"
           :priority-list="priorityList"
-          :current-year="currentYear"
-          )
+        )
       .flex(:style="{display :'none'}" ref="doc")
         form-create-identity-documents(
           :identity-document="infoClient.identity_document",
-          :save-client="saveClient",
-          :current-year="currentYear"
+          :save-client="saveClient"
         )
       .flex(:style="{display :'none'}" ref="address")
         form-create-addresses(
@@ -106,7 +104,6 @@ export default {
   },
   props: {
     closeForm: Function,
-    currentYear: Number,
   },
   data() {
     return {
@@ -429,4 +426,12 @@ export default {
   background-size: cover
   background-repeat: no-repeat
   background-position: center
+  &:hover
+    display: none
+
+.wrapper-img
+  background-size: 20px
+  background-repeat: no-repeat
+  background-position: center
+  background-image: url(@/assets/icons/download.svg)
 </style>

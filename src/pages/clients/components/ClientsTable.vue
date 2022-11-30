@@ -16,7 +16,6 @@
           :check="selectedCheck",
           :client="client",
           :fetch-data-clients="fetchDataClients",
-          :current-year="currentYear"
         )
     client-table-pagination(
       v-if="pageCount > 1"
@@ -48,7 +47,6 @@ export default {
   },
   props: {
     openForm: Function,
-    currentYear: Number,
     isOpenForm: Boolean,
     updatedClients: Boolean,
   },
