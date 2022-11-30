@@ -16,8 +16,10 @@
           :check="selectedCheck",
           :client="client",
           :current-year="currentYear",
-          :row-overlay="deletedClientId === client.id",
+          :row-overlay="deletedRowId === client.id",
           @delete-client="deleteClientHandler",
+          @recover-client="clearDeletedRowId",
+          @update-clients="updateDataClient"
         )
     client-table-pagination(
       v-if="paginationInfo.length > 1"
@@ -31,7 +33,9 @@
       title="Удалить клиента"
     )
       client-table-delete-modal(
-        :close-modal="changeShowModal"
+        :close-modal="closeModal",
+        :deleted-client-id="deletedClientId",
+        @delete-client="writeDeletedRowId"
       )
 </template>
 
@@ -78,6 +82,7 @@ export default {
       },
       showModal: false,
       deletedClientId: "",
+      deletedRowId: "",
     };
   },
   computed: {
@@ -151,7 +156,7 @@ export default {
     changeCurrentTablePage(value) {
       this.currentTablePage = value;
     },
-    changeShowModal() {
+    closeModal() {
       this.showModal = false;
     },
     openModal() {
@@ -159,8 +164,16 @@ export default {
     },
     deleteClientHandler(id) {
       this.deletedClientId = id;
-      console.log(this.deletedClientId);
       this.openModal();
+    },
+    writeDeletedRowId(id) {
+      this.deletedRowId = id;
+    },
+    clearDeletedRowId() {
+      this.deletedRowId = "";
+    },
+    clearDeletedClientId() {
+      this.deletedClientId = "";
     },
   },
   watch: {
@@ -171,16 +184,16 @@ export default {
           this.fetchDataClients().then(
             () => (this.currentTablePage = this.pageCount)
           );
-        }, 60);
+        }, 100);
         this.$emit("reset-updated-clients");
       }
     },
     currentTablePage() {
       this.fetchDataClients();
     },
-    /*showModal() {
-      if (!this.showModal) this.deletedClientId = "";
-    },*/
+    showModal() {
+      if (!this.showModal) this.clearDeletedClientId();
+    },
   },
   mounted() {
     this.fetchDataClients();

@@ -10,7 +10,7 @@
       base-button(
         outlined-red,
         :size=40,
-        @click=""
+        @click="transmitDeleteClient"
       ) Удалить
 </template>
 
@@ -23,6 +23,13 @@ export default {
   },
   props: {
     closeModal: Function,
+    deletedClientId: String,
+  },
+  methods: {
+    transmitDeleteClient() {
+      this.$emit("delete-client", this.deletedClientId);
+      this.closeModal();
+    },
   },
 };
 </script>

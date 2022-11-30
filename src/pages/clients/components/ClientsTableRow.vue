@@ -4,13 +4,14 @@
       v-if="rowOverlay",
       :style="rowSize"
     )
-      button.recover-btn Восстановить
-      div 0:30
-    .row-wrapper.flex.flex-col.w-full(ref="rowWrapper")
+      button.recover-btn(@click="stopTimer") Восстановить
+      .countdown 0:{{ countdown }}
+    .row-wrapper.flex.flex-col.w-full
       .row-body.flex.w-full.cursor-pointer(
         :id="id",
         @click="(e) => openDetailInfo(e)",
         :class="{'row-overlay-color': rowOverlay}"
+        ref="rowBody"
       )
         .check-box.flex.justify-center.items-center(
           :style="{'opacity': rowOverlay && '0.5'}"
@@ -84,7 +85,7 @@
               @delete-client="transmitDeleteClient"
             )
       client-detail-info-wrapper(
-        v-if="isOpenDetailInfo && !rowOverlay",
+        v-if="isOpenDetailInfo",
         :data-address="dataAddress"
         :data-detail="dataDetail"
         :data-attachments="dataAttachments"
@@ -162,6 +163,8 @@ export default {
         flat: "",
         index: "",
       },
+      timer: null,
+      countdown: 0,
     };
   },
   props: {
@@ -172,39 +175,9 @@ export default {
     currentYear: Number,
     rowOverlay: Boolean,
   },
-  created() {
-    this.dataClient = {
-      id: this.client.id,
-      fullName: `${this.client.last_name || ""} ${
-        this.client.first_name || ""
-      } ${this.client.patronymic || ""}`,
-      age: this.client.birth_date || "",
-      priority: this.prioritySettings.settings.find(
-        (el) => el.priority === this.client.priority
-      ).text,
-      phone: {
-        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
-        kind: "PHONE",
-        username:
-          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
-          "",
-      },
-      email: {
-        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
-        kind: "EMAIL",
-        username:
-          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
-          "",
-      },
-      contacts: [...this.client.contacts],
-      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
-      color: this.client.color,
-      photo: this.client.photo,
-    };
-  },
   computed: {
     rowSize() {
-      let size = this.$refs["rowWrapper"].getBoundingClientRect();
+      let size = this.$refs["rowBody"].getBoundingClientRect();
       return {
         height: `${size.height}px`,
         width: `${size.width}px`,
@@ -212,6 +185,25 @@ export default {
     },
   },
   methods: {
+    stopTimer() {
+      if (this.countdown !== 0) this.countdown = 0;
+      clearInterval(this.timer);
+      this.timer = null;
+      this.$emit("recover-client");
+    },
+    startTimer() {
+      this.countdown = 30;
+      this.timer = setInterval(() => {
+        this.changeCountdown();
+      }, 1000);
+    },
+    changeCountdown() {
+      if (this.countdown === 0) {
+        this.deleteClient().then(() => this.stopTimer());
+      } else {
+        this.countdown -= 1;
+      }
+    },
     postUpdateClient() {
       fetchWrapper.post(`general/person/${this.client.id}/update/`, {
         full_name: this.dataClient.fullName,
@@ -300,10 +292,13 @@ export default {
       this.isOpenChange = true;
     },
     transmitDeleteClient() {
-      /*  await fetchWrapper.del(`general/person/${this.dataClient.id}/delete/`);
-      this.handleUnFocusPopup();
-      this.$emit("update-clients");*/
+      this.isOpenDetailInfo = false;
       this.$emit("delete-client", this.dataClient.id);
+    },
+    async deleteClient() {
+      await fetchWrapper.del(`general/person/${this.dataClient.id}/delete/`);
+      this.handleUnFocusPopup();
+      this.$emit("update-clients");
     },
     fetchClientDetail(id) {
       fetchWrapper
@@ -461,6 +456,44 @@ export default {
         .then(() => this.fetchClientDetail(this.id));
     },
   },
+  watch: {
+    rowOverlay() {
+      if (this.rowOverlay) this.startTimer();
+    },
+  },
+  created() {
+    this.dataClient = {
+      id: this.client.id,
+      fullName: `${this.client.last_name || ""} ${
+        this.client.first_name || ""
+      } ${this.client.patronymic || ""}`,
+      age: this.client.birth_date || "",
+      priority: this.prioritySettings.settings.find(
+        (el) => el.priority === this.client.priority
+      ).text,
+      phone: {
+        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
+        kind: "PHONE",
+        username:
+          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+          "",
+      },
+      email: {
+        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
+        kind: "EMAIL",
+        username:
+          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
+          "",
+      },
+      contacts: [...this.client.contacts],
+      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
+      color: this.client.color,
+      photo: this.client.photo,
+    };
+  },
+  beforeUnmount() {
+    this.stopTimer();
+  },
 };
 </script>
 
@@ -493,4 +526,6 @@ export default {
   background: var(--row-overlay-color)
 .recover-btn
   color: var(--btn-blue-color)
+.countdown
+  color: var(--font-grey-color )
 </style>
