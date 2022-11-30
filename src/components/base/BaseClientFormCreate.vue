@@ -260,15 +260,14 @@ export default {
     },
     postNewClient() {
       const formData = new FormData();
+      formData.append("full_name", this.infoClient.basic.full_name);
       this.imageData.forEach((e) => {
         formData.append("photo", e);
-        formData.append("full_name", this.infoClient.basic.full_name);
       });
       if (this.infoClient.basic.birth_date)
         formData.append("birth_date", this.infoClient.basic.birth_date);
-
       let foundElement = this.prioritySettings.settings.find(
-        (el) => el.text === this.infoClient.basic.priority
+        (el) => el.priority === this.infoClient.basic.priority.id
       );
       if (foundElement) formData.append("priority", foundElement.priority);
       fetchWrapper

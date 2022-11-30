@@ -22,6 +22,7 @@
         base-input.input-info(
           v-model:value="phone.username",
           placeholder="+7 (915) 644–92–23",
+          v-mask="'+7 (###) ###-##-##'",
           :width-input="277"
         )
       .flex.flex-col(class="gap-y-1.5")
@@ -56,6 +57,7 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseAddingNetwork from "@/components/base/BaseAddingNetwork";
 import { column } from "@/pages/clients/utils/tableConfig";
 import BaseCustomSelect from "@/components/base/BaseCustomSelect";
+import { mask } from "vue-the-mask";
 export default {
   name: "FormCreateBasicInfo",
   components: {
@@ -76,6 +78,7 @@ export default {
     addNetwork: Function,
     currentYear: Number,
   },
+  directives: { mask },
   data() {
     return {
       networks: column.find((el) => el.name === "networks"),

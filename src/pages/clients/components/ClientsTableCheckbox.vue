@@ -1,5 +1,5 @@
 <template lang="pug">
-  input.checkbox.cursor-pointer(type="checkbox" :id="id" :checked="isCheck" @change="(e) => check(e)")
+  input.checkbox.cursor-pointer(type="checkbox" :id="id" :checked="isCheck" @click.stop @change="(e) => check(e)")
 </template>
 
 <script>
