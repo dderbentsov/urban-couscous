@@ -376,7 +376,7 @@ export default {
     },
     fetchMembersData() {
       fetchWrapper
-        .get("general/person/")
+        .get("general/person/?limit=100")
         .then((res) => this.saveMembersData(res));
     },
     saveMembersData(res) {

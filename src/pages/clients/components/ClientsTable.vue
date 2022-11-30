@@ -25,6 +25,10 @@
       @next-page="switchNextPage",
       @set-current-page="changeCurrentTablePage"
     )
+    base-modal(
+      v-model="showModal",
+      title="Удалить клиента"
+    )
 </template>
 
 <script>
@@ -35,6 +39,7 @@ import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 import ClientTablePagination from "./ClientTablePagination.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
 export default {
   name: "ClientsTable",
   components: {
@@ -44,6 +49,7 @@ export default {
     ClientsTableHeader,
     BaseClientFormCreate,
     ClientTablePagination,
+    BaseModal,
   },
   props: {
     openForm: Function,
@@ -64,6 +70,7 @@ export default {
         currentPage: 0,
         length: 0,
       },
+      showModal: true,
     };
   },
   computed: {
