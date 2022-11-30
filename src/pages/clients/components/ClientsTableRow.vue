@@ -1,91 +1,108 @@
 <template lang="pug">
-  .row-wrapper.flex.flex-col.w-full
-    .row-body.flex.w-full.cursor-pointer(
-      :id="id",
-      @click="(e) => openDetailInfo(e)"
+  .wrapper.flex
+    .row-overlay.flex.justify-center.items-center.gap-x-2.text-base(
+      v-if="rowOverlay",
+      :style="rowSize"
     )
-      .check-box.flex.justify-center.items-center
-        clients-table-checkbox(
-          :id="id",
-          :check="check",
-          :is-check="isCheck"
+      button.recover-btn(@click="stopTimer") Восстановить
+      .countdown 0:{{ countdown }}
+    .row-wrapper.flex.flex-col.w-full
+      .row-body.flex.w-full.cursor-pointer(
+        :id="id",
+        @click="(e) => openDetailInfo(e)",
+        :class="{'row-overlay-color': rowOverlay}"
+        ref="rowBody"
+      )
+        .check-box.flex.justify-center.items-center(
+          :style="{'opacity': rowOverlay && '0.5'}"
         )
-      table-cell-body-name(
-        :value="dataClient",
-        :avatar="dataClient.avatar",
-        :avatar-color="dataClient.color",
-        :photo="dataClient.photo"
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'fullName').width"
-      )
-      table-cell-body-age(
-        :value="dataClient",
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'age').width"
-      )
-      table-cell-body-priority(
-        :value="dataClient.priority",
-        :choose-priority="choosePriority",
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'priority').width"
-      )
-      table-cell-body-phone(
-        :value="dataClient",
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'phone').width"
-      )
-      table-cell-body-email(
-        :value="dataClient",
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'email').width"
-      )
-      table-cell-body-networks(
-        :delete-network="deleteNetwork",
-        :add-network="addNetwork",
-        :networks="dataClient.contacts",
-        :is-open-change="isOpenChange",
-        :width="columnBody.find(el => el.name === 'networks').width"
-      )
-      .dots.flex.justify-center.items-center
-        base-button(
-          v-if="isOpenChange",
-          @click="closeChangeData",
-          confirm,
-          rounded,
-          outlined,
-          :size="20"
-        )
-          .icon-ok.text-xsm(class="pt-[3px]")
-        .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(
-          v-show="!isOpenChange",
-          :tabindex="1",
-          @click="(e) => openPopup(e)",
-          @blur="handleUnFocusPopup"
-        )
-          clients-action-popup(
-            v-if="isOpenPopup",
-            :open-change-data="openChangeData"
-            :delete-client="deleteClient"
+          clients-table-checkbox(
+            :id="id",
+            :check="check",
+            :is-check="isCheck"
           )
-    client-detail-info-wrapper(
-      v-if="isOpenDetailInfo"
-      :data-address="dataAddress"
-      :data-detail="dataDetail"
-      :data-attachments="dataAttachments"
-      :data-document="dataIdentityDocument"
-      :save-new-doc="saveNewDoc"
-      :delete-doc="deleteDoc"
-      :update-document="postUpdateIdentityDocument"
-      :update-address="postUpdateAddress"
-      :lack-data="lackData"
-      :lack-address="lackAddress"
-      :dope-address="dopeAddress"
-      :lack-attachments="lackAttachments"
-      :create-address="postCreateAddress"
-      :create-document="postCreateIdentityDocument"
-      :address-id="addressId"
-      :doc-id="docId"
-    )
+        table-cell-body-name(
+          :style="{'opacity': rowOverlay && '0.5'}"
+          :value="dataClient",
+          :avatar="dataClient.avatar",
+          :avatar-color="dataClient.color",
+          :photo="dataClient.photo"
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'fullName').width"
+        )
+        table-cell-body-age(
+          v-if="!rowOverlay",
+          :value="dataClient",
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'age').width"
+        )
+        table-cell-body-priority(
+          v-if="!rowOverlay",
+          :value="dataClient.priority",
+          :choose-priority="choosePriority",
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'priority').width"
+        )
+        table-cell-body-phone(
+          v-if="!rowOverlay",
+          :value="dataClient",
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'phone').width"
+        )
+        table-cell-body-email(
+          v-if="!rowOverlay",
+          :value="dataClient",
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'email').width"
+        )
+        table-cell-body-networks(
+          v-if="!rowOverlay",
+          :delete-network="deleteNetwork",
+          :add-network="addNetwork",
+          :networks="dataClient.contacts",
+          :is-open-change="isOpenChange",
+          :width="columnBody.find(el => el.name === 'networks').width"
+        )
+        .dots.flex.justify-center.items-center(v-if="!rowOverlay")
+          base-button(
+            v-if="isOpenChange",
+            @click="closeChangeData",
+            confirm,
+            rounded,
+            outlined,
+            :size="20"
+          )
+            .icon-ok.text-xsm(class="pt-[3px]")
+          .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(
+            v-show="!isOpenChange",
+            :tabindex="1",
+            @click="(e) => openPopup(e)",
+            @blur="handleUnFocusPopup"
+          )
+            clients-action-popup(
+              v-if="isOpenPopup",
+              :open-change-data="openChangeData"
+              @delete-client="transmitDeleteClient"
+            )
+      client-detail-info-wrapper(
+        v-if="isOpenDetailInfo",
+        :data-address="dataAddress"
+        :data-detail="dataDetail"
+        :data-attachments="dataAttachments"
+        :data-document="dataIdentityDocument"
+        :save-new-doc="saveNewDoc"
+        :delete-doc="deleteDoc"
+        :update-document="postUpdateIdentityDocument"
+        :update-address="postUpdateAddress"
+        :lack-data="lackData"
+        :lack-address="lackAddress"
+        :dope-address="dopeAddress"
+        :lack-attachments="lackAttachments"
+        :create-address="postCreateAddress"
+        :create-document="postCreateIdentityDocument"
+        :address-id="addressId"
+        :doc-id="docId"
+      )
 </template>
 
 <script>
@@ -145,6 +162,8 @@ export default {
         flat: "",
         index: "",
       },
+      timer: null,
+      countdown: 0,
     };
   },
   props: {
@@ -152,38 +171,37 @@ export default {
     check: Function,
     isCheck: Boolean,
     client: Object,
+    rowOverlay: Boolean,
   },
-  created() {
-    this.dataClient = {
-      id: this.client.id,
-      fullName: `${this.client.last_name || ""} ${
-        this.client.first_name || ""
-      } ${this.client.patronymic || ""}`,
-      age: this.client.birth_date || "",
-      priority: this.prioritySettings.settings.find(
-        (el) => el.priority === this.client.priority
-      ).text,
-      phone: {
-        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
-        kind: "PHONE",
-        username:
-          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
-          "",
-      },
-      email: {
-        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
-        kind: "EMAIL",
-        username:
-          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
-          "",
-      },
-      contacts: [...this.client.contacts],
-      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
-      color: this.client.color,
-      photo: this.client.photo,
-    };
+  computed: {
+    rowSize() {
+      let size = this.$refs["rowBody"].getBoundingClientRect();
+      return {
+        height: `${size.height}px`,
+        width: `${size.width}px`,
+      };
+    },
   },
   methods: {
+    stopTimer() {
+      if (this.countdown !== 0) this.countdown = 0;
+      clearInterval(this.timer);
+      this.timer = null;
+      this.$emit("recover-client");
+    },
+    startTimer() {
+      this.countdown = 30;
+      this.timer = setInterval(() => {
+        this.changeCountdown();
+      }, 1000);
+    },
+    changeCountdown() {
+      if (this.countdown === 0) {
+        this.deleteClient().then(() => this.stopTimer());
+      } else {
+        this.countdown -= 1;
+      }
+    },
     postUpdateClient() {
       fetchWrapper.post(`general/person/${this.client.id}/update/`, {
         full_name: this.dataClient.fullName,
@@ -270,6 +288,10 @@ export default {
     },
     openChangeData() {
       this.isOpenChange = true;
+    },
+    transmitDeleteClient() {
+      this.isOpenDetailInfo = false;
+      this.$emit("delete-client", this.dataClient.id);
     },
     async deleteClient() {
       await fetchWrapper.del(`general/person/${this.dataClient.id}/delete/`);
@@ -432,6 +454,44 @@ export default {
         .then(() => this.fetchClientDetail(this.id));
     },
   },
+  watch: {
+    rowOverlay() {
+      if (this.rowOverlay) this.startTimer();
+    },
+  },
+  created() {
+    this.dataClient = {
+      id: this.client.id,
+      fullName: `${this.client.last_name || ""} ${
+        this.client.first_name || ""
+      } ${this.client.patronymic || ""}`,
+      age: this.client.birth_date || "",
+      priority: this.prioritySettings.settings.find(
+        (el) => el.priority === this.client.priority
+      ).text,
+      phone: {
+        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
+        kind: "PHONE",
+        username:
+          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+          "",
+      },
+      email: {
+        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
+        kind: "EMAIL",
+        username:
+          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
+          "",
+      },
+      contacts: [...this.client.contacts],
+      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
+      color: this.client.color,
+      photo: this.client.photo,
+    };
+  },
+  beforeUnmount() {
+    this.stopTimer();
+  },
 };
 </script>
 
@@ -456,4 +516,14 @@ export default {
   &:hover
     background-color: var(--btn-blue-color)
     color: var(--default-white)
+.row-overlay
+  background: transparent
+  position: absolute
+  z-index: 100
+.row-overlay-color
+  background: var(--row-overlay-color)
+.recover-btn
+  color: var(--btn-blue-color)
+.countdown
+  color: var(--font-grey-color )
 </style>

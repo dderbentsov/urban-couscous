@@ -15,7 +15,9 @@
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
-          :fetch-data-clients="fetchDataClients",
+          :row-overlay="deletedRowId === client.id",
+          @delete-client="deleteClientHandler",
+          @recover-client="clearDeletedRowId",
           @update-clients="updateDataClient"
         )
     client-table-pagination(
@@ -25,6 +27,15 @@
       @next-page="switchNextPage",
       @set-current-page="changeCurrentTablePage"
     )
+    base-modal(
+      v-model="showModal",
+      title="Удалить клиента"
+    )
+      client-table-delete-modal(
+        :close-modal="closeModal",
+        :deleted-client-id="deletedClientId",
+        @delete-client="writeDeletedRowId"
+      )
 </template>
 
 <script>
@@ -35,6 +46,8 @@ import ClientsTableRow from "@/pages/clients/components/ClientsTableRow";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 import ClientTablePagination from "./ClientTablePagination.vue";
+import BaseModal from "@/components/base/BaseModal.vue";
+import ClientTableDeleteModal from "./ClientTableDeleteModal.vue";
 export default {
   name: "ClientsTable",
   components: {
@@ -44,6 +57,8 @@ export default {
     ClientsTableHeader,
     BaseClientFormCreate,
     ClientTablePagination,
+    BaseModal,
+    ClientTableDeleteModal,
   },
   props: {
     openForm: Function,
@@ -57,13 +72,16 @@ export default {
       marked: [],
       dataClients: [],
       currentTablePage: 1,
-      limit: 4,
+      limit: 14,
       count: 0,
       textSearch: "",
       paginationInfo: {
         currentPage: 0,
         length: 0,
       },
+      showModal: false,
+      deletedClientId: "",
+      deletedRowId: "",
     };
   },
   computed: {
@@ -137,6 +155,25 @@ export default {
     changeCurrentTablePage(value) {
       this.currentTablePage = value;
     },
+    closeModal() {
+      this.showModal = false;
+    },
+    openModal() {
+      this.showModal = true;
+    },
+    deleteClientHandler(id) {
+      this.deletedClientId = id;
+      this.openModal();
+    },
+    writeDeletedRowId(id) {
+      this.deletedRowId = id;
+    },
+    clearDeletedRowId() {
+      this.deletedRowId = "";
+    },
+    clearDeletedClientId() {
+      this.deletedClientId = "";
+    },
   },
   watch: {
     updatedClients() {
@@ -146,12 +183,15 @@ export default {
           this.fetchDataClients().then(
             () => (this.currentTablePage = this.pageCount)
           );
-        }, 60);
+        }, 100);
         this.$emit("reset-updated-clients");
       }
     },
     currentTablePage() {
       this.fetchDataClients();
+    },
+    showModal() {
+      if (!this.showModal) this.clearDeletedClientId();
     },
   },
   mounted() {

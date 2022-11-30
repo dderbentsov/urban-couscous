@@ -9,12 +9,11 @@
           placeholder="Введите фамилию"
         )
           .icon-search
-      base-button(
-        outlined,
+      base-button.font-semibold(
         @click="searchLastName",
         :size=40
       ) Поиск
-      base-button(
+      base-button.font-semibold(
         v-if="searchClient.length > 0",
         secondary,
         @click="resetLastName",
