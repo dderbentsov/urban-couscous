@@ -3,8 +3,8 @@
     .header.flex.items-center.justify-between.py-2.px-6.top-0
       .flex.items-center
         base-avatar.mr-2(:size="32", :color="ownerData.color")
-          img(
-            :src="ownerData.avatar",
+          img.h-full.object-cover(
+            :src="url + ownerData.avatar",
             alt="Team member",
             v-if="ownerData.avatar"
           )
@@ -47,6 +47,7 @@ export default {
     eventTypes: Array,
     changeFormWasClosed: Boolean,
     scheduleBodyRef: Node,
+    url: String,
   },
   data() {
     return {

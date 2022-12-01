@@ -2,9 +2,9 @@
   .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(:style="{ minWidth : width + 'px' }")
     base-avatar(:size="36", :color="avatarColor", v-if="!photo") {{avatar}}
     base-avatar(:size="36", v-else)
-      img.h-full(:src="url + photo")
+      img.h-full.object-cover(:src="url + photo")
     span.font-semibold(v-if="!isOpenChange") {{value.fullName}}
-    base-input(v-if="isOpenChange" type="text" v-model:value="value.fullName" :width-input="300")
+    base-input(v-if="isOpenChange", type="text", v-model:value="value.fullName", :width-input="300")
 </template>
 
 <script>
@@ -18,14 +18,9 @@ export default {
     avatar: String,
     photo: String,
     width: Number,
-    imgUrl: String,
     isOpenChange: Boolean,
     avatarColor: String,
-  },
-  data() {
-    return {
-      url: "http://45.84.227.122:8080",
-    };
+    url: String,
   },
 };
 </script>

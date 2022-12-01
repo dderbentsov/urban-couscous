@@ -20,7 +20,7 @@
           v-else
         ) Создать событие
         calendar-sidebar-event(:is-open="isOpen", :event-type="eventTypes")
-        calendar-sidebar-teammate(:team-data="teamData", :is-open="isOpen")
+        calendar-sidebar-teammate(:team-data="teamData", :is-open="isOpen", :url="url")
     //-    .button-wrapper.flex.justify-center.mb-23px
           base-button(
             left-icon="icon-long-arrow",
@@ -48,6 +48,7 @@ export default {
     teamData: Array,
     openFormCreate: Function,
     eventTypes: Array,
+    url: String,
   },
   data() {
     return {

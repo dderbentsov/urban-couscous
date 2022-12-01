@@ -20,6 +20,7 @@
           v-for="(owner, index) in filteredOwners",
           :key="owner.id",
           :owner-data="owner",
+          :url="url",
           :day-events="filterEventsByOwner(owner)",
           :day-start-time="validateStartTime",
           :day-end-time="validateEndTime",
@@ -69,6 +70,7 @@ export default {
     CalendarColumn,
   },
   props: {
+    url: String,
     changeFormWasClosed: Boolean,
     currentDate: {
       type: Object,
@@ -170,6 +172,7 @@ export default {
           first_name: elem.first_name,
           patronymic: elem.patronymic,
           color: elem.color,
+          avatar: elem.photo,
         });
       });
       return filteredArray;

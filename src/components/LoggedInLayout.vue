@@ -12,7 +12,8 @@
         :open-form="openForm",
         :is-open-form="isOpenForm",
         :updated-clients="updatedClients",
-        @reset-updated-clients="resetUpdatedClients"
+        @reset-updated-clients="resetUpdatedClients",
+        :url="url"
       )
     the-notification-provider
 </template>
@@ -29,6 +30,7 @@ export default {
     return {
       isOpenForm: false,
       updatedClients: false,
+      url: "http://45.84.227.122:8080",
     };
   },
   methods: {

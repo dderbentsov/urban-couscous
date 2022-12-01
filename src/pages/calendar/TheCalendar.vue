@@ -1,12 +1,14 @@
 <template lang="pug">
   .calendar-container.flex
     calendar-sidebar(
-      @width="changeWidth",
+      :url="url",
       :team-data="employeesData",
       :open-form-create="openFormCreateEvent",
-      :event-types="eventTypes"
+      :event-types="eventTypes",
+      @width="changeWidth",
     )
     calendar-schedule(
+      :url="url",
       :owners-data="employeesData",
       :current-date="currentDate",
       :time-information="timeInformation",
@@ -59,6 +61,9 @@ export default {
     CalendarFormAddEvent,
     BaseModal,
     CalendarDeleteModal,
+  },
+  props: {
+    url: String,
   },
   data() {
     return {

@@ -10,7 +10,7 @@
       .row-body.flex.w-full.cursor-pointer(
         :id="id",
         @click="(e) => openDetailInfo(e)",
-        :class="{'row-overlay-color': rowOverlay}"
+        :class="{'row-overlay-color': rowOverlay}",
         ref="rowBody"
       )
         .check-box.flex.justify-center.items-center(
@@ -26,7 +26,8 @@
           :value="dataClient",
           :avatar="dataClient.avatar",
           :avatar-color="dataClient.color",
-          :photo="dataClient.photo"
+          :photo="dataClient.photo",
+          :url="url",
           :is-open-change="isOpenChange",
           :width="columnBody.find(el => el.name === 'fullName').width"
         )
@@ -81,7 +82,7 @@
           )
             clients-action-popup(
               v-if="isOpenPopup",
-              :open-change-data="openChangeData"
+              :open-change-data="openChangeData",
               @delete-client="transmitDeleteClient"
             )
       client-detail-info-wrapper(
@@ -172,6 +173,7 @@ export default {
     isCheck: Boolean,
     client: Object,
     rowOverlay: Boolean,
+    url: String,
   },
   computed: {
     rowSize() {
