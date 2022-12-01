@@ -4,7 +4,8 @@
       :open-form="openForm",
       :is-open-form="isOpenForm",
       :updated-clients="updatedClients",
-      @reset-updated-clients="transmitReset"
+      @reset-updated-clients="transmitReset",
+      :url="url"
     )
 </template>
 
@@ -17,6 +18,7 @@ export default {
     openForm: Function,
     isOpenForm: Boolean,
     updatedClients: Boolean,
+    url: String,
   },
   methods: {
     transmitReset() {

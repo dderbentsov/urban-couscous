@@ -18,14 +18,9 @@ export default {
     avatar: String,
     photo: String,
     width: Number,
-    imgUrl: String,
     isOpenChange: Boolean,
     avatarColor: String,
-  },
-  data() {
-    return {
-      url: "http://45.84.227.122:8080",
-    };
+    url: String,
   },
 };
 </script>

@@ -12,6 +12,7 @@
           v-for="client in dataClients",
           :key="client.id",
           :id="client.id",
+          :url="url",
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
@@ -64,6 +65,7 @@ export default {
     openForm: Function,
     isOpenForm: Boolean,
     updatedClients: Boolean,
+    url: String,
   },
 
   data() {

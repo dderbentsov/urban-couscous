@@ -26,7 +26,8 @@
           :value="dataClient",
           :avatar="dataClient.avatar",
           :avatar-color="dataClient.color",
-          :photo="dataClient.photo"
+          :photo="dataClient.photo",
+          :url="url",
           :is-open-change="isOpenChange",
           :width="columnBody.find(el => el.name === 'fullName').width"
         )
@@ -172,6 +173,7 @@ export default {
     isCheck: Boolean,
     client: Object,
     rowOverlay: Boolean,
+    url: String,
   },
   computed: {
     rowSize() {
