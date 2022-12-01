@@ -4,7 +4,7 @@
       :is-open-form="isOpenForm",
       :close-form="closeForm",
       :open-form="openForm",
-      @update-client="setUpdatedClients"
+      :set-updated-clients="setUpdatedClients",
     )
     .flex.flex-auto
       the-sidebar

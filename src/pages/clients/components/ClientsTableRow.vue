@@ -1,8 +1,7 @@
 <template lang="pug">
-  .wrapper.flex
+  .wrapper.flex.relative
     .row-overlay.flex.justify-center.items-center.gap-x-2.text-base(
       v-if="rowOverlay",
-      :style="rowSize"
     )
       button.recover-btn(@click="stopTimer") Восстановить
       .countdown 0:{{ countdown }}
@@ -10,11 +9,10 @@
       .row-body.flex.w-full.cursor-pointer(
         :id="id",
         @click="(e) => openDetailInfo(e)",
-        :class="{'row-overlay-color': rowOverlay}",
-        ref="rowBody"
+        :class="{'row-overlay-color': rowOverlay}"
       )
         .check-box.flex.justify-center.items-center(
-          :style="{'opacity': rowOverlay && '0.5'}"
+          :class="{'row-opacity': rowOverlay}"
         )
           clients-table-checkbox(
             :id="id",
@@ -22,7 +20,7 @@
             :is-check="isCheck"
           )
         table-cell-body-name(
-          :style="{'opacity': rowOverlay && '0.5'}"
+          :class="{'row-opacity': rowOverlay}"
           :value="dataClient",
           :avatar="dataClient.avatar",
           :avatar-color="dataClient.color",
@@ -173,23 +171,15 @@ export default {
     isCheck: Boolean,
     client: Object,
     rowOverlay: Boolean,
+    updateDataClient: Function,
     url: String,
-  },
-  computed: {
-    rowSize() {
-      let size = this.$refs["rowBody"].getBoundingClientRect();
-      return {
-        height: `${size.height}px`,
-        width: `${size.width}px`,
-      };
-    },
   },
   methods: {
     stopTimer() {
       if (this.countdown !== 0) this.countdown = 0;
+      this.$emit("recover-client");
       clearInterval(this.timer);
       this.timer = null;
-      this.$emit("recover-client");
     },
     startTimer() {
       this.countdown = 30;
@@ -199,7 +189,8 @@ export default {
     },
     changeCountdown() {
       if (this.countdown === 0) {
-        this.deleteClient().then(() => this.stopTimer());
+        this.stopTimer();
+        this.deleteClient().then(() => this.updateDataClient());
       } else {
         this.countdown -= 1;
       }
@@ -491,9 +482,9 @@ export default {
       photo: this.client.photo,
     };
   },
-  beforeUnmount() {
+  /*beforeUnmount() {
     this.stopTimer();
-  },
+  },*/
 };
 </script>
 
@@ -518,10 +509,14 @@ export default {
   &:hover
     background-color: var(--btn-blue-color)
     color: var(--default-white)
+.row-opacity
+  opacity: 0.5
 .row-overlay
   background: transparent
   position: absolute
   z-index: 100
+  width: 100%
+  height: 100%
 .row-overlay-color
   background: var(--row-overlay-color)
 .recover-btn

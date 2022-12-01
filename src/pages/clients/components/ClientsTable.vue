@@ -17,9 +17,9 @@
           :check="selectedCheck",
           :client="client",
           :row-overlay="deletedRowId === client.id",
+          :update-data-client="updateDataClient",
           @delete-client="deleteClientHandler",
           @recover-client="clearDeletedRowId",
-          @update-clients="updateDataClient"
         )
     client-table-pagination(
       v-if="paginationInfo.length > 1"
@@ -181,11 +181,9 @@ export default {
     updatedClients() {
       if (this.updatedClients === true) {
         this.textSearch = "";
-        setTimeout(() => {
-          this.fetchDataClients().then(
-            () => (this.currentTablePage = this.pageCount)
-          );
-        }, 100);
+        this.fetchDataClients().then(
+          () => (this.currentTablePage = this.pageCount)
+        );
         this.$emit("reset-updated-clients");
       }
     },
