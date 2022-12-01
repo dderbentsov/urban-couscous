@@ -3,7 +3,7 @@
     base-client-form-create(
       v-if="isOpenForm",
       :close-form="closeForm",
-      @update-client="transmitUpdateClient"
+      :set-updated-clients="setUpdatedClients",
     )
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
@@ -42,6 +42,7 @@ export default {
     openForm: Function,
     closeForm: Function,
     isOpenForm: Boolean,
+    setUpdatedClients: Function,
   },
   data() {
     return {
@@ -56,9 +57,6 @@ export default {
     logout() {
       localStorage.clear();
       this.$router.push("/login");
-    },
-    transmitUpdateClient() {
-      this.$emit("update-client");
     },
   },
 };

@@ -107,6 +107,7 @@ export default {
   },
   props: {
     closeForm: Function,
+    setUpdatedClients: Function,
   },
   data() {
     return {
@@ -300,9 +301,9 @@ export default {
           this.createIdentityDocument(result.id);
           this.createAddress(result.id);
           this.createContacts(result.id);
+          this.setUpdatedClients();
           this.addSuccessNotification();
         });
-      this.$emit("update-client");
     },
     filterDataEmptyProperty(data) {
       let postData = data;
