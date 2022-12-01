@@ -3,7 +3,7 @@
     base-button.mb-2(left-icon="icon-plus", rounded, :size="24", :icon-left-size="10", secondary)
     .team-card(v-for="teammate in teamData" :key="teammate.id")
       base-avatar(:size="32", :color="teammate.color")
-        img.h-full(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
+        img.h-full.object-cover(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
         span(v-if="!teammate.photo") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
   .flex.flex-col.gap-y-4.w-full(v-else, :style="{ color: 'var(--font-dark-blue-color)' }")
     .flex.items-center.justify-between
@@ -16,7 +16,7 @@
       )
         .flex.items-center
           base-avatar(:size="32", :color="teammate.color")
-            img.h-full(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
+            img.h-full.object-cover(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
             span(v-if="!teammate.photo") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
           .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
         span.icon-change-place.cursor-pointer.w-5.flex.items-center.justify-center.w-6.h-6

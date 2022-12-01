@@ -13,7 +13,7 @@
         )
           .icon-download.text-xl(v-if="img === defaultIcon")
           .wrapper-img.flex.w-10.h-10(v-else)
-            img.current-avatar(:src="img")
+            img.current-avatar.object-cover(:src="img")
           base-popup.right-5.top-7(v-if="showPopup", v-click-outside="closePopup", :width="230")
             .flex.items-center.gap-x-2
               img(src="@/assets/icons/computer.svg")
@@ -33,7 +33,7 @@
                   @change="(e) => previewImages(e)"
                 )
                 .avatar.flex.absolute.items-center.gap-x-6(v-for="img in image")
-                  img.avatar(for="image-upload", :src="img", v-if="img")
+                  img.avatar.object-cover(for="image-upload", :src="img", v-if="img")
                   base-button(:rounded="true", :size="48", @click="closeAddImage")
                     .icon-ok
         base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")

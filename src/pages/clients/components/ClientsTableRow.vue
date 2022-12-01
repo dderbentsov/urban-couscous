@@ -10,7 +10,7 @@
       .row-body.flex.w-full.cursor-pointer(
         :id="id",
         @click="(e) => openDetailInfo(e)",
-        :class="{'row-overlay-color': rowOverlay}"
+        :class="{'row-overlay-color': rowOverlay}",
         ref="rowBody"
       )
         .check-box.flex.justify-center.items-center(
@@ -82,7 +82,7 @@
           )
             clients-action-popup(
               v-if="isOpenPopup",
-              :open-change-data="openChangeData"
+              :open-change-data="openChangeData",
               @delete-client="transmitDeleteClient"
             )
       client-detail-info-wrapper(
