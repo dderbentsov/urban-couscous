@@ -12,7 +12,7 @@
             :width-input="277"
           )
         .flex.flex-col(class="gap-y-1.5")
-          span.text-sm Кем и когда выдан
+          span.text-sm Кем выдан
           base-input.input-info(
             v-model:value="identityDocument.pass.issued_by_org",
             placeholder="Точно как в паспорте",
@@ -47,7 +47,7 @@
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Номер ИНН
           base-input.input-info(
-            v-mask="'##########'",
+            v-mask="'############'",
             v-model:value="identityDocument.inn.numba",
             placeholder="000000000000",
             :width-input="277"

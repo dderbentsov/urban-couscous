@@ -14,7 +14,7 @@
           .icon-download.text-xl(v-if="img === defaultIcon")
           .wrapper-img.flex.w-10.h-10(v-else)
             img.current-avatar(:src="img")
-          base-popup.right-5.top-7(v-if="showPopup", :width="230")
+          base-popup.right-5.top-7(v-if="showPopup", v-click-outside="closePopup", :width="230")
             .flex.items-center.gap-x-2
               img(src="@/assets/icons/computer.svg")
               span.text-smm(@click="changeOpenModal") Загрузить с компьютера
@@ -34,7 +34,7 @@
                 )
                 .avatar.flex.absolute.items-center.gap-x-6(v-for="img in image")
                   img.avatar(for="image-upload", :src="img", v-if="img")
-                  base-button(:rounded="true", :size="48", @click="closeModal")
+                  base-button(:rounded="true", :size="48", @click="closeAddImage")
                     .icon-ok
         base-input.w-full(v-model:value="infoClient.basic.full_name" placeholder="ФИО*")
     .flex.flex-col.flex-auto.l.gap-y-8
@@ -222,10 +222,6 @@ export default {
     },
   },
   methods: {
-    closeModal() {
-      this.showModal = false;
-      this.showPopup = false;
-    },
     previewImages(event) {
       this.image = [];
       var pictures = event.target.files;
@@ -237,6 +233,13 @@ export default {
         reader.readAsDataURL(pictures[i]);
       }
       this.imageData = [...this.imageData, ...event.target.files];
+    },
+    closeAddImage() {
+      this.showModal = false;
+      this.showPopup = false;
+    },
+    closePopup() {
+      this.showPopup = false;
     },
     createIdentityDocument(id) {
       Object.keys(
@@ -258,6 +261,26 @@ export default {
           person_id: id,
         });
     },
+    createContacts(id) {
+      if (this.infoClient.phone.username)
+        fetchWrapper.post("general/contact/create/", {
+          ...this.filterDataEmptyProperty(this.infoClient.phone),
+          person_id: id,
+        });
+      if (this.infoClient.email.username)
+        fetchWrapper.post("general/contact/create/", {
+          ...this.filterDataEmptyProperty(this.infoClient.email),
+          person_id: id,
+        });
+      this.infoClient.basic.contacts.forEach((el) => {
+        if (el.username)
+          fetchWrapper.post("general/contact/create/", {
+            kind: el.kind,
+            username: el.username,
+            person_id: id,
+          });
+      });
+    },
     postNewClient() {
       const formData = new FormData();
       formData.append("full_name", this.infoClient.basic.full_name);
@@ -269,12 +292,14 @@ export default {
       let foundElement = this.prioritySettings.settings.find(
         (el) => el.priority === this.infoClient.basic.priority.id
       );
-      if (foundElement) formData.append("priority", foundElement.priority);
+      if (foundElement.priority)
+        formData.append("priority", foundElement.priority);
       fetchWrapper
         .post("general/person/create/", formData, "formData")
         .then((result) => {
           this.createIdentityDocument(result.id);
           this.createAddress(result.id);
+          this.createContacts(result.id);
           this.addSuccessNotification();
         });
       this.$emit("update-client");
@@ -385,7 +410,7 @@ export default {
   watch: {
     showModal: function () {
       if (this.showModal === false) {
-        this.closeModal();
+        this.closeAddImage();
       }
     },
   },
