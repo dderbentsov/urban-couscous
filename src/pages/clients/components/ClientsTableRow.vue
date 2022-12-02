@@ -81,6 +81,7 @@
             clients-action-popup(
               v-if="isOpenPopup",
               :open-change-data="openChangeData",
+              :disabled-delete="!!deletedClientId && !rowOverlay",
               @delete-client="transmitDeleteClient"
             )
       client-detail-info-wrapper(
@@ -119,6 +120,8 @@ import ClientDetailInfoWrapper from "@/pages/clients/components/ClientDetailInfo
 import BaseButton from "@/components/base/BaseButton";
 import { fetchWrapper } from "@/shared/fetchWrapper";
 import { column } from "@/pages/clients/utils/tableConfig";
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 
 export default {
   name: "ClientsTableRow",
@@ -135,6 +138,7 @@ export default {
     TableCellBodyNetworks,
     TableCellBodyMeeting,
     ClientDetailInfoWrapper,
+    TheNotificationProvider,
   },
   data() {
     return {
@@ -170,9 +174,14 @@ export default {
     check: Function,
     isCheck: Boolean,
     client: Object,
-    rowOverlay: Boolean,
+    deletedClientId: String,
     updateDataClient: Function,
     url: String,
+  },
+  computed: {
+    rowOverlay() {
+      return this.deletedClientId === this.client.id;
+    },
   },
   methods: {
     stopTimer() {
@@ -189,8 +198,10 @@ export default {
     },
     changeCountdown() {
       if (this.countdown === 0) {
-        this.stopTimer();
-        this.deleteClient().then(() => this.updateDataClient());
+        this.deleteClient().then(() => {
+          this.updateDataClient();
+          this.stopTimer();
+        });
       } else {
         this.countdown -= 1;
       }
@@ -284,12 +295,21 @@ export default {
     },
     transmitDeleteClient() {
       this.isOpenDetailInfo = false;
-      this.$emit("delete-client", this.dataClient.id);
+      this.$emit("delete-client", this.client.id);
     },
     async deleteClient() {
-      await fetchWrapper.del(`general/person/${this.dataClient.id}/delete/`);
+      await fetchWrapper.del(`general/person/${this.client.id}/delete/`);
+      this.addSuccessNotification();
       this.handleUnFocusPopup();
-      this.$emit("update-clients");
+    },
+    addSuccessNotification() {
+      addNotification(
+        new Date().getTime(),
+        "Клиент Успешно удален",
+        "",
+        "success",
+        5000
+      );
     },
     fetchClientDetail(id) {
       fetchWrapper
@@ -483,9 +503,12 @@ export default {
       photo: this.client.photo,
     };
   },
-  /*beforeUnmount() {
-    this.stopTimer();
-  },*/
+  beforeUnmount() {
+    if (this.timer) {
+      this.deleteClient();
+      this.stopTimer();
+    }
+  },
 };
 </script>
 
@@ -515,7 +538,7 @@ export default {
 .row-overlay
   background: transparent
   position: absolute
-  z-index: 100
+  z-index: 10
   width: 100%
   height: 100%
 .row-overlay-color

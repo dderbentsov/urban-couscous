@@ -8,20 +8,37 @@
       .button.keep-redaction.flex.gap-x-3
         .icon-star-off.icon
         span На ведение
-      .button.delete.flex.gap-x-3(@click="transmitDeleteClient")
+      .button.delete.flex.gap-x-3(
+        @click="transmitDeleteClient",
+        :style="{'opacity': disabledDelete && '0.7'}"
+      )
         .icon-basket.icon-delete
         span Удалить
 </template>
 
 <script>
+import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
+import { addNotification } from "@/components/Notifications/notificationContext";
 export default {
   name: "ClientsActionPopup",
+  components: { TheNotificationProvider },
   props: {
     openChangeData: Function,
+    disabledDelete: Boolean,
   },
   methods: {
     transmitDeleteClient() {
-      this.$emit("delete-client");
+      if (!this.disabledDelete) this.$emit("delete-client");
+      else this.addWarningNotification();
+    },
+    addWarningNotification() {
+      addNotification(
+        new Date().getTime(),
+        "Сейчас нельзя удалить клиента",
+        "Для удаления дождитесь текущего удаления клиента или переключите страницу",
+        "warning",
+        5000
+      );
     },
   },
 };
@@ -34,7 +51,7 @@ export default {
   border-radius: 4px 0 4px 4px
   background-color: var(--default-white)
   box-shadow: var(--default-shadow)
-  z-index: 1
+  z-index: 11
 .keep-redaction
   color: var(--font-dark-blue-color)
 .icon
@@ -49,7 +66,7 @@ export default {
   height: 8px
   border-top-left-radius: 100%
   background-color: var(--default-white)
-  z-index: 2
+  z-index: 12
   overflow: hidden
 .icon-delete
   color: var(--btn-red-color)

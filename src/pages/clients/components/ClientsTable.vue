@@ -16,7 +16,7 @@
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
-          :row-overlay="deletedRowId === client.id",
+          :deleted-client-id="deletedRowId",
           :update-data-client="updateDataClient",
           @delete-client="deleteClientHandler",
           @recover-client="clearDeletedRowId",
@@ -93,8 +93,10 @@ export default {
   },
   methods: {
     updateDataClient() {
-      if (this.dataClients.length === 1) this.currentTablePage -= 1;
-      else this.fetchDataClients();
+      if (this.dataClients.find(({ id }) => id === this.deletedRowId)) {
+        if (this.dataClients.length === 1) this.currentTablePage -= 1;
+        else this.fetchDataClients();
+      }
     },
     saveDataClients(data) {
       this.dataClients = data.results;
