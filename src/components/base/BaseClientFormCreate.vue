@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper-create.flex.flex-col.fixed.right-6.bottom-6.px-4.py-7.gap-y-8
+  .wrapper-create.flex.flex-col.fixed.right-6.bottom-6.px-4.py-7.gap-y-8(v-click-outside="closeForm")
     .icon-cancel.close.absolute.top-5.right-5.cursor-pointer(@click="closeForm")
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
