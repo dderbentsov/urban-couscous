@@ -342,6 +342,7 @@ export default {
     postUpdateIdentityDocument() {
       fetchWrapper
         .post(`general/identity_document/${this.docId}/update/`, {
+          kind: "PASSPORT",
           series_number: this.dataIdentityDocument.numba,
           issued_by_org: this.dataIdentityDocument.issued_by_org,
           issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
