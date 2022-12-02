@@ -189,8 +189,10 @@ export default {
     },
     changeCountdown() {
       if (this.countdown === 0) {
-        this.stopTimer();
-        this.deleteClient().then(() => this.updateDataClient());
+        this.deleteClient().then(() => {
+          this.updateDataClient();
+          this.stopTimer();
+        });
       } else {
         this.countdown -= 1;
       }
@@ -483,9 +485,12 @@ export default {
       photo: this.client.photo,
     };
   },
-  /*beforeUnmount() {
-    this.stopTimer();
-  },*/
+  beforeUnmount() {
+    if (this.timer) {
+      this.deleteClient().then(() => this.updateDataClient());
+      this.stopTimer();
+    }
+  },
 };
 </script>
 

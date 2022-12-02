@@ -93,8 +93,10 @@ export default {
   },
   methods: {
     updateDataClient() {
-      if (this.dataClients.length === 1) this.currentTablePage -= 1;
-      else this.fetchDataClients();
+      if (this.dataClients.find(({ id }) => id === this.deletedRowId)) {
+        if (this.dataClients.length === 1) this.currentTablePage -= 1;
+        else this.fetchDataClients();
+      }
     },
     saveDataClients(data) {
       this.dataClients = data.results;

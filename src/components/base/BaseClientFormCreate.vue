@@ -392,7 +392,7 @@ export default {
       }
       if (this.infoClient.basic.full_name.split(" ").length < 3) {
         this.addErrrorNotification(
-          "Не корректное ФИО клиента",
+          "Некорректное ФИО клиента",
           "Пожалуйста, введите ФИО клиента правильно"
         );
         return false;
