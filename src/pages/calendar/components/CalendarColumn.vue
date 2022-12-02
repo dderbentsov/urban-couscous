@@ -4,11 +4,11 @@
       .flex.items-center
         base-avatar.mr-2(:size="32", :color="ownerData.color")
           img.h-full.object-cover(
-            :src="url + ownerData.avatar",
+            :src="url + ownerData.photo",
             alt="Team member",
-            v-if="ownerData.avatar"
+            v-if="ownerData.photo"
           )
-          span(v-if="!ownerData.avatar") {{ defaultAvatar }}
+          span(v-if="!ownerData.photo") {{ defaultAvatar }}
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       column-header-checkbox

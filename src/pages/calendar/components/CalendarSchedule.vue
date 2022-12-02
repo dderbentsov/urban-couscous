@@ -172,7 +172,7 @@ export default {
           first_name: elem.first_name,
           patronymic: elem.patronymic,
           color: elem.color,
-          avatar: elem.photo,
+          photo: elem.photo,
         });
       });
       return filteredArray;
