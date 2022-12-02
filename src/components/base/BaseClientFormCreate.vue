@@ -384,19 +384,23 @@ export default {
     },
     checkFormFullness() {
       if (!this.infoClient.basic.full_name) {
-        this.addErrrorNotification();
+        this.addErrrorNotification(
+          "Не заполнено ФИО клиента",
+          "Пожалуйста, заполните ФИО клиента"
+        );
+        return false;
+      }
+      if (this.infoClient.basic.full_name.split(" ").length < 3) {
+        this.addErrrorNotification(
+          "Не корректное ФИО клиента",
+          "Пожалуйста, введите ФИО клиента правильно"
+        );
         return false;
       }
       return true;
     },
-    addErrrorNotification() {
-      addNotification(
-        new Date().getTime(),
-        "Не заполнено ФИО клиента",
-        "Пожалуйста, заполните ФИО клиента",
-        "error",
-        5000
-      );
+    addErrrorNotification(title, message) {
+      addNotification(new Date().getTime(), title, message, "error", 5000);
     },
     addSuccessNotification() {
       addNotification(
