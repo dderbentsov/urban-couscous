@@ -153,7 +153,7 @@ export const detail = {
     rowFlex: true,
   },
   addresses: {
-    title: "Адреса",
+    title: "Адрес",
     options: {
       join_adress: "Полный адрес",
     },
