@@ -16,7 +16,7 @@
           :is-check="marked.includes(client.id)",
           :check="selectedCheck",
           :client="client",
-          :row-overlay="deletedRowId === client.id",
+          :deleted-client-id="deletedRowId",
           :update-data-client="updateDataClient",
           @delete-client="deleteClientHandler",
           @recover-client="clearDeletedRowId",
