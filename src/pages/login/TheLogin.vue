@@ -12,17 +12,19 @@
           .flex.flex-col.gap-y-6px
             .flex.non-italic.font-semibold.text-xss Логин
             base-input.h-12.font-medium(
-            :style="{borderColor: wrongData ? this.redColor : ''}"
-            v-model:value="user.username"
-            type="text"
-            placeholder="Введите ваш логин")
+              :style="{borderColor: wrongData ? this.redColor : ''}",
+              v-model:value="user.username",
+              type="text",
+              placeholder="Введите ваш логин"
+            )
           .flex.flex-col.gap-y-6px.relative
             .flex.non-italic.font-semibold.text-xss Пароль
             base-input.h-12(
-            :style="{borderColor: wrongData ? this.redColor : ''}"
-            v-model:value="user.password"
-            :type="changeType"
-            placeholder="Введите ваш пароль")
+              :style="{borderColor: wrongData ? this.redColor : ''}",
+              v-model:value="user.password",
+              :type="changeType",
+              placeholder="Введите ваш пароль"
+            )
             img.absolute.z-10.right-4.bottom-14px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
           span.font-medium(:style="{color: this.redColor}", v-show="wrongData") Неверный логин или пароль
           .flex.items-center.gap-x-11px
