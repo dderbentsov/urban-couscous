@@ -37,7 +37,7 @@
         )
         table-cell-body-priority(
           v-if="!rowOverlay",
-          :value="dataClient.priority",
+          :value="dataClient",
           :choose-priority="choosePriority",
           :is-open-change="isOpenChange",
           :width="columnBody.find(el => el.name === 'priority').width"
@@ -207,11 +207,19 @@ export default {
       }
     },
     postUpdateClient() {
-      fetchWrapper.post(`general/person/${this.client.id}/update/`, {
-        full_name: this.dataClient.fullName,
-        birth_date: this.dataClient.age,
-        priority: this.dataClient.priority,
-      });
+      let foundElement = this.prioritySettings.settings.find(
+        (el) => el.text === this.dataClient.priority
+      );
+      let data = {};
+      if (this.dataClient.age) {
+        data.birth_date = this.dataClient.age;
+      }
+      if (
+        this.dataClient.priority !== this.client.priority &&
+        this.dataClient.priority
+      ) {
+        data.priority = foundElement.priority;
+      }
     },
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
