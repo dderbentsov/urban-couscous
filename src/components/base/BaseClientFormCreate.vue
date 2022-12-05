@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper-create.flex.flex-col.fixed.right-6.bottom-6.px-4.py-7.gap-y-8(v-click-outside="closeForm")
+  .wrapper-create.flex.flex-col.fixed.right-6.bottom-6.px-4.py-7.gap-y-8(v-click-outside="closeModal")
     .icon-cancel.close.absolute.top-5.right-5.cursor-pointer(@click="closeForm")
     span.title.text-xl.font-bold.px-4 Создание клиента
     .flex.gap-x-4.h-fit.px-4
@@ -242,6 +242,9 @@ export default {
     closePopup() {
       this.showPopup = false;
     },
+    closeModal() {
+      !this.showModal ? this.closeForm() : null;
+    },
     createIdentityDocument(id) {
       Object.keys(
         this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
@@ -384,14 +387,14 @@ export default {
     },
     checkFormFullness() {
       if (!this.infoClient.basic.full_name) {
-        this.addErrrorNotification(
+        this.addErrorNotification(
           "Не заполнено ФИО клиента",
           "Пожалуйста, заполните ФИО клиента"
         );
         return false;
       }
       if (this.infoClient.basic.full_name.split(" ").length < 3) {
-        this.addErrrorNotification(
+        this.addErrorNotification(
           "Некорректное ФИО клиента",
           "Пожалуйста, введите ФИО клиента правильно"
         );
@@ -399,7 +402,7 @@ export default {
       }
       return true;
     },
-    addErrrorNotification(title, message) {
+    addErrorNotification(title, message) {
       addNotification(new Date().getTime(), title, message, "error", 5000);
     },
     addSuccessNotification() {

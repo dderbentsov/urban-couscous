@@ -326,7 +326,7 @@ export default {
     async postCreateEvent(event) {
       const response = await fetchWrapper.post("registry/event/create/", event);
       if (response.type && response.type === "validation_error") {
-        this.addErrrorNotification(response);
+        this.addErrorNotification(response);
       } else {
         this.addSuccessNotification("Событие успешно создано");
         this.clearForm();
@@ -338,7 +338,7 @@ export default {
         event
       );
       if (response.type && response.type === "validation_error") {
-        this.addErrrorNotification(response);
+        this.addErrorNotification(response);
       } else {
         this.addSuccessNotification("Изменения успешно сохранены");
         this.clearForm();
@@ -362,7 +362,7 @@ export default {
         return id;
       }
     },
-    addErrrorNotification(error) {
+    addErrorNotification(error) {
       addNotification(
         new Date().getTime(),
         error.errors[0].code,
