@@ -1,10 +1,10 @@
 <template lang="pug">
   .flex.box-border.px-4.items-center.w-full.gap-x-2(:style="{ minWidth : width + 'px' }")
     .flex.gap-x-2.items-center(v-if="!isOpenChange")
-      .dot.w-2.h-2(:style="{ backgroundColor : settings.settings.find((el) => el.text == value).color }")
-      span.text-sm(:style="{ color : settings.settings.find((el) => el.text == value).color }") {{value}}
+      .dot.w-2.h-2(:style="{ backgroundColor: prioritySettings.settings.find((el) => el.text == value.priority).color }")
+      span.text-sm(:style="{ color: prioritySettings.settings.find((el) => el.text == value.priority).color }") {{value.priority}}
     .flex.gap-x-2.text-sm(class="w-[164px]")
-      base-select(v-if="isOpenChange", :items="getPriorityList", v-model="value")
+      base-select(v-if="isOpenChange", :items="getPriorityList", v-model="value.priority")
 </template>
 
 <script>
@@ -12,16 +12,21 @@ import { column } from "@/pages/clients/utils/tableConfig";
 import BaseSelect from "@/components/base/BaseSelect";
 export default {
   name: "TableCellBodyPriority",
-  props: ["value", "width", "isOpenChange", "choosePriority"],
+  props: {
+    value: Object,
+    width: Number,
+    isOpenChange: Boolean,
+    choosePriority: Function,
+  },
   components: { BaseSelect },
   data() {
     return {
-      settings: column.find((el) => el.name === "priority"),
+      prioritySettings: column.find((el) => el.name === "priority"),
     };
   },
   computed: {
     getPriorityList() {
-      return this.settings.settings.map((el) => {
+      return this.prioritySettings.settings.map((el) => {
         return { label: el.text, id: el.id };
       });
     },
