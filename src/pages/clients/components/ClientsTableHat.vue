@@ -40,6 +40,8 @@ export default {
   props: {
     openForm: Function,
     isOpenActions: Number,
+    clearingTextSearch: Boolean,
+    changeClearingTextSearch: Function,
   },
   data() {
     return {
@@ -57,8 +59,14 @@ export default {
   },
   watch: {
     searchClient() {
-      if (!this.searchClient) {
+      if (!this.searchClient && !this.clearingTextSearch) {
         this.$emit("search");
+      }
+      if (this.clearingTextSearch) this.changeClearingTextSearch();
+    },
+    clearingTextSearch() {
+      if (this.clearingTextSearch) {
+        this.searchClient = "";
       }
     },
   },

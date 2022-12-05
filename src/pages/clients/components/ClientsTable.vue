@@ -3,6 +3,8 @@
     clients-table-hat(
       :is-open-actions="marked.length",
       :open-form="openForm",
+      :clearing-text-search="clearingTextSearch",
+      :change-clearing-text-search="changeClearingTextSearch",
       @search="filterDataClients",
     )
     .flex.flex-col.h-full.gap-y-2.table-container.w-full.mt-8.mb-3
@@ -75,7 +77,8 @@ export default {
       dataClients: [],
       currentTablePage: 1,
       limit: 14,
-      count: 0,
+      clientsCount: 0,
+      filteredClientsCount: 0,
       textSearch: "",
       paginationInfo: {
         currentPage: 0,
@@ -84,15 +87,13 @@ export default {
       showModal: false,
       deletedClientId: "",
       deletedRowId: "",
+      clearingTextSearch: false,
     };
-  },
-  computed: {
-    pageCount() {
-      return Math.ceil(this.count / this.limit);
-    },
   },
   methods: {
     updateDataClient() {
+      if (this.textSearch) this.filteredClientsCount -= 1;
+      else this.clientsCount -= 1;
       if (this.dataClients.find(({ id }) => id === this.deletedRowId)) {
         if (this.dataClients.length === 1) this.currentTablePage -= 1;
         else this.fetchDataClients();
@@ -100,11 +101,18 @@ export default {
     },
     saveDataClients(data) {
       this.dataClients = data.results;
-      this.count = data.count;
+    },
+    saveClientsCount(data) {
+      if (!this.clientsCount) this.clientsCount = data.count;
+    },
+    saveFilteredClientsCount(data) {
+      if (!this.filteredClientsCoun) this.filteredClientsCount = data.count;
     },
     filterDataClients(text) {
-      if (text) this.textSearch = text;
-      else this.textSearch = "";
+      if (text) {
+        this.textSearch = text;
+        this.filteredClientsCount = 0;
+      } else this.textSearch = "";
       if (this.currentTablePage !== 1) this.currentTablePage = 1;
       else {
         this.fetchDataClients();
@@ -118,18 +126,28 @@ export default {
             this.limit
           }&offset=${(this.currentTablePage - 1) * this.limit}`
         );
+        this.saveDataClients(response);
+        this.saveFilteredClientsCount(response);
+        this.paginationInfo = {
+          currentPage: this.currentTablePage,
+          length: this.calculatePageCount(this.filteredClientsCount),
+        };
       } else {
         response = await fetchWrapper.get(
           `general/person/?limit=${this.limit}&offset=${
             (this.currentTablePage - 1) * this.limit
           }`
         );
+        this.saveDataClients(response);
+        this.saveClientsCount(response);
+        this.paginationInfo = {
+          currentPage: this.currentTablePage,
+          length: this.calculatePageCount(this.clientsCount),
+        };
       }
-      this.saveDataClients(response);
-      this.paginationInfo = {
-        currentPage: this.currentTablePage,
-        length: this.pageCount,
-      };
+    },
+    calculatePageCount(count) {
+      return Math.ceil(count / this.limit);
     },
     selectedCheck(e) {
       if (e.target.id === "checkbox") {
@@ -178,14 +196,17 @@ export default {
     clearDeletedClientId() {
       this.deletedClientId = "";
     },
+    changeClearingTextSearch() {
+      this.clearingTextSearch = false;
+    },
   },
   watch: {
     updatedClients() {
       if (this.updatedClients === true) {
         this.textSearch = "";
-        this.fetchDataClients().then(
-          () => (this.currentTablePage = this.pageCount)
-        );
+        this.clearingTextSearch = true;
+        this.clientsCount += 1;
+        this.currentTablePage = this.calculatePageCount(this.clientsCount);
         this.$emit("reset-updated-clients");
       }
     },
