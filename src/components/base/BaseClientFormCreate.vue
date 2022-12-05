@@ -91,6 +91,7 @@ import BaseModal from "@/components/base/BaseModal";
 import addImageIcon from "@/assets/icons/photo.svg";
 import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
 import { addNotification } from "@/components/Notifications/notificationContext";
+import * as moment from "moment";
 export default {
   name: "BaseClientFormClient",
   components: {
@@ -246,7 +247,39 @@ export default {
       !this.showModal ? this.closeForm() : null;
     },
     createIdentityDocument(id) {
-      Object.keys(
+      let filteredData = Object.keys(
+        this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
+      );
+      console.log(
+        moment(this.infoClient.identity_document.pass.issued_by_date).isAfter(
+          moment().format("YYYY-MM-DD")
+        )
+      );
+      if (filteredData.length > 0) {
+        if (filteredData.length !== 4)
+          this.addErrorNotification(
+            "Паспортные данные заполнены не полностью",
+            "Паспортные данные не будут записаны в профиль клиента"
+          );
+        else if (
+          moment(this.infoClient.identity_document.pass.issued_by_date).isAfter(
+            moment().format("YYYY-MM-DD")
+          )
+        ) {
+          this.addErrorNotification(
+            "Некорректная дата выдачи паспорта",
+            "Паспортные данные не будут записаны в профиль клиента"
+          );
+        } else
+          fetchWrapper.post("general/identity_document/create/", {
+            ...this.filterDataEmptyProperty(
+              this.infoClient.identity_document.pass
+            ),
+            person_id: id,
+            kind: "Паспорт",
+          });
+      }
+      /*bject.keys(
         this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
       ).length > 0 &&
         fetchWrapper.post("general/identity_document/create/", {
@@ -255,7 +288,7 @@ export default {
           ),
           person_id: id,
           kind: "Паспорт",
-        });
+        });*/
     },
     createAddress(id) {
       Object.keys(this.filterDataEmptyProperty(this.infoClient.addresses))
