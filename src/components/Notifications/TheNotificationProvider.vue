@@ -38,12 +38,6 @@ export default {
       return Object.entries(notifications);
     },
   },
-
-  watch: {
-    notificationsList(val) {
-      console.log(val);
-    },
-  },
 };
 </script>
 

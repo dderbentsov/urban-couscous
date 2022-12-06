@@ -250,14 +250,12 @@ export default {
       let filteredData = Object.keys(
         this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
       );
-      console.log(filteredData.length);
       if (filteredData.length > 0) {
         if (filteredData.length < 4) {
           this.addErrorNotification(
             "Паспортные данные заполнены не полностью",
             "Паспортные данные не будут записаны в профиль клиента"
           );
-          console.log("запрос отлетел из-за нехватки данных");
         } else if (
           moment(this.infoClient.identity_document.pass.issued_by_date).isAfter(
             moment().format("YYYY-MM-DD")
@@ -267,7 +265,6 @@ export default {
             "Некорректная дата выдачи паспорта",
             "Паспортные данные не будут записаны в профиль клиента"
           );
-          console.log("запрос отлетел из-за времени");
         } else
           fetchWrapper.post("general/identity_document/create/", {
             ...this.filterDataEmptyProperty(
@@ -319,7 +316,6 @@ export default {
       );
       if (foundElement.priority)
         formData.append("priority", foundElement.priority);
-      console.log(formData);
       fetchWrapper
         .post("general/person/create/", formData, "formData")
         .then((result) => {
@@ -334,7 +330,6 @@ export default {
               "Клиент не создан",
               "Произошла ошибка сервера"
             );
-            console.log(result);
           }
         });
     },
