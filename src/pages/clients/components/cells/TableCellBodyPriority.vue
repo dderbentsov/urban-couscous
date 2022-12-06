@@ -4,7 +4,7 @@
       .dot.w-2.h-2(:style="{ backgroundColor: prioritySettings.settings.find((el) => el.text == value.priority).color }")
       span.text-sm(:style="{ color: prioritySettings.settings.find((el) => el.text == value.priority).color }") {{value.priority}}
     .flex.gap-x-2.text-sm(class="w-[164px]")
-      base-select(v-if="isOpenChange", :items="getPriorityList", v-model="value.priority")
+      base-select(v-if="isOpenChange", @click.stop :items="getPriorityList", v-model="value.priority")
 </template>
 
 <script>
