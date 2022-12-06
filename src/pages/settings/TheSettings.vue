@@ -4,6 +4,7 @@
     BaseButton(@click="showModal = true") Открыть модалку
     base-modal(v-model="showModal", title="Тестовый заголовок окна" )
     base-button(@click="addNotification") Добавить уведомление
+    base-loader
 </template>
 
 <script>
@@ -12,9 +13,16 @@ import BaseModal from "@/components/base/BaseModal";
 import BaseButton from "@/components/base/BaseButton";
 import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
 import { addNotification } from "@/components/Notifications/notificationContext";
+import BaseLoader from "@/components/Loader/BaseLoader";
 export default {
   name: "TheSettings",
-  components: { TheNotificationProvider, BaseButton, BaseModal, VSelect },
+  components: {
+    BaseLoader,
+    TheNotificationProvider,
+    BaseButton,
+    BaseModal,
+    VSelect,
+  },
   data() {
     return {
       items: [
@@ -37,7 +45,13 @@ export default {
   },
   methods: {
     addNotification() {
-      addNotification(new Date().getTime(), "test", "test-text", "warning", 0);
+      addNotification(
+        new Date().getTime(),
+        "test",
+        "test-text",
+        "warning",
+        3000
+      );
     },
   },
 };
