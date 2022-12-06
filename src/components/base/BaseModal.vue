@@ -1,11 +1,12 @@
 <template lang="pug">
-  teleport(:to="appContainer", v-if="value")
-    .base-overlay(:class="{'base-overlay-bg': !hideOverlay}", :style="styleOverlay")
-      .base-content(v-click-outside="clickOutside", :style="styleContent")
-        .base-header
-          .header-title.text {{ title }}
-          .icon-cancel.text-sm(@click="value = false", v-if="!showIcon")
-        slot
+  teleport(:to="appContainer")
+    transition
+      .base-overlay(:class="{'base-overlay-bg': !hideOverlay}", :style="styleOverlay", v-if="value")
+        .base-content(v-click-outside="clickOutside", :style="styleContent")
+          .base-header
+            .header-title.text {{ title }}
+            .icon-cancel.text-sm(@click="value = false", v-if="!showIcon")
+          slot
 
 </template>
 
@@ -77,4 +78,13 @@ export default {
   margin-right: -11px
   cursor: pointer
   color: var(--font-grey-color)
+
+.v-enter-active,
+.v-leave-active
+  transition: opacity 0.3s ease-in-out
+
+
+.v-enter-from,
+.v-leave-to
+  opacity: 0
 </style>
