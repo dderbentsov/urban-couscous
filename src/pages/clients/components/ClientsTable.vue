@@ -206,7 +206,11 @@ export default {
         this.textSearch = "";
         this.clearingTextSearch = true;
         this.clientsCount += 1;
-        this.currentTablePage = this.calculatePageCount(this.clientsCount);
+        if (
+          this.currentTablePage !== this.calculatePageCount(this.clientsCount)
+        )
+          this.currentTablePage = this.calculatePageCount(this.clientsCount);
+        else this.fetchDataClients();
         this.$emit("reset-updated-clients");
       }
     },

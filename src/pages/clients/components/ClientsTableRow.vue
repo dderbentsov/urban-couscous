@@ -192,7 +192,7 @@ export default {
       this.timer = null;
     },
     startTimer() {
-      this.countdown = 10;
+      this.countdown = 30;
       this.timer = setInterval(() => {
         this.changeCountdown();
       }, 1000);
