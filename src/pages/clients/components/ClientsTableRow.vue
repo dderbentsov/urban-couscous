@@ -84,7 +84,7 @@
               :disabled-delete="!!deletedClientId && !rowOverlay",
               @delete-client="transmitDeleteClient"
             )
-      client-detail-info-wrapper(
+      client-detail-info-wrapper.detail(
         v-if="isOpenDetailInfo",
         :data-address="dataAddress"
         :data-detail="dataDetail"
@@ -122,6 +122,7 @@ import { fetchWrapper } from "@/shared/fetchWrapper";
 import { column } from "@/pages/clients/utils/tableConfig";
 import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
 import { addNotification } from "@/components/Notifications/notificationContext";
+import * as moment from "moment";
 
 export default {
   name: "ClientsTableRow",
@@ -211,15 +212,31 @@ export default {
         (el) => el.text === this.dataClient.priority
       );
       let data = {};
-      if (this.dataClient.age) {
+      if (
+        this.dataClient.age !== this.client.birth_date &&
+        this.dataClient.age
+      ) {
         data.birth_date = this.dataClient.age;
       }
       if (
-        this.dataClient.priority !== this.client.priority &&
-        this.dataClient.priority
+        foundElement.id !== this.client.priority &&
+        foundElement.text !== "-"
       ) {
         data.priority = foundElement.priority;
+      } else if (foundElement.text === "-") {
+        data.priority = 4;
       }
+      if (
+        data.birth_date &&
+        moment(data.birth_date).isAfter(moment().format("YYYY-MM-DD"))
+      ) {
+        this.addErrorNotification();
+        this.dataClient.age = this.client.birth_date;
+      } else
+        fetchWrapper.post(`general/person/${this.client.id}/update/`, {
+          full_name: this.dataClient.fullName,
+          ...data,
+        });
     },
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
@@ -316,6 +333,15 @@ export default {
         "Клиент Успешно удален",
         "",
         "success",
+        5000
+      );
+    },
+    addErrorNotification() {
+      addNotification(
+        "Некорректная дата рождения",
+        "Некорректная дата рождения",
+        "Дата рождения позже текущего дня",
+        "error",
         5000
       );
     },
@@ -489,7 +515,8 @@ export default {
       } ${this.client.patronymic || ""}`,
       age: this.client.birth_date || "",
       priority: this.prioritySettings.settings.find(
-        (el) => el.priority === this.client.priority
+        (el) =>
+          el.priority === this.client.priority || this.client.priority === el.id
       ).text,
       phone: {
         id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
@@ -524,11 +551,13 @@ export default {
 .row-wrapper
   border-bottom: 1px solid var(--border-light-grey-color)
   min-width: 1556px
+.row-wrapper:hover .detail
+  background-color: var(--bg-hover-row-table)
+.row-wrapper:hover .row-body
+  background-color: var(--bg-hover-row-table)
 .row-body
   color: var(--font-dark-blue-color)
   min-height: 56px
-  &:hover
-    background-color: var(--bg-hover-row-table)
 .check-box
   min-width: 36px
 .dots

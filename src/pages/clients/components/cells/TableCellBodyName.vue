@@ -4,7 +4,13 @@
     base-avatar(:size="36", v-else)
       img.h-full.object-cover(:src="url + photo")
     span.font-semibold(v-if="!isOpenChange") {{value.fullName}}
-    base-input(v-if="isOpenChange", type="text", v-model:value="value.fullName", :width-input="300")
+    base-input(
+      v-if="isOpenChange",
+      @click.stop,
+      type="text",
+      v-model:value="value.fullName",
+      :width-input="300"
+    )
 </template>
 
 <script>
