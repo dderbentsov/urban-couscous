@@ -1,6 +1,6 @@
 <template lang="pug">
   teleport(:to="appContainer")
-  .absolute.bottom-0.p-2.right-0.overflow-hidden.z-50(class="w-1/5")
+  .absolute.bottom-0.p-2.right-0.overflow-hidden.z-50(class="w-1/4 xl:w-1/3 sm:w-1/2")
     .pt-32(v-if="displayPadding")
     .flex.gap-2.flex-col.relative
       transition-group(name="list", @before-leave="displayPadding = true", @after-leave="displayPadding = false")
