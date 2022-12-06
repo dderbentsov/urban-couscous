@@ -533,7 +533,9 @@ export default {
           "",
       },
       contacts: [...this.client.contacts],
-      avatar: `${this.client.last_name[0]}${this.client.first_name[0]}`,
+      avatar: this.client.first_name
+        ? this.client.last_name[0] + this.client.first_name[0]
+        : this.client.last_name.substr(0, 2),
       color: this.client.color,
       photo: this.client.photo,
     };
