@@ -250,18 +250,15 @@ export default {
       let filteredData = Object.keys(
         this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
       );
-      console.log(
-        moment(this.infoClient.identity_document.pass.issued_by_date).isAfter(
-          moment().format("YYYY-MM-DD")
-        )
-      );
+      console.log(filteredData.length);
       if (filteredData.length > 0) {
-        if (filteredData.length !== 4)
+        if (filteredData.length < 4) {
           this.addErrorNotification(
             "Паспортные данные заполнены не полностью",
             "Паспортные данные не будут записаны в профиль клиента"
           );
-        else if (
+          console.log("запрос отлетел из-за нехватки данных");
+        } else if (
           moment(this.infoClient.identity_document.pass.issued_by_date).isAfter(
             moment().format("YYYY-MM-DD")
           )
@@ -270,6 +267,7 @@ export default {
             "Некорректная дата выдачи паспорта",
             "Паспортные данные не будут записаны в профиль клиента"
           );
+          console.log("запрос отлетел из-за времени");
         } else
           fetchWrapper.post("general/identity_document/create/", {
             ...this.filterDataEmptyProperty(
@@ -279,16 +277,6 @@ export default {
             kind: "Паспорт",
           });
       }
-      /*bject.keys(
-        this.filterDataEmptyProperty(this.infoClient.identity_document.pass)
-      ).length > 0 &&
-        fetchWrapper.post("general/identity_document/create/", {
-          ...this.filterDataEmptyProperty(
-            this.infoClient.identity_document.pass
-          ),
-          person_id: id,
-          kind: "Паспорт",
-        });*/
     },
     createAddress(id) {
       Object.keys(this.filterDataEmptyProperty(this.infoClient.addresses))
@@ -331,14 +319,23 @@ export default {
       );
       if (foundElement.priority)
         formData.append("priority", foundElement.priority);
+      console.log(formData);
       fetchWrapper
         .post("general/person/create/", formData, "formData")
         .then((result) => {
-          this.createIdentityDocument(result.id);
-          this.createAddress(result.id);
-          this.createContacts(result.id);
-          this.setUpdatedClients();
-          this.addSuccessNotification();
+          if (result.id) {
+            this.createIdentityDocument(result.id);
+            this.createAddress(result.id);
+            this.createContacts(result.id);
+            this.setUpdatedClients();
+            this.addSuccessNotification();
+          } else {
+            this.addErrorNotification(
+              "Клиент не создан",
+              "Произошла ошибка сервера"
+            );
+            console.log(result);
+          }
         });
     },
     filterDataEmptyProperty(data) {
@@ -426,21 +423,14 @@ export default {
         );
         return false;
       }
-      if (this.infoClient.basic.full_name.split(" ").length < 3) {
-        this.addErrorNotification(
-          "Некорректное ФИО клиента",
-          "Пожалуйста, введите ФИО клиента правильно"
-        );
-        return false;
-      }
       return true;
     },
     addErrorNotification(title, message) {
-      addNotification(new Date().getTime(), title, message, "error", 5000);
+      addNotification(title, title, message, "error", 5000);
     },
     addSuccessNotification() {
       addNotification(
-        new Date().getTime(),
+        "Клиент успешно создан",
         "Клиент успешно создан",
         "",
         "success",
