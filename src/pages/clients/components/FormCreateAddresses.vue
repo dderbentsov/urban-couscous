@@ -14,39 +14,53 @@
         .flex.flex-col(class="gap-y-1.5")
           .text-info.text-xxs.font-semibold Город
           base-input.input-info(
+            disabled,
             placeholder="Выберите город",
-            v-model:value="addresses.city"
+            v-model:value="addresses.city",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Область
           base-input.input-info(
+            disabled,
             placeholder="Введите область",
-            v-model:value="addresses.region"
+            v-model:value="addresses.region",
+
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Улица
           base-input.input-info(
+            disabled,
             placeholder="Введите улицу",
-            v-model:value="addresses.street"
+            v-model:value="addresses.street",
+
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Дом
           base-input.input-info(
+            disabled,
             placeholder="Номер дома",
-            v-model:value="addresses.house_number"
+            v-model:value="addresses.house_number",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Квартира
           base-input.input-info(
+            disabled,
             placeholder="Номер квартиры",
-            v-model:value="addresses.apartment_number"
+            v-model:value="addresses.apartment_number",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm.font-semibold Индекс
           base-input.input-info(
+            disabled,
             placeholder="000000",
             v-mask="'######'",
-            v-model:value="addresses.zip_code"
+            v-model:value="addresses.zip_code",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
     .px-4
       base-button(@click="saveClient" :size="40")

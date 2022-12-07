@@ -1,9 +1,9 @@
 <template lang="pug">
-  .base-select(@click="open = !open", :class="{'open': open, 'border-none': borderNone}")
+  .base-select(@click="open = !open", :class="{'open': open && !disable, 'border-none': borderNone}")
     .placeholder.text-base(:class="{'value-color': value || placeholderOpacity}") {{ value || placeholder }}
     .flex.items-center
       .select-form-separator.cursor-pointer.mr-4(v-if="separator")
-      span.icon-down-arrow.open-icon(:class="{'open': open }")
+      span.icon-down-arrow.open-icon(:class="{'open': open && !disable }")
     base-menu(v-if="open")
       .items-container(@click="open = false", v-click-outside="leaveSelect")
         .item(v-for="item in items", :key="item.id" @click="clickItem(item.label)") {{ item.label }}
@@ -24,6 +24,7 @@ export default {
     borderNone: Boolean,
     separator: Boolean,
     placeholderOpacity: Boolean,
+    disable: Boolean,
   },
   emits: ["update:modelValue"],
   data() {

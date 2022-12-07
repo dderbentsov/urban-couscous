@@ -91,10 +91,7 @@
             .line.absolute
             .text-separation.span.text-sm.separator.px-2 или
           .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
-            client-detail-section-address(
-              :dope-address="dopeAddress"
-              :cities="cities"
-            )
+            client-detail-section-address(:dope-address="dopeAddress")
           .flex(v-if="item.name && !isChange")
             span.text-sm.w-fit {{item.title}}
           .flex.items-center(v-if="item.title")
@@ -170,11 +167,6 @@ export default {
       isOpenAddingWrap: false,
       isChange: false,
       settings: detail,
-      cities: [
-        { id: 1, label: "Рязань" },
-        { id: 1, label: "Москва" },
-        { id: 1, label: "Луховицы" },
-      ],
       isData: true,
       isAddress: true,
       isAttachments: true,
