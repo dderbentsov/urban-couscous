@@ -40,7 +40,6 @@ import BaseInput from "@/components/base/BaseInput";
 import BaseButton from "@/components/base/BaseButton";
 import viewPasswordIcon from "@/assets/icons/eye.svg";
 import hidePasswordIcon from "@/assets/icons/openEye.svg";
-
 import logoMark from "@/assets/images/logoMark.svg";
 export default {
   name: "TheLogin",

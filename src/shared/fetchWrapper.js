@@ -16,7 +16,7 @@ function handleRequest(method, url, headers, attempts, body, type) {
     .then((res) => {
       if (res.status === 401) {
         localStorage.removeItem("tokenAccess");
-        return router.push("/login");
+        router.go("/login");
       } else if (res) return res.json();
     })
     .catch((err) => {
