@@ -86,22 +86,22 @@
             )
       client-detail-info-wrapper.detail(
         v-if="isOpenDetailInfo",
-        :data-address="dataAddress"
-        :data-detail="dataDetail"
-        :data-attachments="dataAttachments"
-        :data-document="dataIdentityDocument"
-        :save-new-doc="saveNewDoc"
-        :delete-doc="deleteDoc"
-        :update-document="postUpdateIdentityDocument"
-        :update-address="postUpdateAddress"
-        :lack-data="lackData"
-        :lack-address="lackAddress"
-        :dope-address="dopeAddress"
-        :lack-attachments="lackAttachments"
-        :create-address="postCreateAddress"
-        :create-document="postCreateIdentityDocument"
-        :address-id="addressId"
-        :doc-id="docId"
+        :data-address="dataAddress",
+        :data-detail="dataDetail",
+        :data-attachments="dataAttachments",
+        :data-document="dataIdentityDocument",
+        :save-new-doc="saveNewDoc",
+        :delete-doc="deleteDoc",
+        :update-document="postUpdateIdentityDocument",
+        :update-address="postUpdateAddress",
+        :lack-data="lackData",
+        :lack-address="lackAddress",
+        :dope-address="dopeAddress",
+        :lack-attachments="lackAttachments",
+        :create-address="postCreateAddress",
+        :create-document="postCreateIdentityDocument",
+        :address-id="addressId",
+        :doc-id="docId",
       )
 </template>
 
@@ -178,6 +178,7 @@ export default {
     deletedClientId: String,
     updateDataClient: Function,
     url: String,
+    fetchDataClients: Function,
   },
   computed: {
     rowOverlay() {
@@ -223,6 +224,7 @@ export default {
         data.birth_date = this.dataClient.age;
       else if (!this.dataClient.age) {
         this.addErrorNotification(
+          "Некорректная дата рождения",
           "Пожалуйста, введите дату рождения корректно"
         );
         this.dataClient.age = this.client.birth_date || "";
@@ -233,12 +235,17 @@ export default {
         data.birth_date &&
         moment(data.birth_date).isAfter(moment().format("YYYY-MM-DD"))
       ) {
-        this.addErrorNotification("Дата рождения позже текущего дня");
+        this.addErrorNotification(
+          "Некорректная дата рождения",
+          "Дата рождения позже текущего дня"
+        );
         this.dataClient.age = this.client.birth_date || "";
       } else if (!Object.keys(data).length == 0)
-        fetchWrapper.post(`general/person/${this.client.id}/update/`, {
-          ...data,
-        });
+        fetchWrapper
+          .post(`general/person/${this.client.id}/update/`, {
+            ...data,
+          })
+          .then(() => this.fetchDataClients());
     },
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];
@@ -334,26 +341,14 @@ export default {
     },
     async deleteClient() {
       await fetchWrapper.del(`general/person/${this.client.id}/delete/`);
-      this.addSuccessNotification();
+      this.addSuccessNotification("Клиент Успешно удален", "");
       this.handleUnFocusPopup();
     },
-    addSuccessNotification() {
-      addNotification(
-        new Date().getTime(),
-        "Клиент Успешно удален",
-        "",
-        "success",
-        5000
-      );
+    addSuccessNotification(title, message) {
+      addNotification(new Date().getTime(), title, message, "success", 5000);
     },
-    addErrorNotification(message) {
-      addNotification(
-        "Некорректная дата рождения",
-        "Некорректная дата рождения",
-        message,
-        "error",
-        5000
-      );
+    addErrorNotification(title, message) {
+      addNotification(title, title, message, "error", 5000);
     },
     fetchClientDetail(id) {
       fetchWrapper
@@ -388,9 +383,7 @@ export default {
           issued_by_org_code: data.issued_by_org_code
             ? data?.issued_by_org_code
             : "",
-          issued_by_date: data.issued_by_date
-            ? data?.issued_by_date.split("-").reverse().join(".")
-            : "",
+          issued_by_date: data.issued_by_date ? data?.issued_by_date : "",
         };
         this.lackData = true;
       } else {
@@ -410,12 +403,28 @@ export default {
           series_number: this.dataIdentityDocument.numba,
           issued_by_org: this.dataIdentityDocument.issued_by_org,
           issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
-          issued_by_date: this.dataIdentityDocument.issued_by_date
-            .split(".")
-            .reverse()
-            .join("-"),
+          issued_by_date: this.dataIdentityDocument.issued_by_date,
         })
-        .then(() => this.fetchClientDetail(this.id));
+        .then((response) => {
+          this.fetchClientDetail(this.id);
+          if (response.type) {
+            if (response.errors[0].code === "blank")
+              this.addErrorNotification(
+                "Ошибка создания ДУЛ",
+                "Часть паспортных данных не заполнена"
+              );
+            if (response.errors[0].code === "Ошибка создания ДУЛ")
+              this.addErrorNotification(
+                response.errors[0].code,
+                response.errors[0].detail
+              );
+            if (response?.errors[0].code === "invalid")
+              this.addErrorNotification(
+                "Ошибка создания ДУЛ",
+                "Дата выдачи паспорта не заполнена"
+              );
+          } else this.addSuccessNotification("Изменения успешно сохранены", "");
+        });
     },
     saveAddress(data) {
       this.addressId = data?.id;
@@ -456,7 +465,15 @@ export default {
         .post(`general/address/${this.addressId}/update/`, {
           full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
         })
-        .then(() => this.fetchClientDetail(this.id));
+        .then((response) => {
+          this.fetchClientDetail(this.id);
+          if (response.type && response.errors[0].code === "blank")
+            this.addErrorNotification(
+              "Ошибка именения адреса",
+              "Полный адрес не заполнен"
+            );
+          else this.addSuccessNotification("Изменения успешно сохранены", "");
+        });
       this.clearAddress();
     },
     openPopup(e) {
@@ -494,7 +511,15 @@ export default {
           person_id: this.id,
           full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
         })
-        .then(() => this.fetchClientDetail(this.id));
+        .then((response) => {
+          this.fetchClientDetail(this.id);
+          if (response.type && response.errors[0].code === "blank")
+            this.addErrorNotification(
+              "Ошибка создания адреса",
+              "Полный адрес не заполнен"
+            );
+          else this.addSuccessNotification("Полный адрес успешно создан", "");
+        });
     },
     postCreateIdentityDocument() {
       fetchWrapper
@@ -504,12 +529,32 @@ export default {
           series_number: this.dataIdentityDocument.numba,
           issued_by_org: this.dataIdentityDocument.issued_by_org,
           issued_by_org_code: this.dataIdentityDocument.issued_by_org_code,
-          issued_by_date: this.dataIdentityDocument.issued_by_date
-            .split(".")
-            .reverse()
-            .join("-"),
+          issued_by_date: this.dataIdentityDocument.issued_by_date,
         })
-        .then(() => this.fetchClientDetail(this.id));
+        .then((response) => {
+          this.fetchClientDetail(this.id);
+          if (response.type) {
+            if (response.errors[0].code === "blank")
+              this.addErrorNotification(
+                "Ошибка создания ДУЛ",
+                "Часть паспортных данных не заполнена"
+              );
+            if (response.errors[0].code === "Ошибка создания ДУЛ")
+              this.addErrorNotification(
+                response.errors[0].code,
+                response.errors[0].detail
+              );
+            if (response.errors[0].code === "invalid")
+              this.addErrorNotification(
+                "Ошибка создания ДУЛ",
+                "Дата выдачи паспорта не заполнена"
+              );
+          } else
+            this.addSuccessNotification(
+              "Паспортные данные успешно созданы",
+              ""
+            );
+        });
     },
   },
   watch: {
