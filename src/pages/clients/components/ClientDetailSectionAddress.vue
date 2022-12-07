@@ -2,27 +2,54 @@
   .flex.flex-col.gap-y-4
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Город
-      base-select(
+      base-select.cursor-grab(
+        disable,
         placeholder="Выберите город",
-        :items="cities",
-        v-model="dopeAddress.city"
+        v-model="dopeAddress.city",
+        :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
       )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Область
-      base-input.input-info(placeholder="Введите область", v-model:value="dopeAddress.region")
+      base-input.input-info(
+        disabled,
+        placeholder="Введите область",
+        v-model:value="dopeAddress.region",
+        :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
+      )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Улица
-      base-input.input-info(placeholder="Введите улицу", v-model:value="dopeAddress.street")
+      base-input.input-info(
+        disabled,
+        placeholder="Введите улицу",
+        v-model:value="dopeAddress.street",
+        :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
+      )
     .flex.gap-x-4
       .flex.flex-col(class="gap-y-1.5")
         .text-info.text-xxs.font-semibold Дом
-        base-input.input-info(placeholder="Дом", v-model:value="dopeAddress.house")
+        base-input.input-info(
+          disabled,
+          placeholder="Дом",
+          v-model:value="dopeAddress.house",
+          :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
+        )
       .flex.flex-col(class="gap-y-1.5")
         .text-info.text-xxs.font-semibold Квартира
-        base-input.input-info(placeholder="Квартира", v-model:value="dopeAddress.flat")
+        base-input.input-info(
+          disabled,
+          placeholder="Квартира",
+          v-model:value="dopeAddress.flat",
+          :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
+        )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Индекс
-      base-input.input-info(v-mask="'######'", placeholder="000000", v-model:value="dopeAddress.index")
+      base-input.input-info(
+        disabled,
+        v-mask="'######'",
+        placeholder="000000",
+        v-model:value="dopeAddress.index",
+        :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
+      )
 </template>
 
 <script>
@@ -37,7 +64,6 @@ export default {
   },
   props: {
     dopeAddress: Object,
-    cities: Array,
   },
   directives: { mask },
 };
