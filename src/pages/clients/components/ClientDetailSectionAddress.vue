@@ -4,7 +4,7 @@
       .text-info.text-xxs.font-semibold Город
       base-select.cursor-grab(
         disable,
-        placeholder="Выберите город",
+        placeholder="Введите город",
         v-model="dopeAddress.city",
         :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
       )
