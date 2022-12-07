@@ -431,7 +431,7 @@ export default {
   background-color: var(--default-white)
   border-radius: 4px
   width: 634px
-  min-height: 700px
+  min-height: 585px
   box-shadow: var(--default-shadow)
 
 .title

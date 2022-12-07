@@ -1,3 +1,5 @@
+import router from "@/router";
+
 function prepareUrl(url) {
   if (url.startsWith("http")) return url;
   return `http://45.84.227.122:8080/api/${url}`;
@@ -12,7 +14,10 @@ function handleRequest(method, url, headers, attempts, body, type) {
     })();
   })
     .then((res) => {
-      if (res) return res.json();
+      if (res.status === 401) {
+        localStorage.removeItem("tokenAccess");
+        return router.push("/login");
+      } else if (res) return res.json();
     })
     .catch((err) => {
       return err;
