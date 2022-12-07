@@ -9,7 +9,8 @@
       @click.stop,
       type="text",
       v-model:value="value.fullName",
-      :width-input="300"
+      :width-input="300",
+      placeholder="Фамилия Имя Отчество"
     )
 </template>
 

@@ -212,29 +212,31 @@ export default {
         (el) => el.text === this.dataClient.priority
       );
       let data = {};
-      if (
-        this.dataClient.age !== this.client.birth_date &&
-        this.dataClient.age
-      ) {
+      let clientName = `${this.client.last_name || ""} ${
+        this.client.first_name || ""
+      } ${this.client.patronymic || ""}`;
+
+      if (!this.dataClient.fullName) this.dataClient.fullName = clientName;
+      else if (this.dataClient.fullName !== clientName)
+        data.full_name = this.dataClient.fullName;
+      if (this.dataClient.age !== this.client.birth_date && this.dataClient.age)
         data.birth_date = this.dataClient.age;
+      else if (!this.dataClient.age) {
+        this.addErrorNotification(
+          "Пожалуйста, введите дату рождения корректно"
+        );
+        this.dataClient.age = this.client.birth_date || "";
       }
-      if (
-        foundElement.id !== this.client.priority &&
-        foundElement.text !== "-"
-      ) {
-        data.priority = foundElement.priority;
-      } else if (foundElement.text === "-") {
-        data.priority = 4;
-      }
+      if (foundElement.id !== this.client.priority)
+        data.priority = foundElement.id;
       if (
         data.birth_date &&
         moment(data.birth_date).isAfter(moment().format("YYYY-MM-DD"))
       ) {
-        this.addErrorNotification();
-        this.dataClient.age = this.client.birth_date;
-      } else
+        this.addErrorNotification("Дата рождения позже текущего дня");
+        this.dataClient.age = this.client.birth_date || "";
+      } else if (!Object.keys(data).length == 0)
         fetchWrapper.post(`general/person/${this.client.id}/update/`, {
-          full_name: this.dataClient.fullName,
           ...data,
         });
     },
@@ -264,16 +266,24 @@ export default {
       this.client.contacts.forEach((el) => {
         if (
           el.kind === "PHONE" &&
+          this.dataClient.phone.username.length === 18 &&
           el.username !== this.dataClient.phone.username
         ) {
           updateContacts.push(this.dataClient.phone);
-        }
+        } else
+          this.dataClient.phone.username =
+            this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+            "";
         if (
           el.kind === "EMAIL" &&
+          this.dataClient.email.username &&
           el.username !== this.dataClient.email.username
         ) {
           updateContacts.push(this.dataClient.email);
-        }
+        } else
+          this.dataClient.email.username =
+            this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
+            "";
       });
       createContacts.forEach((el) => this.postCreateContact(el));
       // deleteContacts.forEach((el) => this.postDeleteContact(el));
@@ -336,11 +346,11 @@ export default {
         5000
       );
     },
-    addErrorNotification() {
+    addErrorNotification(message) {
       addNotification(
         "Некорректная дата рождения",
         "Некорректная дата рождения",
-        "Дата рождения позже текущего дня",
+        message,
         "error",
         5000
       );

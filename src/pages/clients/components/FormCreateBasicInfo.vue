@@ -87,7 +87,7 @@ export default {
 
 <style lang="sass" scoped>
 .wrapper-info
-  min-height: 443px
+  min-height: 336px
   max-height: 443px
   overflow-y: auto
   color: var(--font-grey-color)

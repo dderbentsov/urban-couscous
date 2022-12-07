@@ -39,18 +39,22 @@
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Номер СНИЛС
           base-input.input-info(
+            disabled,
             v-mask="'###-###-### ##'",
             v-model:value="identityDocument.snils.numba",
             placeholder="000–000–000 00",
-            :width-input="277"
+            :width-input="277",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
         .flex.flex-col(class="gap-y-1.5")
           span.text-sm Номер ИНН
           base-input.input-info(
+            disabled,
             v-mask="'############'",
             v-model:value="identityDocument.inn.numba",
             placeholder="000000000000",
-            :width-input="277"
+            :width-input="277",
+            :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )
     .px-4
       base-button(@click="saveClient" :size="40")

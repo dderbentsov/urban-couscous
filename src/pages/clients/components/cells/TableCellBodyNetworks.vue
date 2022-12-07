@@ -8,7 +8,7 @@
         .absolute.icon-cancel-mini.delete.flex.w-4.h-4.justify-center.items-center.bottom-4.left-2(
           v-if="isOpenChange",
           :id="network.kind",
-          @click="(e) => deleteNetwork(e)"
+          @click.stop="(e) => deleteNetwork(e)"
         )
     .flex.relative.pb-2(class="pl-[46px]")
       base-button(
