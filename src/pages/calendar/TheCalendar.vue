@@ -105,9 +105,12 @@ export default {
       this.employeesData = res.results;
     },
     fetchEmployeesData() {
-      fetchWrapper
-        .get("general/employee/")
-        .then((res) => this.saveEmployeesData(res));
+      fetchWrapper.get("general/employee/").then((res) => {
+        if (res.type === "client_error") {
+          localStorage.clear();
+          this.$router.push("/login");
+        } else this.saveEmployeesData(res);
+      });
     },
     fetchEventsData() {
       fetchWrapper

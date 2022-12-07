@@ -138,12 +138,17 @@ export default {
             (this.currentTablePage - 1) * this.limit
           }`
         );
-        this.saveDataClients(response);
-        this.saveClientsCount(response);
-        this.paginationInfo = {
-          currentPage: this.currentTablePage,
-          length: this.calculatePageCount(this.clientsCount),
-        };
+        if (response.type === "client_error") {
+          localStorage.clear();
+          this.$router.push("/login");
+        } else {
+          this.saveDataClients(response);
+          this.saveClientsCount(response);
+          this.paginationInfo = {
+            currentPage: this.currentTablePage,
+            length: this.calculatePageCount(this.clientsCount),
+          };
+        }
       }
     },
     calculatePageCount(count) {
