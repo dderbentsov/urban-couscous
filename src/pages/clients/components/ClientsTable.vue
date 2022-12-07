@@ -139,8 +139,8 @@ export default {
           }`
         );
         if (response.type === "client_error") {
-          localStorage.clear();
-          this.$router.push("/login");
+          localStorage.removeItem("tokenAccess");
+          return this.$router.push("/login");
         } else {
           this.saveDataClients(response);
           this.saveClientsCount(response);

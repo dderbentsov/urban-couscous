@@ -107,8 +107,8 @@ export default {
     fetchEmployeesData() {
       fetchWrapper.get("general/employee/").then((res) => {
         if (res.type === "client_error") {
-          localStorage.clear();
-          this.$router.push("/login");
+          localStorage.removeItem("tokenAccess");
+          return this.$router.push("/login");
         } else this.saveEmployeesData(res);
       });
     },
