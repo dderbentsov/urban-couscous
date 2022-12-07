@@ -104,11 +104,14 @@ export default {
     saveEmployeesData(res) {
       this.employeesData = res.results;
     },
+    logout() {
+      localStorage.removeItem("tokenAccess");
+      this.$router.push("/login");
+    },
     fetchEmployeesData() {
       fetchWrapper.get("general/employee/").then((res) => {
         if (res.type === "client_error") {
-          localStorage.removeItem("tokenAccess");
-          return this.$router.push("/login");
+          this.logout();
         } else this.saveEmployeesData(res);
       });
     },

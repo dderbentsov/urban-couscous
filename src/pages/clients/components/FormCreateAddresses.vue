@@ -15,7 +15,7 @@
           .text-info.text-xxs.font-semibold Город
           base-input.input-info(
             disabled,
-            placeholder="Выберите город",
+            placeholder="Введите город",
             v-model:value="addresses.city",
             :style="{backgroundColor: 'var(--bg-disable-grey-color)'}"
           )

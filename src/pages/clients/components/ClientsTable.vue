@@ -118,6 +118,10 @@ export default {
         this.fetchDataClients();
       }
     },
+    logout() {
+      localStorage.removeItem("tokenAccess");
+      this.$router.push("/login");
+    },
     async fetchDataClients() {
       let response = {};
       if (this.textSearch) {
@@ -126,12 +130,16 @@ export default {
             this.limit
           }&offset=${(this.currentTablePage - 1) * this.limit}`
         );
-        this.saveDataClients(response);
-        this.saveFilteredClientsCount(response);
-        this.paginationInfo = {
-          currentPage: this.currentTablePage,
-          length: this.calculatePageCount(this.filteredClientsCount),
-        };
+        if (response.type === "client_error") {
+          this.logout();
+        } else {
+          this.saveDataClients(response);
+          this.saveFilteredClientsCount(response);
+          this.paginationInfo = {
+            currentPage: this.currentTablePage,
+            length: this.calculatePageCount(this.filteredClientsCount),
+          };
+        }
       } else {
         response = await fetchWrapper.get(
           `general/person/?limit=${this.limit}&offset=${
@@ -139,8 +147,7 @@ export default {
           }`
         );
         if (response.type === "client_error") {
-          localStorage.removeItem("tokenAccess");
-          return this.$router.push("/login");
+          this.logout();
         } else {
           this.saveDataClients(response);
           this.saveClientsCount(response);
