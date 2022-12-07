@@ -62,7 +62,7 @@
           span.title-section.font-semibold.text-xs(
             v-if="settings[section].options") {{settings[section].options[key]}}
           span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-          client-detail-input.text-sm.text-sm.w-max-fit(
+          client-detail-input.text-sm.w-max-fit(
             v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
             :style="{fontWeight:key === 'numba'&&600, maxHeight: settings[section].options[key] !== 'Выдан' ? '40px' : ''}",
             v-model:value="sectionInfo[key]",
@@ -70,7 +70,7 @@
             :placeholder="settings[section].placeholder[key]"
             :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
           )
-          base-input-date.input(
+          base-input-date.input.text-sm(
             v-else-if="isChange && section !== 'docs'",
             v-model:value="sectionInfo.issued_by_date"
           )
@@ -79,7 +79,7 @@
               @click="() => copyValue(item)"
             )
           .flex(v-if="settings[section].options && !isChange")
-            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item}}
+            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item === 'issued_by_date' ? formattedDate : item}}
             .copy.icon-copy.cursor-pointer.pl-4(
               v-if="key === 'numba'",
               @click="() => copyValue(item)"
@@ -125,6 +125,7 @@ import { detail } from "@/pages/clients/utils/tableConfig";
 import pdfIcon from "@/assets/icons/pdf.svg";
 import wordIcon from "@/assets/icons/word.svg";
 import exelIcon from "@/assets/icons/exel.svg";
+import * as moment from "moment";
 export default {
   name: "ClientDetailInfoSection",
   components: {
@@ -188,6 +189,11 @@ export default {
         ? "var(--light-grey-bg-color)"
         : "var(--default-white)";
     },
+    formattedDate() {
+      return this.sectionInfo["issued_by_date"]
+        ? this.sectionInfo.issued_by_date.split("-").reverse().join(".")
+        : "";
+    },
   },
   methods: {
     openAddDoc() {
@@ -220,13 +226,39 @@ export default {
       this.showModal = false;
       this.saveDocs();
     },
+    checkDataPresence(data) {
+      let postData = JSON.parse(JSON.stringify(data));
+      let keys = Object.keys(postData);
+      keys.forEach((key) => {
+        if (!postData[key]) {
+          delete postData[key];
+        }
+      });
+      return postData;
+    },
     changeDoc() {
       this.isChange = false;
       if (this.section === "pass") {
-        this.docId ? this.updateDocument() : this.createDocument();
+        if (!this.docId) {
+          let changedData = Object.keys(
+            this.checkDataPresence(this.sectionInfo)
+          );
+          if (
+            changedData.length !== Object.keys(this.sectionInfo).length ||
+            moment(this.sectionInfo.issued_by_date).isAfter(
+              moment().format("YYYY-MM-DD")
+            )
+          ) {
+            this.isData = false;
+          }
+          this.createDocument();
+        } else this.updateDocument();
       }
       if (this.section === "addresses") {
-        this.addressId ? this.updateAddress() : this.createAddress();
+        if (!this.addressId) {
+          if (this.sectionInfo.join_adress === "") this.isAddress = false;
+          this.createAddress();
+        } else this.updateAddress();
       }
     },
     copyValue(text) {
@@ -267,15 +299,18 @@ export default {
   },
   watch: {
     lackData: {
+      deep: true,
       immediate: true,
       handler(newValue) {
-        this.isData = newValue;
+        if (this.isData !== newValue) {
+          this.isData = newValue;
+        }
       },
     },
     lackAddress: {
       immediate: true,
       handler(newValue) {
-        this.isAddress = newValue;
+        if (this.isAddress !== newValue) this.isAddress = newValue;
       },
     },
     lackAttachments: {
@@ -359,4 +394,5 @@ export default {
 
 .input
   border: 1.5px solid var(--border-light-grey-color)
+  height: 40px
 </style>

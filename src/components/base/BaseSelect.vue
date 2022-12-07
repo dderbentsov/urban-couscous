@@ -1,11 +1,17 @@
 <template lang="pug">
-  .base-select(@click="open = !open", :class="{'open': open && !disable, 'border-none': borderNone}")
-    .placeholder.text-base(:class="{'value-color': value || placeholderOpacity}") {{ value || placeholder }}
+  .base-select(@click="open = !open", :class="{'open': open, 'border-none': borderNone}")
+    .placeholder(
+      :class="{'value-color': value || placeholderOpacity, ...textClass}"
+    ) {{ value || placeholder }}
     .flex.items-center
       .select-form-separator.cursor-pointer.mr-4(v-if="separator")
       span.icon-down-arrow.open-icon(:class="{'open': open && !disable }")
     base-menu(v-if="open")
-      .items-container(@click="open = false", v-click-outside="leaveSelect")
+      .items-container(
+        @click="open = false",
+        v-click-outside="leaveSelect",
+        :class="textClass"
+      )
         .item(v-for="item in items", :key="item.id" @click="clickItem(item.label)") {{ item.label }}
 </template>
 
@@ -25,6 +31,7 @@ export default {
     separator: Boolean,
     placeholderOpacity: Boolean,
     disable: Boolean,
+    textStyle: String,
   },
   emits: ["update:modelValue"],
   data() {
@@ -40,6 +47,15 @@ export default {
       set(value) {
         this.$emit("update:modelValue", value);
       },
+    },
+    textClass() {
+      return this.textStyle
+        ? {
+            [this.textStyle]: true,
+          }
+        : {
+            "text-base": true,
+          };
     },
   },
   methods: {

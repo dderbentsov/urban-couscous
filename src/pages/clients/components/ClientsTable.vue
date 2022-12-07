@@ -20,6 +20,7 @@
           :client="client",
           :deleted-client-id="deletedRowId",
           :update-data-client="updateDataClient",
+          :fetch-data-clients="fetchDataClients",
           @delete-client="deleteClientHandler",
           @recover-client="clearDeletedRowId",
         )
