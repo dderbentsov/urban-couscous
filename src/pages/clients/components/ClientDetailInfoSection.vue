@@ -80,7 +80,7 @@
               @click="() => copyValue(item)"
             )
           .flex(v-if="settings[section].options && !isChange")
-            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{item === 'issued_by_date' ? formattedDate : item}}
+            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{key === 'issued_by_date' ? formattedDate : item}}
             .copy.icon-copy.cursor-pointer.pl-4(
               v-if="key === 'numba'",
               @click="() => copyValue(item)"

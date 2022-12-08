@@ -1,6 +1,6 @@
 <template lang="pug">
-  .input-wrapper.flex.gap-x-2.px-3.box-border.w-max-fit(class="py-2.5")
-    textarea.place-input.w-full.outline-0.text-sm.not-italic.resize-none.font-medium(
+  .input-wrapper.flex.gap-x-2.px-3.box-border.w-max-fit.text-sm(class="py-2.5")
+    textarea.place-input.w-full.outline-0.not-italic.resize-none.font-medium(
       v-if="!sharp"
       :rows="textareaRows",
       :value="value",
@@ -8,7 +8,7 @@
       @input="$emit('update:value', $event.target.value)",
       :placeholder="placeholder",
     )
-    input.place-input.w-full.outline-0.text-sm.not-italic.resize-none.font-medium(
+    input.w-full.outline-0.not-italic.font-medium(
       v-else,
       :value="value",
       @input="$emit('update:value', $event.target.value)",
