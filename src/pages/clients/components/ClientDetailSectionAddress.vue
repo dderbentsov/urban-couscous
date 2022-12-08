@@ -2,7 +2,7 @@
   .flex.flex-col.gap-y-4
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Город
-      base-select.text-sm(
+      base-select.select.text-sm(
         disable,
         textStyle="text-sm",
         placeholder="Введите город",
@@ -75,4 +75,6 @@ export default {
   color: var(--font-dark-blue-color)
 .text-info
   color: var(--font-grey-color)
+.select
+  height: 40px
 </style>

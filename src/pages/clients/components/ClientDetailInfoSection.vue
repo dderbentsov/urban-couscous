@@ -64,9 +64,8 @@
           span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
           client-detail-input.text-sm.w-max-fit(
             v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
-            :style="{fontWeight:key === 'numba'&&600, maxHeight: settings[section].options[key] !== 'Выдан' ? '' : ''}",
+            :style="{fontWeight:key === 'numba'&&600}",
             v-model:value="sectionInfo[key]",
-            :width="settings[section].width",
             :rows="section ==='pass' ? 2 : 1",
             :placeholder="settings[section].placeholder[key]"
             :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
