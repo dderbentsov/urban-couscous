@@ -24,15 +24,16 @@
       @selected-event="writeEventData",
       @delete-event="openModal"
     )
-    calendar-form-add-event(
-      v-if="isOpenForm",
-      :close-form="closeFormCreateEvent",
-      :owners-data="employeesData",
-      :selected-event-data="selectedEvent",
-      :event-types="eventTypes",
-      @clear-selected-event-data="clearSelectedEvent",
-      @close-change-form="setChangeFormState"
-    )
+    transition(name="form")
+      calendar-form-add-event(
+        v-if="isOpenForm",
+        :close-form="closeFormCreateEvent",
+        :owners-data="employeesData",
+        :selected-event-data="selectedEvent",
+        :event-types="eventTypes",
+        @clear-selected-event-data="clearSelectedEvent",
+        @close-change-form="setChangeFormState"
+      )
     base-modal(
       v-model="showModal",
       title="Удаление события"
@@ -163,4 +164,23 @@ export default {
 <style lang="sass" scoped>
 .calendar-container
   width: calc(100vw - 80px)
+
+.form-enter-from
+  opacity: 0
+  transform: translateY(300px)
+  pointer-events: none
+
+.form-enter-active
+  transition: 0.5s ease
+
+.form-leave-to
+  opacity: 0
+  transform: translateY(300px)
+  pointer-events: none
+
+.form-leave-active
+  transition: 0.5s ease
+
+.form-move
+  transition: 0.5s ease
 </style>

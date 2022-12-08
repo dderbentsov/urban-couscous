@@ -84,25 +84,26 @@
               :disabled-delete="!!deletedClientId && !rowOverlay",
               @delete-client="transmitDeleteClient"
             )
-      client-detail-info-wrapper.detail(
-        v-if="isOpenDetailInfo",
-        :data-address="dataAddress",
-        :data-detail="dataDetail",
-        :data-attachments="dataAttachments",
-        :data-document="dataIdentityDocument",
-        :save-new-doc="saveNewDoc",
-        :delete-doc="deleteDoc",
-        :update-document="postUpdateIdentityDocument",
-        :update-address="postUpdateAddress",
-        :lack-data="lackData",
-        :lack-address="lackAddress",
-        :dope-address="dopeAddress",
-        :lack-attachments="lackAttachments",
-        :create-address="postCreateAddress",
-        :create-document="postCreateIdentityDocument",
-        :address-id="addressId",
-        :doc-id="docId",
-      )
+      transition(name="detail")      
+        client-detail-info-wrapper.detail(
+          v-if="isOpenDetailInfo",
+          :data-address="dataAddress",
+          :data-detail="dataDetail",
+          :data-attachments="dataAttachments",
+          :data-document="dataIdentityDocument",
+          :save-new-doc="saveNewDoc",
+          :delete-doc="deleteDoc",
+          :update-document="postUpdateIdentityDocument",
+          :update-address="postUpdateAddress",
+          :lack-data="lackData",
+          :lack-address="lackAddress",
+          :dope-address="dopeAddress",
+          :lack-attachments="lackAttachments",
+          :create-address="postCreateAddress",
+          :create-document="postCreateIdentityDocument",
+          :address-id="addressId",
+          :doc-id="docId",
+        )
 </template>
 
 <script>
@@ -348,7 +349,7 @@ export default {
       addNotification(new Date().getTime(), title, message, "success", 5000);
     },
     addErrorNotification(title, message) {
-      addNotification(title, title, message, "error", 5000);
+      addNotification(title, title, message, "error", 0);
     },
     fetchClientDetail(id) {
       fetchWrapper
@@ -641,4 +642,18 @@ export default {
   color: var(--btn-blue-color)
 .countdown
   color: var(--font-grey-color )
+.detail-enter-from
+  opacity: 0
+  transform: translateY(-2px)
+  pointer-events: none
+.detail-enter-active
+  transition: 0.1s ease
+.detail-leave-to
+  opacity: 0
+  transform: translateY(-2px)
+  pointer-events: none
+.detail-leave-active
+  transition: 0.1s ease
+.detail-move
+  transition: 0.1s ease
 </style>
