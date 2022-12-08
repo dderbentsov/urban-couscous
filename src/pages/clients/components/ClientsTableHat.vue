@@ -16,7 +16,7 @@
       ) Поиск
       base-button.font-semibold(
         v-if="searchClient.length > 0",
-        secondary,
+        outlined,
         @click="resetLastName",
         :size=40
       ) Сбросить
