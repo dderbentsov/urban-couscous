@@ -221,9 +221,10 @@ export default {
       if (!this.dataClient.fullName) this.dataClient.fullName = clientName;
       else if (this.dataClient.fullName !== clientName)
         data.full_name = this.dataClient.fullName;
+
       if (this.dataClient.age !== this.client.birth_date && this.dataClient.age)
         data.birth_date = this.dataClient.age;
-      else if (!this.dataClient.age) {
+      else if (!this.dataClient.age && this.client.birth_date) {
         this.addErrorNotification(
           "Некорректная дата рождения",
           "Пожалуйста, введите дату рождения корректно"
@@ -253,56 +254,46 @@ export default {
       if (
         this.dataClient.email.username &&
         !contacts.find((el) => el.kind === "EMAIL")
-      ) {
+      )
         contacts.push(this.dataClient.email);
-      }
       if (
         this.dataClient.phone.username &&
         !contacts.find((el) => el.kind === "PHONE")
-      ) {
+      )
         contacts.push(this.dataClient.phone);
-      }
       let mapCreateContacts = this.client.contacts.map((el) => el.kind);
-      // let mapDeleteContacts = contacts.map((el) => el.kind);
+      let mapDeleteContacts = contacts.map((el) => el.kind);
       let createContacts = contacts.filter(
         (el) => !mapCreateContacts.includes(el.kind)
       );
-      // let deleteContacts = this.client.contacts.filter(
-      //   (el) => !mapDeleteContacts.includes(el.kind)
-      // );
+      let deleteContacts = this.client.contacts.filter(
+        (el) => !mapDeleteContacts.includes(el.kind)
+      );
       let updateContacts = [];
       this.client.contacts.forEach((el) => {
         if (
           el.kind === "PHONE" &&
-          this.dataClient.phone.username.length === 18 &&
           el.username !== this.dataClient.phone.username
-        ) {
+        )
           updateContacts.push(this.dataClient.phone);
-        } else
-          this.dataClient.phone.username =
-            this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
-            "";
         if (
           el.kind === "EMAIL" &&
-          this.dataClient.email.username &&
           el.username !== this.dataClient.email.username
-        ) {
+        )
           updateContacts.push(this.dataClient.email);
-        } else
-          this.dataClient.email.username =
-            this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
-            "";
       });
       createContacts.forEach((el) => this.postCreateContact(el));
-      // deleteContacts.forEach((el) => this.postDeleteContact(el));
+      deleteContacts.forEach((el) => this.postDeleteContact(el));
       updateContacts.forEach((el) => this.postUpdateContact(el));
     },
     postCreateContact(contact) {
-      fetchWrapper.post("general/contact/create/", {
-        kind: contact.kind,
-        username: contact.username,
-        person_id: this.client.id,
-      });
+      fetchWrapper
+        .post("general/contact/create/", {
+          kind: contact.kind,
+          username: contact.username,
+          person_id: this.client.id,
+        })
+        .then(() => this.fetchDataClients());
     },
     postUpdateContact(contact) {
       fetchWrapper.post(`general/contact/${contact.id}/update/`, {
@@ -558,11 +549,6 @@ export default {
         });
     },
   },
-  watch: {
-    rowOverlay() {
-      if (this.rowOverlay) this.startTimer();
-    },
-  },
   created() {
     this.dataClient = {
       id: this.client.id,
@@ -596,6 +582,12 @@ export default {
       photo: this.client.photo,
     };
   },
+  watch: {
+    rowOverlay() {
+      if (this.rowOverlay) this.startTimer();
+    },
+  },
+
   beforeUnmount() {
     if (this.timer) {
       this.deleteClient();

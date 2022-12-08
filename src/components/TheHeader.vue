@@ -20,13 +20,15 @@
         :icon-right-size="18",
         @click="openForm"
       )
-      button.header-buttons.flex.justify-center.items-center.mr-8.p-0(@click="logout")
+      button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
-      .flex.justify-centflexer.items-center
+      .flex.justify-centflexer.items-center.relative
         base-avatar.mr-2(:size="32")
           img(:src="avatarSrc", alt="Avatar")
-        button.header-buttons
+        button.header-buttons(@click="openPopup")
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
+        base-popup.right-2.top-10(v-if="showPopup", :width="160", v-click-outside="openPopup")
+          .text-popup.flex.cursor-pointer.pl-2(@click="logout") Выйти
 </template>
 
 <script>
@@ -35,10 +37,17 @@ import chargePersonAvatar from "@/assets/images/charge-person-avatar.svg";
 import HeaderInputs from "./HeaderInputs.vue";
 import BaseAvatar from "@/components/base/BaseAvatar";
 import BaseButton from "@/components/base/BaseButton.vue";
+import BasePopup from "@/components/base/BasePopup.vue";
 import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 export default {
   name: "TheHeader",
-  components: { HeaderInputs, BaseAvatar, BaseButton, BaseClientFormCreate },
+  components: {
+    HeaderInputs,
+    BaseAvatar,
+    BaseButton,
+    BasePopup,
+    BaseClientFormCreate,
+  },
   props: {
     openForm: Function,
     closeForm: Function,
@@ -52,12 +61,16 @@ export default {
         avatarSrc: chargePersonAvatar,
         name: "Гордеев Николай Степанович",
       },
+      showPopup: false,
     };
   },
   methods: {
     logout() {
       localStorage.removeItem("tokenAccess");
       this.$router.push("/login");
+    },
+    openPopup() {
+      this.showPopup = !this.showPopup;
     },
   },
 };
@@ -111,4 +124,9 @@ export default {
 
 .charge-person-container
   position: absolute
+
+.text-popup
+  color: var(--btn-blue-color)
+  &:hover
+    opacity: 0.8
 </style>
