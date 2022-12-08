@@ -20,7 +20,12 @@
         :size="24"
       )
         .icon-plus(class="pt-[2px]")
-      base-popup.right-3.top-6(v-if="isOpenPopupAdding", v-click-outside="closePopup" :width="485")
+      base-popup.right-3.top-6(
+        v-if="isOpenPopupAdding",
+        @click.stop,
+        v-click-outside="closePopup",
+        :width="485"
+      )
         base-adding-network(
           :value="network",
           :selected-option="getSelectedIcon",
@@ -71,7 +76,8 @@ export default {
   computed: {
     getNetworks() {
       return this.networks.filter(
-        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE"
+        (el) =>
+          el.kind !== "EMAIL" && el.kind !== "PHONE" && el.deleted_flg !== true
       );
     },
     getSelectedIcon() {

@@ -7,7 +7,7 @@
         .flex.flex-col.gap-y-2
           .text-welcome.flex.not-italic.font-bold.text-5xl Добро пожаловать!
           .text-under.flex.not-italic.font-medium.text-base(
-            :style="{color: this.underTextColor}") Очень рады вас видеть. Войдите в аккаунт, чтобы начать пользоваться сервисом «Астра».
+            :style="{color: this.underTextColor}") Войдите в аккаунт, чтобы начать пользоваться сервисом «Астра».
         .flex.flex-col.gap-y-5
           .flex.flex-col.gap-y-6px
             .flex.non-italic.font-semibold.text-xss Логин
