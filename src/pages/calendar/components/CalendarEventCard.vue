@@ -21,15 +21,16 @@
         .col
           ul
             li.mt-2(v-for="elem in descriptionColumns.rightColumn" :key="elem") {{ elem }}
-    calendar-event-description-card(
-      v-if="isOpenDescriptionCard",
-      :owner-event="ownerEvent",
-      :event-types="eventTypes",
-      @selected-event="transmitEventData",
-      @close-description-card="closeDescriptionCard",
-      @delete-event="transmitDeleteEvent",
-      :schedule-body-ref="scheduleBodyRef"
-    )
+    transition(name="description")        
+      calendar-event-description-card(
+        v-if="isOpenDescriptionCard",
+        :owner-event="ownerEvent",
+        :event-types="eventTypes",
+        @selected-event="transmitEventData",
+        @close-description-card="closeDescriptionCard",
+        @delete-event="transmitDeleteEvent",
+        :schedule-body-ref="scheduleBodyRef"
+      )
   </template>
 
 <script>
@@ -237,6 +238,25 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.description-enter-from
+  opacity: 0
+  transform: translateY(2px)
+  pointer-events: none
+
+.description-enter-active
+  transition: 0.5s ease
+
+.description-leave-to
+  opacity: 0
+  transform: translateY(2px)
+  pointer-events: none
+
+.description-leave-active
+  transition: 0.5s ease
+
+.description-move
+  transition: 0.5s ease
+
 .wrapper
   position: absolute
   width: calc(100% - 8px)

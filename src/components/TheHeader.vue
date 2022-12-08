@@ -1,10 +1,11 @@
 <template lang="pug">
   .header-wrapper.relative.flex.justify-center.box-border.py-2.pl-4_75px.pr-6
-    base-client-form-create(
-      v-if="isOpenForm",
-      :close-form="closeForm",
-      :set-updated-clients="setUpdatedClients",
-    )
+    transition(name="form")
+      base-client-form-create(
+        v-if="isOpenForm",
+        :close-form="closeForm",
+        :set-updated-clients="setUpdatedClients",
+      )
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
       header-inputs
@@ -63,6 +64,25 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.form-enter-from
+  opacity: 0
+  transform: translateY(300px)
+  pointer-events: none
+
+.form-enter-active
+  transition: 0.5s ease
+
+.form-leave-to
+  opacity: 0
+  transform: translateY(300px)
+  pointer-events: none
+
+.form-leave-active
+  transition: 0.5s ease
+
+.form-move
+  transition: 0.5s ease
+
 .header-buttons
   outline: none
   border: none
