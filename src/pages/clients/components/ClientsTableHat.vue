@@ -6,7 +6,8 @@
           :with-icon="true",
           icon-position="left",
           v-model:value="searchClient",
-          placeholder="Введите фамилию"
+          placeholder="Введите фамилию",
+          @keyup.enter="searchLastName"
         )
           .icon-search
       base-button.font-semibold(

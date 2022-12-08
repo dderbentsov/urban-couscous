@@ -49,4 +49,5 @@ export default {
   background: url("../../assets/icons/calendar-input.svg") no-repeat 100% 50%
   &::-webkit-calendar-picker-indicator
     opacity: 0
+    cursor: pointer
 </style>

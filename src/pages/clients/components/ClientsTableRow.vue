@@ -410,17 +410,17 @@ export default {
           if (response.type) {
             if (response.errors[0].code === "blank")
               this.addErrorNotification(
-                "Ошибка создания ДУЛ",
+                "Ошибка редактрирования ДУЛ",
                 "Часть паспортных данных не заполнена"
               );
-            if (response.errors[0].code === "Ошибка создания ДУЛ")
+            if (response.errors[0].code === "Ошибка редактрирования ДУЛ")
               this.addErrorNotification(
                 response.errors[0].code,
                 response.errors[0].detail
               );
             if (response?.errors[0].code === "invalid")
               this.addErrorNotification(
-                "Ошибка создания ДУЛ",
+                "Ошибка редактрирования ДУЛ",
                 "Дата выдачи паспорта не заполнена"
               );
           } else this.addSuccessNotification("Изменения успешно сохранены", "");

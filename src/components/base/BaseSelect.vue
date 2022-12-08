@@ -1,7 +1,8 @@
 <template lang="pug">
-  .base-select(@click="open = !open", :class="{'open': open, 'border-none': borderNone}")
+  .base-select(@click="invertOpen", :class="{'open': open && !disable, 'border-none': borderNone}")
     .placeholder(
-      :class="{'value-color': value || placeholderOpacity, ...textClass}"
+      :class="{'value-color': value || placeholderOpacity, ...textClass}",
+      :style="{'color': !disable || '#9ca3af', 'opacity': 1}"
     ) {{ value || placeholder }}
     .flex.items-center
       .select-form-separator.cursor-pointer.mr-4(v-if="separator")
@@ -64,6 +65,9 @@ export default {
     },
     leaveSelect() {
       this.open = false;
+    },
+    invertOpen() {
+      if (!this.disable) this.open = !this.open;
     },
   },
 };

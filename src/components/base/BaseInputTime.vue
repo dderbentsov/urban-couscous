@@ -43,4 +43,6 @@ export default {
   border-radius: 4px
   background-color: var(--default-white)
   color: var(--font-black-color)
+input::-webkit-calendar-picker-indicator
+  cursor: pointer
 </style>

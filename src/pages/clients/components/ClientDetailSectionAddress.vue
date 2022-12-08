@@ -2,7 +2,7 @@
   .flex.flex-col.gap-y-4
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Город
-      base-select.cursor-grab(
+      base-select.select.text-sm(
         disable,
         textStyle="text-sm",
         placeholder="Введите город",
@@ -11,7 +11,7 @@
       )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Область
-      base-input.input-info(
+      base-input.text-sm.input-info(
         disabled,
         placeholder="Введите область",
         v-model:value="dopeAddress.region",
@@ -19,7 +19,7 @@
       )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Улица
-      base-input.input-info(
+      base-input.text-sm.input-info(
         disabled,
         placeholder="Введите улицу",
         v-model:value="dopeAddress.street",
@@ -28,7 +28,7 @@
     .flex.gap-x-4
       .flex.flex-col(class="gap-y-1.5")
         .text-info.text-xxs.font-semibold Дом
-        base-input.input-info(
+        base-input.text-sm.input-info(
           disabled,
           placeholder="Дом",
           v-model:value="dopeAddress.house",
@@ -36,7 +36,7 @@
         )
       .flex.flex-col(class="gap-y-1.5")
         .text-info.text-xxs.font-semibold Квартира
-        base-input.input-info(
+        base-input.text-sm.input-info(
           disabled,
           placeholder="Квартира",
           v-model:value="dopeAddress.flat",
@@ -44,7 +44,7 @@
         )
     .flex.flex-col(class="gap-y-1.5")
       .text-info.text-xxs.font-semibold Индекс
-      base-input.input-info(
+      base-input.text-sm.input-info(
         disabled,
         v-mask="'######'",
         placeholder="000000",
@@ -75,4 +75,6 @@ export default {
   color: var(--font-dark-blue-color)
 .text-info
   color: var(--font-grey-color)
+.select
+  height: 40px
 </style>
