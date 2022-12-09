@@ -1,8 +1,9 @@
 export const column = [
   {
-    name: "checkbox",
+    name: "dots",
+    title: "Do",
     iconHead: false,
-    width: 36,
+    width: 53,
   },
   {
     name: "fullName",
@@ -96,12 +97,11 @@ export const column = [
     iconHead: false,
     width: 152,
   },
-  {
-    name: "dots",
-    title: "Do",
-    iconHead: false,
-    width: 53,
-  },
+  // {
+  //   name: "checkbox",
+  //   iconHead: false,
+  //   width: 36,
+  // },
 ];
 
 export const detail = {

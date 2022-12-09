@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.flex-col.items-end.absolute.right-2.top-5
+  .flex.flex-col.absolute.left-2.top-6
     .corner
     .popup-wrapper.flex.flex-col.gap-y-3.w-10.h-10.p-4
       .button.keep-redaction.flex.gap-x-3(@click="openChangeData")
@@ -64,7 +64,7 @@ export default {
 .corner
   width: 8px
   height: 8px
-  border-top-left-radius: 100%
+  border-top-right-radius: 100%
   background-color: var(--default-white)
   z-index: 12
   overflow: hidden

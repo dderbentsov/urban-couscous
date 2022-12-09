@@ -11,14 +11,37 @@
         @click="(e) => openDetailInfo(e)",
         :class="{'row-overlay-color': rowOverlay}"
       )
-        .check-box.flex.justify-center.items-center(
-          :class="{'row-opacity': rowOverlay}"
+        .flex.items-center.px-2(
+          v-show="!isOpenChange",
+          :tabindex="1",
+          @click="(e) => openPopup(e)",
+          @blur="handleUnFocusPopup"
         )
-          clients-table-checkbox(
-            :id="id",
-            :check="check",
-            :is-check="isCheck"
-          )
+          .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center
+            clients-action-popup(
+              v-if="isOpenPopup",
+              :open-change-data="openChangeData",
+              :disabled-delete="!!deletedClientId && !rowOverlay",
+              @delete-client="transmitDeleteClient"
+            )
+        .dots.flex.justify-center.items-center(v-if="!rowOverlay")
+          .flex.pl-5.z-10(v-if="isOpenChange")
+            base-button(
+              @click="closeChangeData",
+              confirm,
+              rounded,
+              outlined,
+              :size="20"
+            )
+              .icon-ok.text-xsm(class="pt-[3px]")
+        //- .check-box.flex.justify-center.items-center(
+        //-   :class="{'row-opacity': rowOverlay}"
+        //- )
+        //-   clients-table-checkbox(
+        //-     :id="id",
+        //-     :check="check",
+        //-     :is-check="isCheck"
+        //-   )
         table-cell-body-name(
           :class="{'row-opacity': rowOverlay}"
           :value="dataClient",
@@ -62,28 +85,6 @@
           :is-open-change="isOpenChange",
           :width="columnBody.find(el => el.name === 'networks').width"
         )
-        .dots.flex.justify-center.items-center(v-if="!rowOverlay")
-          base-button(
-            v-if="isOpenChange",
-            @click="closeChangeData",
-            confirm,
-            rounded,
-            outlined,
-            :size="20"
-          )
-            .icon-ok.text-xsm(class="pt-[3px]")
-          .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(
-            v-show="!isOpenChange",
-            :tabindex="1",
-            @click="(e) => openPopup(e)",
-            @blur="handleUnFocusPopup"
-          )
-            clients-action-popup(
-              v-if="isOpenPopup",
-              :open-change-data="openChangeData",
-              :disabled-delete="!!deletedClientId && !rowOverlay",
-              @delete-client="transmitDeleteClient"
-            )
       client-detail-info-wrapper.detail.px-52px(
         :class="{'pb-[30px] pt-4': isOpenDetailInfo}"
         :data-address="dataAddress",
@@ -629,7 +630,7 @@ export default {
 .check-box
   min-width: 36px
 .dots
-  min-width: 53px
+  min-width: 14px
 .dots-button
   width: 20px
   height: 20px
