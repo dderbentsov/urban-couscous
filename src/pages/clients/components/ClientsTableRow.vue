@@ -85,6 +85,29 @@
           :is-open-change="isOpenChange",
           :width="columnBody.find(el => el.name === 'networks').width"
         )
+<<<<<<< HEAD
+=======
+      transition(name="detail")      
+        client-detail-info-wrapper.detail(
+          v-if="isOpenDetailInfo",
+          :data-address="dataAddress",
+          :data-detail="dataDetail",
+          :data-attachments="dataAttachments",
+          :data-document="dataIdentityDocument",
+          :save-new-doc="saveNewDoc",
+          :delete-doc="deleteDoc",
+          :update-document="postUpdateIdentityDocument",
+          :update-address="postUpdateAddress",
+          :lack-data="lackData",
+          :lack-address="lackAddress",
+          :dope-address="dopeAddress",
+          :lack-attachments="lackAttachments",
+          :create-address="postCreateAddress",
+          :create-document="postCreateIdentityDocument",
+          :address-id="addressId",
+          :doc-id="docId",
+        )
+>>>>>>> e5fcfd5baecb94a416445131391f2d1f3ebc4bad
       client-detail-info-wrapper.detail.px-52px(
         :class="{'pb-[30px] pt-4': isOpenDetailInfo}"
         :data-address="dataAddress",
@@ -103,7 +126,6 @@
         :create-document="postCreateIdentityDocument",
         :address-id="addressId",
         :doc-id="docId",
-      )
 </template>
 
 <script>
