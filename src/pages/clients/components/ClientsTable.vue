@@ -7,7 +7,7 @@
       :change-clearing-text-search="changeClearingTextSearch",
       @search="filterDataClients",
     )
-    .flex.flex-col.h-full.gap-y-2.table-container.w-full.mt-8.mb-3
+    .flex.flex-col.h-full.table-container.w-full.mt-8.mb-3
       clients-table-header(:check="selectedCheck" :is-check="selectAll")
       .flex.flex-col
         clients-table-row(
