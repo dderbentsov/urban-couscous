@@ -73,7 +73,7 @@ export const column = [
         icon: "icon-tg",
       },
       {
-        network: "GOOGLE",
+        network: "GMAIL",
         icon: "icon-google",
       },
       {

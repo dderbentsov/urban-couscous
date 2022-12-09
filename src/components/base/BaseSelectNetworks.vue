@@ -1,19 +1,21 @@
 <template lang="pug">
   .flex.box-border.container.items-center.cursor-pointer.justify-center.relative(
-    @click="changeSelect"
+    @click="changeSelect",
+    v-click-outside="closeSelect",
     :class="{border: styleBorder}"
-    )
+  )
     .flex.select.cursor-pointer.w-full.text-xl.items-center.networks(:class="optionData, 'px-2.5'")
       .absolute.options.top-11.left-0(
-        v-show="isSelectOpen"
-        :id="id")
+        v-show="isSelectOpen",
+        :id="id"
+      )
         .flex.option.justify-center.py-1.text-xl(
-          v-for="data in listData"
-          @click="(e) => chooseOption(e)"
-          :key="data.network"
-          :id="data.network"
+          v-for="data in listData",
+          @click="(e) => chooseOption(e)",
+          :key="data.network",
+          :id="data.network",
           :class="data.icon"
-          )
+        )
     .select-form-separator.cursor-pointer.mr-6px(v-if="separator")
 </template>
 
@@ -44,6 +46,9 @@ export default {
   methods: {
     changeSelect() {
       this.isSelectOpen = !this.isSelectOpen;
+    },
+    closeSelect() {
+      this.isSelectOpen = false;
     },
   },
 };

@@ -282,7 +282,9 @@ export default {
         )
           updateContacts.push(this.dataClient.email);
       });
-      createContacts.forEach((el) => this.postCreateContact(el));
+      createContacts.forEach((el) => {
+        if (!el.id) this.postCreateContact(el);
+      });
       deleteContacts.forEach((el) => this.postDeleteContact(el));
       updateContacts.forEach((el) => this.postUpdateContact(el));
     },
@@ -296,11 +298,13 @@ export default {
         .then(() => this.fetchDataClients());
     },
     postUpdateContact(contact) {
-      fetchWrapper.post(`general/contact/${contact.id}/update/`, {
-        kind: contact.kind,
-        username: contact.username,
-        person_id: this.client.id,
-      });
+      fetchWrapper
+        .post(`general/contact/${contact.id}/update/`, {
+          kind: contact.kind,
+          username: contact.username,
+          person_id: this.client.id,
+        })
+        .then(() => this.fetchDataClients());
     },
     postDeleteContact(contact) {
       fetchWrapper.del(`general/contact/${contact.id}/delete/`);
@@ -549,45 +553,55 @@ export default {
         });
     },
   },
-  created() {
-    this.dataClient = {
-      id: this.client.id,
-      fullName: `${this.client.last_name || ""} ${
-        this.client.first_name || ""
-      } ${this.client.patronymic || ""}`,
-      age: this.client.birth_date || "",
-      priority: this.prioritySettings.settings.find(
-        (el) =>
-          el.priority === this.client.priority || this.client.priority === el.id
-      ).text,
-      phone: {
-        id: this.client.contacts.find((el) => el.kind === "PHONE")?.id || "",
-        kind: "PHONE",
-        username:
-          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
-          "",
-      },
-      email: {
-        id: this.client.contacts.find((el) => el.kind === "EMAIL")?.id || "",
-        kind: "EMAIL",
-        username:
-          this.client.contacts.find((el) => el.kind === "EMAIL")?.username ||
-          "",
-      },
-      contacts: [...this.client.contacts],
-      avatar: this.client.first_name
-        ? this.client.last_name[0] + this.client.first_name[0]
-        : this.client.last_name.substr(0, 2),
-      color: this.client.color,
-      photo: this.client.photo,
-    };
-  },
   watch: {
     rowOverlay() {
       if (this.rowOverlay) this.startTimer();
     },
+    client: {
+      deep: true,
+      immediate: true,
+      handler(newValue) {
+        if (newValue) {
+          this.dataClient = {
+            id: this.client.id,
+            fullName: `${this.client.last_name || ""} ${
+              this.client.first_name || ""
+            } ${this.client.patronymic || ""}`,
+            age: this.client.birth_date || "",
+            priority: this.prioritySettings.settings.find(
+              (el) =>
+                el.priority === this.client.priority ||
+                this.client.priority === el.id
+            ).text,
+            phone: {
+              id:
+                this.client.contacts.find((el) => el.kind === "PHONE")?.id ||
+                "",
+              kind: "PHONE",
+              username:
+                this.client.contacts.find((el) => el.kind === "PHONE")
+                  ?.username || "",
+            },
+            email: {
+              id:
+                this.client.contacts.find((el) => el.kind === "EMAIL")?.id ||
+                "",
+              kind: "EMAIL",
+              username:
+                this.client.contacts.find((el) => el.kind === "EMAIL")
+                  ?.username || "",
+            },
+            contacts: [...this.client.contacts],
+            avatar: this.client.first_name
+              ? this.client.last_name[0] + this.client.first_name[0]
+              : this.client.last_name.substr(0, 2),
+            color: this.client.color,
+            photo: this.client.photo,
+          };
+        }
+      },
+    },
   },
-
   beforeUnmount() {
     if (this.timer) {
       this.deleteClient();
