@@ -1,5 +1,8 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(:style="{ minWidth : width + 'px' }")
+  .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(
+    :style="{ minWidth : width + 'px' }",
+    :class="{'open-change': isOpenChange}"
+  )
     base-avatar(:size="36", :color="avatarColor", v-if="!photo") {{avatar}}
     base-avatar(:size="36", v-else)
       img.h-full.object-cover(:src="url + photo")
@@ -39,4 +42,6 @@ export default {
   border-radius: 50%
   background-color: var(--font-grey-color)
   color: var(--font-dark-blue-color)
+.open-change
+  padding-left: 52px
 </style>
