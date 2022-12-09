@@ -1,6 +1,8 @@
 <template lang="pug">
   .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
-    :style="{flexDirection:settings[section].rowFlex && 'row', width: settings[section].width + 'px', height: settings[section].height + 'px', background: changeBackground}"
+    :style="{width: settings[section].width + 'px', 'min-height': settings[section].height + 'px', background: changeBackground}",
+    :class="sectionAnimationClasses",
+    @click="output(section)"
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
@@ -59,8 +61,8 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(
-      v-if="this.isData || this.isAddress || this.isAttachments"
+    .section-body.flex.flex-col.gap-y-4.px-4(
+      :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
     )
       .flex.flex-col.gap-y-4
         .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
@@ -110,7 +112,7 @@
               span.text-sm {{item.title}}
             span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
     .section-add.flex.justify-center.items-center.cursor-pointer(
-      v-else,
+      :style="{height: settings[section].voidHeight + 'px'}"
       @click="openAddDoc"
     ) Добавить данные
 </template>
@@ -199,8 +201,21 @@ export default {
         ? this.sectionInfo.issued_by_date.split("-").reverse().join(".")
         : "";
     },
+    sectionAnimationClasses() {
+      if (this.isData || this.isAddress || this.isAttachments) {
+        return {
+          "closed-add": true,
+        };
+      }
+      return {
+        "closed-body": true,
+      };
+    },
   },
   methods: {
+    output(section) {
+      console.log(section);
+    },
     openAddDoc() {
       this.isChange = true;
       if (this.section === "pass") {
@@ -364,7 +379,9 @@ export default {
   opacity: 0.6
 
 .section-body
-  overflow-y: auto
+  max-height: 500px
+  transition: 0.3s ease all
+  overflow: hidden
   &::-webkit-scrollbar
     width: 4px
   &::-webkit-scrollbar-track
@@ -385,9 +402,17 @@ export default {
     opacity: 0.6
 
 .section-add
-  height: 100%
-  min-height: 64px
+  height: calc(100% - 44px)
+  max-height: 100%
+  overflow: hidden
+  transition: 0.3s ease all
   color: var(--btn-blue-color)
+
+.closed-add .section-add
+  max-height: 0
+
+.closed-body .section-body
+  max-height: 0
 
 .line
   width: 100%

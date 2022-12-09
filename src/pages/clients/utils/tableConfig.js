@@ -126,6 +126,7 @@ export const detail = {
       issued_by_date: "Дата",
     },
     width: 280,
+    voidHeight: 242,
   },
   snils: {
     title: "СНИЛС",
@@ -162,12 +163,14 @@ export const detail = {
       join_adress: "Введите адрес целиком",
     },
     width: 292,
+    voidHeight: 86,
   },
   docs: {
     title: "Документы",
     height: 280,
     width: 360,
     addFile: true,
+    voidHeight: 236,
   },
   additional: {
     title: "Дополнительные данные",
