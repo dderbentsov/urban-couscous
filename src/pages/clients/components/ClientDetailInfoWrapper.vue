@@ -1,5 +1,5 @@
 <template lang="pug">
-  .w-full.h-fit.pt-4.flex.gap-x-4(class="px-[52px] pb-[30px]")
+  .w-full.h-fit.flex.gap-x-4
     client-detail-info-section(
       v-model:section-info="dataDocument",
       section="pass",

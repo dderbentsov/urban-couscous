@@ -3,7 +3,7 @@
     class="py-2.5"
     :style="{ minWidth: widthInput + 'px' }"
   )
-    input.input.w-full.outline-0.not-italic(
+    input.input.w-full.outline-0.not-italic.cursor-text(
       :value="value"
       type="time"
       @input="$emit('update:value', $event.target.value)"

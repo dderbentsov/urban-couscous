@@ -5,7 +5,7 @@
     )
       button.recover-btn(@click="stopTimer") Восстановить
       .countdown 0:{{ countdown }}
-    .row-wrapper.flex.flex-col.w-full
+    .row-wrapper.flex.flex-col.w-full(:class="closedDetail")
       .row-body.flex.w-full.cursor-pointer(
         :id="id",
         @click="(e) => openDetailInfo(e)",
@@ -84,26 +84,25 @@
               :disabled-delete="!!deletedClientId && !rowOverlay",
               @delete-client="transmitDeleteClient"
             )
-      transition(name="detail")      
-        client-detail-info-wrapper.detail(
-          v-if="isOpenDetailInfo",
-          :data-address="dataAddress",
-          :data-detail="dataDetail",
-          :data-attachments="dataAttachments",
-          :data-document="dataIdentityDocument",
-          :save-new-doc="saveNewDoc",
-          :delete-doc="deleteDoc",
-          :update-document="postUpdateIdentityDocument",
-          :update-address="postUpdateAddress",
-          :lack-data="lackData",
-          :lack-address="lackAddress",
-          :dope-address="dopeAddress",
-          :lack-attachments="lackAttachments",
-          :create-address="postCreateAddress",
-          :create-document="postCreateIdentityDocument",
-          :address-id="addressId",
-          :doc-id="docId",
-        )
+      client-detail-info-wrapper.detail.px-52px(
+        :class="{'pb-[30px] pt-4': isOpenDetailInfo}"
+        :data-address="dataAddress",
+        :data-detail="dataDetail",
+        :data-attachments="dataAttachments",
+        :data-document="dataIdentityDocument",
+        :save-new-doc="saveNewDoc",
+        :delete-doc="deleteDoc",
+        :update-document="postUpdateIdentityDocument",
+        :update-address="postUpdateAddress",
+        :lack-data="lackData",
+        :lack-address="lackAddress",
+        :dope-address="dopeAddress",
+        :lack-attachments="lackAttachments",
+        :create-address="postCreateAddress",
+        :create-document="postCreateIdentityDocument",
+        :address-id="addressId",
+        :doc-id="docId",
+      )
 </template>
 
 <script>
@@ -184,6 +183,11 @@ export default {
   computed: {
     rowOverlay() {
       return this.deletedClientId === this.client.id;
+    },
+    closedDetail() {
+      return {
+        "closed-detail": !this.isOpenDetailInfo,
+      };
     },
   },
   methods: {
@@ -340,7 +344,7 @@ export default {
       addNotification(new Date().getTime(), title, message, "success", 5000);
     },
     addErrorNotification(title, message) {
-      addNotification(title, title, message, "error", 0);
+      addNotification(title, title, message, "error", 5000);
     },
     fetchClientDetail(id) {
       fetchWrapper
@@ -420,15 +424,15 @@ export default {
     },
     saveAddress(data) {
       this.addressId = data?.id;
-      if (data?.join_adress && data?.join_adress.substr(0, 4) !== "None") {
+      if (data?.full_address) {
         this.dataAddress = {
-          join_adress: data?.join_adress,
+          full_address: data.full_address,
         };
         this.lackAddress = true;
       } else {
         this.lackAddress = false;
         this.dataAddress = {
-          join_adress: "",
+          full_address: "",
         };
       }
     },
@@ -455,7 +459,8 @@ export default {
     postUpdateAddress() {
       fetchWrapper
         .post(`general/address/${this.addressId}/update/`, {
-          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
+          full_address:
+            this.mergeFullAddress() || this.dataAddress.full_address,
         })
         .then((response) => {
           this.fetchClientDetail(this.id);
@@ -501,7 +506,8 @@ export default {
       fetchWrapper
         .post("general/address/create/", {
           person_id: this.id,
-          full_address: this.mergeFullAddress() || this.dataAddress.join_adress,
+          full_address:
+            this.mergeFullAddress() || this.dataAddress.full_address,
         })
         .then((response) => {
           this.fetchClientDetail(this.id);
@@ -601,9 +607,7 @@ export default {
 .row-wrapper
   border-bottom: 1px solid var(--border-light-grey-color)
   min-width: 1556px
-.row-wrapper:hover .detail
-  background-color: var(--bg-hover-row-table)
-.row-wrapper:hover .row-body
+.row-wrapper:hover
   background-color: var(--bg-hover-row-table)
 .row-body
   color: var(--font-dark-blue-color)
@@ -634,18 +638,10 @@ export default {
   color: var(--btn-blue-color)
 .countdown
   color: var(--font-grey-color )
-.detail-enter-from
-  opacity: 0
-  transform: translateY(-2px)
-  pointer-events: none
-.detail-enter-active
-  transition: 0.1s ease
-.detail-leave-to
-  opacity: 0
-  transform: translateY(-2px)
-  pointer-events: none
-.detail-leave-active
-  transition: 0.1s ease
-.detail-move
-  transition: 0.1s ease
+.detail
+  max-height: 560px
+  transition: 0.3s ease all
+  overflow: hidden
+.closed-detail .detail
+  max-height: 0
 </style>

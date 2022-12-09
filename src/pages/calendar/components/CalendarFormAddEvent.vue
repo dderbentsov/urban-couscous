@@ -37,14 +37,14 @@
         .flex.gap-x-2.items-center
           .flex.flex-col(class="gap-y-1.5")
             span.text-xs.opacity-40.font-bold.leading-3 Начало
-            base-input-time.item-input.text-base.cursor-text.select(
+            base-input-time.item-input.text-base.select(
               v-model:value="startTime",
               :width-input="72"
             )
           span.mt-4 —
           .flex.flex-col(class="gap-y-1.5")
             span.text-xs.opacity-40.font-bold.leading-3 Конец
-            base-input-time.item-input.text-base.cursor-text.select(
+            base-input-time.item-input.text-base.select(
               v-model:value="endTime",
               :width-input="72"
             )

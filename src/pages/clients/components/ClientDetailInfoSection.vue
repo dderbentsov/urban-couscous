@@ -256,7 +256,7 @@ export default {
       }
       if (this.section === "addresses") {
         if (!this.addressId) {
-          if (this.sectionInfo.join_adress === "") this.isAddress = false;
+          if (this.sectionInfo.full_address === "") this.isAddress = false;
           this.createAddress();
         } else this.updateAddress();
       }
