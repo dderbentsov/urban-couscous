@@ -23,7 +23,7 @@
       base-popup.right-3.top-6(
         v-if="isOpenPopupAdding",
         @click.stop,
-        v-click-outside="closePopup",
+        v-click-outside.stop="closePopup",
         :width="485"
       )
         base-adding-network(
