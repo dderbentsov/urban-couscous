@@ -1,6 +1,12 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.w-full.text-sm(:style="{ minWidth : width + 'px' }")
-    span(v-if="!isOpenChange") {{value.email.username}}
+  .flex.box-border.px-4.items-center.w-full.text-sm(
+    :style="{ minWidth: width + 'px', maxWidth: isHover && this.value.email.username.length >= 25 ? width + 30 + 'px' : width + 'px' }"
+  )
+    span.z-10(
+      v-if="!isOpenChange",
+      @mouseover="changeHover",
+      @mouseleave="changeHover"
+    ) {{maxValue}}
     base-input(
       v-if="isOpenChange",
       :width-input="234",
@@ -19,6 +25,23 @@ export default {
     value: Object,
     width: Number,
     isOpenChange: Boolean,
+  },
+  data() {
+    return {
+      isHover: false,
+    };
+  },
+  computed: {
+    maxValue() {
+      return this.value.email.username.length >= 25 && !this.isHover
+        ? this.value.email.username.substr(0, 25) + "..."
+        : this.value.email.username;
+    },
+  },
+  methods: {
+    changeHover() {
+      this.isHover = !this.isHover;
+    },
   },
 };
 </script>

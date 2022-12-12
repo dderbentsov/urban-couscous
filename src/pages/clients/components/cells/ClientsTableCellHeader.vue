@@ -1,5 +1,8 @@
 <template lang="pug">
-  .flex.box-border.justify-between.px-4.items-center(:style="{ minWidth : width + 'px' }" :class="{width:generateWidth}")
+  .flex.box-border.justify-between.items-center(
+    :style="{ minWidth : width + 'px', maxWidth: width + 'px', padding: generateWidth ? '0px 16px' : '0px 10px' }",
+    :class="{width:generateWidth}"
+  )
     span.text-sm(v-if="title") {{title}}
     slot
 </template>

@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.w-full.gap-x-2(:style="{ minWidth : width + 'px' }")
+  .flex.box-border.px-4.items-center.w-full.gap-x-2(:style="{ minWidth : width + 'px', maxWidth : width + 'px' }")
     .flex.gap-x-2.items-center(v-if="!isOpenChange")
       .dot.w-2.h-2(:style="{ backgroundColor: prioritySettings.settings.find((el) => el.text == value.priority).color }")
       span.text-sm(:style="{ color: prioritySettings.settings.find((el) => el.text == value.priority).color }") {{value.priority}}

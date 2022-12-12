@@ -6,7 +6,7 @@
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
       .flex.items-center.gap-x-8
         base-button(
-          v-if="isChange",
+          v-if="isChange && (this.isData || this.isAddress || this.isAttachments)",
           @click.stop="changeDoc",
           confirm,
           rounded,
@@ -15,7 +15,7 @@
         )
           .icon-ok.text-xsm(class="pt-[3px]")
         .edit.icon-edit.cursor-pointer.text-sm(
-          v-if="!isChange",
+          v-if="!isChange && (this.isData || this.isAddress || this.isAttachments)",
           @click="changeClientData"
         )
         .flex.relative
@@ -28,7 +28,11 @@
             :size="24"
           )
             .icon-plus(class="pt-[2px]")
-          base-popup.right-3.top-5(v-if="section === 'docs' && isOpenAddingWrap", :width="244")
+          base-popup.right-3.top-5(
+            v-if="section === 'docs' && isOpenAddingWrap",
+            v-click-outside="closePopup",
+            :width="244"
+          )
             table-choice-adding-doc(
               :add-new-doc="addNewDoc",
               :save-docs="saveDocs",
@@ -46,6 +50,7 @@
               :add-new-doc="addNewDoc",
               :new-docs="docData",
               :close-modal="changeShowModal",
+              v-click-outside="closeAddDocs"
             )
             table-create-package-doc(v-if="isOpenPackage")
           table-adding-new-additional(
@@ -225,6 +230,12 @@ export default {
     changeShowModal() {
       this.showModal = false;
       this.saveDocs();
+    },
+    closePopup() {
+      this.isOpenAddingWrap = false;
+    },
+    closeAddDocs() {
+      this.isAttachments = false;
     },
     checkDataPresence(data) {
       let postData = JSON.parse(JSON.stringify(data));

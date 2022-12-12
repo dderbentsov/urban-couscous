@@ -370,7 +370,6 @@ export default {
     changeOpenModal() {
       this.showModal = true;
       this.showPopup = false;
-      this.image = [addImageIcon];
     },
     changeOpenPopup() {
       this.showPopup = true;
