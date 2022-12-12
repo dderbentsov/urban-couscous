@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex.box-border.px-4.items-center.gap-x-3.w-full.text-sm(
-    :style="{ minWidth : width + 'px' }",
+    :style="{ minWidth : width + 'px', maxWidth : width + 'px' }",
     :class="{'open-change': isOpenChange}"
   )
     base-avatar(:size="36", :color="avatarColor", v-if="!photo") {{avatar}}

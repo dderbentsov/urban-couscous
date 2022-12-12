@@ -15,7 +15,7 @@ export const column = [
     name: "age",
     title: "Дата рождения",
     iconHead: true,
-    width: 140,
+    width: 180,
   },
   {
     name: "priority",
@@ -47,7 +47,7 @@ export const column = [
       },
     ],
     iconHead: true,
-    width: 124,
+    width: 180,
   },
   {
     name: "phone",

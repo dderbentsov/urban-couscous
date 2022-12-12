@@ -1,5 +1,5 @@
 <template lang="pug">
-  .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px' }")
+  .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px', maxWidth : width + 'px' }")
     .flex.gap-x-1
       .text-xl.icon.relative(
         v-for="network in getNetworks",

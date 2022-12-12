@@ -1,5 +1,5 @@
 <template lang="pug">
-  .flex.box-border.px-4.items-center.w-full.text-sm(:style="{ minWidth : width + 'px' }")
+  .flex.box-border.px-4.items-center.w-full.text-sm(:style="{ minWidth : width + 'px', maxWidth : width + 'px' }")
     span(v-if="!isOpenChange") {{value.age ? value.age.split("-").reverse().join(".") : ""}}
     base-input-date.input.max-h-10(
       v-if="isOpenChange",
