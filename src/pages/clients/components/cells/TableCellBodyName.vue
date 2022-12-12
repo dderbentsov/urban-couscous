@@ -43,5 +43,5 @@ export default {
   background-color: var(--font-grey-color)
   color: var(--font-dark-blue-color)
 .open-change
-  padding-left: 52px
+  padding-left: 36px
 </style>

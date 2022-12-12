@@ -25,7 +25,7 @@
               @delete-client="transmitDeleteClient"
             )
         .dots.flex.justify-center.items-center(v-if="!rowOverlay")
-          .flex.pl-5.z-10(v-if="isOpenChange")
+          .flex.z-10(v-if="isOpenChange", class="pl-[10px]")
             base-button(
               @click="closeChangeData",
               confirm,
