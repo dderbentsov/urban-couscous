@@ -1,10 +1,10 @@
 <template lang="pug">
   .layout-switch-wrapper.inline-block
-    button#day.py-2.px-3(
+    button#day.py-2.px-3.transition.duration-200.ease-linear(
       :class="dayLayoutState",
       @click="changeSelectedLayout"
     ) День
-    button#week.py-2.px-3(
+    button#week.py-2.px-3.transition.duration-200.ease-linear(
       :class="weekLayoutState",
       @click="changeSelectedLayout"
     ) Неделя

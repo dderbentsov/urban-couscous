@@ -126,7 +126,7 @@ export const detail = {
       issued_by_date: "Дата",
     },
     width: 280,
-    voidHeight: 242,
+    voidHeight: 244,
   },
   snils: {
     title: "СНИЛС",

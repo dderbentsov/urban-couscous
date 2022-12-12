@@ -63,7 +63,7 @@
     transition(name="section", mode="out-in")
       .flex.justify-center.items-center(
         v-if="sectionDataPresence",
-        :style="{height: settings[section].voidHeight + 'px'}"
+        :style="{height: settings[section].voidHeight + 'px'}",
       )
         base-loader(
           :width="60",
@@ -72,6 +72,7 @@
       .section-body.flex.flex-col.gap-y-4.px-4(
         v-else-if="(this.isData || this.isAddress || this.isAttachments) && !isChange",
         :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
+        :style="{height: settings[section].voidHeight + 'px'}"
       )
         .flex.flex-col.gap-y-4
           .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
