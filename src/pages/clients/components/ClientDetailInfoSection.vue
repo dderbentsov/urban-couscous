@@ -14,11 +14,11 @@
           :size="20"
         )
           .icon-ok.text-xsm(class="pt-[3px]")
-        .edit.icon-edit.cursor-pointer.text-sm(
+        .edit.cursor-pointer(
           v-if="!isChange && (this.isData || this.isAddress || this.isAttachments)",
           @click="changeClientData"
         )
-          .icon-edit.text-base.mt-1
+          .icon-edit.text-base.mt-2px
         .flex.relative
           base-button(
             v-if="settings[section].addFile",
@@ -227,16 +227,6 @@ export default {
       return this.sectionInfo["issued_by_date"]
         ? this.sectionInfo.issued_by_date.split("-").reverse().join(".")
         : "";
-    },
-    sectionAnimationClasses() {
-      if (this.isData || this.isAddress || this.isAttachments) {
-        return {
-          "closed-add": true,
-        };
-      }
-      return {
-        "closed-body": true,
-      };
     },
     sectionDataPresence() {
       if (this.section === "docs") {
