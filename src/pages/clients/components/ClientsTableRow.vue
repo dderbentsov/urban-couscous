@@ -146,7 +146,11 @@ export default {
     return {
       dataIdentityDocument: {},
       dataAddress: {},
-      dataAttachments: [],
+      dataAttachments: [
+        {
+          initialization: true,
+        },
+      ],
       dataDetail: {},
       isOpenDetailInfo: false,
       isOpenPopup: false,

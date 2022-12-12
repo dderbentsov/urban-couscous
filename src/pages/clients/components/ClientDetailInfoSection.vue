@@ -1,6 +1,6 @@
 <template lang="pug">
   .section-wrapper.flex.flex-col.h-fit.cursor-pointer(
-    :style="{flexDirection:settings[section].rowFlex && 'row', width: settings[section].width + 'px', height: settings[section].height + 'px', background: changeBackground}"
+    :style="{width: settings[section].width + 'px', 'min-height': settings[section].height + 'px', background: changeBackground}",
   )
     .section-header.flex.items-center.justify-between.pl-4.pr-3(:class="{small:settings[section].rowFlex}")
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
@@ -14,10 +14,11 @@
           :size="20"
         )
           .icon-ok.text-xsm(class="pt-[3px]")
-        .edit.icon-edit.cursor-pointer.text-sm(
+        .edit.cursor-pointer(
           v-if="!isChange && (this.isData || this.isAddress || this.isAttachments)",
           @click="changeClientData"
         )
+          .icon-edit.text-base.mt-2px
         .flex.relative
           base-button(
             v-if="settings[section].addFile",
@@ -25,9 +26,9 @@
             :rounded="true",
             :outlined="true",
             :added="true",
-            :size="24"
+            :size="20"
           )
-            .icon-plus(class="pt-[2px]")
+            .icon-plus.text-sm(class="pt-[2px]")
           base-popup.right-3.top-5(
             v-if="section === 'docs' && isOpenAddingWrap",
             v-click-outside="closePopup",
@@ -59,60 +60,86 @@
             :add-new-additional="addDocAdditional",
             :save-additional="saveDocs"
           )
-    .section-body.w-full.flex.flex-col.px-4.pt-3.pb-4.gap-y-4(
-      v-if="this.isData || this.isAddress || this.isAttachments"
-    )
-      .flex.flex-col.gap-y-4
-        .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
-          span.title-section.font-semibold.text-xs(
-            v-if="settings[section].options") {{settings[section].options[key]}}
-          span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
-          client-detail-input.text-sm.w-max-fit(
-            v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
-            :style="{fontWeight:key === 'numba'&&600}",
-            v-model:value="sectionInfo[key]",
-            :rows="section ==='pass' ? 2 : 1",
-            :placeholder="settings[section].placeholder[key]"
-            :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
-          )
-          base-input-date.input.text-sm(
-            v-else-if="isChange && section !== 'docs'",
-            v-model:value="sectionInfo.issued_by_date"
-          )
-             .copy.icon-copy.cursor-pointer(
-              v-if="item.copy",
-              @click="() => copyValue(item)"
+    transition(name="section", mode="out-in")
+      .flex.justify-center.items-center(
+        v-if="sectionDataPresence",
+        :style="{height: settings[section].voidHeight + 'px'}",
+      )
+        base-loader(
+          :width="60",
+          :height="60"
+        )
+      .section-body.flex.flex-col.gap-y-4.px-4(
+        v-else-if="(this.isData || this.isAddress || this.isAttachments) && !isChange",
+        :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
+        :style="{height: settings[section].voidHeight + 'px'}"
+      )
+        .flex.flex-col.gap-y-4
+          .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
+            span.title-section.font-semibold.text-xs(v-if="settings[section].options") {{settings[section].options[key]}}
+            span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}
+            .flex(v-if="settings[section].options && !isChange")
+              span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{key === 'issued_by_date' ? formattedDate : item}}
+              .copy.icon-copy.cursor-pointer.pl-4(
+                v-if="key === 'numba'",
+                @click="() => copyValue(item)"
+              )
+            .flex(v-if="item.name && !isChange")
+              span.text-sm.w-fit {{item.title}}
+            .flex.items-center(v-if="item.title")
+              .flex.gap-x-2.items-center
+                img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
+                span.text-sm {{item.title}}
+              span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
+      .section-body.flex.flex-col.gap-y-4.px-4(
+        v-else-if="(this.isData || this.isAddress || this.isAttachments) && isChange",
+        :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
+      )
+        .flex.flex-col.gap-y-4
+          .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
+            span.title-section.font-semibold.text-xs(
+              v-if="settings[section].options",
+            ) {{settings[section].options[key]}}
+            span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}  
+            client-detail-input.text-sm.w-max-fit(
+              v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
+              :style="{fontWeight:key === 'numba'&&600}",
+              v-model:value="sectionInfo[key]",
+              :rows="section ==='pass' ? 2 : 1",
+              :placeholder="settings[section].placeholder[key]"
+              :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
             )
-          .flex(v-if="settings[section].options && !isChange")
-            span.text-sm.w-fit(:style="{fontWeight:key === 'numba'&&600}") {{key === 'issued_by_date' ? formattedDate : item}}
-            .copy.icon-copy.cursor-pointer.pl-4(
-              v-if="key === 'numba'",
-              @click="() => copyValue(item)"
+            base-input-date.input.text-sm(
+              v-else-if="isChange && section !== 'docs'",
+              v-model:value="sectionInfo.issued_by_date"
             )
-          .separation.flex.items-center.justify-center.relative.mt-10px.mb(
-            v-if="section === 'addresses' && isChange",
-            class="gap-y-1.5"
-          )
-            .line.absolute
-            .text-separation.span.text-sm.separator.px-2 или
-          .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
-            client-detail-section-address(:dope-address="dopeAddress")
-          .flex(v-if="item.name && !isChange")
-            span.text-sm.w-fit {{item.title}}
-          .flex.items-center(v-if="item.title")
-            .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
-              v-if="isChange",
-              :id="item.id",
-              @click="deleteDoc(item.id)"
+              .copy.icon-copy.cursor-pointer(
+                v-if="item.copy",
+                @click="() => copyValue(item)"
+              )
+            .separation.flex.items-center.justify-center.relative.mt-10px.mb(
+              v-if="section === 'addresses' && isChange",
+              class="gap-y-1.5"
             )
-            .flex.gap-x-2.items-center
-              img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
-              span.text-sm {{item.title}}
-            span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
-    .section-add.flex.justify-center.items-center.cursor-pointer(
-      v-else,
-      @click="openAddDoc"
-    ) Добавить данные
+              .line.absolute
+              .text-separation.span.text-sm.separator.px-2 или
+            .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
+              client-detail-section-address(:dope-address="dopeAddress")
+            .flex.items-center(v-if="item.title")
+              .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
+                v-if="isChange",
+                :id="item.id",
+                @click="deleteDoc(item.id)"
+              )
+              .flex.gap-x-2.items-center
+                img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
+                span.text-sm {{item.title}}
+              span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
+      .section-add.flex.justify-center.items-center.cursor-pointer(
+        v-else
+        :style="{height: settings[section].voidHeight + 'px'}"
+        @click="openAddDoc"
+      ) Добавить данные
 </template>
 
 <script>
@@ -131,6 +158,7 @@ import pdfIcon from "@/assets/icons/pdf.svg";
 import wordIcon from "@/assets/icons/word.svg";
 import exelIcon from "@/assets/icons/exel.svg";
 import * as moment from "moment";
+import BaseLoader from "@/components/Loader/BaseLoader.vue";
 export default {
   name: "ClientDetailInfoSection",
   components: {
@@ -144,6 +172,7 @@ export default {
     TableCreatePackageDoc,
     TableAddingNewDoc,
     TableChoiceAddingDoc,
+    BaseLoader,
   },
   props: {
     saveNewDoc: Function,
@@ -198,6 +227,12 @@ export default {
       return this.sectionInfo["issued_by_date"]
         ? this.sectionInfo.issued_by_date.split("-").reverse().join(".")
         : "";
+    },
+    sectionDataPresence() {
+      if (this.section === "docs") {
+        return this.sectionInfo[0]?.initialization;
+      }
+      return Object.keys(this.sectionInfo).length === 0;
     },
   },
   methods: {
@@ -375,6 +410,8 @@ export default {
     background-color: var(--btn-blue-color)
 
 .edit
+  width: 20px
+  height: 20px
   color: var(--btn-blue-color)
   &:hover
     opacity: 0.6
@@ -386,8 +423,32 @@ export default {
 
 .section-add
   height: 100%
-  min-height: 64px
   color: var(--btn-blue-color)
+
+.closed-add .section-add
+  max-height: 0
+
+.closed-body .section-body
+  max-height: 0
+
+.section-enter-from
+  opacity: 0
+  transform: translateY(0px)
+  pointer-events: none
+
+.section-enter-active
+  transition: 0.3s ease
+
+.section-leave-to
+  opacity: 0
+  transform: translateY(0px)
+  pointer-events: none
+
+.section-leave-active
+  transition: 0.3s ease
+
+.section-move
+  transition: 0.3s ease
 
 .line
   width: 100%

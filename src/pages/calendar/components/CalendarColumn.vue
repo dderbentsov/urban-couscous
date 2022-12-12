@@ -13,19 +13,20 @@
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       column-header-checkbox
     .body.pl-1
-      calendar-event-card(
-        v-for="event in dayEvents",
-        :key="event.id",
-        :id="event.id",
-        :ownerEvent="event",
-        :event-types="eventTypes",
-        :style="eventCardPosition(event.start, event.end)",
-        :change-form-was-closed="changeFormWasClosed",
-        @selected-event="transmitEventData",
-        @reset-change-form="transmitResetChangeForm",
-        @delete-event="transmitDeleteEvent",
-        :schedule-body-ref="scheduleBodyRef"
-      )
+      transition-group(name="card", tag="div")
+        calendar-event-card(
+          v-for="event in dayEvents",
+          :key="event.id",
+          :id="event.id",
+          :ownerEvent="event",
+          :event-types="eventTypes",
+          :style="eventCardPosition(event.start, event.end)",
+          :change-form-was-closed="changeFormWasClosed",
+          @selected-event="transmitEventData",
+          @reset-change-form="transmitResetChangeForm",
+          @delete-event="transmitDeleteEvent",
+          :schedule-body-ref="scheduleBodyRef"
+        )
 </template>
 
 <script>
@@ -132,4 +133,21 @@ export default {
 
 .owner-name
   color: var(--font-dark-blue-color)
+
+.card-enter-from
+  opacity: 0
+  pointer-events: none
+
+.card-enter-active
+  transition: 0.3s ease
+
+.card-leave-to
+  opacity: 0
+  pointer-events: none
+
+.card-leave-active
+  transition: 0.3s ease
+
+.card-move
+  transition: 0.3s ease
 </style>
