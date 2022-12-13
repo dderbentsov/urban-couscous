@@ -1,6 +1,6 @@
 <template lang="pug">
   .button.relative.w-8.h-8.flex.justify-center.items-center.cursor-pointer
-    .prompt.absolute.w-fit.left-1.px-2.py-3.bottom-10.bg-amber-600
+    .prompt.fixed.w-fit.left-1.px-2.py-3.bottom-10.bg-amber-600
       span.text-sm {{prompt}}
     img(:src="img" :alt="prompt")
 </template>
