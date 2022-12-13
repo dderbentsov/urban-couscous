@@ -15,6 +15,8 @@
           @search="filterDataClients",
         )
         .flex.flex-col.h-full.table-container.w-full.mt-8.mb-3
+          base-modal(v-model="showMedicalCard")
+            form-create-medical-card
           clients-table-header(:check="selectedCheck" :is-check="selectAll")
           .flex.flex-col
             clients-table-row(
@@ -59,6 +61,7 @@ import BaseClientFormCreate from "@/components/base/BaseClientFormCreate";
 import ClientTablePagination from "./ClientTablePagination.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import ClientTableDeleteModal from "./ClientTableDeleteModal.vue";
+import FormCreateMedicalCard from "@/pages/clients/components/FormCreateMedicalCard";
 import BaseLoader from "@/components/Loader/BaseLoader.vue";
 export default {
   name: "ClientsTable",
@@ -71,6 +74,7 @@ export default {
     ClientTablePagination,
     BaseModal,
     ClientTableDeleteModal,
+    FormCreateMedicalCard,
     BaseLoader,
   },
   props: {
@@ -102,6 +106,7 @@ export default {
       deletedClientId: "",
       deletedRowId: "",
       clearingTextSearch: false,
+      showMedicalCard: false,
     };
   },
   computed: {
@@ -201,6 +206,9 @@ export default {
     },
     openModal() {
       this.showModal = true;
+    },
+    createMedicalCard() {
+      this.showMedicalCard = true;
     },
     deleteClientHandler(id) {
       this.deletedClientId = id;
