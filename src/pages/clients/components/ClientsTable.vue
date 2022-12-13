@@ -30,6 +30,7 @@
               :deleted-client-id="deletedRowId",
               :update-data-client="updateDataClient",
               :fetch-data-clients="fetchDataClients",
+              :create-medical-card="createMedicalCard",
               @delete-client="deleteClientHandler",
               @recover-client="clearDeletedRowId",
             )
