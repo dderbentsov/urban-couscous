@@ -1,5 +1,5 @@
 <template lang="pug">
-  .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth : width + 'px', maxWidth : width + 'px' }")
+  .network-cell.flex.box-border.px-4.items-center.w-full(:style="{ minWidth: width + 'px', maxWidth: width + 'px' }")
     .flex.gap-x-1
       .text-xl.icon.relative(
         v-for="network in getNetworks",
@@ -20,7 +20,7 @@
         :size="24"
       )
         .icon-plus(class="pt-[2px]")
-      base-popup.right-3.top-6(
+      base-popup.right-3.top-6.z-20(
         v-if="isOpenPopupAdding",
         @click.stop,
         v-click-outside.stop="closePopup",
@@ -76,8 +76,7 @@ export default {
   computed: {
     getNetworks() {
       return this.networks.filter(
-        (el) =>
-          el.kind !== "EMAIL" && el.kind !== "PHONE" && el.deleted_flg !== true
+        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE" && !el.deleted_flg
       );
     },
     getSelectedIcon() {

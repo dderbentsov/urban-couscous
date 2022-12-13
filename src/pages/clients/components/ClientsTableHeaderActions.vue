@@ -20,7 +20,7 @@ export default {
       dataBtn: [
         {
           img: group,
-          prompt: "сгрупировать",
+          prompt: "сгруппировать",
         },
         {
           img: edit,

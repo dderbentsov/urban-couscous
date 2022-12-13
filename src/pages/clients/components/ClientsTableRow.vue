@@ -316,7 +316,9 @@ export default {
         .then(() => this.fetchDataClients());
     },
     postDeleteContact(contact) {
-      fetchWrapper.del(`general/contact/${contact.id}/delete/`);
+      fetchWrapper
+        .del(`general/contact/${contact.id}/delete/`)
+        .then(() => this.fetchDataClients());
     },
     addNetwork(network) {
       this.dataClient.contacts.push(network);
