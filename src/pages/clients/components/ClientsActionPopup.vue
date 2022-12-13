@@ -8,6 +8,9 @@
       .button.keep-redaction.flex.gap-x-3
         .icon-star-off.icon
         span На ведение
+      .button.keep-redaction.flex.gap-x-3(@click="createMedicalCard")
+        .icon-star-off.icon
+        span Мед. карта
       .button.delete.flex.gap-x-3(
         @click="transmitDeleteClient",
         :style="{'opacity': disabledDelete && '0.7'}"
@@ -25,6 +28,7 @@ export default {
   props: {
     openChangeData: Function,
     disabledDelete: Boolean,
+    createMedicalCard: Function,
   },
   methods: {
     transmitDeleteClient() {
@@ -47,7 +51,7 @@ export default {
 <style lang="sass" scoped>
 .popup-wrapper
   width: 180px
-  height: 128px
+  height: 164px
   border-radius: 4px 0 4px 4px
   background-color: var(--default-white)
   box-shadow: var(--default-shadow)

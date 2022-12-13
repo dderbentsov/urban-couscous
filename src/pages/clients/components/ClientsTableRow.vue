@@ -22,7 +22,8 @@
               v-if="isOpenPopup",
               :open-change-data="openChangeData",
               :disabled-delete="!!deletedClientId && !rowOverlay",
-              @delete-client="transmitDeleteClient"
+              @delete-client="transmitDeleteClient",
+              :create-medical-card="createMedicalCard"
             )
         .dots.flex.justify-center.items-center(v-if="!rowOverlay")
           .flex.z-10(v-if="isOpenChange", class="pl-[10px]")
@@ -119,6 +120,7 @@ import ClientsActionPopup from "@/pages/clients/components/ClientsActionPopup";
 import ClientsTableCheckbox from "@/pages/clients/components/ClientsTableCheckbox";
 import ClientDetailInfoWrapper from "@/pages/clients/components/ClientDetailInfoWrapper";
 import BaseButton from "@/components/base/BaseButton";
+import BaseModal from "@/components/base/BaseModal";
 import { fetchWrapper } from "@/shared/fetchWrapper";
 import { column } from "@/pages/clients/utils/tableConfig";
 import TheNotificationProvider from "@/components/Notifications/TheNotificationProvider";
@@ -129,6 +131,7 @@ export default {
   name: "ClientsTableRow",
   components: {
     BaseButton,
+    BaseModal,
     ClientsTableCheckbox,
     ClientsActionPopup,
     TableCellBodyName,
@@ -184,6 +187,7 @@ export default {
     updateDataClient: Function,
     url: String,
     fetchDataClients: Function,
+    createMedicalCard: Function,
   },
   computed: {
     rowOverlay() {

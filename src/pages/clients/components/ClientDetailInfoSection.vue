@@ -106,7 +106,7 @@
               :style="{fontWeight:key === 'numba'&&600}",
               v-model:value="sectionInfo[key]",
               :rows="section ==='pass' ? 2 : 1",
-              :placeholder="settings[section].placeholder[key]"
+              :placeholder="settings[section].placeholder[key] || settings[section].placeholder"
               :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
             )
             base-input-date.input.text-sm(

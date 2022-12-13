@@ -159,9 +159,7 @@ export const detail = {
       join_adress: "Полный адрес",
     },
     sharps: { join_adress: "" },
-    placeholder: {
-      join_adress: "Введите адрес целиком",
-    },
+    placeholder: "Введите адрес целиком",
     width: 292,
     voidHeight: 86,
   },
