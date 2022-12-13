@@ -272,8 +272,10 @@ export default {
         contacts.push(this.dataClient.phone);
       let mapCreateContacts = this.client.contacts.map((el) => el.kind);
       let mapDeleteContacts = contacts.map((el) => el.kind);
-      let createContacts = contacts.filter(
-        (el) => !mapCreateContacts.includes(el.kind)
+      let createContacts = contacts.filter((el) =>
+        el.kind === "EMAIL" || el.kind === "PHONE"
+          ? !mapCreateContacts.includes(el.kind)
+          : el.kind
       );
       let deleteContacts = this.client.contacts.filter(
         (el) => !mapDeleteContacts.includes(el.kind)
@@ -604,7 +606,10 @@ export default {
                 this.client.contacts.find((el) => el.kind === "EMAIL")
                   ?.username || "",
             },
-            contacts: [...this.client.contacts],
+            contacts: this.client.contacts.filter(
+              (el) =>
+                !el.deleted_flg && el.kind !== "EMAIL" && el.kind !== "PHONE"
+            ),
             avatar: this.client.first_name
               ? this.client.last_name[0] + this.client.first_name[0]
               : this.client.last_name.substr(0, 2),

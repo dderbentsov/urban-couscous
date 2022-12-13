@@ -23,7 +23,7 @@
       base-popup.right-3.top-6.z-20(
         v-if="isOpenPopupAdding",
         @click.stop,
-        v-click-outside.stop="closePopup",
+        v-click-outside="closePopup",
         :width="485"
       )
         base-adding-network(
@@ -76,7 +76,7 @@ export default {
   computed: {
     getNetworks() {
       return this.networks.filter(
-        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE" && !el.deleted_flg
+        (el) => el.kind !== "EMAIL" && el.kind !== "PHONE"
       );
     },
     getSelectedIcon() {
