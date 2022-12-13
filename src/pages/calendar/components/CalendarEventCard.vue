@@ -228,7 +228,7 @@ export default {
       immediate: true,
       handler(newValue) {
         if (newValue === true) {
-          this.setDefaultTheme();
+          this.isActive = false;
           this.$emit("reset-change-form");
         }
       },

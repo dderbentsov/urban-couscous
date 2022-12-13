@@ -75,7 +75,7 @@ export default {
       showModal: false,
       timeInformation: {
         dayStartTime: "08:00",
-        dayEndTime: "20:00",
+        dayEndTime: "24:00",
       },
       eventsData: [],
       employeesData: [],
