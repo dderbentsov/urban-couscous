@@ -5,7 +5,7 @@
       :disabled="disabledPreviousButton"
     )
       .icon-down-arrow.arrow-left
-    button.item.flex.items-center.justify-center(
+    button.item.flex.items-center.justify-center.transition.duration-100.ease-linear(
       v-for="page, index in pageCount",
       :key="index",
       :id="page",

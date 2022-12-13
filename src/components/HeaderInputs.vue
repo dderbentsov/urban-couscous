@@ -1,6 +1,6 @@
 <template lang="pug">
   .header-inputs-wrapper.flex.items-center.font-medium.text-base(:class="{ open: isOpen }")
-    .select-container(@click="changeState")
+    .select-container(@click="changeState", v-click-outside="closeOptions")
       .select-wrapper.flex.items-center.cursor-pointer.mx-4.my-2
         .icon-wrapper.icon-search.flex.text-lg.justify-center.items-center
         span.custom-input.select-input.inline-block.box-border.align-middle.pl-2.pr-1 {{ selectedFilter }}
@@ -29,6 +29,9 @@ export default {
     },
     selectFilter(filter) {
       this.selectedFilter = filter;
+    },
+    closeOptions() {
+      this.isOpen = false;
     },
   },
 };

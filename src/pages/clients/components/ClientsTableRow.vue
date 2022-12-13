@@ -350,7 +350,7 @@ export default {
     },
     async deleteClient() {
       await fetchWrapper.del(`general/person/${this.client.id}/delete/`);
-      this.addSuccessNotification("Клиент Успешно удален", "");
+      this.addSuccessNotification("Клиент успешно удален", "");
       this.handleUnFocusPopup();
     },
     addSuccessNotification(title, message) {
