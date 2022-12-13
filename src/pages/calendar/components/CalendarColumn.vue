@@ -13,7 +13,7 @@
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       column-header-checkbox
     .body.pl-1
-      transition-group(name="card", tag="div")
+      transition-group(name="card")
         calendar-event-card(
           v-for="event in dayEvents",
           :key="event.id",

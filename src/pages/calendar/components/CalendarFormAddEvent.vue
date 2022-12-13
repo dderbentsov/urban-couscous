@@ -288,17 +288,29 @@ export default {
       this.eventData = {};
     },
     async updateEventData() {
-      this.eventData = {
-        start: this.mergeDate(this.eventDate, this.startTime),
-        end: this.mergeDate(this.eventDate, this.endTime),
-        kind: this.kind.label,
-        employees: [
-          this.findPerson(this.ownersData, this.employees, "employee"),
-        ],
-        members: [this.findPerson(this.membersData, this.members, "person")],
-      };
-      await this.postUpdateEvent(this.id, this.eventData);
-      this.eventData = {};
+      if (
+        Object.keys(
+          this.findPerson(this.ownersData, this.employees, "employee")
+        ).length > 0 &&
+        Object.keys(this.findPerson(this.membersData, this.members, "person"))
+          .length > 0
+      ) {
+        this.eventData = {
+          start: this.mergeDate(this.eventDate, this.startTime),
+          end: this.mergeDate(this.eventDate, this.endTime),
+          kind: this.kind.label,
+          employees: [
+            this.findPerson(this.ownersData, this.employees, "employee"),
+          ],
+          members: [this.findPerson(this.membersData, this.members, "person")],
+        };
+        await this.postUpdateEvent(this.id, this.eventData);
+        this.eventData = {};
+      } else
+        this.addErrorNotification(
+          "Событие не может быть изменено",
+          "Клиент был удален"
+        );
     },
     clearForm() {
       if (this.selectedEventData.id) this.$emit("close-change-form");
@@ -310,23 +322,29 @@ export default {
     },
     findPerson(requestedList, object, field) {
       let foundPerson = requestedList.find(({ id }) => id === object[field].id);
-      let returnedData = {
-        [field]: {
-          id: foundPerson.id,
-          last_name: foundPerson.last_name,
-          first_name: foundPerson.first_name,
-          patronymic: foundPerson.patronymic,
-          color: foundPerson.color,
-        },
-        role: object.role,
-      };
-      if (object.id) returnedData.id = object.id;
-      return returnedData;
+      if (foundPerson) {
+        let returnedData = {
+          [field]: {
+            id: foundPerson.id,
+            last_name: foundPerson.last_name,
+            first_name: foundPerson.first_name,
+            patronymic: foundPerson.patronymic,
+            color: foundPerson.color,
+          },
+          role: object.role,
+        };
+        if (object.id) returnedData.id = object.id;
+        return returnedData;
+      }
+      return {};
     },
     async postCreateEvent(event) {
       const response = await fetchWrapper.post("registry/event/create/", event);
       if (response.type && response.type === "validation_error") {
-        this.addErrorNotification(response);
+        this.addErrorNotification(
+          response.errors[0].code,
+          response.errors[0].detail
+        );
       } else {
         this.addSuccessNotification("Событие успешно создано");
         this.clearForm();
@@ -338,7 +356,10 @@ export default {
         event
       );
       if (response.type && response.type === "validation_error") {
-        this.addErrorNotification(response);
+        this.addErrorNotification(
+          response.errors[0].code,
+          response.errors[0].detail
+        );
       } else {
         this.addSuccessNotification("Изменения успешно сохранены");
         this.clearForm();
@@ -362,14 +383,8 @@ export default {
         return id;
       }
     },
-    addErrorNotification(error) {
-      addNotification(
-        new Date().getTime(),
-        error.errors[0].code,
-        error.errors[0].detail,
-        "error",
-        5000
-      );
+    addErrorNotification(title, message) {
+      addNotification(new Date().getTime(), title, message, "error", 5000);
     },
     addSuccessNotification(message) {
       addNotification(new Date().getTime(), message, "", "success", 5000);

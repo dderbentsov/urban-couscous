@@ -1,48 +1,54 @@
 <template lang="pug">
-  .wrapper-table.relative.flex.flex-col.px-6.py-6.h-full.w-full
-    clients-table-hat(
-      :is-open-actions="marked.length",
-      :open-form="openForm",
-      :clearing-text-search="clearingTextSearch",
-      :change-clearing-text-search="changeClearingTextSearch",
-      @search="filterDataClients",
-    )
-    .flex.flex-col.h-full.table-container.w-full.mt-8.mb-3
-      base-modal(v-model="showMedicalCard")
-        form-create-medical-card
-      clients-table-header(:check="selectedCheck" :is-check="selectAll")
-      .flex.flex-col
-        clients-table-row(
-          v-for="client in dataClients",
-          :key="client.id",
-          :id="client.id",
-          :url="url",
-          :is-check="marked.includes(client.id)",
-          :check="selectedCheck",
-          :client="client",
-          :deleted-client-id="deletedRowId",
-          :update-data-client="updateDataClient",
-          :fetch-data-clients="fetchDataClients",
-          :create-medical-card="createMedicalCard",
-          @delete-client="deleteClientHandler",
-          @recover-client="clearDeletedRowId",
+  .wrapper-table.relative.flex.px-6.py-6.h-full.w-full
+    transition(name="table", mode="out-in")
+      .flex.justify-center.items-center.w-full(v-if="dataClientsPresence")
+        base-loader(
+          :width="60",
+          :height="60"
         )
-    client-table-pagination(
-      v-if="paginationInfo.length > 1"
-      :pagination-info="paginationInfo"
-      @previous-page="switchPreviousPage",
-      @next-page="switchNextPage",
-      @set-current-page="changeCurrentTablePage"
-    )
-    base-modal(
-      v-model="showModal",
-      title="Удалить клиента"
-    )
-      client-table-delete-modal(
-        :close-modal="closeModal",
-        :deleted-client-id="deletedClientId",
-        @delete-client="writeDeletedRowId"
-      )
+      .relative.flex.flex-col.h-full.w-full(v-else)
+        clients-table-hat(
+          :is-open-actions="marked.length",
+          :open-form="openForm",
+          :clearing-text-search="clearingTextSearch",
+          :change-clearing-text-search="changeClearingTextSearch",
+          @search="filterDataClients",
+        )
+        .flex.flex-col.h-full.table-container.w-full.mt-8.mb-3
+          base-modal(v-model="showMedicalCard")
+            form-create-medical-card
+          clients-table-header(:check="selectedCheck" :is-check="selectAll")
+          .flex.flex-col
+            clients-table-row(
+              v-for="client in dataClients",
+              :key="client.id",
+              :id="client.id",
+              :url="url",
+              :is-check="marked.includes(client.id)",
+              :check="selectedCheck",
+              :client="client",
+              :deleted-client-id="deletedRowId",
+              :update-data-client="updateDataClient",
+              :fetch-data-clients="fetchDataClients",
+              @delete-client="deleteClientHandler",
+              @recover-client="clearDeletedRowId",
+            )
+        client-table-pagination(
+          v-if="paginationInfo.length > 1"
+          :pagination-info="paginationInfo"
+          @previous-page="switchPreviousPage",
+          @next-page="switchNextPage",
+          @set-current-page="changeCurrentTablePage"
+        )
+        base-modal(
+          v-model="showModal",
+          title="Удалить клиента"
+        )
+          client-table-delete-modal(
+            :close-modal="closeModal",
+            :deleted-client-id="deletedClientId",
+            @delete-client="writeDeletedRowId"
+          )
 </template>
 
 <script>
@@ -56,6 +62,7 @@ import ClientTablePagination from "./ClientTablePagination.vue";
 import BaseModal from "@/components/base/BaseModal.vue";
 import ClientTableDeleteModal from "./ClientTableDeleteModal.vue";
 import FormCreateMedicalCard from "@/pages/clients/components/FormCreateMedicalCard";
+import BaseLoader from "@/components/Loader/BaseLoader.vue";
 export default {
   name: "ClientsTable",
   components: {
@@ -68,6 +75,7 @@ export default {
     BaseModal,
     ClientTableDeleteModal,
     FormCreateMedicalCard,
+    BaseLoader,
   },
   props: {
     openForm: Function,
@@ -80,7 +88,11 @@ export default {
     return {
       selectAll: false,
       marked: [],
-      dataClients: [],
+      dataClients: [
+        {
+          initialization: true,
+        },
+      ],
       currentTablePage: 1,
       limit: 14,
       clientsCount: 0,
@@ -96,6 +108,11 @@ export default {
       clearingTextSearch: false,
       showMedicalCard: false,
     };
+  },
+  computed: {
+    dataClientsPresence() {
+      return this.dataClients[0]?.initialization;
+    },
   },
   methods: {
     updateDataClient() {
@@ -252,4 +269,18 @@ export default {
   &::-webkit-scrollbar-thumb
     border-radius: 8px
     background-color: var(--btn-blue-color)
+.table-enter-from
+  opacity: 0
+  transform: translateY(0px)
+  pointer-events: none
+.table-enter-active
+  transition: 0.3s ease
+.table-leave-to
+  opacity: 0
+  transform: translateY(0px)
+  pointer-events: none
+.table-leave-active
+  transition: 0.3s ease
+.table-move
+  transition: 0.3s ease
 </style>

@@ -1,6 +1,6 @@
 <template lang="pug">
   a(:href="path")
-    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3(:id="id" :class="{active:active}" @click="(e) => changeStylePage(e)")
+    button.button.cursor-pointer.text-4xl.py-3.pr-4.pl-3.transition(:id="id" :class="{active:active}" @click="(e) => changeStylePage(e)")
       slot
 </template>
 
