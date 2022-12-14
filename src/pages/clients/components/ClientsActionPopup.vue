@@ -52,7 +52,7 @@ export default {
 .popup-wrapper
   width: 180px
   height: 164px
-  border-radius: 4px 0 4px 4px
+  border-radius: 0 4px 4px 4px
   background-color: var(--default-white)
   box-shadow: var(--default-shadow)
   z-index: 11
@@ -68,8 +68,8 @@ export default {
 .corner
   width: 8px
   height: 8px
-  border-top-right-radius: 100%
-  background-color: var(--default-white)
+  background: url("@/assets/icons/exclude.svg") right no-repeat
+  transform: scale(-1, 1)
   z-index: 12
   overflow: hidden
 .icon-delete
