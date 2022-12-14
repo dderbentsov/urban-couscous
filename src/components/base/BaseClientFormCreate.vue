@@ -111,6 +111,7 @@ export default {
   props: {
     closeForm: Function,
     setUpdatedClients: Function,
+    writeCreatedClientId: Function,
   },
   data() {
     return {
@@ -325,6 +326,7 @@ export default {
             this.createIdentityDocument(result.id);
             this.createAddress(result.id);
             this.createContacts(result.id);
+            this.writeCreatedClientId(result.id);
             this.setUpdatedClients();
             this.addSuccessNotification();
           } else {
@@ -415,7 +417,27 @@ export default {
       if (!this.infoClient.basic.full_name) {
         this.addErrorNotification(
           "Не заполнено ФИО клиента",
-          "Пожалуйста, заполните ФИО клиента"
+          "Заполните ФИО клиента"
+        );
+        return false;
+      } else if (
+        this.infoClient.basic.birth_date &&
+        moment(this.infoClient.basic.birth_date).isAfter(
+          moment().format("YYYY-MM-DD")
+        )
+      ) {
+        this.addErrorNotification(
+          "Некорректная дата рождения",
+          "Дата рождения позже текущего дня"
+        );
+        return false;
+      } else if (
+        this.infoClient.phone.username &&
+        this.infoClient.phone.username.length < 18
+      ) {
+        this.addErrorNotification(
+          "Неккоретный номер телефона",
+          "Введите мобильный номер, состоящий из 11 цифр"
         );
         return false;
       }

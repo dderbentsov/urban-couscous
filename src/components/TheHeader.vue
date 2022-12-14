@@ -5,6 +5,7 @@
         v-if="isOpenForm",
         :close-form="closeForm",
         :set-updated-clients="setUpdatedClients",
+        :write-created-client-id="writeCreatedClientId",
       )
     .flex.items-center.box-border.cursor-pointer.mr-auto
       img.logo-img.mr-29_25px(src="@/assets/images/logo.svg", alt="Logo")
@@ -60,6 +61,7 @@ export default {
     closeForm: Function,
     isOpenForm: Boolean,
     setUpdatedClients: Function,
+    writeCreatedClientId: Function,
   },
   data() {
     return {
