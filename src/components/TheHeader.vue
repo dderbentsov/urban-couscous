@@ -23,8 +23,9 @@
       button.header-buttons.flex.justify-center.items-center.mr-8.p-0
         .icon-bell.text-xxl
       .flex.justify-centflexer.items-center.relative
-        base-avatar.mr-2(:size="32")
-          img(:src="avatarSrc", alt="Avatar")
+        base-avatar.mr-2(:size="36", :color="userData.color", v-if="!userData.photo") {{changeName}}       
+        base-avatar.mr-2(:size="32", v-else)
+          img.h-full.object-cover(:src="url + userData.photo", alt="Avatar")
         button.header-buttons(@click="openPopup")
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
         base-popup.right-2.top-10(v-if="showPopup", :width="160", v-click-outside="openPopup")
@@ -49,6 +50,7 @@ export default {
     BaseClientFormCreate,
   },
   props: {
+    url: String,
     openForm: Function,
     closeForm: Function,
     isOpenForm: Boolean,
@@ -62,7 +64,15 @@ export default {
         name: "Гордеев Николай Степанович",
       },
       showPopup: false,
+      userData: JSON.parse(localStorage.getItem("userData")),
     };
+  },
+  computed: {
+    changeName() {
+      return `${this.userData.last_name || ""} ${
+        this.userData.first_name || ""
+      } ${this.userData.patronymic || ""}`;
+    },
   },
   methods: {
     logout() {
