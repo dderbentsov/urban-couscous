@@ -1,6 +1,7 @@
 <template lang="pug">
 .flex.flex-col.w-full.h-full.gap-y-2
     the-header(
+      :url="url",
       :is-open-form="isOpenForm",
       :close-form="closeForm",
       :open-form="openForm",

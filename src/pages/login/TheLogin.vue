@@ -54,6 +54,7 @@ export default {
       authorized: true,
       user: { username: "", password: "" },
       redColor: "var(--border-red-color)",
+      userData: {},
     };
   },
   computed: {
@@ -83,6 +84,30 @@ export default {
       localStorage.username = this.user.username;
       localStorage.password = this.user.password;
     },
+    auth(token) {
+      fetch("http://45.84.227.122:8080/auth/users/me/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          fetch(`http://45.84.227.122:8080/accounts/users/${data.id}/detail`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+            .then((res) => {
+              return res.json();
+            })
+            .then((data) => {
+              this.userData = data;
+              localStorage.setItem("userData", JSON.stringify(this.userData));
+            });
+        });
+    },
     login() {
       const requestOptions = {
         method: "POST",
@@ -103,6 +128,7 @@ export default {
           if (token) {
             localStorage.setItem("tokenAccess", token.access);
             this.$router.push("/");
+            this.auth(token.access);
           } else {
             this.$router.push("/login");
           }

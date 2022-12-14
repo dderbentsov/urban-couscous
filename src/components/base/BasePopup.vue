@@ -1,6 +1,6 @@
 <template lang="pug">
   .flex.flex-col.items-end.absolute
-    .corner
+    .corner(v-if="!corner")
     .popup-wrapper.flex.flex-col.gap-y-3.p-4.h-fit(:style="{ width : width + 'px' }")
       slot
 </template>
@@ -12,6 +12,7 @@ export default {
     width: Number,
     top: Number,
     right: Number,
+    corner: Boolean,
   },
 };
 </script>
