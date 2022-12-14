@@ -188,6 +188,8 @@ export default {
     url: String,
     fetchDataClients: Function,
     createMedicalCard: Function,
+    fetchCreatedClientData: Function,
+    createdClientName: String,
   },
   computed: {
     rowOverlay() {
@@ -207,7 +209,7 @@ export default {
       this.timer = null;
     },
     startTimer() {
-      this.countdown = 30;
+      this.countdown = 600;
       this.timer = setInterval(() => {
         this.changeCountdown();
       }, 1000);
@@ -260,7 +262,10 @@ export default {
           .post(`general/person/${this.client.id}/update/`, {
             ...data,
           })
-          .then(() => this.fetchDataClients());
+          .then(() => {
+            if (this.createdClientName) this.fetchCreatedClientData;
+            else this.fetchDataClients();
+          });
     },
     postContactsClient() {
       let contacts = [...this.dataClient.contacts];

@@ -11,6 +11,7 @@
         )
           .icon-search
       base-button.font-semibold(
+        v-if="createdClientName === ''",
         @click="searchLastName",
         :size=40
       ) Поиск
@@ -43,6 +44,7 @@ export default {
     isOpenActions: Number,
     clearingTextSearch: Boolean,
     changeClearingTextSearch: Function,
+    createdClientName: String,
   },
   data() {
     return {
@@ -51,7 +53,7 @@ export default {
   },
   methods: {
     searchLastName() {
-      if (this.searchClient.length >= 3)
+      if (this.searchClient.length >= 3 && !this.createdClientName)
         this.$emit("search", this.searchClient);
     },
     resetLastName() {
@@ -59,6 +61,9 @@ export default {
     },
   },
   watch: {
+    createdClientName() {
+      if (this.createdClientName) this.searchClient = this.createdClientName;
+    },
     searchClient() {
       if (!this.searchClient && !this.clearingTextSearch) {
         this.$emit("search");
@@ -76,5 +81,5 @@ export default {
 
 <style lang="sass" scoped>
 .input
-  width: 280px
+  min-width: 280px
 </style>

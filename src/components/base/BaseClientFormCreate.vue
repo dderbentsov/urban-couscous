@@ -111,6 +111,7 @@ export default {
   props: {
     closeForm: Function,
     setUpdatedClients: Function,
+    writeCreatedClientId: Function,
   },
   data() {
     return {
@@ -325,6 +326,7 @@ export default {
             this.createIdentityDocument(result.id);
             this.createAddress(result.id);
             this.createContacts(result.id);
+            this.writeCreatedClientId(result.id);
             this.setUpdatedClients();
             this.addSuccessNotification();
           } else {

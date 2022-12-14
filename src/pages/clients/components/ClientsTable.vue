@@ -13,6 +13,7 @@
           :clearing-text-search="clearingTextSearch",
           :change-clearing-text-search="changeClearingTextSearch",
           @search="filterDataClients",
+          :created-client-name="createdClientName",
         )
         .flex.flex-col.h-full.table-container.w-full.mt-8.mb-3
           base-modal(v-model="showMedicalCard")
@@ -30,7 +31,9 @@
               :deleted-client-id="deletedRowId",
               :update-data-client="updateDataClient",
               :fetch-data-clients="fetchDataClients",
+              :fetch-created-client-data="fetchCreatedClientData",
               :create-medical-card="createMedicalCard",
+              :created-client-name="createdClientName",
               @delete-client="deleteClientHandler",
               @recover-client="clearDeletedRowId",
             )
@@ -83,6 +86,7 @@ export default {
     isOpenForm: Boolean,
     updatedClients: Boolean,
     url: String,
+    createdClientId: String,
   },
 
   data() {
@@ -108,6 +112,7 @@ export default {
       deletedRowId: "",
       clearingTextSearch: false,
       showMedicalCard: false,
+      createdClientName: "",
     };
   },
   computed: {
@@ -117,6 +122,7 @@ export default {
   },
   methods: {
     updateDataClient() {
+      this.clearCreatedClientName();
       if (this.textSearch) this.filteredClientsCount -= 1;
       else this.clientsCount -= 1;
       if (this.dataClients.find(({ id }) => id === this.deletedRowId)) {
@@ -134,6 +140,7 @@ export default {
       if (!this.filteredClientsCoun) this.filteredClientsCount = data.count;
     },
     filterDataClients(text) {
+      this.clearCreatedClientName();
       if (text) {
         this.textSearch = text;
         this.filteredClientsCount = 0;
@@ -170,6 +177,18 @@ export default {
           length: this.calculatePageCount(this.clientsCount),
         };
       }
+    },
+    async fetchCreatedClientData() {
+      fetchWrapper
+        .get(`general/person/${this.createdClientId}/detail/`)
+        .then((response) => {
+          this.dataClients = [response];
+          this.createdClientName = `${response.last_name} ${response.first_name} ${response.patronymic}`;
+          this.paginationInfo = {
+            currentPage: 0,
+            length: 0,
+          };
+        });
     },
     calculatePageCount(count) {
       return Math.ceil(count / this.limit);
@@ -226,19 +245,18 @@ export default {
     },
     changeClearingTextSearch() {
       this.clearingTextSearch = false;
+      this.clearCreatedClientName();
+    },
+    clearCreatedClientName() {
+      this.createdClientName = "";
     },
   },
   watch: {
     updatedClients() {
       if (this.updatedClients === true) {
         this.textSearch = "";
-        this.clearingTextSearch = true;
         this.clientsCount += 1;
-        if (
-          this.currentTablePage !== this.calculatePageCount(this.clientsCount)
-        )
-          this.currentTablePage = this.calculatePageCount(this.clientsCount);
-        else this.fetchDataClients();
+        this.fetchCreatedClientData();
         this.$emit("reset-updated-clients");
       }
     },

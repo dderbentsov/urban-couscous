@@ -6,6 +6,7 @@
       :close-form="closeForm",
       :open-form="openForm",
       :set-updated-clients="setUpdatedClients",
+      :write-created-client-id="writeCreatedClientId"
     )
     .flex.flex-auto
       the-sidebar
@@ -14,7 +15,8 @@
         :is-open-form="isOpenForm",
         :updated-clients="updatedClients",
         @reset-updated-clients="resetUpdatedClients",
-        :url="url"
+        :url="url",
+        :created-client-id="createdClientId"
       )
     the-notification-provider
 </template>
@@ -32,6 +34,7 @@ export default {
       isOpenForm: false,
       updatedClients: false,
       url: "http://45.84.227.122:8080",
+      createdClientId: "",
     };
   },
   methods: {
@@ -46,6 +49,10 @@ export default {
     },
     resetUpdatedClients() {
       this.updatedClients = false;
+      this.createdClientId = "";
+    },
+    writeCreatedClientId(id) {
+      this.createdClientId = id;
     },
   },
 };
