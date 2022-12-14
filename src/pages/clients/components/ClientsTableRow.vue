@@ -11,13 +11,13 @@
         @click="(e) => openDetailInfo(e)",
         :class="{'row-overlay-color': rowOverlay}"
       )
-        .flex.items-center.px-2(
-          v-show="!isOpenChange",
-          :tabindex="1",
-          @click="(e) => openPopup(e)",
-          @blur="handleUnFocusPopup"
-        )
-          .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center
+        .dots-wrapper.flex.items-center.px-2
+          .relative.dots-button.icon-dots.cursor-pointer.leading-6.text-center(
+            v-show="!isOpenChange && !rowOverlay",
+            :tabindex="1",
+            @click="(e) => openPopup(e)",
+            @blur="handleUnFocusPopup"
+          )
             clients-action-popup(
               v-if="isOpenPopup",
               :open-change-data="openChangeData",
@@ -25,8 +25,9 @@
               @delete-client="transmitDeleteClient",
               :create-medical-card="createMedicalCard"
             )
-        .dots.flex.justify-center.items-center(v-if="!rowOverlay")
-          .flex.z-10(v-if="isOpenChange", class="pl-[10px]")
+          .flex.z-10(
+            v-if="isOpenChange && !rowOverlay",
+          )
             base-button(
               @click="closeChangeData",
               confirm,
@@ -209,7 +210,7 @@ export default {
       this.timer = null;
     },
     startTimer() {
-      this.countdown = 600;
+      this.countdown = 30;
       this.timer = setInterval(() => {
         this.changeCountdown();
       }, 1000);
@@ -339,7 +340,10 @@ export default {
           username: contact.username,
           person_id: this.client.id,
         })
-        .then(() => this.fetchDataClients());
+        .then(() => {
+          if (this.createdClientName) this.fetchCreatedClientData;
+          else this.fetchDataClients();
+        });
     },
     postUpdateContact(contact) {
       fetchWrapper
@@ -348,12 +352,16 @@ export default {
           username: contact.username,
           person_id: this.client.id,
         })
-        .then(() => this.fetchDataClients());
+        .then(() => {
+          if (this.createdClientName) this.fetchCreatedClientData;
+          else this.fetchDataClients();
+        });
     },
     postDeleteContact(contact) {
-      fetchWrapper
-        .del(`general/contact/${contact.id}/delete/`)
-        .then(() => this.fetchDataClients());
+      fetchWrapper.del(`general/contact/${contact.id}/delete/`).then(() => {
+        if (this.createdClientName) this.fetchCreatedClientData;
+        else this.fetchDataClients();
+      });
     },
     addNetwork(network) {
       this.dataClient.contacts.push(network);
@@ -703,4 +711,6 @@ export default {
   overflow: hidden
 .closed-detail .detail
   max-height: 0
+.dots-wrapper
+  width: 36px
 </style>

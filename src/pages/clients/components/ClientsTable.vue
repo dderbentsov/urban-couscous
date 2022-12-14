@@ -122,12 +122,18 @@ export default {
   },
   methods: {
     updateDataClient() {
-      this.clearCreatedClientName();
       if (this.textSearch) this.filteredClientsCount -= 1;
       else this.clientsCount -= 1;
       if (this.dataClients.find(({ id }) => id === this.deletedRowId)) {
-        if (this.dataClients.length === 1) this.currentTablePage -= 1;
-        else this.fetchDataClients();
+        if (this.createdClientName) {
+          this.clearingTextSearch = true;
+          this.currentTablePage === 1
+            ? this.fetchDataClients()
+            : (this.currentTablePage = 1);
+        } else {
+          if (this.dataClients.length === 1) this.currentTablePage -= 1;
+          else this.fetchDataClients();
+        }
       }
     },
     saveDataClients(data) {
