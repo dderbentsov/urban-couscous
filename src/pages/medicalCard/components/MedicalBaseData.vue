@@ -18,15 +18,35 @@
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Фактический адрес места жительства
             base-input(:width-input="277", placeholder="Введите полный адрес")
+        .flex.gap-x-4
+          .flex.flex-col.gap-y-2
+            .counter.font-semibold.text-smm Номер телефона
+            base-input(
+              :width-input="277",
+              placeholder="+7 (915) 644–92–23",
+              v-mask="'+7 (###) ###-##-##'"
+            )
+          .flex.flex-col.gap-y-2
+            .counter.font-semibold.text-smm Email
+            base-input(:width-input="277", placeholder="user@yandex.ru")
+    base-button(:size="40", @click="changeBaseData")
+      span.font-semibold Далее
 </template>
 
 <script>
 import BaseInput from "@/components/base/BaseInput";
 import BaseInputDate from "@/components/base/BaseInputDate";
 import BaseSelect from "@/components/base/BaseSelect";
+import BaseButton from "@/components/base/BaseButton";
+import { mask } from "vue-the-mask";
+
 export default {
   name: "MedicalBaseData",
-  components: { BaseInput, BaseInputDate, BaseSelect },
+  components: { BaseInput, BaseInputDate, BaseSelect, BaseButton },
+  directives: { mask },
+  props: {
+    changeBaseData: Function,
+  },
 };
 </script>
 

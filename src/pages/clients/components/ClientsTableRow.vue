@@ -271,9 +271,22 @@ export default {
         contacts.push(this.dataClient.email);
       if (
         this.dataClient.phone.username &&
+        this.dataClient.phone.username.length === 18 &&
         !contacts.find((el) => el.kind === "PHONE")
       )
         contacts.push(this.dataClient.phone);
+      else if (
+        this.dataClient.phone.username &&
+        this.dataClient.phone.username.length < 18
+      ) {
+        this.dataClient.phone.username =
+          this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+          "";
+        this.addErrorNotification(
+          "Некорректный номер телефона",
+          "Введите мобильный номер состоящий из 11 цифр"
+        );
+      }
       let mapCreateContacts = this.client.contacts.map((el) => el.kind);
       let mapDeleteContacts = contacts.map((el) => el.kind);
       let createContacts = contacts.filter((el) =>
@@ -288,9 +301,20 @@ export default {
       this.client.contacts.forEach((el) => {
         if (
           el.kind === "PHONE" &&
+          this.dataClient.phone.username.length === 18 &&
           el.username !== this.dataClient.phone.username
         )
           updateContacts.push(this.dataClient.phone);
+        else if (this.dataClient.phone.username.length < 18) {
+          this.dataClient.phone.username =
+            this.client.contacts.find((el) => el.kind === "PHONE")?.username ||
+            "";
+          this.addErrorNotification(
+            "Некорректный номер телефона",
+            "Введите мобильный номер состоящий из 11 цифр"
+          );
+        }
+
         if (
           el.kind === "EMAIL" &&
           el.username !== this.dataClient.email.username

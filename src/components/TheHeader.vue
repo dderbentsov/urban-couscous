@@ -28,7 +28,12 @@
           img.h-full.object-cover(:src="url + userData.photo", alt="Avatar")
         button.header-buttons(@click="openPopup")
           .icon-down-arrow.text-xxs.flex.justify-center.items-center.p-0
-        base-popup.right-2.top-10(v-if="showPopup", :width="160", v-click-outside="openPopup")
+        base-popup.right-2.top-10(
+          corner,
+          v-if="showPopup",
+          :width="160",
+          v-click-outside="openPopup"
+        )
           .text-popup.flex.cursor-pointer.pl-2(@click="logout") Выйти
 </template>
 
