@@ -351,16 +351,15 @@ export default {
     },
     async sendEventData() {
       if (!this.checkTime()) return;
-      else
-        this.eventData = {
-          start: this.mergeDate(this.eventDate, this.startTime),
-          end: this.mergeDate(this.eventDate, this.endTime),
-          kind: this.kind.label,
-          employees: [
-            this.findPerson(this.ownersData, this.employees, "employee"),
-          ],
-          members: [this.findPerson(this.membersData, this.members, "person")],
-        };
+      this.eventData = {
+        start: this.mergeDate(this.eventDate, this.startTime),
+        end: this.mergeDate(this.eventDate, this.endTime),
+        kind: this.kind.label,
+        employees: [
+          this.findPerson(this.ownersData, this.employees, "employee"),
+        ],
+        members: [this.findPerson(this.membersData, this.members, "person")],
+      };
       await this.postCreateEvent(this.eventData);
       this.eventData = {};
     },
