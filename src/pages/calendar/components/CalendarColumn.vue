@@ -15,8 +15,8 @@
     .body.pl-1
       transition-group(name="card")
         calendar-event-card(
-          v-for="event in dayEvents",
-          :key="event.id",
+          v-for="event, index in dayEvents",
+          :key="event.id + index",
           :id="event.id",
           :ownerEvent="event",
           :event-types="eventTypes",
@@ -25,7 +25,7 @@
           @selected-event="transmitEventData",
           @reset-change-form="transmitResetChangeForm",
           @delete-event="transmitDeleteEvent",
-          :schedule-body-ref="scheduleBodyRef"
+          :schedule-body-ref="scheduleBodyRef",
         )
 </template>
 
