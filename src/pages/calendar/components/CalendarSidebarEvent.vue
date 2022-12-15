@@ -43,7 +43,7 @@ export default {
 .event
   width: 32px
   height: 32px
-  background: var(--bg-event-box-color)
+  background: var(--btn-blue-sec-color)
   border-radius: 4px
 
 .event-type
@@ -58,7 +58,7 @@ export default {
   border-radius: 4px
   width: 169px
   outline: none
-  background-color: var(--bg-event-box-color)
+  background-color: var(--btn-blue-sec-color)
   &::placeholder
     color: var(--font-dark-blue-color)
   &:focus

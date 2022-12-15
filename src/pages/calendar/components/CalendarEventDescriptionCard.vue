@@ -8,8 +8,8 @@
     .flex.justify-between.items-center.mb-2
       .flex
         span.inline-block.font-bold.text-base.mr-3.mt-2px {{ eventTime }}
-        .type.text-xxs.px-14px.py-1(v-if="isCertainType")
-          span.type-text {{ ownerEvent.kind }}
+        .type.text-xxs.flex.items-center.justify-center.px-14px(v-if="isCertainType")
+          span.type-text {{ ownerEvent.status }}
       .right-side.flex.gap-x-4.text-sm(v-if="!disabled")
         .icon-basket.flex.items-center.cursor-pointer(@click="transmitDeleteEvent")
         .icon-edit.flex.items-center.cursor-pointer(@click="transmitEventData")
@@ -50,30 +50,42 @@ export default {
   },
   computed: {
     typeColor() {
-      switch (this.ownerEvent.kind) {
-        case this.eventTypes[0].label:
-          return {
-            "--bg-color": "var(--bg-event-green-color-0)",
-            "--font-color": this.eventTypes[0].color,
-          };
-        case this.eventTypes[1].label:
-          return {
-            "--bg-color": "var(--bg-event-red-color-0)",
-            "--font-color": this.eventTypes[1].color,
-          };
-        case this.eventTypes[2].label:
+      switch (this.ownerEvent.status) {
+        case this.eventTypes[0].value:
           return {
             "--bg-color": "var(--bg-event-yellow-color-0)",
             "--font-color": "var(--font-black-color)",
           };
-        case this.eventTypes[3].label:
+        case this.eventTypes[1].value:
           return {
             "--bg-color": "var(--bg-event-blue-color-0)",
+            "--font-color": this.eventTypes[1].color,
+          };
+        case this.eventTypes[2].value:
+          return {
+            "--bg-color": "var(--bg-event-green-color-0)",
+            "--font-color": this.eventTypes[2].color,
+          };
+        case this.eventTypes[3].value:
+          return {
+            "--bg-color": "var(--bg-event-red-color-0)",
             "--font-color": this.eventTypes[3].color,
           };
+        case this.eventTypes[4].value:
+          return {
+            "--bg-color": "var(--bg-event-orange-color-0)",
+            "--font-color": "var(--font-black-color)",
+          };
+        case this.eventTypes[5].value:
+          return {
+            "--bg-color": "var(--bg-lavender-color)",
+            "--font-color": "var(--font-black-color)",
+          };
         default:
-          this.changeType();
-          return {};
+          return {
+            "--bg-color": "var(--bg-event-default-hover-color)",
+            "--font-color": "var(--btn-blue-color)",
+          };
       }
     },
     eventTime() {

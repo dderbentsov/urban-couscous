@@ -101,42 +101,60 @@ export default {
       };
     },
     themeColors() {
-      switch (this.ownerEvent.kind) {
-        case this.eventTypes[0].label:
-          return {
-            "--bg-color": "var(--bg-event-green-color-0)",
-            "--bg-active": this.eventTypes[0].color,
-            "--bg-hover": "var(--bg-event-green-color-1)",
-            "--font-color": "var(--font-black-color)",
-            "--font-active-color": "var(--default-white)",
-            "--count-color": this.eventTypes[0].color,
-          };
-        case this.eventTypes[1].label:
-          return {
-            "--bg-color": "var(--bg-event-red-color-0)",
-            "--bg-active": this.eventTypes[1].color,
-            "--bg-hover": "var(--bg-event-red-color-1)",
-            "--font-color": "var(--font-black-color)",
-            "--font-active-color": "var(--default-white)",
-            "--count-color": this.eventTypes[1].color,
-          };
-        case this.eventTypes[2].label:
+      switch (this.ownerEvent.status) {
+        case this.eventTypes[0].value:
           return {
             "--bg-color": "var(--bg-event-yellow-color-0)",
-            "--bg-active": this.eventTypes[2].color,
+            "--bg-active": this.eventTypes[0].color,
             "--bg-hover": "var(--bg-event-yellow-color-1)",
             "--font-color": "var(--font-black-color)",
             "--font-active-color": "var(--font-black-color)",
             "--count-color": "var(--font-black-color)",
           };
-        case this.eventTypes[3].label:
+        case this.eventTypes[1].value:
           return {
             "--bg-color": "var(--bg-event-blue-color-0)",
-            "--bg-active": this.eventTypes[3].color,
+            "--bg-active": this.eventTypes[1].color,
             "--bg-hover": "var(--bg-event-blue-color-1)",
             "--font-color": "var(--font-black-color)",
             "--font-active-color": "var(--default-white)",
+            "--count-color": this.eventTypes[1].color,
+          };
+        case this.eventTypes[2].value:
+          return {
+            "--bg-color": "var(--bg-event-green-color-0)",
+            "--bg-active": this.eventTypes[2].color,
+            "--bg-hover": "var(--bg-event-green-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--default-white)",
+            "--count-color": this.eventTypes[2].color,
+          };
+        case this.eventTypes[3].value:
+          return {
+            "--bg-color": "var(--bg-event-red-color-0)",
+            "--bg-active": this.eventTypes[3].color,
+            "--bg-hover": "var(--bg-event-red-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--default-white)",
             "--count-color": this.eventTypes[3].color,
+          };
+        case this.eventTypes[4].value:
+          return {
+            "--bg-color": "var(--bg-event-orange-color-0)",
+            "--bg-active": this.eventTypes[4].color,
+            "--bg-hover": "var(--bg-event-orange-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--font-black-color)",
+            "--count-color": "var(--font-black-color)",
+          };
+        case this.eventTypes[5].value:
+          return {
+            "--bg-color": "var(--bg-lavender-color)",
+            "--bg-active": this.eventTypes[5].color,
+            "--bg-hover": "var(--bg-event-lavender-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--default-white)",
+            "--count-color": this.eventTypes[5].color,
           };
         default:
           return {
