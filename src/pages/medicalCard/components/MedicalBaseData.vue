@@ -2,7 +2,7 @@
   .base.flex.flex-col.gap-y-6
     .flex.flex-col.gap-y-6
       span.font-bold Основное
-      .flex.flex-col.gap-y-4
+      .flex.flex-col.gap-y-6
         base-input.w-full(placeholder="ФИО*")
         .flex.gap-x-4
           .flex.flex-col.gap-y-2
@@ -11,7 +11,7 @@
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm СНИЛС
             base-input(:width-input="277", placeholder="000–000–000 00")
-        .flex.flex-col.gap-y-4
+        .flex.flex-col.gap-y-6
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Адрес регистрации
             base-input(:width-input="277", placeholder="Введите полный адрес")
@@ -29,8 +29,9 @@
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Email
             base-input(:width-input="277", placeholder="user@yandex.ru")
-    base-button(:size="40", @click="changeBaseData")
-      span.font-semibold Далее
+    .flex.py-2.justify-between
+      base-button(:size="40", @click="changeBaseData")
+        span.font-semibold Далее
 </template>
 
 <script>

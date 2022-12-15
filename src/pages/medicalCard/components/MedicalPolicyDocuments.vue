@@ -3,7 +3,7 @@
     .flex.gap-x-4
       .flex.flex-col.gap-y-6
         span.font-bold Полис
-        .flex.gap-x-4
+        .flex.gap-x-6
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Серия и номер полиса ОМС
             base-input(:width-input="277", placeholder="0000 000000")
@@ -13,7 +13,7 @@
     .flex.flex-col.gap-y-2
       .counter.font-semibold.text-smm Код категории льготы
       base-input(:width-input="277", placeholder="000")
-    .flex.flex-col.gap-y-4
+    .flex.flex-col.gap-y-6
       .flex.flex-col.gap-y-2
         .counter.font-semibold.text-smm К кому обращаться в случае необходимости 
         base-input.w-full(placeholder="ФИО*")
@@ -23,8 +23,9 @@
           :width-input="277",
           placeholder="+7 (915) 644–92–23"
         )
-    base-button(:size="40")
-      span.font-semibold Создать медицинскую карту
+    .flex.py-2
+      base-button(:size="40")
+        span.font-semibold Создать медицинскую карту
 </template>
 
 <script>

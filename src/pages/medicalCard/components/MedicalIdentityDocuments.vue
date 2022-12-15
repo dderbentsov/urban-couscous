@@ -2,7 +2,7 @@
   .base.flex.flex-col.gap-y-6
     .flex.flex-col.gap-y-6
       span.font-bold Паспортные данные
-      .flex.flex-col.gap-y-4
+      .flex.flex-col.gap-y-6
         .flex.gap-x-4
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Серия и номер
@@ -10,15 +10,16 @@
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Дата выдачи
             base-input-date.input-date.h-10(:width-input="277")
-        .flex.flex-col.gap-y-4
+        .flex.flex-col.gap-y-6
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Кем выдан
             base-input(:width-input="277", placeholder="Точно как в паспорте")
           .flex.flex-col.gap-y-2
             .counter.font-semibold.text-smm Страховая оганизация
             base-input(:width-input="277", placeholder="Введите название организации")
-    base-button(:size="40", @click="changeIdentityDoc")
-      span.font-semibold Далее
+    .flex.py-2
+      base-button(:size="40", @click="changeIdentityDoc")
+        span.font-semibold Далее
 </template>
 
 <script>

@@ -89,19 +89,22 @@
       client-detail-info-wrapper.detail.px-52px(
         :class="{'pb-[30px] pt-4': isOpenDetailInfo}"
         :data-address="dataAddress",
-        :data-detail="dataDetail",
         :data-attachments="dataAttachments",
         :data-document="dataIdentityDocument",
+        :data-notes="dataNotes"
         :save-new-doc="saveNewDoc",
         :delete-doc="deleteDoc",
         :update-document="postUpdateIdentityDocument",
         :update-address="postUpdateAddress",
+        :update-notes="postUpdateNotes",
         :lack-data="lackData",
         :lack-address="lackAddress",
         :dope-address="dopeAddress",
         :lack-attachments="lackAttachments",
+        :lack-notes="lackNotes"
         :create-address="postCreateAddress",
         :create-document="postCreateIdentityDocument",
+        :create-note="postCreateNote",
         :address-id="addressId",
         :doc-id="docId",
       )
@@ -154,7 +157,11 @@ export default {
           initialization: true,
         },
       ],
-      dataDetail: {},
+      dataNotes: [
+        {
+          initialization: true,
+        },
+      ],
       isOpenDetailInfo: false,
       isOpenPopup: false,
       columnBody: column,
@@ -166,6 +173,7 @@ export default {
       lackData: true,
       lackAddress: true,
       lackAttachments: true,
+      lackNotes: true,
       dopeAddress: {
         city: "",
         region: "",
@@ -388,9 +396,10 @@ export default {
       addNotification(title, title, message, "error", 5000);
     },
     fetchClientDetail(id) {
-      fetchWrapper
-        .get(`general/person/${id}/detail/`)
-        .then((data) => this.saveClientDetail(data));
+      fetchWrapper.get(`general/person/${id}/detail/`).then((data) => {
+        this.saveClientDetail(data);
+        this.saveNote(data);
+      });
       this.fetchAttachment();
     },
     saveClientDetail(data) {
@@ -409,6 +418,10 @@ export default {
     saveAttachment(data) {
       this.dataAttachments = data.filter((e) => e.person_id.id === this.id);
       this.lackAttachments = this.dataAttachments[0]?.id ? true : false;
+    },
+    saveNote(data) {
+      this.dataNotes = [...data.note];
+      this.lackNotes = this.dataNotes[0]?.id ? true : false;
     },
     saveIdentityDocument(data) {
       if (data?.id) {
@@ -595,7 +608,25 @@ export default {
             );
         });
     },
+    postCreateNote() {
+      fetchWrapper
+        .post("general/note/create/", {
+          person_id: this.id,
+          title: this.dataNotes[0].title,
+          description: this.dataNotes[0].title,
+        })
+        .then(() => this.fetchClientDetail(this.id));
+    },
+    postUpdateNotes() {
+      fetchWrapper
+        .post(`general/note/${this.dataNotes[0].id}/update/`, {
+          title: this.dataNotes[0].title,
+          description: this.dataNotes[0].description,
+        })
+        .then(() => this.fetchClientDetail(this.id));
+    },
   },
+
   watch: {
     rowOverlay() {
       if (this.rowOverlay) this.startTimer();

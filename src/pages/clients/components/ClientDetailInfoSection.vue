@@ -6,7 +6,7 @@
       span.text-sm.font-semibold.whitespace-nowrap {{settings[section].title}}
       .flex.items-center.gap-x-8
         base-button(
-          v-if="isChange && (this.isData || this.isAddress || this.isAttachments)",
+          v-if="isChange && (this.isData || this.isAddress || this.isAttachments || this.isNotes)",
           @click.stop="changeDoc",
           confirm,
           rounded,
@@ -15,7 +15,7 @@
         )
           .icon-ok.text-xsm(class="pt-[3px]")
         .edit.cursor-pointer(
-          v-if="!isChange && (this.isData || this.isAddress || this.isAttachments)",
+          v-if="!isChange && (this.isData || this.isAddress || this.isAttachments || this.isNotes)",
           @click="changeClientData"
         )
           .icon-edit.text-base.mt-2px
@@ -54,24 +54,15 @@
               v-click-outside="closeAddDocs"
             )
             table-create-package-doc(v-if="isOpenPackage")
-          table-adding-new-additional(
-            v-if="section === 'additional' && isOpenAddingWrap"
-            :new-additional-data="additionalData",
-            :add-new-additional="addDocAdditional",
-            :save-additional="saveDocs"
-          )
     transition(name="section", mode="out-in")
       .flex.justify-center.items-center(
         v-if="sectionDataPresence",
         :style="{height: settings[section].voidHeight + 'px'}",
       )
-        base-loader(
-          :width="60",
-          :height="60"
-        )
+        base-loader(:width="60", :height="60")
       .section-body.flex.flex-col.gap-y-4.px-4(
-        v-else-if="(this.isData || this.isAddress || this.isAttachments) && !isChange",
-        :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
+        v-else-if="(this.isData || this.isAddress || this.isAttachments || this.isNotes) && !isChange",
+        :class="{'pt-3 pb-4': isData || isAddress || isAttachments || isNotes}",
         :style="{height: settings[section].voidHeight + 'px'}"
       )
         .flex.flex-col.gap-y-4
@@ -86,14 +77,17 @@
               )
             .flex(v-if="item.name && !isChange")
               span.text-sm.w-fit {{item.title}}
-            .flex.items-center(v-if="item.title")
+            .flex.items-center(v-if="item.title && section !== 'additional'")
               .flex.gap-x-2.items-center
                 img(:src="iconDictionary[item?.document?.substr(item.document.lastIndexOf('.') + 1)]")
                 span.text-sm {{item.title}}
               span.text-sm(v-if="item.document") {{`.${item?.document?.substr(item.document.lastIndexOf(".") + 1)}`}}
+            .flex.flex-col(v-if="section === 'additional' && !isChange", class="gap-y-1.5")
+              .title-section.text-xxs.font-semibold {{item.title}}
+              span.text-smm {{item.description}}
       .section-body.flex.flex-col.gap-y-4.px-4(
-        v-else-if="(this.isData || this.isAddress || this.isAttachments) && isChange",
-        :class="{'pt-3 pb-4': isData || isAddress || isAttachments}",
+        v-else-if="(this.isData || this.isAddress || this.isAttachments || this.isNotes) && isChange",
+        :class="{'pt-3 pb-4': isData || isAddress || isAttachments || isNotes}",
       )
         .flex.flex-col.gap-y-4
           .flex.flex-col(v-for="(item, key) in sectionInfo", class="gap-y-1.5")
@@ -102,7 +96,7 @@
             ) {{settings[section].options[key]}}
             span.title-section.font-semibold.text-xs(v-if="item.header") {{item.header}}  
             client-detail-input.text-sm.w-max-fit(
-              v-if="section!=='docs' && isChange && settings[section].options[key] !== 'Дата выдачи'",
+              v-if="section!=='docs' && section!=='additional' && isChange && settings[section].options[key] !== 'Дата выдачи'",
               :style="{fontWeight:key === 'numba'&&600}",
               v-model:value="sectionInfo[key]",
               :rows="section ==='pass' ? 2 : 1",
@@ -110,7 +104,7 @@
               :sharp="settings[section].sharps[key] && section === 'pass' ? settings[section].sharps[key] : ''"
             )
             base-input-date.input.text-sm(
-              v-else-if="isChange && section !== 'docs'",
+              v-else-if="isChange && section !== 'docs' && section !== 'additional'",
               v-model:value="sectionInfo.issued_by_date"
             )
               .copy.icon-copy.cursor-pointer(
@@ -125,7 +119,13 @@
               .text-separation.span.text-sm.separator.px-2 или
             .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
               client-detail-section-address(:dope-address="dopeAddress")
-            .flex.items-center(v-if="item.title")
+            .flex.flex-col.gap-y-2(v-if="section === 'additional' && isChange")
+              .title-section.text-xxs.font-semibold {{item.title}}
+              client-detail-input.text-sm.w-max-fit(
+                :style="{fontWeight:key === 'numba'&&600}",
+                v-model:value="sectionInfo[key].description"
+              )
+            .flex.items-center(v-if="item.title && section !== 'additional'")
               .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
                 v-if="isChange",
                 :id="item.id",
@@ -176,14 +176,17 @@ export default {
   },
   props: {
     saveNewDoc: Function,
+    createNote: Function,
     sectionInfo: Object,
     section: String,
     deleteDoc: Function,
     updateDocument: Function,
     updateAddress: Function,
+    updateNotes: Function,
     lackData: Boolean,
     lackAddress: Boolean,
     lackAttachments: Boolean,
+    lackNotes: Boolean,
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
@@ -205,6 +208,7 @@ export default {
       isData: true,
       isAddress: true,
       isAttachments: true,
+      isNotes: true,
       iconDictionary: {
         doc: wordIcon,
         docx: wordIcon,
@@ -229,7 +233,7 @@ export default {
         : "";
     },
     sectionDataPresence() {
-      if (this.section === "docs") {
+      if (this.section === "docs" || this.section === "additional") {
         return this.sectionInfo[0]?.initialization;
       }
       return Object.keys(this.sectionInfo).length === 0;
@@ -246,6 +250,8 @@ export default {
         this.isAttachments = true;
         this.showModal = true;
         this.isOpenAddDoc = true;
+      } else if (this.section === "additional") {
+        this.isNotes = true;
       }
     },
     changeOpenAddDoc() {
@@ -306,6 +312,12 @@ export default {
           this.createAddress();
         } else this.updateAddress();
       }
+      if (this.section === "additional") {
+        if (!this.sectionInfo[0].id) {
+          this.isNotes = false;
+          this.createAddress();
+        } else this.updateNotes();
+      }
     },
     copyValue(text) {
       navigator.clipboard.writeText(text);
@@ -363,6 +375,12 @@ export default {
       immediate: true,
       handler(newValue) {
         this.isAttachments = newValue;
+      },
+    },
+    lackNotes: {
+      immediate: true,
+      handler(newValue) {
+        this.isNotes = newValue;
       },
     },
     showModal: function () {

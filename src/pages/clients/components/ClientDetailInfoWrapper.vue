@@ -26,6 +26,14 @@
         :delete-doc="deleteDoc"
         :lack-attachments="lackAttachments"
       )
+    .flex.flex-col
+      client-detail-info-section(
+        section="additional",
+        :section-info="dataNotes",
+        :lack-notes="lackNotes",
+        :create-note="createNote",
+        :update-notes="updateNotes"
+      )
 </template>
 
 <script>
@@ -34,16 +42,19 @@ export default {
   name: "ClientDetailInfoWrapper",
   components: { ClientDetailInfoSection },
   props: {
-    dataDetail: Object,
     dataAddress: Object,
     dataAttachments: Array,
+    dataNotes: Array,
     saveNewDoc: Function,
+    createNote: Function,
     deleteDoc: Function,
     dataDocument: Object,
     updateDocument: Function,
     updateAddress: Function,
+    updateNotes: Function,
     lackData: Boolean,
     lackAddress: Boolean,
+    lackNotes: Boolean,
     lackAttachments: Boolean,
     dopeAddress: Object,
     createAddress: Function,

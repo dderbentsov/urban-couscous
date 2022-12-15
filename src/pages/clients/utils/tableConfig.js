@@ -165,6 +165,9 @@ export const detail = {
   },
   docs: {
     title: "Документы",
+    placeholder: {
+      numba: "Редактировать данные",
+    },
     height: 280,
     width: 360,
     addFile: true,
@@ -175,6 +178,7 @@ export const detail = {
     height: 280,
     width: 360,
     addFile: true,
+    voidHeight: 236,
   },
   docsColor: {
     "application/pdf": "#ff6969",
