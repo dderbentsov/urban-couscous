@@ -31,6 +31,7 @@
         :owners-data="employeesData",
         :selected-event-data="selectedEvent",
         :event-types="eventTypes",
+        :time-information="timeInformation",
         @clear-selected-event-data="clearSelectedEvent",
         @close-change-form="setChangeFormState"
       )

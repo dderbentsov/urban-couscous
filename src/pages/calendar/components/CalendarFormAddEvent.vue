@@ -105,6 +105,12 @@ export default {
         return [];
       },
     },
+    timeInformation: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -268,6 +274,75 @@ export default {
     },
   },
   methods: {
+    checkTimeLimits(eventTime, scheduleTime, timeType) {
+      if (timeType === "start")
+        return (
+          parseInt(eventTime.split(":")[0]) <
+          parseInt(scheduleTime.split(":")[0])
+        );
+      if (timeType === "end") {
+        let firstTime = eventTime.split(":").map((elem) => parseInt(elem));
+        let secondTime = scheduleTime.split(":").map((elem) => parseInt(elem));
+        if (firstTime[0] === secondTime[0]) return firstTime[1] > secondTime[1];
+        else return firstTime[0] > secondTime[0];
+      }
+    },
+    checkTime() {
+      let counter = 0;
+      if (
+        this.checkTimeLimits(
+          this.startTime,
+          this.timeInformation.dayStartTime,
+          "start"
+        )
+      ) {
+        this.addErrorNotification(
+          "Некорректное время начала события",
+          "Время начала события раньше начала рабочего дня"
+        );
+        counter += 1;
+      }
+      if (
+        this.checkTimeLimits(
+          this.endTime,
+          this.timeInformation.dayEndTime,
+          "end"
+        )
+      ) {
+        this.addErrorNotification(
+          "Некорректное время окончания события",
+          "Время окончания события позже окончания рабочего дня"
+        );
+        counter += 1;
+      }
+      if (
+        this.checkTimeLimits(
+          this.endTime,
+          this.timeInformation.dayStartTime,
+          "start"
+        )
+      ) {
+        this.addErrorNotification(
+          "Некорректное время окончания события",
+          "Время окончания события раньше начала рабочего дня"
+        );
+        counter += 1;
+      }
+      if (
+        this.checkTimeLimits(
+          this.startTime,
+          this.timeInformation.dayEndTime,
+          "end"
+        )
+      ) {
+        this.addErrorNotification(
+          "Некорректное время начала события",
+          "Время начала события позже окончания рабочего дня"
+        );
+        counter += 1;
+      }
+      return counter === 0;
+    },
     trimOwnerName(lastName, firsName, patronymic) {
       return `${lastName} ${firsName[0]}.${patronymic[0]}.`;
     },
@@ -275,6 +350,7 @@ export default {
       return `${lastName} ${firsName} ${patronymic}`;
     },
     async sendEventData() {
+      if (!this.checkTime()) return;
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
@@ -288,6 +364,7 @@ export default {
       this.eventData = {};
     },
     async updateEventData() {
+      if (!this.checkTime()) return;
       if (
         Object.keys(
           this.findPerson(this.ownersData, this.employees, "employee")
@@ -384,7 +461,7 @@ export default {
       }
     },
     addErrorNotification(title, message) {
-      addNotification(new Date().getTime(), title, message, "error", 5000);
+      addNotification(title, title, message, "error", 5000);
     },
     addSuccessNotification(message) {
       addNotification(new Date().getTime(), message, "", "success", 5000);
