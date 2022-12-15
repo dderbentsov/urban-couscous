@@ -1,5 +1,5 @@
 <template lang="pug">
-  .wrapper.cursor-pointer.my-1.relative(
+  .wrapper.cursor-pointer.my-1(
     :style="themeColors",
     :class="cardTheme",
     ref="eventCard"
@@ -227,7 +227,7 @@ export default {
     changeFormWasClosed: {
       immediate: true,
       handler(newValue) {
-        if (newValue === true) {
+        if (newValue === true && this.isActive) {
           this.isActive = false;
           this.$emit("reset-change-form");
         }
