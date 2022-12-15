@@ -64,7 +64,7 @@ export default {
 .wrap
   width: 570px
   height: fit-content
-  min-height: 640px
+  min-height: 485px
 
 .services-wrapper
   border: 1px solid var(--btn-grey-color)
