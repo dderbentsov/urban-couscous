@@ -436,7 +436,7 @@ export default {
         this.infoClient.phone.username.length < 18
       ) {
         this.addErrorNotification(
-          "Неккоретный номер телефона",
+          "Некорректный номер телефона",
           "Введите мобильный номер, состоящий из 11 цифр"
         );
         return false;
