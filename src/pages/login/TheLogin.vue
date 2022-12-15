@@ -84,29 +84,24 @@ export default {
       localStorage.username = this.user.username;
       localStorage.password = this.user.password;
     },
-    auth(token) {
-      fetch("http://45.84.227.122:8080/auth/users/me/", {
+    async auth(token) {
+      let res = await fetch("http://45.84.227.122:8080/auth/users/me/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-        .then((res) => {
-          return res.json();
-        })
-        .then((data) => {
-          fetch(`http://45.84.227.122:8080/accounts/users/${data.id}/detail`, {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          })
-            .then((res) => {
-              return res.json();
-            })
-            .then((data) => {
-              this.userData = data;
-              localStorage.setItem("userData", JSON.stringify(this.userData));
-            });
-        });
+      });
+      res = await res.json();
+      let data = await fetch(
+        `http://45.84.227.122:8080/accounts/users/${res.id}/detail`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      data = await data.json();
+      this.userData = data;
+      localStorage.setItem("userData", JSON.stringify(this.userData));
     },
     login() {
       const requestOptions = {
@@ -127,8 +122,7 @@ export default {
         .then((token) => {
           if (token) {
             localStorage.setItem("tokenAccess", token.access);
-            this.$router.push("/");
-            this.auth(token.access);
+            this.auth(token.access).then(() => this.$router.push("/"));
           } else {
             this.$router.push("/login");
           }
