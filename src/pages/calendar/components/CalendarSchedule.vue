@@ -52,6 +52,7 @@
           calendar-background(
             :time-coil="timeCoil",
             :owners-count="ownersCount"
+            @dblclick="openFormCreateEvent"
           )
 </template>
 
@@ -70,6 +71,7 @@ export default {
     CalendarColumn,
   },
   props: {
+    openFormCreateEvent: Function,
     url: String,
     changeFormWasClosed: Boolean,
     currentDate: {
