@@ -22,7 +22,8 @@
       @open-change-form="openFormCreateEvent",
       @reset-change-form="resetChangeFormState",
       @selected-event="writeEventData",
-      @delete-event="openModal"
+      @delete-event="openModal",
+      @dblclick="openFormCreateEvent"
     )
     transition(name="form")
       calendar-form-add-event(
