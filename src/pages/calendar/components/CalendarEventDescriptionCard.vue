@@ -31,7 +31,7 @@ export default {
   name: "CalendarEventDescriptionCard",
   props: {
     ownerEvent: Object,
-    eventStatus: {
+    eventStatuses: {
       type: Array,
       default() {
         return [];
@@ -57,35 +57,35 @@ export default {
     },
     typeColor() {
       switch (this.ownerEvent.status) {
-        case this.eventStatus[1].value:
+        case this.eventStatuses[1].value:
           return {
             "--bg-color": "var(--bg-event-grey-color-0)",
-            "--font-color": this.eventStatus[1].color,
+            "--font-color": this.eventStatuses[1].color,
           };
-        case this.eventStatus[2].value:
+        case this.eventStatuses[2].value:
           return {
             "--bg-color": "var(--bg-event-yellow-color-0)",
             "--font-color": "var(--font-black-color)",
           };
-        case this.eventStatus[3].value:
+        case this.eventStatuses[3].value:
           return {
             "--bg-color": "var(--bg-event-orange-color-0)",
             "--font-color": "var(--font-black-color)",
           };
-        case this.eventStatus[4].value:
+        case this.eventStatuses[4].value:
           return {
             "--bg-color": "var(--bg-event-blue-color-0)",
-            "--font-color": this.eventStatus[4].color,
+            "--font-color": this.eventStatuses[4].color,
           };
-        case this.eventStatus[5].value:
+        case this.eventStatuses[5].value:
           return {
             "--bg-color": "var(--bg-event-green-color-0)",
-            "--font-color": this.eventStatus[5].color,
+            "--font-color": this.eventStatuses[5].color,
           };
-        case this.eventStatus[6].value:
+        case this.eventStatuses[6].value:
           return {
             "--bg-color": "var(--bg-event-red-color-0)",
-            "--font-color": this.eventStatus[6].color,
+            "--font-color": this.eventStatuses[6].color,
           };
         default:
           return {

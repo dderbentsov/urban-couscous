@@ -4,7 +4,7 @@
     .card-container
       calendar-event-description-card(
         disabled,
-        :event-types="eventTypes",
+        :event-statuses="eventStatuses",
         :owner-event="ownerEvent"
       )
     .flex.gap-x-3.mt-6.font-semibold
@@ -35,7 +35,7 @@ export default {
   },
   props: {
     ownerEvent: Object,
-    eventTypes: {
+    eventStatuses: {
       type: Array,
       default() {
         return [];
