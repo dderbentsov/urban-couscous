@@ -9,7 +9,7 @@
       :type="type",
       @input="$emit('update:value', $event.target.value)",
       :placeholder="placeholder",
-      :maxlength="maxLength",
+      :maxLength="maxLength",
       :max="maxDate",
       :disabled="disabled"
     )

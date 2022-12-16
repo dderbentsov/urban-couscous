@@ -433,9 +433,15 @@ export default {
       this.lackAttachments = this.dataAttachments[0]?.id ? true : false;
     },
     saveNote(data) {
-      this.dataNotes = [...data.note];
-      this.lackNotes = this.dataNotes[0]?.id ? true : false;
+      if (data?.note[0]) {
+        this.dataNotes = [...data.note];
+        this.lackNotes = true;
+      } else {
+        this.lackNotes = false;
+        this.dataNotes = [{ title: "", description: "" }];
+      }
     },
+
     saveIdentityDocument(data) {
       if (data?.id) {
         this.docId = data.id;
@@ -621,12 +627,12 @@ export default {
             );
         });
     },
-    postCreateNote() {
+    postCreateNote(title, description) {
       fetchWrapper
         .post("general/note/create/", {
           person_id: this.id,
-          title: this.dataNotes[0].title,
-          description: this.dataNotes[0].title,
+          title: title,
+          description: description,
         })
         .then(() => this.fetchClientDetail(this.id));
     },

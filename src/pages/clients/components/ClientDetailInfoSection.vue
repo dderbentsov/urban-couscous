@@ -54,6 +54,12 @@
               v-click-outside="closeAddDocs"
             )
             table-create-package-doc(v-if="isOpenPackage")
+          base-popup.right-3.top-5(
+            v-if="section === 'additional' && isOpenAddingWrap",
+            v-click-outside="closePopup",
+            :width="485"
+          )
+            table-create-note(create-note="createNote", :close-popup="closePopup")
     transition(name="section", mode="out-in")
       .flex.justify-center.items-center(
         v-if="sectionDataPresence",
@@ -123,7 +129,8 @@
               .title-section.text-xxs.font-semibold {{item.title}}
               client-detail-input.text-sm.w-max-fit(
                 :style="{fontWeight:key === 'numba'&&600}",
-                v-model:value="sectionInfo[key].description"
+                v-model:value="sectionInfo[key].description",
+                placeholder="Описание"
               )
             .flex.items-center(v-if="item.title && section !== 'additional'")
               .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
@@ -148,6 +155,7 @@ import BaseButton from "@/components/base/BaseButton";
 import TableAddingNewDoc from "@/pages/clients/components/TableAddingNewDoc";
 import TableAddingNewAdditional from "@/pages/clients/components/TableAddingNewAdditional";
 import TableCreatePackageDoc from "@/pages/clients/components/TableCreatePackageDoc";
+import TableCreateNote from "@/pages/clients/components/TableCreateNote";
 import ClientDetailSectionAddress from "@/pages/clients/components/ClientDetailSectionAddress";
 import TableChoiceAddingDoc from "@/pages/clients/components/TableChoiceAddingDoc";
 import BasePopup from "@/components/base/BasePopup";
@@ -166,17 +174,17 @@ export default {
     BaseInputDate,
     BasePopup,
     BaseModal,
+    BaseLoader,
     ClientDetailInput,
     ClientDetailSectionAddress,
     TableAddingNewAdditional,
     TableCreatePackageDoc,
     TableAddingNewDoc,
     TableChoiceAddingDoc,
-    BaseLoader,
+    TableCreateNote,
   },
   props: {
     saveNewDoc: Function,
-    createNote: Function,
     sectionInfo: Object,
     section: String,
     deleteDoc: Function,
@@ -190,6 +198,7 @@ export default {
     dopeAddress: Object,
     createAddress: Function,
     createDocument: Function,
+    createNote: Function,
     addressId: String,
     docId: String,
   },
@@ -313,10 +322,12 @@ export default {
         } else this.updateAddress();
       }
       if (this.section === "additional") {
-        if (!this.sectionInfo[0].id) {
+        if (!this.sectionInfo[0]?.id) {
           this.isNotes = false;
-          this.createAddress();
-        } else this.updateNotes();
+          this.createNote();
+        } else {
+          this.updateNotes();
+        }
       }
     },
     copyValue(text) {
