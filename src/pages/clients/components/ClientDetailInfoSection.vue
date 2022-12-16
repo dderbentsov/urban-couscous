@@ -59,7 +59,7 @@
             v-click-outside="closePopup",
             :width="485"
           )
-            table-create-note(create-note="createNote", :close-popup="closePopup")
+            table-create-note(:create-note="createNote", :close-popup="closePopup")
     transition(name="section", mode="out-in")
       .flex.justify-center.items-center(
         v-if="sectionDataPresence",
@@ -126,7 +126,12 @@
             .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
               client-detail-section-address(:dope-address="dopeAddress")
             .flex.flex-col.gap-y-2(v-if="section === 'additional' && isChange")
-              .title-section.text-xxs.font-semibold {{item.title}}
+              //- .title-section.text-xxs.font-semibold {{item.title}}
+              client-detail-input.text-sm.w-max-fit(
+                :style="{fontWeight:key === 'numba'&&600}",
+                v-model:value="sectionInfo[key].title",
+                placeholder="Заголовок"
+              )
               client-detail-input.text-sm.w-max-fit(
                 :style="{fontWeight:key === 'numba'&&600}",
                 v-model:value="sectionInfo[key].description",
@@ -261,6 +266,7 @@ export default {
         this.isOpenAddDoc = true;
       } else if (this.section === "additional") {
         this.isNotes = true;
+        this.isOpenAddingWrap = true;
       }
     },
     changeOpenAddDoc() {
@@ -324,7 +330,6 @@ export default {
       if (this.section === "additional") {
         if (!this.sectionInfo[0]?.id) {
           this.isNotes = false;
-          this.createNote();
         } else {
           this.updateNotes();
         }

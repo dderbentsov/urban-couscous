@@ -628,21 +628,36 @@ export default {
         });
     },
     postCreateNote(title, description) {
-      fetchWrapper
-        .post("general/note/create/", {
-          person_id: this.id,
-          title: title,
-          description: description,
-        })
-        .then(() => this.fetchClientDetail(this.id));
+      if (!title || !description) {
+        this.addErrorNotification(
+          "Ошибка создания дополнительных данных",
+          "Все поля должны быть заполнены"
+        );
+      } else
+        fetchWrapper
+          .post("general/note/create/", {
+            person_id: this.id,
+            title: title,
+            description: description,
+          })
+          .then(() => this.fetchClientDetail(this.id));
     },
     postUpdateNotes() {
-      fetchWrapper
-        .post(`general/note/${this.dataNotes[0].id}/update/`, {
-          title: this.dataNotes[0].title,
-          description: this.dataNotes[0].description,
-        })
-        .then(() => this.fetchClientDetail(this.id));
+      this.dataNotes.forEach((e) => {
+        if (!e.title || !e.description) {
+          this.addErrorNotification(
+            "Ошибка изменения дополнительных данных",
+            "Поля не могут быть пустыми"
+          );
+          this.fetchClientDetail(this.id);
+        } else
+          fetchWrapper
+            .post(`general/note/${e.id}/update/`, {
+              title: e.title,
+              description: e.description,
+            })
+            .then(() => this.fetchClientDetail(this.id));
+      });
     },
   },
 
