@@ -4,7 +4,7 @@
       :url="url",
       :team-data="employeesData",
       :open-form-create="openFormCreateEvent",
-      :event-types="eventTypes",
+      :event-status="eventStatus",
       @width="changeWidth",
     )
     calendar-schedule(
@@ -14,7 +14,7 @@
       :time-information="timeInformation",
       :events-data="eventsData",
       :sidebar-width="sidebarWidth",
-      :event-types="eventTypes",
+      :event-status="eventStatus",
       :change-form-was-closed="changeFormWasClosed",
       @previous-date="switchPreviousDate",
       @next-date="switchNextDate",
@@ -30,7 +30,7 @@
         :close-form="closeFormCreateEvent",
         :owners-data="employeesData",
         :selected-event-data="selectedEvent",
-        :event-types="eventTypes",
+        :event-status="eventStatus",
         :time-information="timeInformation",
         @clear-selected-event-data="clearSelectedEvent",
         @close-change-form="setChangeFormState"
@@ -40,7 +40,7 @@
       title="Удаление события"
     ) 
       calendar-delete-modal(
-        :event-types="eventTypes",
+        :event-types="eventStatus",
         :owner-event="selectedEvent",
         :close-modal="changeShowModal",
         @update-events="fetchEventsData"
@@ -82,11 +82,49 @@ export default {
       employeesData: [],
       isOpenForm: false,
       changeFormWasClosed: false,
-      eventTypes: [
-        { id: 1, label: "Встреча", color: "var(--bg-event-green-color)" },
-        { id: 2, label: "Планерка", color: "var(--bg-event-red-color)" },
-        { id: 3, label: "Интервью", color: "var(--bg-event-yellow-color)" },
-        { id: 4, label: "Важная работа", color: "var(--bg-event-blue-color)" },
+      eventStatus: [
+        {
+          id: 0,
+          label: "Планируется прием",
+          value: "PLANNED",
+          color: "var(--default-white)",
+        },
+        {
+          id: 1,
+          label: "Отменил",
+          value: "CANCELED",
+          color: "var(--bg-event-grey-color)",
+        },
+        {
+          id: 2,
+          label: "Ожидается прием",
+          value: "EXPECTED",
+          color: "var(--bg-event-yellow-color)",
+        },
+        {
+          id: 3,
+          label: "Опаздывает",
+          value: "LATE",
+          color: "var(--bg-event-orange-color)",
+        },
+        {
+          id: 4,
+          label: "Идет прием",
+          value: "RECEPTION",
+          color: "var(--bg-event-blue-color)",
+        },
+        {
+          id: 5,
+          label: "Прием завершен",
+          value: "COMPLETED",
+          color: "var(--bg-event-green-color)",
+        },
+        {
+          id: 6,
+          label: "Не пришел",
+          value: "DID_NOT_COME",
+          color: "var(--bg-event-red-color)",
+        },
       ],
     };
   },

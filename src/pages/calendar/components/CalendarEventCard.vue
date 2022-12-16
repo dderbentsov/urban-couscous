@@ -25,7 +25,7 @@
       calendar-event-description-card(
         v-if="isOpenDescriptionCard",
         :owner-event="ownerEvent",
-        :event-types="eventTypes",
+        :event-status="eventStatus",
         @selected-event="transmitEventData",
         @close-description-card="closeDescriptionCard",
         @delete-event="transmitDeleteEvent",
@@ -41,7 +41,7 @@ export default {
   props: {
     changeFormWasClosed: Boolean,
     ownerEvent: Object,
-    eventTypes: {
+    eventStatus: {
       type: Array,
       default() {
         return [];
@@ -101,42 +101,60 @@ export default {
       };
     },
     themeColors() {
-      switch (this.ownerEvent.kind) {
-        case this.eventTypes[0].label:
+      switch (this.ownerEvent.status) {
+        case this.eventStatus[1].value:
           return {
-            "--bg-color": "var(--bg-event-green-color-0)",
-            "--bg-active": this.eventTypes[0].color,
-            "--bg-hover": "var(--bg-event-green-color-1)",
+            "--bg-color": "var(--bg-event-grey-color-0)",
+            "--bg-active": this.eventStatus[1].color,
+            "--bg-hover": "var(--bg-event-grey-color-1)",
             "--font-color": "var(--font-black-color)",
             "--font-active-color": "var(--default-white)",
-            "--count-color": this.eventTypes[0].color,
+            "--count-color": this.eventStatus[1].color,
           };
-        case this.eventTypes[1].label:
-          return {
-            "--bg-color": "var(--bg-event-red-color-0)",
-            "--bg-active": this.eventTypes[1].color,
-            "--bg-hover": "var(--bg-event-red-color-1)",
-            "--font-color": "var(--font-black-color)",
-            "--font-active-color": "var(--default-white)",
-            "--count-color": this.eventTypes[1].color,
-          };
-        case this.eventTypes[2].label:
+        case this.eventStatus[2].value:
           return {
             "--bg-color": "var(--bg-event-yellow-color-0)",
-            "--bg-active": this.eventTypes[2].color,
+            "--bg-active": this.eventStatus[2].color,
             "--bg-hover": "var(--bg-event-yellow-color-1)",
             "--font-color": "var(--font-black-color)",
             "--font-active-color": "var(--font-black-color)",
             "--count-color": "var(--font-black-color)",
           };
-        case this.eventTypes[3].label:
+        case this.eventStatus[3].value:
+          return {
+            "--bg-color": "var(--bg-event-orange-color-0)",
+            "--bg-active": this.eventStatus[3].color,
+            "--bg-hover": "var(--bg-event-orange-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--font-black-color)",
+            "--count-color": "var(--font-black-color)",
+          };
+        case this.eventStatus[4].value:
           return {
             "--bg-color": "var(--bg-event-blue-color-0)",
-            "--bg-active": this.eventTypes[3].color,
+            "--bg-active": this.eventStatus[4].color,
             "--bg-hover": "var(--bg-event-blue-color-1)",
             "--font-color": "var(--font-black-color)",
             "--font-active-color": "var(--default-white)",
-            "--count-color": this.eventTypes[3].color,
+            "--count-color": this.eventStatus[4].color,
+          };
+        case this.eventStatus[5].value:
+          return {
+            "--bg-color": "var(--bg-event-green-color-0)",
+            "--bg-active": this.eventStatus[5].color,
+            "--bg-hover": "var(--bg-event-green-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--default-white)",
+            "--count-color": this.eventStatus[5].color,
+          };
+        case this.eventStatus[6].value:
+          return {
+            "--bg-color": "var(--bg-event-red-color-0)",
+            "--bg-active": this.eventStatus[6].color,
+            "--bg-hover": "var(--bg-event-red-color-1)",
+            "--font-color": "var(--font-black-color)",
+            "--font-active-color": "var(--default-white)",
+            "--count-color": this.eventStatuss[6].color,
           };
         default:
           return {

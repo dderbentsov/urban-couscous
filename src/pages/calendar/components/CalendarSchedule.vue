@@ -25,7 +25,7 @@
           :day-start-time="validateStartTime",
           :day-end-time="validateEndTime",
           :style="columnSize",
-          :event-types="eventTypes",
+          :event-status="eventStatus",
           :change-form-was-closed="changeFormWasClosed",
           @selected-event="transmitEventData",
           @reset-change-form="transmitResetChangeForm",
@@ -97,7 +97,7 @@ export default {
         return [];
       },
     },
-    eventTypes: {
+    eventStatus: {
       type: Array,
       default() {
         return [];
