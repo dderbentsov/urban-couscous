@@ -4,7 +4,7 @@
       :url="url",
       :team-data="employeesData",
       :open-form-create="openFormCreateEvent",
-      :event-status="eventStatus",
+      :event-statuses="eventStatuses",
       @width="changeWidth",
     )
     calendar-schedule(
@@ -14,7 +14,7 @@
       :time-information="timeInformation",
       :events-data="eventsData",
       :sidebar-width="sidebarWidth",
-      :event-status="eventStatus",
+      :event-statuses="eventStatuses",
       :change-form-was-closed="changeFormWasClosed",
       @previous-date="switchPreviousDate",
       @next-date="switchNextDate",
@@ -22,7 +22,8 @@
       @open-change-form="openFormCreateEvent",
       @reset-change-form="resetChangeFormState",
       @selected-event="writeEventData",
-      @delete-event="openModal"
+      @delete-event="openModal",
+      @dblclick="openFormCreateEvent"
     )
     transition(name="form")
       calendar-form-add-event(
@@ -30,7 +31,7 @@
         :close-form="closeFormCreateEvent",
         :owners-data="employeesData",
         :selected-event-data="selectedEvent",
-        :event-status="eventStatus",
+        :event-statuses="eventStatuses",
         :time-information="timeInformation",
         @clear-selected-event-data="clearSelectedEvent",
         @close-change-form="setChangeFormState"
@@ -40,7 +41,7 @@
       title="Удаление события"
     ) 
       calendar-delete-modal(
-        :event-types="eventStatus",
+        :event-statuses="eventStatuses",
         :owner-event="selectedEvent",
         :close-modal="changeShowModal",
         @update-events="fetchEventsData"
@@ -82,7 +83,7 @@ export default {
       employeesData: [],
       isOpenForm: false,
       changeFormWasClosed: false,
-      eventStatus: [
+      eventStatuses: [
         {
           id: 0,
           label: "Планируется прием",

@@ -3,26 +3,33 @@
     v-click-outside="clearForm"
   )
     .flex.justify-between
-      span.title.text-xl.font-bold {{!selectedEventData.id ? "Назначение события" : "Изменение события"}}
+      span.title.text-xl.font-bold {{!selectedEventData.id ? "Запись на прием" : "Изменение записи"}}
       .flex.pt-2
         .icon-cancel.close-icon.tesxt-xs.cursor-pointer(@click="clearForm")
     .flex.flex-col.gap-y-8
       .flex.flex-col.gap-y-2
-        span.text-xs.opacity-40.font-bold.leading-3 Вид события
+        span.text-xxs.opacity-40.font-bold.leading-3 Статус приема
         base-custom-select.select(
-          v-model="kind",
-          :items="eventStatus",
-          placeholder="Вид события"
+          v-if="selectedEventData.id"
+          v-model="status",
+          :items="eventStatuses",
+          placeholder="Статус приема"
+        )
+        base-input(
+          v-else,
+          disabled,
+          v-model:value="status.label"
         )
       .flex.flex-col(class="gap-y-1.5")
-        span.text-sm Сотрудник
+        span.text-xxs.opacity-40.font-bold Сотрудник
         base-custom-select.select(
           :items="ownersList",
           v-model="employees.employee",
           placeholder="Выберите сотрудника"
         )
+        
       .flex.flex-col(class="gap-y-1.5")
-        span.text-sm Клиент
+        span.text-xxs.opacity-40.font-bold Клиент
         base-custom-select.select(
           :items="membersList",
           v-model="members.person",
@@ -32,18 +39,18 @@
       .flex.gap-x-4
         .flex.gap-x-2
           .flex.flex-col(class="gap-y-1.5")
-            span.text-xs.opacity-40.font-bold.leading-3 Дата
+            span.text-xxs.opacity-40.font-bold.leading-3.font-bold Дата
             base-input-date.select(v-model:value="eventDate")
         .flex.gap-x-2.items-center
           .flex.flex-col(class="gap-y-1.5")
-            span.text-xs.opacity-40.font-bold.leading-3 Начало
+            span.text-xxs.opacity-40.font-bold.leading-3.font-bold Начало
             base-input-time.item-input.text-base.select(
               v-model:value="startTime",
               :width-input="72"
             )
           span.mt-4 —
           .flex.flex-col(class="gap-y-1.5")
-            span.text-xs.opacity-40.font-bold.leading-3 Конец
+            span.text-xxs.opacity-40.font-bold.leading-3.font-bold Конец
             base-input-time.item-input.text-base.select(
               v-model:value="endTime",
               :width-input="72"
@@ -73,6 +80,7 @@ import BaseSelect from "@/components/base/BaseSelect.vue";
 import BaseCustomSelect from "@/components/base/BaseCustomSelect.vue";
 import BaseButton from "@/components/base/BaseButton";
 import * as moment from "moment/moment";
+import { statusesDictionary } from "../utils/statusesDictionary.js";
 export default {
   name: "FormChangeEvent",
   components: {
@@ -99,7 +107,7 @@ export default {
         return {};
       },
     },
-    eventStatus: {
+    eventStatuses: {
       type: Array,
       default() {
         return [];
@@ -116,13 +124,14 @@ export default {
     return {
       EMPLOYEE_TYPE: "owner",
       MEMBER_TYPE: "primary",
+      EVENT_KIND: "Прием",
       eventData: {},
       startTime: "",
       endTime: "",
       members: {},
       employees: {},
       eventDate: "",
-      kind: "",
+      status: {},
       id: null,
       ifClearedForm: true,
       membersData: [],
@@ -170,7 +179,7 @@ export default {
         this.endTime &&
         this.members.person.label &&
         this.employees.employee.label &&
-        this.kind.label
+        this.status.label
       ) {
         return false;
       }
@@ -183,7 +192,7 @@ export default {
         this.eventDate === start.format("YYYY-MM-DD") &&
         this.startTime === start.format("HH:mm") &&
         this.endTime === end.format("HH:mm") &&
-        this.kind.label === this.selectedEventData.kind &&
+        this.status.label === this.selectedEventData.status &&
         this.employees.employee.id ===
           this.personId(this.selectedEventData.employees, "employee") &&
         this.members.person.id ===
@@ -258,14 +267,14 @@ export default {
         role: this.MEMBER_TYPE,
       };
     },
-    eventKind() {
-      return this.selectedEventData.kind
+    eventStatus() {
+      return this.selectedEventData.status
         ? {
-            label: this.selectedEventData.kind,
+            label: statusesDictionary[this.selectedEventData.status],
             id: null,
           }
         : {
-            label: "",
+            label: statusesDictionary["PLANNED"],
             id: null,
           };
     },
@@ -274,6 +283,11 @@ export default {
     },
   },
   methods: {
+    findStatus(value) {
+      return Object.keys(statusesDictionary).find(
+        (key) => statusesDictionary[key] === value
+      );
+    },
     checkTimeLimits(eventTime, scheduleTime, timeType) {
       if (timeType === "start")
         return (
@@ -354,7 +368,8 @@ export default {
       this.eventData = {
         start: this.mergeDate(this.eventDate, this.startTime),
         end: this.mergeDate(this.eventDate, this.endTime),
-        kind: this.kind.label,
+        status: this.findStatus(this.status.label),
+        kind: this.EVENT_KIND,
         employees: [
           this.findPerson(this.ownersData, this.employees, "employee"),
         ],
@@ -375,7 +390,7 @@ export default {
         this.eventData = {
           start: this.mergeDate(this.eventDate, this.startTime),
           end: this.mergeDate(this.eventDate, this.endTime),
-          kind: this.kind.label,
+          status: this.findStatus(this.status.label),
           employees: [
             this.findPerson(this.ownersData, this.employees, "employee"),
           ],
@@ -498,7 +513,7 @@ export default {
       handler(newDate) {
         if (newDate) {
           this.id = this.eventId;
-          this.kind = this.eventKind;
+          this.status = this.eventStatus;
           this.employees = this.eventEmployee;
           this.members = this.eventMember;
         }
@@ -561,7 +576,7 @@ export default {
 
 .select
   height: 40px
-  border: 2px solid var(--border-light-grey-color)
+  border: 1.5px solid var(--border-light-grey-color)
   border-radius: 4px
 
 .update-button
