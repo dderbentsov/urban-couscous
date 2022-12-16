@@ -8,8 +8,8 @@
     .flex.justify-between.items-center.mb-2
       .flex
         span.inline-block.font-bold.text-base.mr-3.mt-2px {{ eventTime }}
-        .type.text-xxs.flex.items-center.justify-center.px-14px(v-if="isCertainType")
-          span.type-text {{ ownerEvent.status }}
+        .type.text-xs.font-medium.flex.items-center.justify-center.px-14px(v-if="isCertainType")
+          span.type-text {{ status }}
       .right-side.flex.gap-x-4.text-sm(v-if="!disabled")
         .icon-basket.flex.items-center.cursor-pointer(@click="transmitDeleteEvent")
         .icon-edit.flex.items-center.cursor-pointer(@click="transmitEventData")
@@ -26,11 +26,12 @@
 </template>
 
 <script>
+import { statusesDictionary } from "../utils/statusesDictionary.js";
 export default {
   name: "CalendarEventDescriptionCard",
   props: {
     ownerEvent: Object,
-    eventTypes: {
+    eventStatus: {
       type: Array,
       default() {
         return [];
@@ -49,37 +50,42 @@ export default {
     };
   },
   computed: {
+    status() {
+      return this.ownerEvent.status
+        ? statusesDictionary[this.ownerEvent.status]
+        : "";
+    },
     typeColor() {
       switch (this.ownerEvent.status) {
-        case this.eventTypes[0].value:
+        case this.eventStatus[1].value:
+          return {
+            "--bg-color": "var(--bg-event-grey-color-0)",
+            "--font-color": this.eventStatus[1].color,
+          };
+        case this.eventStatus[2].value:
           return {
             "--bg-color": "var(--bg-event-yellow-color-0)",
             "--font-color": "var(--font-black-color)",
           };
-        case this.eventTypes[1].value:
-          return {
-            "--bg-color": "var(--bg-event-blue-color-0)",
-            "--font-color": this.eventTypes[1].color,
-          };
-        case this.eventTypes[2].value:
-          return {
-            "--bg-color": "var(--bg-event-green-color-0)",
-            "--font-color": this.eventTypes[2].color,
-          };
-        case this.eventTypes[3].value:
-          return {
-            "--bg-color": "var(--bg-event-red-color-0)",
-            "--font-color": this.eventTypes[3].color,
-          };
-        case this.eventTypes[4].value:
+        case this.eventStatus[3].value:
           return {
             "--bg-color": "var(--bg-event-orange-color-0)",
             "--font-color": "var(--font-black-color)",
           };
-        case this.eventTypes[5].value:
+        case this.eventStatus[4].value:
           return {
-            "--bg-color": "var(--bg-lavender-color)",
-            "--font-color": "var(--font-black-color)",
+            "--bg-color": "var(--bg-event-blue-color-0)",
+            "--font-color": this.eventStatus[4].color,
+          };
+        case this.eventStatus[5].value:
+          return {
+            "--bg-color": "var(--bg-event-green-color-0)",
+            "--font-color": this.eventStatus[5].color,
+          };
+        case this.eventStatus[6].value:
+          return {
+            "--bg-color": "var(--bg-event-red-color-0)",
+            "--font-color": this.eventStatus[6].color,
           };
         default:
           return {

@@ -11,7 +11,7 @@
         span.text-xs.opacity-40.font-bold.leading-3 Вид события
         base-custom-select.select(
           v-model="kind",
-          :items="eventTypes",
+          :items="eventStatus",
           placeholder="Вид события"
         )
       .flex.flex-col(class="gap-y-1.5")
@@ -99,7 +99,7 @@ export default {
         return {};
       },
     },
-    eventTypes: {
+    eventStatus: {
       type: Array,
       default() {
         return [];

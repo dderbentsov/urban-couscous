@@ -3,7 +3,7 @@
     .flex.flex-col.items-center(v-if="!isOpen")
       base-button(left-icon="icon-plus", rounded, :size="24", :icon-left-size="10", secondary)
       .flex.flex-col.gap-y-2.items-center.mt-4
-        .event.flex.items-center.justify-center(v-for="event in eventType" :key="event.id")
+        .event.flex.items-center.justify-center(v-for="event in eventStatus" :key="event.id")
           .event-type(:style="{ background: event.color }")
     .flex.flex-col.gap-y-4.w-full(v-else)
       .flex.items-center.justify-between
@@ -16,7 +16,7 @@
           secondary
         )
       .flex.flex-col.gap-y-2
-        .relative.flex.items-center.gap-x-3.h-8(v-for="event in eventType")
+        .relative.flex.items-center.gap-x-3.h-8(v-for="event in eventStatus")
           input.custom-input.py-2.pl-6.h-full.not-italic.font-medium.text-xxs(
             :placeholder="event.label"
             :key="event.id"
@@ -34,7 +34,7 @@ export default {
   },
   props: {
     isOpen: Boolean,
-    eventType: Array,
+    eventStatus: Array,
   },
 };
 </script>
