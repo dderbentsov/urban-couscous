@@ -10,6 +10,7 @@ module.exports = {
         xsm: ["10px", { lineHeight: "12px" }],
         ins: ["11px", { lineHeight: "12px" }],
         xxs: ["12px", { lineHeight: "14px" }],
+        xsx: ["12px", { lineHeight: "16px" }],
         xs: ["13px", { lineHeight: "15px" }],
         xss: ["13px", { lineHeight: "19px" }],
         sm: ["14px", { lineHeight: "16px" }],

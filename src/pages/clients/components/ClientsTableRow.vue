@@ -433,9 +433,15 @@ export default {
       this.lackAttachments = this.dataAttachments[0]?.id ? true : false;
     },
     saveNote(data) {
-      this.dataNotes = [...data.note];
-      this.lackNotes = this.dataNotes[0]?.id ? true : false;
+      if (data?.note[0]) {
+        this.dataNotes = [...data.note];
+        this.lackNotes = true;
+      } else {
+        this.lackNotes = false;
+        this.dataNotes = [{ title: "", description: "" }];
+      }
     },
+
     saveIdentityDocument(data) {
       if (data?.id) {
         this.docId = data.id;
@@ -621,22 +627,37 @@ export default {
             );
         });
     },
-    postCreateNote() {
-      fetchWrapper
-        .post("general/note/create/", {
-          person_id: this.id,
-          title: this.dataNotes[0].title,
-          description: this.dataNotes[0].title,
-        })
-        .then(() => this.fetchClientDetail(this.id));
+    postCreateNote(title, description) {
+      if (!title || !description) {
+        this.addErrorNotification(
+          "Ошибка создания дополнительных данных",
+          "Все поля должны быть заполнены"
+        );
+      } else
+        fetchWrapper
+          .post("general/note/create/", {
+            person_id: this.id,
+            title: title,
+            description: description,
+          })
+          .then(() => this.fetchClientDetail(this.id));
     },
     postUpdateNotes() {
-      fetchWrapper
-        .post(`general/note/${this.dataNotes[0].id}/update/`, {
-          title: this.dataNotes[0].title,
-          description: this.dataNotes[0].description,
-        })
-        .then(() => this.fetchClientDetail(this.id));
+      this.dataNotes.forEach((e) => {
+        if (!e.title || !e.description) {
+          this.addErrorNotification(
+            "Ошибка изменения дополнительных данных",
+            "Поля не могут быть пустыми"
+          );
+          this.fetchClientDetail(this.id);
+        } else
+          fetchWrapper
+            .post(`general/note/${e.id}/update/`, {
+              title: e.title,
+              description: e.description,
+            })
+            .then(() => this.fetchClientDetail(this.id));
+      });
     },
   },
 

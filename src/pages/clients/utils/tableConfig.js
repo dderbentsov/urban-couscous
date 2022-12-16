@@ -175,6 +175,9 @@ export const detail = {
   },
   additional: {
     title: "Дополнительные данные",
+    placeholder: {
+      numba: "Редактировать данные",
+    },
     height: 280,
     width: 360,
     addFile: true,
