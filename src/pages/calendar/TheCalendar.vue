@@ -19,11 +19,10 @@
       @previous-date="switchPreviousDate",
       @next-date="switchNextDate",
       @selected-layout="changeCalendarLayout",
-      @open-change-form="openFormCreateEvent",
       @reset-change-form="resetChangeFormState",
       @selected-event="writeEventData",
       @delete-event="openModal",
-      @dblclick="openFormCreateEvent"
+      :open-form-create-event="openFormCreateEvent"
     )
     transition(name="form")
       calendar-form-add-event(
