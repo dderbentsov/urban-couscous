@@ -769,5 +769,5 @@ export default {
 .closed-detail .detail
   max-height: 0
 .dots-wrapper
-  width: 36px
+  width: 53px
 </style>

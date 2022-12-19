@@ -84,7 +84,7 @@ export default {
   methods: {
     logout() {
       localStorage.removeItem("tokenAccess");
-      this.$router.push("/login");
+      this.$router.go("/login");
     },
     openPopup() {
       this.showPopup = !this.showPopup;
