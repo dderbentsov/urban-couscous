@@ -7,6 +7,7 @@
       :cols="24",
       @input="$emit('update:value', $event.target.value)",
       :placeholder="placeholder",
+      :maxLength="maxLength"
     )
     input.w-full.outline-0.not-italic.font-medium(
       v-else,
@@ -30,6 +31,7 @@ export default {
       default: "Поиск",
     },
     rows: Number,
+    maxLength: Number,
   },
   directives: { mask },
   computed: {

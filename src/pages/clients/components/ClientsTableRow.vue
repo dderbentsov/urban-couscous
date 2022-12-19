@@ -95,14 +95,15 @@
         :data-notes="dataNotes"
         :save-new-doc="saveNewDoc",
         :delete-doc="deleteDoc",
+        :delete-note="postDeleteNote"
         :update-document="postUpdateIdentityDocument",
         :update-address="postUpdateAddress",
         :update-notes="postUpdateNotes",
         :lack-data="lackData",
         :lack-address="lackAddress",
-        :dope-address="dopeAddress",
         :lack-attachments="lackAttachments",
-        :lack-notes="lackNotes"
+        :lack-notes="lackNotes",
+        :dope-address="dopeAddress",
         :create-address="postCreateAddress",
         :create-document="postCreateIdentityDocument",
         :create-note="postCreateNote",
@@ -433,15 +434,14 @@ export default {
       this.lackAttachments = this.dataAttachments[0]?.id ? true : false;
     },
     saveNote(data) {
-      if (data?.note[0]) {
-        this.dataNotes = [...data.note];
+      this.dataNotes = data?.note.filter((e) => !e.deleted_flg);
+      if (this.dataNotes[0]) {
         this.lackNotes = true;
       } else {
         this.lackNotes = false;
         this.dataNotes = [{ title: "", description: "" }];
       }
     },
-
     saveIdentityDocument(data) {
       if (data?.id) {
         this.docId = data.id;
@@ -658,6 +658,11 @@ export default {
             })
             .then(() => this.fetchClientDetail(this.id));
       });
+    },
+    postDeleteNote(noteId) {
+      fetchWrapper
+        .del(`general/note/${noteId}/delete/`)
+        .then(() => this.fetchClientDetail(this.id));
     },
   },
 

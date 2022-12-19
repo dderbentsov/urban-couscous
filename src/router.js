@@ -4,6 +4,7 @@ import TheUser from "@/pages/clients/TheClients";
 import TheSettings from "@/pages/settings/TheSettings";
 import TheLogin from "@/pages/login/TheLogin";
 import LoggedInLayout from "@/components/LoggedInLayout";
+import TheMedicalCard from "@/pages/medicalCard/TheMedicalCard";
 
 const ifNotAuthenticated = (to, from, next) => {
   if (!localStorage.getItem("tokenAccess")) {
@@ -37,6 +38,7 @@ export default createRouter({
         { path: "calendar", component: TheCalendar },
         { path: "clients", component: TheUser },
         { path: "settings", component: TheSettings },
+        { path: "medicalCard", component: TheMedicalCard },
       ],
     },
   ],

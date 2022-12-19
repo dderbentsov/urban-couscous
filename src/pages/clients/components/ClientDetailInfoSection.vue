@@ -126,13 +126,26 @@
             .flex.flex-col.gap-y-4(v-if="section === 'addresses' && isChange")
               client-detail-section-address(:dope-address="dopeAddress")
             .flex.flex-col.gap-y-2(v-if="section === 'additional' && isChange")
-              //- .title-section.text-xxs.font-semibold {{item.title}}
-              client-detail-input.text-sm.w-max-fit(
+              .flex.justify-between
+                .title-section.text-xxs.font-semibold Заголовок
+                .icon-cancel.cancel.cursor-pointer.pr-3.text-xsm(
+                  v-if="isChange",
+                  :id="item.id",
+                  @click="deleteNote(item.id)"
+                )
+              client-detail-input.text-sm.w-max-fit.pr-12.relative(
+                :maxLength="40",
                 :style="{fontWeight:key === 'numba'&&600}",
                 v-model:value="sectionInfo[key].title",
                 placeholder="Заголовок"
               )
+                .text.flex.absolute.text-xsx.top-18px(
+                  class="right-2.5",
+                  :style="{color: 'var(--font-grey-color)'}"
+                ) {{`${sectionInfo[key].title.length}/40`}}
+              .title-section.text-xxs.font-semibold Описание
               client-detail-input.text-sm.w-max-fit(
+                :maxLength="40",
                 :style="{fontWeight:key === 'numba'&&600}",
                 v-model:value="sectionInfo[key].description",
                 placeholder="Описание"
@@ -193,6 +206,7 @@ export default {
     sectionInfo: Object,
     section: String,
     deleteDoc: Function,
+    deleteNote: Function,
     updateDocument: Function,
     updateAddress: Function,
     updateNotes: Function,
