@@ -30,7 +30,9 @@
           @selected-event="transmitEventData",
           @reset-change-form="transmitResetChangeForm",
           @delete-event="transmitDeleteEvent",
-          :schedule-body-ref="$refs.scheduleBody"
+          :schedule-body-ref="$refs.scheduleBody",
+          :open-form-create-event="openFormCreateEvent",
+          :current-date="currentDate"
         )
       .flex.w-full.relative
         .time-coil-wrapper.left-0.-mt-12.pt-9
@@ -52,7 +54,6 @@
           calendar-background(
             :time-coil="timeCoil",
             :owners-count="ownersCount"
-            @dblclick="openFormCreateEvent"
           )
 </template>
 

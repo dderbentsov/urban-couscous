@@ -12,7 +12,7 @@
         span.owner-name.font-medium.text-base.mr-6 {{ ownerName }}
         img.icon-wrapper.cursor-pointer(src="@/assets/icons/lock.svg")
       column-header-checkbox
-    .body.pl-1
+    .body.pl-1.h-full(@dblclick="clickOnBackground")
       transition-group(name="card")
         calendar-event-card(
           v-for="event, index in dayEvents",
@@ -49,6 +49,13 @@ export default {
     changeFormWasClosed: Boolean,
     scheduleBodyRef: Node,
     url: String,
+    openFormCreateEvent: Function,
+    currentDate: {
+      type: Object,
+      default() {
+        return {};
+      },
+    },
   },
   data() {
     return {
@@ -103,6 +110,25 @@ export default {
     },
     transmitDeleteEvent(eventData) {
       this.$emit("delete-event", eventData);
+    },
+    clickOnBackground(e) {
+      let res = String((e.offsetY / this.pixelsPerHour).toFixed(2)).split(".");
+      let hours = parseInt(res[0]) + this.dayStartTime;
+      let minuts = Math.round(res[1] * 0.6);
+      if (minuts < 10) minuts = "0" + minuts;
+      if (hours < 10) hours = "0" + hours;
+      this.$emit("selected-event", {
+        employees: [
+          {
+            employee: this.ownerData,
+            role: "owner",
+          },
+        ],
+        start: `${this.currentDate.format(
+          "YYYY-MM-DD"
+        )}T${hours}:${minuts}:00Z`,
+        end: `${this.currentDate.format("YYYY-MM-DD")}T${hours}:${minuts}:00Z`,
+      });
     },
   },
 };
