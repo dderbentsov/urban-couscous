@@ -7,7 +7,8 @@
     .card.flex.px-2(
       :class="{'py-6px flex-col': longCard}",
       :style="cardHeight",
-      @click="openDescriptionCard"
+      @click="openDescriptionCard",
+      @dblclick.stop
     )
       .header.flex.justify-between.items-center(:class="{'items-start': longCard}")
         .header-text

@@ -226,7 +226,7 @@ export default {
             id: id,
             label: this.trimOwnerName(last_name, first_name, patronymic),
           },
-          id: rest.id,
+          id: rest?.id || null,
           role: rest?.role || this.EMPLOYEE_TYPE,
         };
       }
