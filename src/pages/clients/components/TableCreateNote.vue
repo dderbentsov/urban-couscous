@@ -16,6 +16,7 @@
 <script>
 import BaseButton from "@/components/base/BaseButton";
 import BaseInput from "@/components/base/BaseInput";
+
 export default {
   name: "TableCreateNote",
   components: { BaseButton, BaseInput },
@@ -25,7 +26,6 @@ export default {
   },
   data() {
     return {
-      username: "",
       title: "",
       description: "",
     };

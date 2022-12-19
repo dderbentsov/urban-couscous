@@ -25,7 +25,7 @@
               :type="changeType",
               placeholder="Введите ваш пароль"
             )
-            img.absolute.z-10.right-4.bottom-14px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
+            img.absolute.z-10.right-4.bottom-10px.cursor-pointer(:src="changeIcon", alt="eyePassword", @click="changeView")
           span.font-medium(:style="{color: this.redColor}", v-show="wrongData") Неверный логин или пароль
           .flex.items-center.gap-x-11px
             input.w-4.h-4.checkbox.cursor-pointer(@click="persist", type="checkbox")

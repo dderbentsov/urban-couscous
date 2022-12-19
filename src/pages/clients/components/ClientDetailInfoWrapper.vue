@@ -32,7 +32,8 @@
         :section-info="dataNotes",
         :lack-notes="lackNotes",
         :create-note="createNote",
-        :update-notes="updateNotes"
+        :update-notes="updateNotes",
+        :delete-note="deleteNote"
       )
 </template>
 
@@ -47,6 +48,7 @@ export default {
     dataNotes: Array,
     saveNewDoc: Function,
     deleteDoc: Function,
+    deleteNote: Function,
     dataDocument: Object,
     updateDocument: Function,
     updateAddress: Function,

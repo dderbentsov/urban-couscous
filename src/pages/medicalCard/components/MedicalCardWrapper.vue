@@ -11,6 +11,7 @@ export default { name: "MedicalCardWrapper" };
 .wrapper
   overflow: auto
   border-top-left-radius: 4px
+  border-top-right-radius: 4px
 .wrapper-medical
   background-color: var(--default-white)
   height: calc(100vh - 64px)

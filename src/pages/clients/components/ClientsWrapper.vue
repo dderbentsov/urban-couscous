@@ -34,4 +34,5 @@ export default {
 .wrapper
   overflow: auto
   border-top-left-radius: 4px
+  border-top-right-radius: 4px
 </style>
