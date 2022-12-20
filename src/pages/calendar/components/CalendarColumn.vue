@@ -65,15 +65,24 @@ export default {
   computed: {
     ownerName() {
       if (this.ownerData.id) {
-        return `${this.ownerData.last_name} ${this.ownerData.first_name.slice(
-          0,
-          1
-        )}.${this.ownerData.patronymic.slice(0, 1)}.`;
+        let checkedFirstName =
+          this.ownerData.first_name !== null
+            ? this.ownerData.first_name[0] + "."
+            : "";
+        let checkedPatronymic =
+          this.ownerData.patronymic !== null
+            ? this.ownerData.patronymic[0] + "."
+            : "";
+        return `${this.ownerData.last_name} ${checkedFirstName}${checkedPatronymic}`;
       }
       return null;
     },
     defaultAvatar() {
-      return `${this.ownerData.last_name[0]}${this.ownerData.first_name[0]}`;
+      let checkedFirstName =
+        this.ownerData.first_name !== null
+          ? this.ownerData.first_name[0]
+          : this.ownerData.last_name[1];
+      return `${this.ownerData.last_name[0]}${checkedFirstName}`;
     },
     pixelsPerMinute() {
       return this.pixelsPerHour / 60;

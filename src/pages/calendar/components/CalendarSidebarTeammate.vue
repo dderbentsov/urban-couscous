@@ -4,7 +4,7 @@
     .team-card(v-for="teammate in teamData" :key="teammate.id")
       base-avatar(:size="32", :color="teammate.color")
         img.h-full.object-cover(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
-        span(v-if="!teammate.photo") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
+        span(v-if="!teammate.photo") {{teammateAvatar(teammate)}}
   .flex.flex-col.gap-y-4.w-full(v-else, :style="{ color: 'var(--font-dark-blue-color)' }")
     .flex.items-center.justify-between
       .flex.text-base.font-bold Команды
@@ -17,7 +17,7 @@
         .flex.items-center
           base-avatar(:size="32", :color="teammate.color")
             img.h-full.object-cover(:src="url + teammate.photo", alt="Team member", v-if="teammate.photo")
-            span(v-if="!teammate.photo") {{`${teammate.last_name[0]}${teammate.first_name[0]}`}}
+            span(v-if="!teammate.photo") {{teammateAvatar(teammate)}}
           .flex.ml-2.not-italic.font-medium.text-xxs {{ changeName(teammate.last_name, teammate.first_name, teammate.patronymic) }}
         span.icon-change-place.cursor-pointer.w-5.flex.items-center.justify-center.w-6.h-6
 </template>
@@ -42,15 +42,22 @@ export default {
     };
   },
   methods: {
-    changeName(lastName, fitstName, patronymic) {
+    changeName(lastName, firstName, patronymic) {
+      let checkedFirstName = firstName !== null ? firstName[0] + "." : "";
+      let checkedPatronymic = patronymic !== null ? patronymic[0] + "." : "";
       return lastName.length > this.maxLengthLastName
         ? lastName.slice(0, this.maxLengthLastName) +
             "... " +
-            fitstName[0] +
-            "." +
-            patronymic[0] +
-            "."
-        : lastName + " " + fitstName[0] + "." + patronymic[0] + ".";
+            checkedFirstName +
+            checkedPatronymic
+        : lastName + " " + checkedFirstName + checkedPatronymic;
+    },
+    teammateAvatar(teammate) {
+      let checkedFirstName =
+        teammate.first_name !== null
+          ? teammate.first_name[0]
+          : teammate.last_name[1];
+      return `${teammate.last_name[0]}${checkedFirstName}`;
     },
   },
 };
