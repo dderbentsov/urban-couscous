@@ -210,7 +210,9 @@ export default {
       return time.slice(11, -4);
     },
     composeFullName(object) {
-      return `${object.last_name} ${object.first_name} ${object.patronymic}`;
+      return `${object.last_name} ${object.first_name ?? ""} ${
+        object.patronymic ?? ""
+      }`;
     },
     setActiveTheme() {
       this.isActive = true;

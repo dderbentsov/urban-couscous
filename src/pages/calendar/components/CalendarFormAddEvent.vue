@@ -357,11 +357,13 @@ export default {
       }
       return counter === 0;
     },
-    trimOwnerName(lastName, firsName, patronymic) {
-      return `${lastName} ${firsName[0]}.${patronymic[0]}.`;
+    trimOwnerName(lastName, firstName, patronymic) {
+      let checkedFirstName = firstName !== null ? firstName[0] + "." : "";
+      let checkedPatronymic = patronymic !== null ? patronymic[0] + "." : "";
+      return `${lastName} ${checkedFirstName}${checkedPatronymic}`;
     },
-    trimMemberName(lastName, firsName, patronymic) {
-      return `${lastName} ${firsName} ${patronymic}`;
+    trimMemberName(lastName, firstName, patronymic) {
+      return `${lastName} ${firstName ?? ""} ${patronymic ?? ""}`;
     },
     async sendEventData() {
       if (!this.checkTime()) return;

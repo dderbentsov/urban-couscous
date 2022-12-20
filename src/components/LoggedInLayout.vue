@@ -45,14 +45,16 @@ export default {
       this.isOpenForm = false;
     },
     setUpdatedClients() {
-      this.updatedClients = true;
+      if (this.$router.currentRoute._value.path === "/clients")
+        this.updatedClients = true;
     },
     resetUpdatedClients() {
       this.updatedClients = false;
       this.createdClientId = "";
     },
     writeCreatedClientId(id) {
-      this.createdClientId = id;
+      if (this.$router.currentRoute._value.path === "/clients")
+        this.createdClientId = id;
     },
   },
 };
