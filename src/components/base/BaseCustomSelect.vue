@@ -18,7 +18,8 @@
       )
         .item.py-2.px-4.cursor-pointer(
           v-for="item in items",
-          :key="item.id"
+          :key="item.id",
+          :class="{'center': center}",
           @click="clickItem(item.id, item.label)"
         ) {{ item.label }}
 </template>
@@ -38,6 +39,7 @@ export default {
     borderNone: Boolean,
     separator: Boolean,
     placeholderOpacity: Boolean,
+    center: Boolean,
   },
   emits: ["update:modelValue"],
   data() {
@@ -117,4 +119,7 @@ export default {
   height: 24px
   width: 1px
   border-radius: 1px
+.center
+  display: flex
+  justify-content: center
 </style>
